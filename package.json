@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "axios": "^1.16.1",
+    "sparql-http-client": "^3.1.0"
+  }
+}
