@@ -1,43 +1,37 @@
 {
-    "movies": [
-      {
-        "id": 1,
-        "title": "טיטאניק",
-        "release_year": 1997,
-        "director": "ג'יימס קמרון",
-        "producers": ["ג'יימס קמרון", "ג'ון לנדאו"],
-        "cast": ["ליאונרדו דיקפריו", "קייט וינסלט"],
-        "oscar_wins": ["הסרט הטוב ביותר", "הבמאי הטוב ביותר"],
-        "media": {
-          "images": ["titanic_1.jpg"],
-          "audio": ["titanic_audio_1.mp3"]
-        }
-      },
-      {
-        "id": 2,
-        "title": "התחלה",
-        "release_year": 2010,
-        "director": "כריסטופר נולאן",
-        "producers": ["כריסטופר נולאן", "אמה תומאס"],
-        "cast": ["ליאונרדו דיקפריו", "קיליאן מרפי"],
-        "oscar_wins": ["עריכת הסאונד הטובה ביותר"],
-        "media": {
-          "images": ["inception_1.jpg"],
-          "audio": ["inception_audio_1.mp3"]
-        }
-      },
-      {
-        "id": 3,
-        "title": "גלדיאטור",
-        "release_year": 2000,
-        "director": "רידלי סקוט",
-        "producers": ["דאגלס ויק", "ברינקו לוסטיג"],
-        "cast": ["ראסל קרואו", "חואקין פיניקס"],
-        "oscar_wins": ["הסרט הטוב ביותר", "השחקן הטוב ביותר"],
-        "media": {
-          "images": ["gladiator_1.jpg"],
-          "audio": ["gladiator_audio_1.mp3"]
-        }
-      }
-    ]
-  }
+  "movies": [
+    {
+      "id": 1,
+      "title": "טיטאניק",
+      "release_year": 1997,
+      "director": "ג'יימס קמרון",
+      "producers": ["ג'יימס קמרון", "ג'ון לנדאו"],
+      "cast": ["ליאונרדו דיקפריו", "קייט וינסלט"],
+      "oscar_wins": ["הסרט הטוב ביותר", "הבמאי הטוב ביותר"],
+      "poster_url": "https://image.tmdb.org/t/p/w500/9xj7rB1R1vTNJNcrIcvAqaFvY4u.jpg",
+      "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    },
+    {
+      "id": 2,
+      "title": "התחלה",
+      "release_year": 2010,
+      "director": "כריסטופר נולאן",
+      "producers": ["כריסטופר נולאן", "אמה תומאס"],
+      "cast": ["ליאונרדו דיקפריו", "קיליאן מרפי"],
+      "oscar_wins": ["עריכת הסאונד הטובה ביותר"],
+      "poster_url": "https://image.tmdb.org/t/p/w500/edv5CZvncHeS9ssv9r17S98u6bt.jpg",
+      "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    },
+    {
+      "id": 3,
+      "title": "גלדיאטור",
+      "release_year": 2000,
+      "director": "רידלי סקוט",
+      "producers": ["דאגלס ויק", "ברינקו לוסטיג"],
+      "cast": ["ראסל קרואו", "חואקין פיניקס"],
+      "oscar_wins": ["הסרט הטוב ביותר", "השחקן הטוב ביותר"],
+      "poster_url": "https://image.tmdb.org/t/p/w500/ty8TGRjI4Wq1LdaHK97mqmUK3uB.jpg",
+      "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    }
+  ]
+}

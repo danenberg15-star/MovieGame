@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>בדיקת מסד נתונים - סרטים</title>
+    <title>בדיקת מסד נתונים - סרטים ותמונות</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; padding: 20px; }
-        .card { background: #2a2a2a; padding: 15px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; }
-        h2 { margin-top: 0; color: #ffd700; }
+        body { font-family: sans-serif; background: #121212; color: white; padding: 20px; text-align: center; }
+        .movies-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .card { background: #2a2a2a; padding: 15px; border-radius: 12px; border: 1px solid #444; width: 300px; }
+        .poster { width: 100%; border-radius: 8px; margin-bottom: 10px; }
+        h2 { margin: 10px 0; color: #ffd700; font-size: 1.5em; }
+        p { font-size: 0.9em; margin: 5px 0; color: #ccc; }
+        audio { width: 100%; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <h1>הסרטים במסד הנתונים:</h1>
-    <div id="movies-container"></div>
+    <h1>הסרטים המעודכנים:</h1>
+    <div id="movies-container" class="movies-grid"></div>
 
     <script>
         fetch('movies.json')
@@ -23,16 +27,21 @@
                     const div = document.createElement('div');
                     div.className = 'card';
                     div.innerHTML = `
+                        <img src="${movie.poster_url}" alt="${movie.title}" class="poster">
                         <h2>${movie.title} (${movie.release_year})</h2>
                         <p><strong>במאי:</strong> ${movie.director}</p>
                         <p><strong>שחקנים:</strong> ${movie.cast.join(', ')}</p>
                         <p><strong>אוסקרים:</strong> ${movie.oscar_wins.join(', ')}</p>
+                        <audio controls>
+                            <source src="${movie.audio_url}" type="audio/mpeg">
+                            הדפדפן שלך לא תומך בנגן אודיו.
+                        </audio>
                     `;
                     container.appendChild(div);
                 });
             })
             .catch(error => {
-                document.getElementById('movies-container').innerHTML = '<p style="color:red;">שגיאה בטעינת הנתונים. האם פתחת דרך שרת מקומי?</p>';
+                document.getElementById('movies-container').innerHTML = '<p style="color:red;">שגיאה בטעינת הנתונים.</p>';
                 console.error('Error fetching movies:', error);
             });
     </script>
