@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "axios": "^1.16.1",
+    "cheerio": "^1.2.0",
     "sparql-http-client": "^3.1.0"
   }
 }
