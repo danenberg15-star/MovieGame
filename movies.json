@@ -5,9 +5,8 @@
       "title": "טיטאניק",
       "release_year": 1997,
       "director": "ג'יימס קמרון",
-      "producers": ["ג'יימס קמרון", "ג'ון לנדאו"],
       "cast": ["ליאונרדו דיקפריו", "קייט וינסלט"],
-      "oscar_wins": ["הסרט הטוב ביותר", "הבמאי הטוב ביותר"],
+      "oscar_wins": ["הסרט הטוב ביותר"],
       "poster_url": "https://image.tmdb.org/t/p/w500/9xj7rB1R1vTNJNcrIcvAqaFvY4u.jpg",
       "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     },
@@ -16,7 +15,6 @@
       "title": "התחלה",
       "release_year": 2010,
       "director": "כריסטופר נולאן",
-      "producers": ["כריסטופר נולאן", "אמה תומאס"],
       "cast": ["ליאונרדו דיקפריו", "קיליאן מרפי"],
       "oscar_wins": ["עריכת הסאונד הטובה ביותר"],
       "poster_url": "https://image.tmdb.org/t/p/w500/edv5CZvncHeS9ssv9r17S98u6bt.jpg",
@@ -27,9 +25,8 @@
       "title": "גלדיאטור",
       "release_year": 2000,
       "director": "רידלי סקוט",
-      "producers": ["דאגלס ויק", "ברינקו לוסטיג"],
       "cast": ["ראסל קרואו", "חואקין פיניקס"],
-      "oscar_wins": ["הסרט הטוב ביותר", "השחקן הטוב ביותר"],
+      "oscar_wins": ["הסרט הטוב ביותר"],
       "poster_url": "https://image.tmdb.org/t/p/w500/ty8TGRjI4Wq1LdaHK97mqmUK3uB.jpg",
       "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
     }
