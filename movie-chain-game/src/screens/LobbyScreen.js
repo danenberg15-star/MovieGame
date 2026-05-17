@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ref, onValue, update, set } from 'firebase/database';
+import { ref, onValue, update, set, get } from 'firebase/database';
 import { database } from '../firebase';
 import './LobbyScreen.css';
 
@@ -20,6 +20,91 @@ function LobbyScreen() {
   const [myReady, setMyReady] = useState(false);
   const [allReady, setAllReady] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isQAMode, setIsQAMode] = useState(false);
+
+  // Initialize QA Mode (Room 99999)
+  useEffect(() => {
+    const initQAMode = async () => {
+      if (roomCode !== '99999') return;
+
+      setIsQAMode(true);
+
+      try {
+        const roomRef = ref(database, `rooms/99999`);
+        const snapshot = await get(roomRef);
+
+        if (!snapshot.exists()) {
+          // Create QA room
+          const playerName = localStorage.getItem('playerName') || 'Player 1';
+          
+          await set(roomRef, {
+            code: '99999',
+            host: playerId,
+            created: Date.now(),
+            status: 'waiting',
+            isQAMode: true,
+            teams: {
+              teamA: [],
+              teamB: []
+            },
+            players: {
+              [playerId]: {
+                id: playerId,
+                name: playerName,
+                team: null,
+                ready: false,
+                isHost: true
+              },
+              'bot_player': {
+                id: 'bot_player',
+                name: t('team_b') === 'Team B' ? '🤖 AI Bot' : '🤖 בוט AI',
+                team: 'B',
+                ready: true,
+                isHost: false,
+                isBot: true
+              }
+            }
+          });
+
+          console.log('✅ QA Room 99999 created successfully');
+        } else {
+          // Room exists - add player if not already there
+          const roomData = snapshot.val();
+          if (!roomData.players?.[playerId]) {
+            const playerName = localStorage.getItem('playerName') || 'Player 1';
+            const playerRef = ref(database, `rooms/99999/players/${playerId}`);
+            await set(playerRef, {
+              id: playerId,
+              name: playerName,
+              team: null,
+              ready: false,
+              isHost: roomData.host === playerId
+            });
+          }
+
+          // Ensure bot exists
+          if (!roomData.players?.['bot_player']) {
+            const botRef = ref(database, `rooms/99999/players/bot_player`);
+            await set(botRef, {
+              id: 'bot_player',
+              name: t('team_b') === 'Team B' ? '🤖 AI Bot' : '🤖 בוט AI',
+              team: 'B',
+              ready: true,
+              isHost: false,
+              isBot: true
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing QA mode:', error);
+        alert('Failed to initialize QA mode: ' + error.message);
+      }
+    };
+
+    if (roomCode && playerId) {
+      initQAMode();
+    }
+  }, [roomCode, playerId, t]);
 
   // Listen to room changes
   useEffect(() => {
@@ -32,8 +117,11 @@ function LobbyScreen() {
     const unsubscribe = onValue(roomRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
-        alert('Room not found');
-        navigate('/');
+        // Only alert if not QA mode (QA mode creates room automatically)
+        if (roomCode !== '99999') {
+          alert('Room not found');
+          navigate('/');
+        }
         return;
       }
 
@@ -53,9 +141,10 @@ function LobbyScreen() {
         setMyReady(myData.ready || false);
       }
 
-      // Check if all players ready
-      const ready = playersList.every(p => p.ready);
-      setAllReady(ready && playersList.length >= 2);
+      // Check if all players ready (excluding bots)
+      const humanPlayers = playersList.filter(p => !p.isBot);
+      const ready = humanPlayers.every(p => p.ready) && humanPlayers.length >= 1;
+      setAllReady(ready);
     });
 
     return () => unsubscribe();
@@ -137,19 +226,24 @@ function LobbyScreen() {
         <div className="lobby-content">
           {/* Header */}
           <div className="lobby-header">
-            <h1 className="game-logo">🎬 {t('app_title')}</h1>
+            <h1 className="game-logo">
+              🎬 {t('app_title')}
+              {isQAMode && <span className="qa-badge">🧪 QA Mode</span>}
+            </h1>
             <div className="room-code-display">
               <span className="label">{t('room_code')}:</span>
               <span className="code">{roomCode}</span>
             </div>
-            <div className="share-buttons">
-              <button className="btn-share" onClick={handleCopyCode}>
-                {copied ? '✓ ' + t('copied') : '📋 ' + t('copy_code')}
-              </button>
-              <button className="btn-share" onClick={handleShareLink}>
-                📤 {t('share_link')}
-              </button>
-            </div>
+            {!isQAMode && (
+              <div className="share-buttons">
+                <button className="btn-share" onClick={handleCopyCode}>
+                  {copied ? '✓ ' + t('copied') : '📋 ' + t('copy_code')}
+                </button>
+                <button className="btn-share" onClick={handleShareLink}>
+                  📤 {t('share_link')}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Teams */}
@@ -169,6 +263,7 @@ function LobbyScreen() {
                     <span className="player-name">
                       {player.name} {player.id === playerId && '(You)'}
                       {player.isHost && ' 👑'}
+                      {player.isBot && ' 🤖'}
                     </span>
                     {player.ready && <span className="ready-badge">✅</span>}
                   </div>
@@ -202,12 +297,13 @@ function LobbyScreen() {
                     <span className="player-name">
                       {player.name} {player.id === playerId && '(You)'}
                       {player.isHost && ' 👑'}
+                      {player.isBot && ' 🤖'}
                     </span>
                     {player.ready && <span className="ready-badge">✅</span>}
                   </div>
                 ))}
               </div>
-              {!myTeam && (
+              {!myTeam && !isQAMode && (
                 <button
                   className="btn-join-team"
                   onClick={() => handleJoinTeam('B')}
