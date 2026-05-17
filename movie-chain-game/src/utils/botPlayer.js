@@ -58,8 +58,27 @@ class BotPlayer {
    * @returns {Promise<Object>} - Decision object {action: 'connect'|'save_token', targetCard, connectionType}
    */
   async tryConnect(wonCard, teamCards) {
+    console.log('🤖 Bot tryConnect - wonCard:', wonCard);
+    console.log('🤖 Bot tryConnect - teamCards:', teamCards);
+
     // Wait random time (thinking...)
     await this.randomDelay(this.connectionTimeMin, this.connectionTimeMax);
+
+    // Check if we have cards to connect with
+    if (!teamCards || teamCards.length === 0) {
+      console.log('🤖 No cards to connect - saving token');
+      return {
+        action: 'save_token'
+      };
+    }
+
+    // Validate wonCard
+    if (!wonCard || !wonCard.id) {
+      console.log('🤖 Invalid wonCard - saving token');
+      return {
+        action: 'save_token'
+      };
+    }
 
     // 50% chance to attempt connection
     if (Math.random() < this.successRateConnect) {
@@ -67,12 +86,17 @@ class BotPlayer {
       const connection = this.findBestConnection(wonCard, teamCards);
       
       if (connection) {
+        console.log('🤖 Bot found connection:', connection);
         return {
           action: 'connect',
           targetCard: connection.targetCard,
           connectionType: connection.type
         };
+      } else {
+        console.log('🤖 No valid connection found - saving token');
       }
+    } else {
+      console.log('🤖 Bot decided not to connect (50% chance) - saving token');
     }
 
     // No connection found or decided not to connect
@@ -88,34 +112,53 @@ class BotPlayer {
    * @returns {Object|null} - Best connection or null
    */
   findBestConnection(wonCard, teamCards) {
+    // Validate inputs
+    if (!wonCard || !teamCards || teamCards.length === 0) {
+      console.log('🤖 Invalid inputs for findBestConnection');
+      return null;
+    }
+
     let bestConnection = null;
 
     for (const teamCard of teamCards) {
-      const connections = findConnection(wonCard, teamCard);
-      
-      if (connections.length > 0) {
-        // Prefer actor connections, then director, then others
-        const priorityOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
+      // Skip invalid cards
+      if (!teamCard || !teamCard.id) {
+        console.log('🤖 Skipping invalid teamCard');
+        continue;
+      }
+
+      try {
+        const connections = findConnection(wonCard, teamCard);
         
-        for (const priorityType of priorityOrder) {
-          const connection = connections.find(c => c.type === priorityType);
-          if (connection) {
-            return {
+        if (connections && connections.length > 0) {
+          console.log(`🤖 Found ${connections.length} connections between ${wonCard.title?.en} and ${teamCard.title?.en}`);
+          
+          // Prefer actor connections, then director, then others
+          const priorityOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
+          
+          for (const priorityType of priorityOrder) {
+            const connection = connections.find(c => c.type === priorityType);
+            if (connection) {
+              return {
+                targetCard: teamCard,
+                type: connection.type,
+                value: connection.value
+              };
+            }
+          }
+          
+          // If no priority match, use first connection
+          if (!bestConnection) {
+            bestConnection = {
               targetCard: teamCard,
-              type: connection.type,
-              value: connection.value
+              type: connections[0].type,
+              value: connections[0].value
             };
           }
         }
-        
-        // If no priority match, use first connection
-        if (!bestConnection) {
-          bestConnection = {
-            targetCard: teamCard,
-            type: connections[0].type,
-            value: connections[0].value
-          };
-        }
+      } catch (error) {
+        console.error('🤖 Error finding connection:', error);
+        continue;
       }
     }
 

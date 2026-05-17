@@ -87,7 +87,6 @@ function DecisionPhase({
           />
           <div className="card-info">
             <h3 className="card-title">{wonCard.title[language]}</h3>
-            <p className="card-year">{wonCard.year}</p>
           </div>
         </div>
       </div>
@@ -137,7 +136,6 @@ function DecisionPhase({
                   />
                   <div className="card-info">
                     <h4 className="card-title">{card.title[language]}</h4>
-                    <p className="card-year">{card.year}</p>
                   </div>
                   {selectedCard?.id === card.id && (
                     <div className="selected-badge">✓</div>
