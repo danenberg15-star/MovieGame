@@ -1,0 +1,122 @@
+{
+  "id": "movie_057",
+  "title": {
+    "en": "Joker",
+    "he": "ג'וקר"
+  },
+  "year": 2019,
+  "director": {
+    "name": {
+      "en": "Todd Phillips",
+      "he": "Todd Phillips"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/A6FPht87DiqXzp456WjakLi2AtP.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Todd Phillips",
+      "he": "Todd Phillips"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/A6FPht87DiqXzp456WjakLi2AtP.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Joaquin Phoenix",
+        "he": "Joaquin Phoenix"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u38k3hQBDwNX0VA22aQceDp9Iyv.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert De Niro",
+        "he": "Robert De Niro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cT8htcckIuyI1Lqwt1CvD02ynTh.jpg"
+    },
+    {
+      "name": {
+        "en": "Zazie Beetz",
+        "he": "Zazie Beetz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sgxzT54GnvgeMnOZgpQQx9csAdd.jpg"
+    },
+    {
+      "name": {
+        "en": "Frances Conroy",
+        "he": "Frances Conroy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aJRQAkO24L6bH8qkkE5Iv1nA3gf.jpg"
+    },
+    {
+      "name": {
+        "en": "Brett Cullen",
+        "he": "Brett Cullen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4P6TsRcnr9MRbXlCdHitulGM5LT.jpg"
+    },
+    {
+      "name": {
+        "en": "Shea Whigham",
+        "he": "Shea Whigham"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/d3caK3l4UfbnzOxv95wLoFLZzMO.jpg"
+    },
+    {
+      "name": {
+        "en": "Bill Camp",
+        "he": "Bill Camp"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wxYyJSltCHwU0MTg838SllOlvNT.jpg"
+    },
+    {
+      "name": {
+        "en": "Glenn Fleshler",
+        "he": "Glenn Fleshler"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/x1Cef2yPZS7bJTwxI7DX3q0HNcv.jpg"
+    },
+    {
+      "name": {
+        "en": "Leigh Gill",
+        "he": "Leigh Gill"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/stbbWD89FQWa34TNVyxVj5xBVIm.jpg"
+    },
+    {
+      "name": {
+        "en": "Josh Pais",
+        "he": "Josh Pais"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/uH90fGfLLzYCX02yOW3kH4LMO7n.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_057/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+  "decoy_answers": {
+    "en": [
+      "The League of Extraordinary Gentlemen",
+      "Looks That Kill",
+      "Bones and All",
+      "Your Mother's Son",
+      "A Christmas Tale",
+      "Kiss the Girls",
+      "Apt Pupil",
+      "The Crow: Salvation",
+      "Desperate Measures"
+    ],
+    "he": [
+      "ג'נטלמנים מובחרים",
+      "מבט קטלני",
+      "עצמות והכול",
+      "Anak Ka Ng Ina Mo",
+      "סיפור חג",
+      "חתום בנשיקה",
+      "תלמיד מצטיין מדי",
+      "העורב 3",
+      "צעדים נואשים"
+    ]
+  },
+  "original_filename": "Joker.mp4"
+}

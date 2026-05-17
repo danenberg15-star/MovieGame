@@ -1,0 +1,122 @@
+{
+  "id": "movie_086",
+  "title": {
+    "en": "Oppenheimer",
+    "he": "אופנהיימר"
+  },
+  "year": 2023,
+  "director": {
+    "name": {
+      "en": "Christopher Nolan",
+      "he": "Christopher Nolan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Christopher Nolan",
+      "he": "Christopher Nolan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Cillian Murphy",
+        "he": "Cillian Murphy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg"
+    },
+    {
+      "name": {
+        "en": "Emily Blunt",
+        "he": "Emily Blunt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5nCSG5TL1bP1geD8aaBfaLnLLCD.jpg"
+    },
+    {
+      "name": {
+        "en": "Matt Damon",
+        "he": "Matt Damon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Downey Jr.",
+        "he": "Robert Downey Jr."
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+    },
+    {
+      "name": {
+        "en": "Florence Pugh",
+        "he": "Florence Pugh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wcDXv5Oc8w01QfxJMla96xIDROT.jpg"
+    },
+    {
+      "name": {
+        "en": "Josh Hartnett",
+        "he": "Josh Hartnett"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9JS3PeypxTmHVXOnLCMRzJzySxO.jpg"
+    },
+    {
+      "name": {
+        "en": "Casey Affleck",
+        "he": "Casey Affleck"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/304ilSygaCRWykoBWAL67TOw8g9.jpg"
+    },
+    {
+      "name": {
+        "en": "Rami Malek",
+        "he": "Rami Malek"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mESIaMPIPxtyWDQ6DAChUBobOp5.jpg"
+    },
+    {
+      "name": {
+        "en": "Kenneth Branagh",
+        "he": "Kenneth Branagh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AbCqqFxNi5w3nDUFdQt0DGMFh5H.jpg"
+    },
+    {
+      "name": {
+        "en": "Benny Safdie",
+        "he": "Benny Safdie"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u10A5DpUYRB1zMF7YoGYcyvhois.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_086/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+  "decoy_answers": {
+    "en": [
+      "Arn: The Kingdom at Road's End",
+      "Battle of the Bulge",
+      "Shattered Glass",
+      "White FLags",
+      "Room",
+      "The Sisters Brothers",
+      "That Complicated Guy",
+      "One Day Before the Rainy Season",
+      "Hitler's Hollywood"
+    ],
+    "he": [
+      "ארן: הממלכה בסוף הדרך",
+      "יום לפני הכניעה",
+      "חשיפה",
+      "თეთრი ბაირაღები",
+      "חדר",
+      "האחים סיסטרז",
+      "複雑な彼",
+      "अषाढ़ का एक दिन",
+      "Hitlers Hollywood"
+    ]
+  },
+  "original_filename": "Oppenheimer.mp4"
+}

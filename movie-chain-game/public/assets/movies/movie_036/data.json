@@ -1,0 +1,122 @@
+{
+  "id": "movie_036",
+  "title": {
+    "en": "Finding Nemo",
+    "he": "מוצאים את נמו"
+  },
+  "year": 2003,
+  "director": {
+    "name": {
+      "en": "Andrew Stanton",
+      "he": "Andrew Stanton"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/fo6ePCWEVB0L1sccrvB99Iaoqcg.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Graham Walters",
+      "he": "Graham Walters"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rmFFUsCJBjtl2xgsED6hODix9cy.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Albert Brooks",
+        "he": "Albert Brooks"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8iDSGu5l93N7benjf6b3AysBore.jpg"
+    },
+    {
+      "name": {
+        "en": "Ellen DeGeneres",
+        "he": "Ellen DeGeneres"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z8IEEid4z63CBlJtxrTKEfsW7NA.jpg"
+    },
+    {
+      "name": {
+        "en": "Alexander Gould",
+        "he": "Alexander Gould"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zzfj8LHhSiRntnyThvOBirEEmII.jpg"
+    },
+    {
+      "name": {
+        "en": "Willem Dafoe",
+        "he": "Willem Dafoe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ui8e4sgZAwMPi3hzEO53jyBJF9B.jpg"
+    },
+    {
+      "name": {
+        "en": "Geoffrey Rush",
+        "he": "Geoffrey Rush"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/npXFjaFQzBNroCEPllGPTZ5IisA.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad Garrett",
+        "he": "Brad Garrett"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/813ffbpoaoaJRdoe1yrbivboWKp.jpg"
+    },
+    {
+      "name": {
+        "en": "Allison Janney",
+        "he": "Allison Janney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hpBKWV1jjoXQbr1s0iUZTSvw582.jpg"
+    },
+    {
+      "name": {
+        "en": "Austin Pendleton",
+        "he": "Austin Pendleton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nrXfqtXDDYzSFNLPQnfLkus4I7s.jpg"
+    },
+    {
+      "name": {
+        "en": "Stephen Root",
+        "he": "Stephen Root"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2Zwi6AydqQQ9InVdhjYcfJXNzkp.jpg"
+    },
+    {
+      "name": {
+        "en": "Vicki Lewis",
+        "he": "Vicki Lewis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dwTjtleLh1uu8n9AvUCv0n3mi2R.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_036/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/5lc6nQc0VhWFYFbNv016xze8Jvy.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Adam Project",
+      "Castling (An Aquarium Confession)",
+      "Black Panther: Wakanda Forever",
+      "I Love to Singa",
+      "Tangled Ever After",
+      "Jumanji: The Next Level",
+      "Supergirl",
+      "Asterix: The Secret of the Magic Potion",
+      "The Time of Secrets"
+    ],
+    "he": [
+      "פרויקט אדם",
+      "Рокіровка (сповідь із акваріума)",
+      "הפנתר השחור: וואקנדה לנצח",
+      "I Love to Singa",
+      "פלונטר: עד עצם היום הזה",
+      "ג'ומנג'י: השלב הבא",
+      "סופרגירל",
+      "אסטריקס ושיקוי הקסמים",
+      "Le Temps des secrets"
+    ]
+  },
+  "original_filename": "Finding_Nemo.mp4"
+}

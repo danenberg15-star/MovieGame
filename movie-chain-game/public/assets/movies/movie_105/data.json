@@ -1,0 +1,122 @@
+{
+  "id": "movie_105",
+  "title": {
+    "en": "Scarface",
+    "he": "פני צלקת"
+  },
+  "year": 1983,
+  "director": {
+    "name": {
+      "en": "Brian De Palma",
+      "he": "Brian De Palma"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/bWjOPDt8HRww5VAtpZ5FiCxpIxu.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Martin Bregman",
+      "he": "Martin Bregman"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Al Pacino",
+        "he": "Al Pacino"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/m8HAAjq1T75JypKk0v1FFQn4ysZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Steven Bauer",
+        "he": "Steven Bauer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7eu9I2BaQfcJEsil7FxGm1ioZ6k.jpg"
+    },
+    {
+      "name": {
+        "en": "Michelle Pfeiffer",
+        "he": "Michelle Pfeiffer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/khpWT4F4Nj0QEuVPP1P2Zgz41G2.jpg"
+    },
+    {
+      "name": {
+        "en": "Mary Elizabeth Mastrantonio",
+        "he": "Mary Elizabeth Mastrantonio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vbZ1E557K5oj34xLHR5ErO8wPCi.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Loggia",
+        "he": "Robert Loggia"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mRSUgJnfprCNw83pyVfpfW7ryfK.jpg"
+    },
+    {
+      "name": {
+        "en": "Miriam Colon",
+        "he": "Miriam Colon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9jnz7htVMCTDNRDmoi2mdOKv6Pj.jpg"
+    },
+    {
+      "name": {
+        "en": "F. Murray Abraham",
+        "he": "F. Murray Abraham"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/p2RYVGdrcP0m70BkkiKcwyrDeim.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Shenar",
+        "he": "Paul Shenar"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kc0I4h9fTY8WP3wyQbwVWEzbmil.jpg"
+    },
+    {
+      "name": {
+        "en": "Harris Yulin",
+        "he": "Harris Yulin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3W758yxhdphzblpgDz4wKgLCriB.jpg"
+    },
+    {
+      "name": {
+        "en": "Ángel Salazar",
+        "he": "Ángel Salazar"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lZQXjnIHxFa2DjaStlYZcW7GqES.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_105/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/iQ5ztdjvteGeboxtmRdXEChJOHh.jpg",
+  "decoy_answers": {
+    "en": [
+      "Stunt Squad",
+      "Evening Primrose",
+      "Wheels of Fire",
+      "Ride in a Pink Car",
+      "Pathu Thala",
+      "Namasthe Bali",
+      "Maior que o Mundo",
+      "Violent Road",
+      "The Morning Sea"
+    ],
+    "he": [
+      "La polizia è sconfitta",
+      "Evening Primrose",
+      "Wheels of Fire",
+      "Ride in a Pink Car",
+      "פאתו תאלה",
+      "നമസ്തേ ബാലി",
+      "Maior que o Mundo",
+      "Violent Road",
+      "The Morning Sea"
+    ]
+  },
+  "original_filename": "Scarface.mp4"
+}

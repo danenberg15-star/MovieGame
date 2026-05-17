@@ -1,0 +1,122 @@
+{
+  "id": "movie_084",
+  "title": {
+    "en": "Once Upon a Time... in Hollywood",
+    "he": "היו זמנים בהוליווד"
+  },
+  "year": 2019,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Shannon McIntosh",
+      "he": "Shannon McIntosh"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Leonardo DiCaprio",
+        "he": "Leonardo DiCaprio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Margot Robbie",
+        "he": "Margot Robbie"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/euDPyqLnuwaWMHajcU3oZ9uZezR.jpg"
+    },
+    {
+      "name": {
+        "en": "Emile Hirsch",
+        "he": "Emile Hirsch"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/NQjX6KjtDDyLnvbxhrU9xQWaYJ.jpg"
+    },
+    {
+      "name": {
+        "en": "Margaret Qualley",
+        "he": "Margaret Qualley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jStNyMj3acpLuH48awLVLqqlyaV.jpg"
+    },
+    {
+      "name": {
+        "en": "Timothy Olyphant",
+        "he": "Timothy Olyphant"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7pHmRHE2wBNC9cBgNIRCBqFLoyZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Julia Butters",
+        "he": "Julia Butters"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9JqtqDi2hsh3mOq2v5fc5HJB6T9.jpg"
+    },
+    {
+      "name": {
+        "en": "Austin Butler",
+        "he": "Austin Butler"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/atdAs4pFGjUQ4m2W8kJYly7N6cC.jpg"
+    },
+    {
+      "name": {
+        "en": "Dakota Fanning",
+        "he": "Dakota Fanning"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hwcO08SVWkelfvgfIa5HsTMxsK8.jpg"
+    },
+    {
+      "name": {
+        "en": "Bruce Dern",
+        "he": "Bruce Dern"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5RKGcElQiFZh4Mu9gInyUhr9Uu7.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_084/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/8j58iEBw9pOXFD2L0nt0ZXeHviB.jpg",
+  "decoy_answers": {
+    "en": [
+      "Evening Primrose",
+      "The Black Panther",
+      "Argoman the Fantastic Superman",
+      "Jester",
+      "London Recruits",
+      "Bank of Dave 2: The Loan Ranger",
+      "Mother's Day",
+      "Canary Season",
+      "Ambush"
+    ],
+    "he": [
+      "Evening Primrose",
+      "The Black Panther",
+      "Come rubare la corona d'Inghilterra",
+      "Jester",
+      "London Recruits",
+      "Bank of Dave 2: The Loan Ranger",
+      "Mother's Day",
+      "Сезонът на канарчетата",
+      "אמבוש"
+    ]
+  },
+  "original_filename": "Once_Upon_a_Time____in_Hollywood.mp4"
+}

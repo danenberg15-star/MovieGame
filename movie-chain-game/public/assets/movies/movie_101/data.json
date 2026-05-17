@@ -1,0 +1,122 @@
+{
+  "id": "movie_101",
+  "title": {
+    "en": "Return of the Jedi",
+    "he": "מלחמת הכוכבים: פרק 6 - שובו של הג'דיי"
+  },
+  "year": 1983,
+  "director": {
+    "name": {
+      "en": "Richard Marquand",
+      "he": "Richard Marquand"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/eEalDQpLsXJqejPDQ3MWGe95UHT.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Howard G. Kazanjian",
+      "he": "Howard G. Kazanjian"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/c6BU9sH0I24hmglhXNR37itqaxT.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Mark Hamill",
+        "he": "Mark Hamill"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Harrison Ford",
+        "he": "Harrison Ford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+    },
+    {
+      "name": {
+        "en": "Carrie Fisher",
+        "he": "Carrie Fisher"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/of4yHmryKPy92eeskUQ7MRmjC3l.jpg"
+    },
+    {
+      "name": {
+        "en": "Billy Dee Williams",
+        "he": "Billy Dee Williams"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4UbNki9xpWtVACNNGsMhVjQxVwg.jpg"
+    },
+    {
+      "name": {
+        "en": "Anthony Daniels",
+        "he": "Anthony Daniels"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+    },
+    {
+      "name": {
+        "en": "Peter Mayhew",
+        "he": "Peter Mayhew"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rKIBv08O63pyC6PixjyhrjNB8Uh.jpg"
+    },
+    {
+      "name": {
+        "en": "Sebastian Shaw",
+        "he": "Sebastian Shaw"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ouOX4GU9xYtaKOLxJYhwVArexSY.jpg"
+    },
+    {
+      "name": {
+        "en": "Ian McDiarmid",
+        "he": "Ian McDiarmid"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cqEAblt0KJRIGyMXhj5OM5WJ9SN.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Oz",
+        "he": "Frank Oz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mb2JbT8s6LIgaxj6QTph0NW1pmI.jpg"
+    },
+    {
+      "name": {
+        "en": "James Earl Jones",
+        "he": "James Earl Jones"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oqMPIsXrl9SZkRfIKN08eFROmH6.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_101/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/jQYlydvHm3kUix1f8prMucrplhm.jpg",
+  "decoy_answers": {
+    "en": [
+      "Dragon Ball Super: Super Hero",
+      "Red Planet",
+      "Mad Max Beyond Thunderdome",
+      "Turks & Caicos",
+      "Cascadeur",
+      "Winter of Empires",
+      "Soldier",
+      "The Crow: Salvation",
+      "Big/Bad/Wolf"
+    ],
+    "he": [
+      "דרגון בול סופר: סופר הירו",
+      "כוכב אדום",
+      "מקס הזועם 3: כיפת הרעם",
+      "Turks & Caicos",
+      "Cascadeur",
+      "Winter of Empires",
+      "חייל קטלני",
+      "העורב 3",
+      "Big/Bad/Wolf"
+    ]
+  },
+  "original_filename": "Return_of_the_Jedi.mp4"
+}

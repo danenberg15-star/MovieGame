@@ -1,0 +1,122 @@
+{
+  "id": "movie_066",
+  "title": {
+    "en": "Mad Max: Fury Road",
+    "he": "מקס הזועם: כביש הזעם"
+  },
+  "year": 2015,
+  "director": {
+    "name": {
+      "en": "George Miller",
+      "he": "George Miller"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/35NQ8HjFXQlGYDz9UkhT08lKl5C.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Doug Mitchell",
+      "he": "Doug Mitchell"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/cb6TTZ76XNB7ay7MQfW3HMCYmwh.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Hardy",
+        "he": "Tom Hardy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg"
+    },
+    {
+      "name": {
+        "en": "Charlize Theron",
+        "he": "Charlize Theron"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gd7ShD0yt4bsR2STeQ19KQ6hvXL.jpg"
+    },
+    {
+      "name": {
+        "en": "Nicholas Hoult",
+        "he": "Nicholas Hoult"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pXm8GWTm9eIA8pUGOjvmYjlxamu.jpg"
+    },
+    {
+      "name": {
+        "en": "Hugh Keays-Byrne",
+        "he": "Hugh Keays-Byrne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7XSPjKNwmyEPMnmoVSQ42ykMz6M.jpg"
+    },
+    {
+      "name": {
+        "en": "Josh Helman",
+        "he": "Josh Helman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1thwLjrgvFv7ifjyVtTKQh23OCh.jpg"
+    },
+    {
+      "name": {
+        "en": "Nathan Jones",
+        "he": "Nathan Jones"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hlu4qYy9JGPxGn0wT8Ea6mTWR8R.jpg"
+    },
+    {
+      "name": {
+        "en": "Zoë Kravitz",
+        "he": "Zoë Kravitz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hJKmhbuzDjmfw2nPBDWGbLagj16.jpg"
+    },
+    {
+      "name": {
+        "en": "Rosie Huntington-Whiteley",
+        "he": "Rosie Huntington-Whiteley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oq5iX2VoLGF41P5DmNDNJcczESR.jpg"
+    },
+    {
+      "name": {
+        "en": "Riley Keough",
+        "he": "Riley Keough"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/du1FYr5dTQL6gCMX6ISnQBOxz2F.jpg"
+    },
+    {
+      "name": {
+        "en": "Abbey Lee",
+        "he": "Abbey Lee"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/y4ZIuFjtglTjSLxhGTkzsCPFMQZ.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_066/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/hA2ple9q4qnwxp3hKVNhroipsir.jpg",
+  "decoy_answers": {
+    "en": [
+      "Doomsday",
+      "The Man from Earth",
+      "Ex Machina",
+      "Watchmen",
+      "Mutant Chronicles",
+      "Nancy Drew",
+      "Ten Canoes",
+      "Allan Quatermain and the Temple of Skulls",
+      "Ned Kelly"
+    ],
+    "he": [
+      "יום הדין",
+      "האיש מכוכב ארץ",
+      "אקס מכינה",
+      "השומרים",
+      "יומני המוטאנטים",
+      "ננסי דרו",
+      "עשרה קאנו",
+      "Allan Quatermain and the Temple of Skulls",
+      "כנופיית נד קלי"
+    ]
+  },
+  "original_filename": "Mad_Max__Fury_Road.mp4"
+}

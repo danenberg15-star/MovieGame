@@ -1,0 +1,122 @@
+{
+  "id": "movie_075",
+  "title": {
+    "en": "Minority Report",
+    "he": "דו''ח מיוחד"
+  },
+  "year": 2002,
+  "director": {
+    "name": {
+      "en": "Steven Spielberg",
+      "he": "Steven Spielberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Jan de Bont",
+      "he": "Jan de Bont"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/evj9vN5pxxjr4aFLZRvniU0gzof.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Cruise",
+        "he": "Tom Cruise"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/maf8PhSvDCdEwjEMbYfGpojR5RP.jpg"
+    },
+    {
+      "name": {
+        "en": "Samantha Morton",
+        "he": "Samantha Morton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/v84b7MENeD9rwX6xTD7fSdhSOC9.jpg"
+    },
+    {
+      "name": {
+        "en": "Colin Farrell",
+        "he": "Colin Farrell"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5FdalJbrbZ5UCsED5rFrXpvbqJa.jpg"
+    },
+    {
+      "name": {
+        "en": "Max von Sydow",
+        "he": "Max von Sydow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u16BsGyT6v9yuO7wWAF62NayDth.jpg"
+    },
+    {
+      "name": {
+        "en": "Kathryn Morris",
+        "he": "Kathryn Morris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/q189KhrMoKyQJsvwOE7x2nWAeEi.jpg"
+    },
+    {
+      "name": {
+        "en": "Steve Harris",
+        "he": "Steve Harris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6qD0I3RPe2ivV5GdXgW3tJHSu1e.jpg"
+    },
+    {
+      "name": {
+        "en": "Neal McDonough",
+        "he": "Neal McDonough"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3mI3i1CpjATSCta1Tb2qsyl1KCh.jpg"
+    },
+    {
+      "name": {
+        "en": "Patrick Kilpatrick",
+        "he": "Patrick Kilpatrick"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yhujborr3HMC9ALvuOPu25ffAhN.jpg"
+    },
+    {
+      "name": {
+        "en": "Peter Stormare",
+        "he": "Peter Stormare"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1rtpuUqBV29jDc1huUhtjGDbEwn.jpg"
+    },
+    {
+      "name": {
+        "en": "Jessica Capshaw",
+        "he": "Jessica Capshaw"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ePpM2GPe5OXjtyesq06J3S1WCB.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_075/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/ccqpHq5tk5W4ymbSbuoy4uYOxFI.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Road Killers",
+      "Stunt Squad",
+      "A Quiet Place Part II",
+      "Monolith",
+      "Nemesis 3: Time Lapse",
+      "Mickey 17",
+      "The Sadist of Notre Dame",
+      "Blade",
+      "What Josiah Saw"
+    ],
+    "he": [
+      "The Road Killers",
+      "La polizia è sconfitta",
+      "מקום שקט 2",
+      "Monolith",
+      "Nemesis 3: Time Lapse",
+      "מיקי 17",
+      "El sádico de Notre-Dame",
+      "Blade",
+      "What Josiah Saw"
+    ]
+  },
+  "original_filename": "Minority_Report.mp4"
+}

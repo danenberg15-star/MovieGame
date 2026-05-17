@@ -1,0 +1,122 @@
+{
+  "id": "movie_026",
+  "title": {
+    "en": "Die Hard",
+    "he": "מת לחיות"
+  },
+  "year": 1988,
+  "director": {
+    "name": {
+      "en": "John McTiernan",
+      "he": "John McTiernan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/yVfDkVbgQHD1A7JSV8Z47EjB1mU.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Gordon",
+      "he": "Lawrence Gordon"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/jOZiaeFrl837bTO7wMdCNIaQSL.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Bruce Willis",
+        "he": "Bruce Willis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/w3aXr1e7gQCn8MSp1vW4sXHn99P.jpg"
+    },
+    {
+      "name": {
+        "en": "Alan Rickman",
+        "he": "Alan Rickman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+    },
+    {
+      "name": {
+        "en": "Alexander Godunov",
+        "he": "Alexander Godunov"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ubA1t1Rj3dpDZkgli5D17Py0OPh.jpg"
+    },
+    {
+      "name": {
+        "en": "Bonnie Bedelia",
+        "he": "Bonnie Bedelia"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2dCd7HGOfmn4x7v97EcNIwy12io.jpg"
+    },
+    {
+      "name": {
+        "en": "Reginald VelJohnson",
+        "he": "Reginald VelJohnson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/r0F5y1PAQEDM08MBj3oI1IIX4gi.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Gleason",
+        "he": "Paul Gleason"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/a7PJofFcVpDxw2wAak1d56J7L4k.jpg"
+    },
+    {
+      "name": {
+        "en": "De'voreaux White",
+        "he": "De'voreaux White"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/g6B4hHY69xN3mpAORwVi307vfR0.jpg"
+    },
+    {
+      "name": {
+        "en": "William Atherton",
+        "he": "William Atherton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/S9W4deKuEa2K12ZiXwlvrC6J4U.jpg"
+    },
+    {
+      "name": {
+        "en": "Hart Bochner",
+        "he": "Hart Bochner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nfC2ByTNS3xoygwYVbUYsx2Zae6.jpg"
+    },
+    {
+      "name": {
+        "en": "James Shigeta",
+        "he": "James Shigeta"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/HtXVBHBPPHaNpQ8FVefB3AB9Rn.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_026/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/7Bjd8kfmDSOzpmhySpEhkUyK2oH.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Road Killers",
+      "Stunt Squad",
+      "A Quiet Place Part II",
+      "Monolith",
+      "Crackerjack",
+      "Argoman the Fantastic Superman",
+      "Longitud de Guerra",
+      "The Sadist of Notre Dame",
+      "Figures in a Landscape"
+    ],
+    "he": [
+      "The Road Killers",
+      "La polizia è sconfitta",
+      "מקום שקט 2",
+      "Monolith",
+      "Crackerjack",
+      "Come rubare la corona d'Inghilterra",
+      "Longitud de Guerra",
+      "El sádico de Notre-Dame",
+      "Figures in a Landscape"
+    ]
+  },
+  "original_filename": "Die_Hard.mp4"
+}

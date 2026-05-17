@@ -1,0 +1,122 @@
+{
+  "id": "movie_065",
+  "title": {
+    "en": "Lost in Translation",
+    "he": "אבודים בטוקיו"
+  },
+  "year": 2003,
+  "director": {
+    "name": {
+      "en": "Sofia Coppola",
+      "he": "Sofia Coppola"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/dzHC2LxmarkBxWLhjp2DRa5oCev.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Sofia Coppola",
+      "he": "Sofia Coppola"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/dzHC2LxmarkBxWLhjp2DRa5oCev.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Bill Murray",
+        "he": "Bill Murray"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nnCsJc9x3ZiG3AFyiyc3FPehppy.jpg"
+    },
+    {
+      "name": {
+        "en": "Scarlett Johansson",
+        "he": "Scarlett Johansson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6bBCPmc55gzP7TR9Th4WbykrYd0.jpg"
+    },
+    {
+      "name": {
+        "en": "Giovanni Ribisi",
+        "he": "Giovanni Ribisi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8EAiS9D3YtGOrwNM0OrwmDpWK7s.jpg"
+    },
+    {
+      "name": {
+        "en": "Anna Faris",
+        "he": "Anna Faris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/y3YKNr4qPPJZ9w4lR2a3yySKotd.jpg"
+    },
+    {
+      "name": {
+        "en": "Akiko Takeshita",
+        "he": "Akiko Takeshita"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dKawZTpMtjAYZanVf20wr6a81sL.jpg"
+    },
+    {
+      "name": {
+        "en": "Kazuyoshi Minamimagoe",
+        "he": "Kazuyoshi Minamimagoe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/A70AmBYF3pRY4tP75x32yYaGZEl.jpg"
+    },
+    {
+      "name": {
+        "en": "Kazuko Shibata",
+        "he": "Kazuko Shibata"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Take",
+        "he": "Take"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Ryuichiro Baba",
+        "he": "Ryuichiro Baba"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Akira Yamaguchi",
+        "he": "Akira Yamaguchi"
+      },
+      "image": null
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_065/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/3jCLmYDIIiSMPujbwygNpqdpM8N.jpg",
+  "decoy_answers": {
+    "en": [
+      "Deep Impact",
+      "K-19: The Widowmaker",
+      "Orgazmo",
+      "Dikkenek",
+      "The Thin Red Line",
+      "The Black Balloon",
+      "The Little Thief",
+      "Wayne's World",
+      "A Year Ago in Winter"
+    ],
+    "he": [
+      "פגיעה קטלנית",
+      "קיי-19: סכנה בלב ים",
+      "אורגזמו",
+      "Dikkenek",
+      "הקו האדום",
+      "הבלון השחור",
+      "La Petite Voleuse",
+      "עולמו של ויין",
+      "Im Winter ein Jahr"
+    ]
+  },
+  "original_filename": "Lost_in_Translation.mp4"
+}

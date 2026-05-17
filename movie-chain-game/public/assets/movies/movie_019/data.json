@@ -1,0 +1,122 @@
+{
+  "id": "movie_019",
+  "title": {
+    "en": "Carlito's Way",
+    "he": "דרכו של קרליטו"
+  },
+  "year": 1993,
+  "director": {
+    "name": {
+      "en": "Brian De Palma",
+      "he": "Brian De Palma"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/bWjOPDt8HRww5VAtpZ5FiCxpIxu.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Martin Bregman",
+      "he": "Martin Bregman"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Al Pacino",
+        "he": "Al Pacino"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/m8HAAjq1T75JypKk0v1FFQn4ysZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Sean Penn",
+        "he": "Sean Penn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9glqNTVpFpdN1nFklKaHPUyCwR6.jpg"
+    },
+    {
+      "name": {
+        "en": "Penelope Ann Miller",
+        "he": "Penelope Ann Miller"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oeeeKR5IPch6faXl33ySqTiH42e.jpg"
+    },
+    {
+      "name": {
+        "en": "John Leguizamo",
+        "he": "John Leguizamo"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kwYCdxTlDh9zauUCg4mp2XTCQTw.jpg"
+    },
+    {
+      "name": {
+        "en": "Ingrid Rogers",
+        "he": "Ingrid Rogers"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gIUbqQXbR0KfX4zOUHYBDRQxhrn.jpg"
+    },
+    {
+      "name": {
+        "en": "Luis Guzmán",
+        "he": "Luis Guzmán"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kSdxUckOJj9R5VKrLUnRy14YhNV.jpg"
+    },
+    {
+      "name": {
+        "en": "James Rebhorn",
+        "he": "James Rebhorn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jRdR3q28gTPQU6eWRgiIqzGuMKU.jpg"
+    },
+    {
+      "name": {
+        "en": "Joseph Siravo",
+        "he": "Joseph Siravo"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ttygfcaWZRkhiphvi7scZUF3Kbx.jpg"
+    },
+    {
+      "name": {
+        "en": "Viggo Mortensen",
+        "he": "Viggo Mortensen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vH5gVSpHAMhDaFWfh0Q7BG61O1y.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Foronjy",
+        "he": "Richard Foronjy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zNerBPOQawN4PxT35WmqwFd9PMu.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_019/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/g6D7mjQtndu768cusGmoEQY9fTB.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "Cannibal Apocalypse",
+      "The Thin Red Line",
+      "Looks That Kill",
+      "Bones and All",
+      "Diario, Mujer & Café",
+      "It Stains the Sands Red",
+      "Pale Rider"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "Apocalypse Domani",
+      "הקו האדום",
+      "מבט קטלני",
+      "עצמות והכול",
+      "Diario, Mujer y Café",
+      "It Stains the Sands Red",
+      "הנוקם"
+    ]
+  },
+  "original_filename": "Carlito_s_Way.mp4"
+}

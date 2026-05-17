@@ -1,0 +1,122 @@
+{
+  "id": "movie_049",
+  "title": {
+    "en": "Inception",
+    "he": "התחלה"
+  },
+  "year": 2010,
+  "director": {
+    "name": {
+      "en": "Christopher Nolan",
+      "he": "Christopher Nolan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Christopher Nolan",
+      "he": "Christopher Nolan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Leonardo DiCaprio",
+        "he": "Leonardo DiCaprio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg"
+    },
+    {
+      "name": {
+        "en": "Joseph Gordon-Levitt",
+        "he": "Joseph Gordon-Levitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z2FA8js799xqtfiFjBTicFYdfk.jpg"
+    },
+    {
+      "name": {
+        "en": "Ken Watanabe",
+        "he": "Ken Watanabe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/psAXOYp9SBOXvg6AXzARDedNQ9P.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Hardy",
+        "he": "Tom Hardy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg"
+    },
+    {
+      "name": {
+        "en": "Elliot Page",
+        "he": "Elliot Page"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nXO8DE4biVXY4UDYP0NdIY1zvXS.jpg"
+    },
+    {
+      "name": {
+        "en": "Dileep Rao",
+        "he": "Dileep Rao"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jRNn8SZqFXuI5wOOlHwYsWh0hXs.jpg"
+    },
+    {
+      "name": {
+        "en": "Cillian Murphy",
+        "he": "Cillian Murphy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2lKs67r7FI4bPu0AXxMUJZxmUXn.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Berenger",
+        "he": "Tom Berenger"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zLxzAdAfu7y02yEx29JSLDgXJZ4.jpg"
+    },
+    {
+      "name": {
+        "en": "Marion Cotillard",
+        "he": "Marion Cotillard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/biitzOF0GffIqFYLyOPkoiaOngQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Pete Postlethwaite",
+        "he": "Pete Postlethwaite"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2gpa75Ci4y2OKmOc8WXnaeGgyKF.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_049/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
+  "decoy_answers": {
+    "en": [
+      "Chrysalis",
+      "The Man from Earth",
+      "Where is Gilgamesh?",
+      "Ex Machina",
+      "Mutant Chronicles",
+      "Traitor",
+      "Nancy Drew",
+      "Ballistic: Ecks vs. Sever",
+      "Bigger Fatter Liar"
+    ],
+    "he": [
+      "גולם",
+      "האיש מכוכב ארץ",
+      "گێلگامێش لە کوێیە؟",
+      "אקס מכינה",
+      "יומני המוטאנטים",
+      "הבוגד",
+      "ננסי דרו",
+      "בליסטיק",
+      "Bigger Fatter Liar"
+    ]
+  },
+  "original_filename": "Inception.mp4"
+}

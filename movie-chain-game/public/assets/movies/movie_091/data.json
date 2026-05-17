@@ -1,0 +1,122 @@
+{
+  "id": "movie_091",
+  "title": {
+    "en": "Pride & Prejudice",
+    "he": "גאווה ודעה קדומה"
+  },
+  "year": 2005,
+  "director": {
+    "name": {
+      "en": "Joe Wright",
+      "he": "Joe Wright"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1qA8HudSIwIr7ZdxwfQAgubsDO.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Tim Bevan",
+      "he": "Tim Bevan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/nyeqZJr6QVwD3iuLgK5vRgIdcmP.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Keira Knightley",
+        "he": "Keira Knightley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bRC1B2VwV0wK3ElciFAK6QZf2wD.jpg"
+    },
+    {
+      "name": {
+        "en": "Matthew Macfadyen",
+        "he": "Matthew Macfadyen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sFaIfkykJdftwrc3BdEfpdg2mYW.jpg"
+    },
+    {
+      "name": {
+        "en": "Brenda Blethyn",
+        "he": "Brenda Blethyn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mxENo8tEvN0998PrNidYkN4wGGO.jpg"
+    },
+    {
+      "name": {
+        "en": "Rosamund Pike",
+        "he": "Rosamund Pike"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8ObNklHDi2hjdz0ayzJFB9jtqzm.jpg"
+    },
+    {
+      "name": {
+        "en": "Carey Mulligan",
+        "he": "Carey Mulligan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iwVHhqoz5b62FR0SDpZ7wfsuTBI.jpg"
+    },
+    {
+      "name": {
+        "en": "Jena Malone",
+        "he": "Jena Malone"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kGwV9iLmfUxJ6a73ehr0QvAnc8C.jpg"
+    },
+    {
+      "name": {
+        "en": "Talulah Riley",
+        "he": "Talulah Riley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fyfrZQOHNiOcPs2SZTajfXpX17A.jpg"
+    },
+    {
+      "name": {
+        "en": "Donald Sutherland",
+        "he": "Donald Sutherland"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yM8WO2BYqFvgQXAvf4CIuCYnY4j.jpg"
+    },
+    {
+      "name": {
+        "en": "Simon Woods",
+        "he": "Simon Woods"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/okhXv0URRB7OYmPfQQEtEyjCg34.jpg"
+    },
+    {
+      "name": {
+        "en": "Judi Dench",
+        "he": "Judi Dench"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cpna5VGvAxuKuC31xJPBKy9zbnv.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_091/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/o8UhmEbWPHmTUxP0lMuCoqNkbB3.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "Calendar Girls",
+      "The Thin Red Line",
+      "Bones and All",
+      "The Sure Thing",
+      "Derailed",
+      "Just Like Heaven",
+      "Sleep Sweet, My Darling"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "נערות לוח השנה",
+      "הקו האדום",
+      "עצמות והכול",
+      "רומן על בטוח",
+      "מחיר הבגידה",
+      "זוג משמיים",
+      "Snivaj, zlato moje"
+    ]
+  },
+  "original_filename": "Pride___Prejudice.mp4"
+}

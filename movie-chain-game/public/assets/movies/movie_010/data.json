@@ -1,0 +1,122 @@
+{
+  "id": "movie_010",
+  "title": {
+    "en": "Awakenings",
+    "he": "התעוררות"
+  },
+  "year": 1990,
+  "director": {
+    "name": {
+      "en": "Penny Marshall",
+      "he": "Penny Marshall"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tENryuxNtctDMS26Tv5d8B7TclQ.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Lasker",
+      "he": "Lawrence Lasker"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZGdczHn5pW7apCI1EOOIAbIHCG.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Robert De Niro",
+        "he": "Robert De Niro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cT8htcckIuyI1Lqwt1CvD02ynTh.jpg"
+    },
+    {
+      "name": {
+        "en": "Robin Williams",
+        "he": "Robin Williams"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iYdeP6K0qz44Wg2Nw9LPJGMBkQ5.jpg"
+    },
+    {
+      "name": {
+        "en": "John Heard",
+        "he": "John Heard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zjhcxrCFK4q0C1gtVmeN8FeqCw0.jpg"
+    },
+    {
+      "name": {
+        "en": "Julie Kavner",
+        "he": "Julie Kavner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/87kSPYlWcHvqOVEkhdqxysiAf6w.jpg"
+    },
+    {
+      "name": {
+        "en": "Penelope Ann Miller",
+        "he": "Penelope Ann Miller"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oeeeKR5IPch6faXl33ySqTiH42e.jpg"
+    },
+    {
+      "name": {
+        "en": "Ruth Nelson",
+        "he": "Ruth Nelson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8NWZZZNiHjPC8OokwwTdVM29B3U.jpg"
+    },
+    {
+      "name": {
+        "en": "Max von Sydow",
+        "he": "Max von Sydow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u16BsGyT6v9yuO7wWAF62NayDth.jpg"
+    },
+    {
+      "name": {
+        "en": "Anne Meara",
+        "he": "Anne Meara"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zQVdY5AdOlGuq2AtwOMjOD3AmfH.jpg"
+    },
+    {
+      "name": {
+        "en": "Dexter Gordon",
+        "he": "Dexter Gordon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/uXZ3KegarfYWQ7ANQq7hFKbXpg2.jpg"
+    },
+    {
+      "name": {
+        "en": "George Martin",
+        "he": "George Martin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nIgCta2DazdhpJLQKqyxHpKbqpl.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_010/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/9gztZXuHLG6AJ0fgqGd7Q43cWRI.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "Deep Impact",
+      "K-19: The Widowmaker",
+      "The Shell Seekers",
+      "Calendar Girls",
+      "Pacarrete",
+      "The Thin Red Line",
+      "The Black Balloon",
+      "Bones and All"
+    ],
+    "he": [
+      "לגעת במוות",
+      "פגיעה קטלנית",
+      "קיי-19: סכנה בלב ים",
+      "The Shell Seekers",
+      "נערות לוח השנה",
+      "Pacarrete",
+      "הקו האדום",
+      "הבלון השחור",
+      "עצמות והכול"
+    ]
+  },
+  "original_filename": "Awakenings.mp4"
+}

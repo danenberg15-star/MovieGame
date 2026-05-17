@@ -1,0 +1,122 @@
+{
+  "id": "movie_089",
+  "title": {
+    "en": "Platoon",
+    "he": "פלאטון"
+  },
+  "year": 1986,
+  "director": {
+    "name": {
+      "en": "Oliver Stone",
+      "he": "Oliver Stone"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/zn4XrQMUg32poFHJd2kwlXBPmGg.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Arnold Kopelson",
+      "he": "Arnold Kopelson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/zXDJcEm2cMcuWGw7YTC626hJMot.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Charlie Sheen",
+        "he": "Charlie Sheen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/48GB5aISoibd9IYXBO40jrSgFRl.jpg"
+    },
+    {
+      "name": {
+        "en": "Willem Dafoe",
+        "he": "Willem Dafoe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ui8e4sgZAwMPi3hzEO53jyBJF9B.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Berenger",
+        "he": "Tom Berenger"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zLxzAdAfu7y02yEx29JSLDgXJZ4.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Dillon",
+        "he": "Kevin Dillon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wfBEjFfkJt1dORR0mKPu89qCcJK.jpg"
+    },
+    {
+      "name": {
+        "en": "Forest Whitaker",
+        "he": "Forest Whitaker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4w7l5JUwnwFNBy7J93ZwYN1nihm.jpg"
+    },
+    {
+      "name": {
+        "en": "Mark Moses",
+        "he": "Mark Moses"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/c4C6xZoBx3ATQ8yzdiWX8p6LdKq.jpg"
+    },
+    {
+      "name": {
+        "en": "Keith David",
+        "he": "Keith David"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1x0QXavmIy3QmhyrOsV7gMnJaEx.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Edson",
+        "he": "Richard Edson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vuuU7beZrawR6VZB3a2QhDVtkjg.jpg"
+    },
+    {
+      "name": {
+        "en": "Francesco Quinn",
+        "he": "Francesco Quinn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5afSAq8iusKG5i9SDSgZV9xHJuM.jpg"
+    },
+    {
+      "name": {
+        "en": "John C. McGinley",
+        "he": "John C. McGinley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/a9Oc7STg83syQh3X22u2TroAifk.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_089/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/m3mmFkPQKvPZq5exmh0bDuXlD9T.jpg",
+  "decoy_answers": {
+    "en": [
+      "Stunt Squad",
+      "Paper Geese",
+      "Escape and Evasion",
+      "The Green Wall",
+      "Mother's Day",
+      "Ambush",
+      "Guy Ritchie's The Covenant",
+      "The Guy with the Secret Kung Fu",
+      "Force of Arms"
+    ],
+    "he": [
+      "La polizia è sconfitta",
+      "Paper Geese",
+      "Escape and Evasion",
+      "La muralla verde",
+      "Mother's Day",
+      "אמבוש",
+      "החוזה",
+      "סוד הקונג-פו",
+      "Force of Arms"
+    ]
+  },
+  "original_filename": "Platoon.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_048",
+  "title": {
+    "en": "Home Alone 3",
+    "he": "שכחו אותי בבית 3"
+  },
+  "year": 1997,
+  "director": {
+    "name": {
+      "en": "Raja Gosnell",
+      "he": "Raja Gosnell"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/dIovlHUjOfBEhqrUENBaRmGIAc0.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "John Hughes",
+      "he": "John Hughes"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/7QBh9D3Qjf667Q549VeJAAV7O38.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Alex D. Linz",
+        "he": "Alex D. Linz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sGc3eYFDybC5lr0iWnRvJswZlH7.jpg"
+    },
+    {
+      "name": {
+        "en": "Olek Krupa",
+        "he": "Olek Krupa"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kI2cpoiHeJbmGOfc9lkhNQXrNFd.jpg"
+    },
+    {
+      "name": {
+        "en": "Rya Kihlstedt",
+        "he": "Rya Kihlstedt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/86ysgxNPkckt8jp715X79CdopB7.jpg"
+    },
+    {
+      "name": {
+        "en": "Lenny Von Dohlen",
+        "he": "Lenny Von Dohlen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7DZcWpMvIDVKClySYlgErSbPWFA.jpg"
+    },
+    {
+      "name": {
+        "en": "David Thornton",
+        "he": "David Thornton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pNOWmEQWEI2gdW6hoVPO2C8PN98.jpg"
+    },
+    {
+      "name": {
+        "en": "Haviland Morris",
+        "he": "Haviland Morris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fwFXmSQczmfMxl5tAZgs0VQd8ID.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Kilner",
+        "he": "Kevin Kilner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zYvLHm1Hls4QlvhxmPXvpAsh0Rs.jpg"
+    },
+    {
+      "name": {
+        "en": "Marian Seldes",
+        "he": "Marian Seldes"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nfbMszmjwlJ7txGx59MAzjasPwI.jpg"
+    },
+    {
+      "name": {
+        "en": "Seth Smith",
+        "he": "Seth Smith"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Scarlett Johansson",
+        "he": "Scarlett Johansson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6bBCPmc55gzP7TR9Th4WbykrYd0.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_048/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/6uOadrCfle0n2LOOxHbgWEdnrm2.jpg",
+  "decoy_answers": {
+    "en": [
+      "Chicken Run: Dawn of the Nugget",
+      "Christmas Down Under",
+      "Kid Speed",
+      "Oranges and Lemons",
+      "Periphery",
+      "Bank of Dave 2: The Loan Ranger",
+      "Championext",
+      "Mistletoe & Molly",
+      "Christmas on 5th Avenue"
+    ],
+    "he": [
+      "מרד התרנגולים: עלייתם של הנאגטס",
+      "Christmas Down Under",
+      "Kid Speed",
+      "Oranges and Lemons",
+      "Periphery",
+      "Bank of Dave 2: The Loan Ranger",
+      "אלופי החיים",
+      "Mistletoe & Molly",
+      "Christmas on 5th Avenue"
+    ]
+  },
+  "original_filename": "Home_Alone.mp4"
+}

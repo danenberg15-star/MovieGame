@@ -1,0 +1,122 @@
+{
+  "id": "movie_102",
+  "title": {
+    "en": "Rise of the Planet of the Apes",
+    "he": "כוכב הקופים: המרד"
+  },
+  "year": 2011,
+  "director": {
+    "name": {
+      "en": "Rupert Wyatt",
+      "he": "Rupert Wyatt"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/m3KzS9wnfgAWD0ppIKQEQcTtM1S.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Rick Jaffa",
+      "he": "Rick Jaffa"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/hjxAQXUppDd2StwzJ4ACYGrP5Vg.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Andy Serkis",
+        "he": "Andy Serkis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg"
+    },
+    {
+      "name": {
+        "en": "James Franco",
+        "he": "James Franco"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bjmAntHGiibLZixH8nTNVBzaFQn.jpg"
+    },
+    {
+      "name": {
+        "en": "Freida Pinto",
+        "he": "Freida Pinto"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tub18dfDNMxlempVIuPXh8fmZVs.jpg"
+    },
+    {
+      "name": {
+        "en": "John Lithgow",
+        "he": "John Lithgow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ajfuBSm1HuVqFJlbTmAlza62Xxr.jpg"
+    },
+    {
+      "name": {
+        "en": "Brian Cox",
+        "he": "Brian Cox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/scSjbFCTRngXlkJRoKptM5kQGw7.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Felton",
+        "he": "Tom Felton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg"
+    },
+    {
+      "name": {
+        "en": "Tyler Labine",
+        "he": "Tyler Labine"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/uTg5k0mflhBju9Q1tOYmYDzdBu6.jpg"
+    },
+    {
+      "name": {
+        "en": "Karin Konoval",
+        "he": "Karin Konoval"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5e8YyNQjWre2UbExYBlJ7zva934.jpg"
+    },
+    {
+      "name": {
+        "en": "Terry Notary",
+        "he": "Terry Notary"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gcn5cL4TGmtiYcjFCl29GsclDVl.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Gordon",
+        "he": "Christopher Gordon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/x3yZlw5ZqSCT4RWNdt7VxVmJgMh.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_102/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/oqA45qMyyo1TtrnVEBKxqmTPhbN.jpg",
+  "decoy_answers": {
+    "en": [
+      "A Quiet Place Part II",
+      "Dystopia",
+      "Seattle Superstorm",
+      "The Beast of Hollow Mountain",
+      "Memories of Me",
+      "Pete 'n' Tillie",
+      "Calm at Sunset",
+      "King of Kong Island",
+      "The Monster Maker"
+    ],
+    "he": [
+      "מקום שקט 2",
+      "Mad World",
+      "Seattle Superstorm",
+      "The Beast of Hollow Mountain",
+      "Memories of Me",
+      "פיט וטילי",
+      "Calm at Sunset",
+      "Eva, la Venere selvaggia",
+      "The Monster Maker"
+    ]
+  },
+  "original_filename": "Rise_of_the_Planet_of_the_Apes.mp4"
+}

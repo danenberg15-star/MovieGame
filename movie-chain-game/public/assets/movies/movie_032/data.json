@@ -1,0 +1,122 @@
+{
+  "id": "movie_032",
+  "title": {
+    "en": "Erin Brockovich",
+    "he": "ארין ברוקוביץ'"
+  },
+  "year": 2000,
+  "director": {
+    "name": {
+      "en": "Steven Soderbergh",
+      "he": "Steven Soderbergh"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/y8JlSDcQzd7gAaKyxFpExupMwDz.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Danny DeVito",
+      "he": "Danny DeVito"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/6kO4IN7ndoIGw2JhyhAQN3SFmdx.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Julia Roberts",
+        "he": "Julia Roberts"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mQ7076pL4Ac0ZzY4w31labWIdQt.jpg"
+    },
+    {
+      "name": {
+        "en": "Albert Finney",
+        "he": "Albert Finney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/a2qJxu55s97ySRdjsy2ywIXJvhf.jpg"
+    },
+    {
+      "name": {
+        "en": "Aaron Eckhart",
+        "he": "Aaron Eckhart"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u5JjnRMr9zKEVvOP7k3F6gdcwT6.jpg"
+    },
+    {
+      "name": {
+        "en": "Marg Helgenberger",
+        "he": "Marg Helgenberger"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wPfXSAsk1l9Ry2sqN1Ei8GwjI9E.jpg"
+    },
+    {
+      "name": {
+        "en": "Cherry Jones",
+        "he": "Cherry Jones"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cc9h2Tc17gzBw5wGJqC93FEYH0L.jpg"
+    },
+    {
+      "name": {
+        "en": "Veanne Cox",
+        "he": "Veanne Cox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nKO4vwztjH353FvGR2fg002UJx7.jpg"
+    },
+    {
+      "name": {
+        "en": "Conchata Ferrell",
+        "he": "Conchata Ferrell"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1CuSudlDbvrhFSpXPckzlMfzLiJ.jpg"
+    },
+    {
+      "name": {
+        "en": "Tracey Walter",
+        "he": "Tracey Walter"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9aALfdCcP0PDYcBmqB6auHF0Eud.jpg"
+    },
+    {
+      "name": {
+        "en": "Peter Coyote",
+        "he": "Peter Coyote"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AglpxXP9wBM567UMGL9DAMbid1V.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Harney",
+        "he": "Michael Harney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/j64sglNnGc5fAHPEkJ1TmKOITQP.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_032/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/eMs20iUQyZVs05Ck7Q0LNnRsstr.jpg",
+  "decoy_answers": {
+    "en": [
+      "Sasaki Kojiro",
+      "K-19: The Widowmaker",
+      "Calendar Girls",
+      "Pacarrete",
+      "We Grown Now",
+      "Che: Part Two",
+      "Che: Part One",
+      "15: The Life and Death of Philip Knight",
+      "The Insider"
+    ],
+    "he": [
+      "佐々木小次郎 前篇",
+      "קיי-19: סכנה בלב ים",
+      "נערות לוח השנה",
+      "Pacarrete",
+      "מתבגרים עכשיו",
+      "צ'ה: חלק ב' - גרילה",
+      "צ'ה: חלק א' - הארגנטינאי",
+      "15: The Life and Death of Philip Knight",
+      "המקור"
+    ]
+  },
+  "original_filename": "Erin_Brockovich.mp4"
+}

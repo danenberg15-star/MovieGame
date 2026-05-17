@@ -1,0 +1,122 @@
+{
+  "id": "movie_034",
+  "title": {
+    "en": "Ferris Bueller's Day Off",
+    "he": "שמתי ברז למורה"
+  },
+  "year": 1986,
+  "director": {
+    "name": {
+      "en": "John Hughes",
+      "he": "John Hughes"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/7QBh9D3Qjf667Q549VeJAAV7O38.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "John Hughes",
+      "he": "John Hughes"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/7QBh9D3Qjf667Q549VeJAAV7O38.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Matthew Broderick",
+        "he": "Matthew Broderick"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/papqFgpyroZJEqd7WvuNGN8ti2k.jpg"
+    },
+    {
+      "name": {
+        "en": "Alan Ruck",
+        "he": "Alan Ruck"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hj7CuWinT12hMKjRhSO4XEMVq7w.jpg"
+    },
+    {
+      "name": {
+        "en": "Mia Sara",
+        "he": "Mia Sara"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gF1hYh0Rw5qCryiwGAWDdmiLufc.jpg"
+    },
+    {
+      "name": {
+        "en": "Jeffrey Jones",
+        "he": "Jeffrey Jones"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2vlQDwmMlAAEKqdFIey0liR0T1E.jpg"
+    },
+    {
+      "name": {
+        "en": "Jennifer Grey",
+        "he": "Jennifer Grey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6F8nkespn4z9ZnGHQaVHL0IVm2L.jpg"
+    },
+    {
+      "name": {
+        "en": "Cindy Pickett",
+        "he": "Cindy Pickett"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oZMzCxIIv0od25webjx8Z6foNjR.jpg"
+    },
+    {
+      "name": {
+        "en": "Lyman Ward",
+        "he": "Lyman Ward"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zFBlLLgbLLDcEf7SvXlJCVPpg3V.jpg"
+    },
+    {
+      "name": {
+        "en": "Edie McClurg",
+        "he": "Edie McClurg"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vU5y4hZe1WhqDAPP5jEfrWv4Iaq.jpg"
+    },
+    {
+      "name": {
+        "en": "Charlie Sheen",
+        "he": "Charlie Sheen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/48GB5aISoibd9IYXBO40jrSgFRl.jpg"
+    },
+    {
+      "name": {
+        "en": "Ben Stein",
+        "he": "Ben Stein"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1xxodQEQKkioq38oaWRJV0mzQ9y.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_034/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/9LTQNCvoLsKXP0LtaKAaYVtRaQL.jpg",
+  "decoy_answers": {
+    "en": [
+      "Swimming in a Sand Pool",
+      "No Longer Heroine",
+      "Premam",
+      "1987",
+      "Falling in Love Like in Movies",
+      "The Hemline",
+      "Keanu",
+      "Babyteeth",
+      "Detention"
+    ],
+    "he": [
+      "水深ゼロメートルから",
+      "ヒロイン失格",
+      "പ്രേമം",
+      "1987",
+      "Jatuh Cinta Seperti di Film-Film",
+      "Ο Ποδόγυρος",
+      "קיאנו",
+      "שיני חלב",
+      "ריתוק"
+    ]
+  },
+  "original_filename": "Ferris_Bueller_s_Day_Off.mp4"
+}

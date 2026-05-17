@@ -1,0 +1,122 @@
+{
+  "id": "movie_042",
+  "title": {
+    "en": "Guardians of the Galaxy",
+    "he": "שומרי הגלקסיה"
+  },
+  "year": 2014,
+  "director": {
+    "name": {
+      "en": "James Gunn",
+      "he": "James Gunn"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/pnKqZub3IlKYbyH9RRTMDOoqEn0.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Kevin Feige",
+      "he": "Kevin Feige"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lN1z04L1BGSQLefI81uwm5h6JrW.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Chris Pratt",
+        "he": "Chris Pratt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cRH6HPAQ98PlOwwEvhYO4CM9lwu.jpg"
+    },
+    {
+      "name": {
+        "en": "Zoe Saldaña",
+        "he": "Zoe Saldaña"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iOVbUH20il632nj2v01NCtYYeSg.jpg"
+    },
+    {
+      "name": {
+        "en": "Dave Bautista",
+        "he": "Dave Bautista"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/snk6JiXOOoRjPtHU5VMoy6qbd32.jpg"
+    },
+    {
+      "name": {
+        "en": "Vin Diesel",
+        "he": "Vin Diesel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nZdVry7lnUkE24PnXakok9okvL4.jpg"
+    },
+    {
+      "name": {
+        "en": "Bradley Cooper",
+        "he": "Bradley Cooper"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sQq0nft6YZmJ7EMQwPcbaxym3AL.jpg"
+    },
+    {
+      "name": {
+        "en": "Lee Pace",
+        "he": "Lee Pace"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eeTc0d2AX1vFYVxZ6Qw7qZpg4Tz.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Rooker",
+        "he": "Michael Rooker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ngOuHNIAGrKyY1O7F0f9C5Q9ONg.jpg"
+    },
+    {
+      "name": {
+        "en": "Karen Gillan",
+        "he": "Karen Gillan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kFLXcFdok3ShDxylr3WNreQphQm.jpg"
+    },
+    {
+      "name": {
+        "en": "Djimon Hounsou",
+        "he": "Djimon Hounsou"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tpvtxxvCx2Mb5DV632hmuYlHoiY.jpg"
+    },
+    {
+      "name": {
+        "en": "John C. Reilly",
+        "he": "John C. Reilly"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iDQ8w4qcxU3le5ZWoCKpHs1QNok.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_042/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg",
+  "decoy_answers": {
+    "en": [
+      "Doom: Annihilation",
+      "Outer Touch",
+      "ZsaZsa Zaturnnah: Ze Moveeh",
+      "Kriminal",
+      "Failsafe",
+      "The Master",
+      "Keanu",
+      "Mobile Suit Gundam: Cucuruz Doan's Island",
+      "Ballerina"
+    ],
+    "he": [
+      "דום: הכחדה",
+      "Outer Touch",
+      "ZsaZsa Zaturnnah: Ze Moveeh",
+      "Kriminal",
+      "Failsafe",
+      "背叛師門",
+      "קיאנו",
+      "機動戦士ガンダム ククルス・ドアンの島",
+      "לרקוד"
+    ]
+  },
+  "original_filename": "Guardians_of_the_Galaxy.mp4"
+}

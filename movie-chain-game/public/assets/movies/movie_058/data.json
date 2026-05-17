@@ -1,0 +1,122 @@
+{
+  "id": "movie_058",
+  "title": {
+    "en": "Jurassic Park",
+    "he": "פארק היורה"
+  },
+  "year": 1993,
+  "director": {
+    "name": {
+      "en": "Steven Spielberg",
+      "he": "Steven Spielberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Kathleen Kennedy",
+      "he": "Kathleen Kennedy"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/ndgYlie0PHkyqEiEBGM8SqrPOkr.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Sam Neill",
+        "he": "Sam Neill"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iIfuxalf37xUayuGyK0zG7z6WEZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Dern",
+        "he": "Laura Dern"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gB9PnGEvxKg33OSlcqptQwTBwPE.jpg"
+    },
+    {
+      "name": {
+        "en": "Jeff Goldblum",
+        "he": "Jeff Goldblum"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kcyEPgYtBP5Pm6LLeLGfXKjYovL.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Attenborough",
+        "he": "Richard Attenborough"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mJGvNS69xUqiNRybKzPl2Zuxe9Z.jpg"
+    },
+    {
+      "name": {
+        "en": "Bob Peck",
+        "he": "Bob Peck"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/66wkMHY76swadwfHLcTEKEKhUbv.jpg"
+    },
+    {
+      "name": {
+        "en": "Martin Ferrero",
+        "he": "Martin Ferrero"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/exNDaap66dmsfBQkCf7vHGj3TBK.jpg"
+    },
+    {
+      "name": {
+        "en": "BD Wong",
+        "he": "BD Wong"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/w7Hs9m6ocS2qlibvrLOvmyCKbAN.jpg"
+    },
+    {
+      "name": {
+        "en": "Joseph Mazzello",
+        "he": "Joseph Mazzello"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/44gsv7TlXOOKDGg5aRtqxZjM9ae.jpg"
+    },
+    {
+      "name": {
+        "en": "Ariana Richards",
+        "he": "Ariana Richards"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vExv1HJqOjM1ui0rRiOxD3XNapf.jpg"
+    },
+    {
+      "name": {
+        "en": "Samuel L. Jackson",
+        "he": "Samuel L. Jackson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_058/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/maFjKnJ62hDQ9E66dKqDZgbUy0H.jpg",
+  "decoy_answers": {
+    "en": [
+      "Disturbing Behavior",
+      "DOA: Dead or Alive",
+      "Journey to the Beginning of Time",
+      "The Island of Dr. Moreau",
+      "The Quest",
+      "Species",
+      "The 6th Day",
+      "The Thief Lord",
+      "Spy Kids 2: The Island of Lost Dreams"
+    ],
+    "he": [
+      "Disturbing Behavior",
+      "חי או מת",
+      "Cesta do pravěku",
+      "The Island of Dr. Moreau",
+      "התקווה לניצחון",
+      "מין מסוכן",
+      "היום השישי",
+      "אדון הגנבים",
+      "ספיי קידס 2: אי החלומות האבודים"
+    ]
+  },
+  "original_filename": "Jurassic_Park.mp4"
+}

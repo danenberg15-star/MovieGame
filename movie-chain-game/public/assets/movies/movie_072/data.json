@@ -1,0 +1,122 @@
+{
+  "id": "movie_072",
+  "title": {
+    "en": "Men of Honor",
+    "he": "גברים עם כבוד"
+  },
+  "year": 2000,
+  "director": {
+    "name": {
+      "en": "George Tillman Jr.",
+      "he": "George Tillman Jr."
+    },
+    "image": "https://image.tmdb.org/t/p/w500/l2O5FILKdFQoBW7uDzmm3wyr6cA.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Robert Teitel",
+      "he": "Robert Teitel"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/8JsIfhxwlqbixboSFNnMPVHfhZJ.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Robert De Niro",
+        "he": "Robert De Niro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cT8htcckIuyI1Lqwt1CvD02ynTh.jpg"
+    },
+    {
+      "name": {
+        "en": "Cuba Gooding Jr.",
+        "he": "Cuba Gooding Jr."
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2JguzbpOXoTGzSmLbWFlulKyyAe.jpg"
+    },
+    {
+      "name": {
+        "en": "Charlize Theron",
+        "he": "Charlize Theron"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gd7ShD0yt4bsR2STeQ19KQ6hvXL.jpg"
+    },
+    {
+      "name": {
+        "en": "Aunjanue Ellis-Taylor",
+        "he": "Aunjanue Ellis-Taylor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/e54DfgDyS67xdtomYODFule6Ofa.jpg"
+    },
+    {
+      "name": {
+        "en": "Hal Holbrook",
+        "he": "Hal Holbrook"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rjUwo6mSutAljAHTqGhlnBBd9lO.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Rapaport",
+        "he": "Michael Rapaport"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nWD2kufgy6lPyFVCPr9A3e7FMMn.jpg"
+    },
+    {
+      "name": {
+        "en": "Powers Boothe",
+        "he": "Powers Boothe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xj3DBMqnEnyYfHEBcRHOxlpbQS4.jpg"
+    },
+    {
+      "name": {
+        "en": "David Keith",
+        "he": "David Keith"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zY0egiQb1iLx74GxcKgYOHNEgRM.jpg"
+    },
+    {
+      "name": {
+        "en": "Dulé Hill",
+        "he": "Dulé Hill"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fPJ8lIx6WwBgO2AhnHQSeiZiAUy.jpg"
+    },
+    {
+      "name": {
+        "en": "Holt McCallany",
+        "he": "Holt McCallany"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iRo9YUNMwZg4UCq7dapo0HydDmI.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_072/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/wNUAnXV1mzOOfvnVBIYsalkk078.jpg",
+  "decoy_answers": {
+    "en": [
+      "Mara Maru",
+      "August in the Water",
+      "The Deep Six",
+      "Breathe",
+      "Stand by for Action",
+      "To the Sea",
+      "Breaking the Surface: The Greg Louganis Story",
+      "A Glimpse of Hell",
+      "Flat Top"
+    ],
+    "he": [
+      "Mara Maru",
+      "水の中の八月",
+      "The Deep Six",
+      "Breathe",
+      "Stand by for Action",
+      "Alamar",
+      "Breaking the Surface: The Greg Louganis Story",
+      "A Glimpse of Hell",
+      "Flat Top"
+    ]
+  },
+  "original_filename": "Men_of_Honor.mp4"
+}

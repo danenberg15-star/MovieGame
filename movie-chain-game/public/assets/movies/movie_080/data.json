@@ -1,0 +1,122 @@
+{
+  "id": "movie_080",
+  "title": {
+    "en": "Mulholland Drive",
+    "he": "מלהולנד דרייב"
+  },
+  "year": 2001,
+  "director": {
+    "name": {
+      "en": "David Lynch",
+      "he": "David Lynch"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wwBzRDoIW6Ld64h6OkQ6ImCZKsR.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Alain Sarde",
+      "he": "Alain Sarde"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/dtVAJzxII67u7dYDBwDGqqeqiq2.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Naomi Watts",
+        "he": "Naomi Watts"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mwel3q2EK4VZEZYur65kEYnzqsH.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Harring",
+        "he": "Laura Harring"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6g64N2VsADTPRDsKcJDO2ayGQUt.jpg"
+    },
+    {
+      "name": {
+        "en": "Justin Theroux",
+        "he": "Justin Theroux"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vnI9L0rXBAw1HeC0Q8hJGeJMGAW.jpg"
+    },
+    {
+      "name": {
+        "en": "Ann Miller",
+        "he": "Ann Miller"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wIXkTkf7bElq7u7kSlEVfoDnzYZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Mark Pellegrino",
+        "he": "Mark Pellegrino"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/r0XnI7sUWzShVwnHw3ncSPxw0Tv.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Forster",
+        "he": "Robert Forster"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vGDifxN2PnO69rnpg6FoWkocFCD.jpg"
+    },
+    {
+      "name": {
+        "en": "Dan Hedaya",
+        "he": "Dan Hedaya"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/evL3mV8hNIjZOb1XG3qtgmiTgS5.jpg"
+    },
+    {
+      "name": {
+        "en": "Angelo Badalamenti",
+        "he": "Angelo Badalamenti"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/x80I3W87lIfuPn3A3smVrGSA8Bx.jpg"
+    },
+    {
+      "name": {
+        "en": "Patrick Fischler",
+        "he": "Patrick Fischler"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vVj7GjHL9hOilbKwViXZpnUlbcQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Brent Briscoe",
+        "he": "Brent Briscoe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4N7ZjV0Tb2EwwRzOBGp7h01oXVu.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_080/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/x7A59t6ySylr1L7aubOQEA480vM.jpg",
+  "decoy_answers": {
+    "en": [
+      "Mirrors",
+      "The Weight of Water",
+      "Gaslight",
+      "Electroma",
+      "Straightheads",
+      "The Doom Generation",
+      "The Sisters Brothers",
+      "Moment of Terror",
+      "LSD: Trip to Where?"
+    ],
+    "he": [
+      "מראות",
+      "The Weight of Water",
+      "אורות הגז",
+      "דאפט פאנק: אלקטרומה",
+      "נקמה מושלמת",
+      "The Doom Generation",
+      "האחים סיסטרז",
+      "ひき逃げ",
+      "LSD: Trip to Where?"
+    ]
+  },
+  "original_filename": "Mulholland_Drive.mp4"
+}

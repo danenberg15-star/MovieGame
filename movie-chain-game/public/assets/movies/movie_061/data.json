@@ -1,0 +1,122 @@
+{
+  "id": "movie_061",
+  "title": {
+    "en": "Kramer vs. Kramer",
+    "he": "קרמר נגד קרמר"
+  },
+  "year": 1979,
+  "director": {
+    "name": {
+      "en": "Robert Benton",
+      "he": "Robert Benton"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/309zHbAHOXv1PffWz4C9SEEgEGa.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Stanley R. Jaffe",
+      "he": "Stanley R. Jaffe"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Dustin Hoffman",
+        "he": "Dustin Hoffman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yxNGnTiou25c3zjppT5dW2eWAve.jpg"
+    },
+    {
+      "name": {
+        "en": "Meryl Streep",
+        "he": "Meryl Streep"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/g5cVxQBAQ3AXt3LhdBXtbbN47Uc.jpg"
+    },
+    {
+      "name": {
+        "en": "Jane Alexander",
+        "he": "Jane Alexander"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5nWLBhNH6tQGVskI89J45C7LU2o.jpg"
+    },
+    {
+      "name": {
+        "en": "Justin Henry",
+        "he": "Justin Henry"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9wp0WZZSbXzYqmQVwsFfnfDpAT6.jpg"
+    },
+    {
+      "name": {
+        "en": "Howard Duff",
+        "he": "Howard Duff"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7LFu95tQM8IRLbSIcsgvfOBwnf2.jpg"
+    },
+    {
+      "name": {
+        "en": "George Coe",
+        "he": "George Coe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3VkamwMlEhr9rFe3o6zcoGkHqJw.jpg"
+    },
+    {
+      "name": {
+        "en": "JoBeth Williams",
+        "he": "JoBeth Williams"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nL9ZdnI50y1yRVvmz0P61TxjZsF.jpg"
+    },
+    {
+      "name": {
+        "en": "Bill Moor",
+        "he": "Bill Moor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xzGgYlmVuntUMJ5uLjHdSu5g332.jpg"
+    },
+    {
+      "name": {
+        "en": "Howland Chamberlain",
+        "he": "Howland Chamberlain"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ceIpblKuZ0jGPLZv1MkZK3qVv31.jpg"
+    },
+    {
+      "name": {
+        "en": "Jack Ramage",
+        "he": "Jack Ramage"
+      },
+      "image": null
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_061/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/3CUP5V5SWfHSK4qvkZF7lMNyugY.jpg",
+  "decoy_answers": {
+    "en": [
+      "Minari",
+      "Since Otar Left",
+      "Tokyo Godfathers",
+      "American Loser",
+      "Force Majeure",
+      "Jodhaa Akbar",
+      "The Thanksgiving Promise",
+      "Winter Sleep",
+      "Hikikomori"
+    ],
+    "he": [
+      "מינארי",
+      "מאז שאוטר עזב",
+      "‏סנדקי טוקיו",
+      "Trainwreck: My Life as an Idiot",
+      "כוח עליון",
+      "הקיסר אקבר והנסיכה ג'אדה",
+      "The Thanksgiving Promise",
+      "שנת החורף",
+      "Hikikomori"
+    ]
+  },
+  "original_filename": "Kramer_vs__Kramer.mp4"
+}

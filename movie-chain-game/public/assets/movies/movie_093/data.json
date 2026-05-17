@@ -1,0 +1,122 @@
+{
+  "id": "movie_093",
+  "title": {
+    "en": "Project Hail Mary",
+    "he": "פרויקט הייל מרי"
+  },
+  "year": 2026,
+  "director": {
+    "name": {
+      "en": "Phil Lord",
+      "he": "Phil Lord"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/2MagibFHZxky3FmMubyABUnf4lw.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Rachel O'Connor",
+      "he": "Rachel O'Connor"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Ryan Gosling",
+        "he": "Ryan Gosling"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/k50021gkK92Lx6m99pBy6FUOvNf.jpg"
+    },
+    {
+      "name": {
+        "en": "Sandra Hüller",
+        "he": "Sandra Hüller"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jQfKXVCPTH9KEnzHHU4QemCnlMe.jpg"
+    },
+    {
+      "name": {
+        "en": "James Ortiz",
+        "he": "James Ortiz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zYYDXniHb36mjG7xK59r9IoOKvt.jpg"
+    },
+    {
+      "name": {
+        "en": "Lionel Boyce",
+        "he": "Lionel Boyce"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hpIxX5nkfA3pWCW8rYkEUCSBVyS.jpg"
+    },
+    {
+      "name": {
+        "en": "Milana Vayntrub",
+        "he": "Milana Vayntrub"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/i5Cou9ExwTZvRRtl79V75CsI7oC.jpg"
+    },
+    {
+      "name": {
+        "en": "Ken Leung",
+        "he": "Ken Leung"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hpatUP6u74gkpDRmn9voNY9V43O.jpg"
+    },
+    {
+      "name": {
+        "en": "Priya Kansara",
+        "he": "Priya Kansara"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zv9kpaQ8AVBfjI2LAAZV58NeVQg.jpg"
+    },
+    {
+      "name": {
+        "en": "Mia Soteriou",
+        "he": "Mia Soteriou"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bU4Twfk4as290gPFouByj7Wjd2.jpg"
+    },
+    {
+      "name": {
+        "en": "Annelle Olaleye",
+        "he": "Annelle Olaleye"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/V0UqW30EQaHjGhwDnb6dT0AWmz.jpg"
+    },
+    {
+      "name": {
+        "en": "Maya Eva Hosein",
+        "he": "Maya Eva Hosein"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lDHbsnyUoBzmtbMevNl4F2n8B8B.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_093/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/yihdXomYb5kTeSivtFndMy5iDmf.jpg",
+  "decoy_answers": {
+    "en": [
+      "Arn: The Kingdom at Road's End",
+      "Sex Drive",
+      "Meg 2: The Trench",
+      "A Chinese Odyssey Part One: Pandora's Box",
+      "Shrek the Halls",
+      "Star Trek",
+      "Arn: The Knight Templar",
+      "Fifteen Boys Adrift",
+      "Ex Machina"
+    ],
+    "he": [
+      "ארן: הממלכה בסוף הדרך",
+      "סקס דרייב",
+      "אימה במצולות 2: התהום",
+      "西遊記第壹佰零壹回之月光寶盒",
+      "חג שמח עם שרק",
+      "סטארטרק",
+      "ארן: אביר מסדר הטמפלר",
+      "十五少年漂流記",
+      "אקס מכינה"
+    ]
+  },
+  "original_filename": "Project_Hail_Mary.mp4"
+}

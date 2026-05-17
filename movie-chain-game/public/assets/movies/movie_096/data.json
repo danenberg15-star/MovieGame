@@ -1,0 +1,122 @@
+{
+  "id": "movie_096",
+  "title": {
+    "en": "Raiders of the Lost Ark",
+    "he": "אינדיאנה ג'ונס ושודדי התיבה האבודה"
+  },
+  "year": 1981,
+  "director": {
+    "name": {
+      "en": "Steven Spielberg",
+      "he": "Steven Spielberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Frank Marshall",
+      "he": "Frank Marshall"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/fgEuoFGqnIWWH8RSb3PJJmPQvnu.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Harrison Ford",
+        "he": "Harrison Ford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+    },
+    {
+      "name": {
+        "en": "Karen Allen",
+        "he": "Karen Allen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eJszpndpRzrXbSlz7RUlApoTykn.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Freeman",
+        "he": "Paul Freeman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qrjgLfuNdXektuBwNL6onZBkbHw.jpg"
+    },
+    {
+      "name": {
+        "en": "John Rhys-Davies",
+        "he": "John Rhys-Davies"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qpXl1YnqQsUKYEDm3BB2zK5wbhe.jpg"
+    },
+    {
+      "name": {
+        "en": "Ronald Lacey",
+        "he": "Ronald Lacey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wrFU5EkxKIq0TpEBuKXzcRAld73.jpg"
+    },
+    {
+      "name": {
+        "en": "Wolf Kahler",
+        "he": "Wolf Kahler"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/znWaz8pJjV6iIPj4SuWNPt0PVn1.jpg"
+    },
+    {
+      "name": {
+        "en": "Anthony Higgins",
+        "he": "Anthony Higgins"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/97ldqHkMzAyGCZZGozJA7RGMpDN.jpg"
+    },
+    {
+      "name": {
+        "en": "Denholm Elliott",
+        "he": "Denholm Elliott"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qqgkT4QMMUbiFztfcUVLPYRXAxD.jpg"
+    },
+    {
+      "name": {
+        "en": "Alfred Molina",
+        "he": "Alfred Molina"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nJo91Czesn6z0d0pkfbDoVZY3sg.jpg"
+    },
+    {
+      "name": {
+        "en": "Vic Tablian",
+        "he": "Vic Tablian"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5uEpB1Cg4kXzyLg0xSY7EdnEMeC.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_096/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/ceG9VzoRAVGwivFU403Wc3AHRys.jpg",
+  "decoy_answers": {
+    "en": [
+      "Interzone",
+      "Darna: The Return",
+      "Fire on the Great Wall",
+      "Karmouz War",
+      "Cold",
+      "Mara Maru",
+      "Treasure of the Amazon",
+      "Jumanji: The Next Level",
+      "Crashing Thru"
+    ],
+    "he": [
+      "Interzone",
+      "Darna! Ang Pagbabalik",
+      "龍火長城",
+      "Karmouz War",
+      "Cold",
+      "Mara Maru",
+      "אוצר האמזונס",
+      "ג'ומנג'י: השלב הבא",
+      "Crashing Thru"
+    ]
+  },
+  "original_filename": "Raiders_of_the_Lost_Ark.mp4"
+}

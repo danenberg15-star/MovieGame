@@ -1,0 +1,122 @@
+{
+  "id": "movie_022",
+  "title": {
+    "en": "Dallas Buyers Club",
+    "he": "מועדון הלקוחות של דאלאס"
+  },
+  "year": 2013,
+  "director": {
+    "name": {
+      "en": "Jean-Marc Vallée",
+      "he": "Jean-Marc Vallée"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/2qeYBWtDDnkUDOiSsE43wwViwSt.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Rachel Winter",
+      "he": "Rachel Winter"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Matthew McConaughey",
+        "he": "Matthew McConaughey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lCySuYjhXix3FzQdS4oceDDrXKI.jpg"
+    },
+    {
+      "name": {
+        "en": "Jennifer Garner",
+        "he": "Jennifer Garner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ftymEXqdTnXfaI6dGd9qrJoFOSE.jpg"
+    },
+    {
+      "name": {
+        "en": "Jared Leto",
+        "he": "Jared Leto"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ca3x0OfIKbJppZh8S1Alx3GfUZO.jpg"
+    },
+    {
+      "name": {
+        "en": "Denis O'Hare",
+        "he": "Denis O'Hare"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zMim5sdMnyd2GFfPd9Jh59Vcog3.jpg"
+    },
+    {
+      "name": {
+        "en": "Steve Zahn",
+        "he": "Steve Zahn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rwrPdKGwXnByxUVMxMf8Y7oswi3.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael O'Neill",
+        "he": "Michael O'Neill"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u9Ejl9iS4ZJ36Y653UCe8huLaOn.jpg"
+    },
+    {
+      "name": {
+        "en": "Dallas Roberts",
+        "he": "Dallas Roberts"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/b7jMTaNJ9aBTXXy7gdwqn9jb6EF.jpg"
+    },
+    {
+      "name": {
+        "en": "Griffin Dunne",
+        "he": "Griffin Dunne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oZeAznfOHgK1Kvy9TknkQhag1Um.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Rankin",
+        "he": "Kevin Rankin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fOW5R6BSgRvMrt2R7KAxSk7L4H2.jpg"
+    },
+    {
+      "name": {
+        "en": "Donna DuPlantier",
+        "he": "Donna DuPlantier"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zZrD0lrmifjtHxOjPX0jQxG7w4o.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_022/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/7Fdh7gUq3plvQqxRbNYhWvDABXA.jpg",
+  "decoy_answers": {
+    "en": [
+      "Texas Rangers",
+      "Shattered Glass",
+      "The Doom Generation",
+      "Ride or Die",
+      "Minari",
+      "Ma Rainey's Black Bottom",
+      "One Day Before the Rainy Season",
+      "Perfect Obedience",
+      "Pretty Boy"
+    ],
+    "he": [
+      "טקסס רנג'רס",
+      "חשיפה",
+      "The Doom Generation",
+      "איתך באש ובמים",
+      "מינארי",
+      "הבלוז של מא רייני",
+      "अषाढ़ का एक दिन",
+      "Obediencia Perfecta",
+      "Pretty Boy"
+    ]
+  },
+  "original_filename": "Dallas_Buyers_Club.mp4"
+}

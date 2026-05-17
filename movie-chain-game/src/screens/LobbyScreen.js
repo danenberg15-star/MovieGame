@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ref, onValue, update, set, get } from 'firebase/database';
+import { ref, onValue, update, set, get, remove } from 'firebase/database';
 import { database } from '../firebase';
 import './LobbyScreen.css';
 
@@ -31,70 +31,47 @@ function LobbyScreen() {
 
       try {
         const roomRef = ref(database, `rooms/99999`);
-        const snapshot = await get(roomRef);
+        
+        // DELETE existing QA room to start fresh every time
+        await remove(roomRef);
+        console.log('🗑️ QA Room 99999 deleted (reset)');
 
-        if (!snapshot.exists()) {
-          // Create QA room
-          const playerName = localStorage.getItem('playerName') || 'Player 1';
-          
-          await set(roomRef, {
-            code: '99999',
-            host: playerId,
-            created: Date.now(),
-            status: 'waiting',
-            isQAMode: true,
-            teams: {
-              teamA: [],
-              teamB: []
-            },
-            players: {
-              [playerId]: {
-                id: playerId,
-                name: playerName,
-                team: null,
-                ready: false,
-                isHost: true
-              },
-              'bot_player': {
-                id: 'bot_player',
-                name: t('team_b') === 'Team B' ? '🤖 AI Bot' : '🤖 בוט AI',
-                team: 'B',
-                ready: true,
-                isHost: false,
-                isBot: true
-              }
-            }
-          });
+        // Wait a bit for deletion to complete
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-          console.log('✅ QA Room 99999 created successfully');
-        } else {
-          // Room exists - add player if not already there
-          const roomData = snapshot.val();
-          if (!roomData.players?.[playerId]) {
-            const playerName = localStorage.getItem('playerName') || 'Player 1';
-            const playerRef = ref(database, `rooms/99999/players/${playerId}`);
-            await set(playerRef, {
+        // Create fresh QA room
+        const playerName = localStorage.getItem('playerName') || 'Player 1';
+        
+        await set(roomRef, {
+          code: '99999',
+          host: playerId,
+          created: Date.now(),
+          status: 'waiting',
+          isQAMode: true,
+          teams: {
+            teamA: [],
+            teamB: []
+          },
+          players: {
+            [playerId]: {
               id: playerId,
               name: playerName,
               team: null,
               ready: false,
-              isHost: roomData.host === playerId
-            });
-          }
-
-          // Ensure bot exists
-          if (!roomData.players?.['bot_player']) {
-            const botRef = ref(database, `rooms/99999/players/bot_player`);
-            await set(botRef, {
+              isHost: true
+            },
+            'bot_player': {
               id: 'bot_player',
               name: t('team_b') === 'Team B' ? '🤖 AI Bot' : '🤖 בוט AI',
               team: 'B',
               ready: true,
               isHost: false,
               isBot: true
-            });
+            }
           }
-        }
+        });
+
+        console.log('✅ Fresh QA Room 99999 created successfully');
       } catch (error) {
         console.error('Error initializing QA mode:', error);
         alert('Failed to initialize QA mode: ' + error.message);

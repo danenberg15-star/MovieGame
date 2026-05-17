@@ -1,0 +1,122 @@
+{
+  "id": "movie_063",
+  "title": {
+    "en": "Life of Pi",
+    "he": "חיי פיי"
+  },
+  "year": 2012,
+  "director": {
+    "name": {
+      "en": "Ang Lee",
+      "he": "Ang Lee"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/jrmdsPZI5WT4rmOl20Gb1Y2femb.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Gil Netter",
+      "he": "Gil Netter"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Suraj Sharma",
+        "he": "Suraj Sharma"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/uT1OLTyiDsAczXA2QtlFxWyWFTj.jpg"
+    },
+    {
+      "name": {
+        "en": "Irrfan Khan",
+        "he": "Irrfan Khan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qkA9PpWJRw3rNjVkWfNZdwLvRZx.jpg"
+    },
+    {
+      "name": {
+        "en": "Ayush Tandon",
+        "he": "Ayush Tandon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iVq1xDK3dYPSAulHdDW2JiIlco1.jpg"
+    },
+    {
+      "name": {
+        "en": "Gautam Belur",
+        "he": "Gautam Belur"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xZvgan0VaYZNxr9Leug0O4Op4an.jpg"
+    },
+    {
+      "name": {
+        "en": "Adil Hussain",
+        "he": "Adil Hussain"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eCWVa1pH7mmz0i9Q0l4VEKs7g6m.jpg"
+    },
+    {
+      "name": {
+        "en": "Tabu",
+        "he": "Tabu"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cvt5nvCHr1ICf5u8A2mlzLQ8LsV.jpg"
+    },
+    {
+      "name": {
+        "en": "Ayaan Khan",
+        "he": "Ayaan Khan"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Mohd Abbas Khaleeli",
+        "he": "Mohd Abbas Khaleeli"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Vibish Sivakumar",
+        "he": "Vibish Sivakumar"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Rafe Spall",
+        "he": "Rafe Spall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5tGhC9MGT4FGaJHr2LGYcRV4rbJ.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_063/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/iLgRu4hhSr6V1uManX6ukDriiSc.jpg",
+  "decoy_answers": {
+    "en": [
+      "Suburban Girl",
+      "Lucas",
+      "The Man from Earth",
+      "Kes",
+      "Keane",
+      "Star Trek",
+      "Mutant Chronicles",
+      "Traitor",
+      "Bambi II"
+    ],
+    "he": [
+      "אהבה בסימן קריאה!",
+      "Lucas",
+      "האיש מכוכב ארץ",
+      "קס",
+      "קין",
+      "סטארטרק",
+      "יומני המוטאנטים",
+      "הבוגד",
+      "במבי 2"
+    ]
+  },
+  "original_filename": "Life_of_Pi.mp4"
+}

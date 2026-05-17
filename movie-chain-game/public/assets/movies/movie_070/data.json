@@ -1,0 +1,122 @@
+{
+  "id": "movie_070",
+  "title": {
+    "en": "Meet Joe Black",
+    "he": "לפגוש את ג'ו בלאק"
+  },
+  "year": 1998,
+  "director": {
+    "name": {
+      "en": "Martin Brest",
+      "he": "Martin Brest"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/bqR72AZbmi0CnLarTpOv9YA9IzG.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Martin Brest",
+      "he": "Martin Brest"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/bqR72AZbmi0CnLarTpOv9YA9IzG.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Anthony Hopkins",
+        "he": "Anthony Hopkins"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dYVQTK1dPrQl1mugeLEWSSmA6Im.jpg"
+    },
+    {
+      "name": {
+        "en": "Claire Forlani",
+        "he": "Claire Forlani"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tKVunk7XoOWPTS0toajbE3EjNdy.jpg"
+    },
+    {
+      "name": {
+        "en": "Jake Weber",
+        "he": "Jake Weber"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z1RTh4qvyMFha8nKd5Uw1dKwkZz.jpg"
+    },
+    {
+      "name": {
+        "en": "Marcia Gay Harden",
+        "he": "Marcia Gay Harden"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5vxcHIHABJxqhweAsTiXVOhT4SE.jpg"
+    },
+    {
+      "name": {
+        "en": "Jeffrey Tambor",
+        "he": "Jeffrey Tambor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/e4IkxsEo5O4oUWrIpXlEhWa6lqB.jpg"
+    },
+    {
+      "name": {
+        "en": "David S. Howard",
+        "he": "David S. Howard"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Lois Kelly-Miller",
+        "he": "Lois Kelly-Miller"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vGVvQzu2PTD09mTgqmKGfZUmyT1.jpg"
+    },
+    {
+      "name": {
+        "en": "Jahnni St. John",
+        "he": "Jahnni St. John"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Richard Clarke",
+        "he": "Richard Clarke"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/14OxNzoEuqP9aiyaV1tFyIEPL5f.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_070/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/fDPAjvfPMomkKF7cMRmL5Anak61.jpg",
+  "decoy_answers": {
+    "en": [
+      "Charlie Bartlett",
+      "Fool's Gold",
+      "The League of Extraordinary Gentlemen",
+      "Hamlet Goes Business",
+      "Bones and All",
+      "Mother",
+      "Just Like Heaven",
+      "The Prophecy 3: The Ascent",
+      "Dog Days"
+    ],
+    "he": [
+      "צ'ארלי ברטלט",
+      "המירוץ לזהב",
+      "ג'נטלמנים מובחרים",
+      "Hamlet liikemaailmassa",
+      "עצמות והכול",
+      "Matka",
+      "זוג משמיים",
+      "The Prophecy 3: The Ascent",
+      "Hundstage"
+    ]
+  },
+  "original_filename": "Meet_Joe_Black.mp4"
+}

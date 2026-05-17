@@ -1,0 +1,122 @@
+{
+  "id": "movie_012",
+  "title": {
+    "en": "Back to the Future",
+    "he": "בחזרה לעתיד"
+  },
+  "year": 1985,
+  "director": {
+    "name": {
+      "en": "Robert Zemeckis",
+      "he": "Robert Zemeckis"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lPYDQ5LYNJ12rJZENtyASmVZ1Ql.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Bob Gale",
+      "he": "Bob Gale"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wZLj3qLrieFQzt49i981lMVijPm.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Michael J. Fox",
+        "he": "Michael J. Fox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2JB4FMgQmnhbBlQ4SxWFN9EIVDi.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Lloyd",
+        "he": "Christopher Lloyd"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nxVjpyb3UrfbPZnEyDNlQVlFAs5.jpg"
+    },
+    {
+      "name": {
+        "en": "Crispin Glover",
+        "he": "Crispin Glover"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/imBnLpSXvg61qDDdEfvL6R4ITKt.jpg"
+    },
+    {
+      "name": {
+        "en": "Lea Thompson",
+        "he": "Lea Thompson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vsi9xdehaMWMoPKyq1qKxqN9Zz4.jpg"
+    },
+    {
+      "name": {
+        "en": "Claudia Wells",
+        "he": "Claudia Wells"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2VOsPvoV2vmEUd1O2KjW3kcN8JD.jpg"
+    },
+    {
+      "name": {
+        "en": "Thomas F. Wilson",
+        "he": "Thomas F. Wilson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mVhm65ZVBIRIptWGiMIvoUy0Khi.jpg"
+    },
+    {
+      "name": {
+        "en": "Marc McClure",
+        "he": "Marc McClure"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qOOd1C4rj8GbnXi8YKldwbHpa8z.jpg"
+    },
+    {
+      "name": {
+        "en": "Wendie Jo Sperber",
+        "he": "Wendie Jo Sperber"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dufqiCvSBQUxuHmMXcH6U8fZG4k.jpg"
+    },
+    {
+      "name": {
+        "en": "George DiCenzo",
+        "he": "George DiCenzo"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8L9fr5601BbUs3UzoCEELnxEKVm.jpg"
+    },
+    {
+      "name": {
+        "en": "Frances Lee McCain",
+        "he": "Frances Lee McCain"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8KL73kRxsLDdrXPuMfiPET1EqH6.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_012/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/vN5B5WgYscRGcQpVhHl6p9DDTP0.jpg",
+  "decoy_answers": {
+    "en": [
+      "Loop",
+      "The Final Countdown",
+      "Dollars and Dreams",
+      "Looks That Kill",
+      "For Love or Money",
+      "Honey, I Shrunk the Kids",
+      "Double Team",
+      "Doctor Who: The Edge of Destruction",
+      "The Family Stone"
+    ],
+    "he": [
+      "Loop",
+      "הנימיץ אינה עונה",
+      "Δολλάρια και όνειρα",
+      "מבט קטלני",
+      "כסף או אהבה",
+      "מותק, הילדים התכווצו",
+      "דאבל טים",
+      "Doctor Who: The Edge of Destruction",
+      "עד שהמשפחה תפריד בינינו"
+    ]
+  },
+  "original_filename": "Back_to_the_Future.mp4"
+}

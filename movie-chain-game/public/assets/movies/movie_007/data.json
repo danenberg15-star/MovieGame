@@ -1,0 +1,122 @@
+{
+  "id": "movie_007",
+  "title": {
+    "en": "As Good as It Gets",
+    "he": "הכי טוב שיש"
+  },
+  "year": 1997,
+  "director": {
+    "name": {
+      "en": "James L. Brooks",
+      "he": "James L. Brooks"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mZBy39mFACFHMCqfbsN4Kc2qb2k.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Kristi Zea",
+      "he": "Kristi Zea"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/eXkeXScvvcfiuVplqCy8ljLY4vs.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Jack Nicholson",
+        "he": "Jack Nicholson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hBHcQIEa6P48HQAlLZkh0eKSSkG.jpg"
+    },
+    {
+      "name": {
+        "en": "Helen Hunt",
+        "he": "Helen Hunt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bdhW2Ra84cJG3B5RDzUO6niUTO7.jpg"
+    },
+    {
+      "name": {
+        "en": "Greg Kinnear",
+        "he": "Greg Kinnear"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iJezGc9XjY0DFPs00SypkuKImFK.jpg"
+    },
+    {
+      "name": {
+        "en": "Cuba Gooding Jr.",
+        "he": "Cuba Gooding Jr."
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2JguzbpOXoTGzSmLbWFlulKyyAe.jpg"
+    },
+    {
+      "name": {
+        "en": "Shirley Knight",
+        "he": "Shirley Knight"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5m1S3lOEP79hq10IODqEIfDPa1T.jpg"
+    },
+    {
+      "name": {
+        "en": "Jesse James",
+        "he": "Jesse James"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ebT4hnQ1VPtm9itUNp74Yj6Sx4o.jpg"
+    },
+    {
+      "name": {
+        "en": "Yeardley Smith",
+        "he": "Yeardley Smith"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9AjPwbb3uz4GfgOPBYsy2ILvwkB.jpg"
+    },
+    {
+      "name": {
+        "en": "Lupe Ontiveros",
+        "he": "Lupe Ontiveros"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bFlpBo46W4KXQVNspvPTUhZvsmQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Skeet Ulrich",
+        "he": "Skeet Ulrich"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/moyTBJUTl82PaAhm8aHGwlvKr7r.jpg"
+    },
+    {
+      "name": {
+        "en": "Harold Ramis",
+        "he": "Harold Ramis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kmTMTxthkDAsygk3Am4IUSVYYRi.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_007/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/xXxuJPNUDZ0vjsAXca0O5p3leVB.jpg",
+  "decoy_answers": {
+    "en": [
+      "College Road Trip",
+      "The Good Night",
+      "Sex Drive",
+      "Suburban Girl",
+      "Fanboys",
+      "The Doom Generation",
+      "Ride or Die",
+      "Room",
+      "Pretty Boy"
+    ],
+    "he": [
+      "טרמפ לקולג'",
+      "הלילה הטוב",
+      "סקס דרייב",
+      "אהבה בסימן קריאה!",
+      "שרופים",
+      "The Doom Generation",
+      "איתך באש ובמים",
+      "חדר",
+      "Pretty Boy"
+    ]
+  },
+  "original_filename": "As_Good_as_It_Gets.mp4"
+}

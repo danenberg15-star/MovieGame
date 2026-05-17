@@ -1,0 +1,122 @@
+{
+  "id": "movie_024",
+  "title": {
+    "en": "Dead Poets Society",
+    "he": "ללכת שבי אחריו"
+  },
+  "year": 1989,
+  "director": {
+    "name": {
+      "en": "Peter Weir",
+      "he": "Peter Weir"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/4GxIZX5gtbMpW4ZgHwvGmLSIHOE.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Tony Thomas",
+      "he": "Tony Thomas"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Robin Williams",
+        "he": "Robin Williams"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iYdeP6K0qz44Wg2Nw9LPJGMBkQ5.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Sean Leonard",
+        "he": "Robert Sean Leonard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jXehZM0AWLJ2OIz4o0jFtHEzcMI.jpg"
+    },
+    {
+      "name": {
+        "en": "Ethan Hawke",
+        "he": "Ethan Hawke"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oojD9jSshvUT4t6AUySsBxoekHk.jpg"
+    },
+    {
+      "name": {
+        "en": "Josh Charles",
+        "he": "Josh Charles"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xmFdIoFKVRNUmXaslBlErA3UHfF.jpg"
+    },
+    {
+      "name": {
+        "en": "Gale Hansen",
+        "he": "Gale Hansen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gVZ9TFvseA3I0fLLJiXKInzBygp.jpg"
+    },
+    {
+      "name": {
+        "en": "Dylan Kussman",
+        "he": "Dylan Kussman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/33V8NdkLrpSCEVeIiKk5DoGRthx.jpg"
+    },
+    {
+      "name": {
+        "en": "Allelon Ruggiero",
+        "he": "Allelon Ruggiero"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sSjaviVlBCnZYipURQY5o9rvPl7.jpg"
+    },
+    {
+      "name": {
+        "en": "James Waterston",
+        "he": "James Waterston"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7IPxmwB7f2CqCJvxAea0BjwI5Fz.jpg"
+    },
+    {
+      "name": {
+        "en": "Norman Lloyd",
+        "he": "Norman Lloyd"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z7jg1zuFfC5jqn4kI40OGAOrD5U.jpg"
+    },
+    {
+      "name": {
+        "en": "Kurtwood Smith",
+        "he": "Kurtwood Smith"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7dqsk4NYbNZNnmppv2zPuf1hKBn.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_024/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/erzbMlcNHOdx24AXOcn2ZKA7R1q.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Black Panther",
+      "Breath",
+      "Day Shall Dawn",
+      "Bank of Dave 2: The Loan Ranger",
+      "Mother's Day",
+      "Pack Rat",
+      "Gold and Rain",
+      "The Day Silence Died",
+      "Amy George"
+    ],
+    "he": [
+      "The Black Panther",
+      "Breath",
+      "جاگو ہوا سویرا",
+      "Bank of Dave 2: The Loan Ranger",
+      "Mother's Day",
+      "Pack Rat",
+      "D'or et de pluie",
+      "El día que murió el Silencio",
+      "Amy George"
+    ]
+  },
+  "original_filename": "Dead_Poets_Society.mp4"
+}

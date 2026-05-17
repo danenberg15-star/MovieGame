@@ -1,0 +1,122 @@
+{
+  "id": "movie_052",
+  "title": {
+    "en": "Inside Man",
+    "he": "האיש שבפנים"
+  },
+  "year": 2006,
+  "director": {
+    "name": {
+      "en": "Spike Lee",
+      "he": "Spike Lee"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/2KOHXgk2uoRXl6u7V9xpAIo3uay.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Brian Grazer",
+      "he": "Brian Grazer"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rNFUflKlpTEbnWDHd2Of293E4lx.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Denzel Washington",
+        "he": "Denzel Washington"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jj2Gcobpopokal0YstuCQW0ldJ4.jpg"
+    },
+    {
+      "name": {
+        "en": "Clive Owen",
+        "he": "Clive Owen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xlWpuLgwxMnZEVgV9OID1TkUNtP.jpg"
+    },
+    {
+      "name": {
+        "en": "Jodie Foster",
+        "he": "Jodie Foster"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5emVgsLFlU6SmeBIFsF2Y7aqwtG.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Plummer",
+        "he": "Christopher Plummer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u0YBwss0ebEUp8sjRtQKnK2wZdR.jpg"
+    },
+    {
+      "name": {
+        "en": "Willem Dafoe",
+        "he": "Willem Dafoe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ui8e4sgZAwMPi3hzEO53jyBJF9B.jpg"
+    },
+    {
+      "name": {
+        "en": "Chiwetel Ejiofor",
+        "he": "Chiwetel Ejiofor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kq5DDnqqofoRI0t6ddtRlsJnNPT.jpg"
+    },
+    {
+      "name": {
+        "en": "Carlos Andrés Gómez",
+        "he": "Carlos Andrés Gómez"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9fmpgP5iaKb2pdZuXLh4kRktRHv.jpg"
+    },
+    {
+      "name": {
+        "en": "Kim Director",
+        "he": "Kim Director"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/va3lHRPsyhA2jwb7sUIu0Kxngmy.jpg"
+    },
+    {
+      "name": {
+        "en": "James Ransone",
+        "he": "James Ransone"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n1O0RnxKPfxvVJUh13Gr0pPGlvd.jpg"
+    },
+    {
+      "name": {
+        "en": "Bernie Rachelle",
+        "he": "Bernie Rachelle"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3vLedN68rG9VfUfKyVdNpj39ME7.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_052/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/ffMUgkDZICNiyaws1Jkv8qG8uFW.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "At Point Blank",
+      "Albino Alligator",
+      "Bird",
+      "Midnight Run",
+      "Cliffhanger",
+      "Donnie Brasco",
+      "Stepmom",
+      "Dead Men Don't Wear Plaid"
+    ],
+    "he": [
+      "לגעת במוות",
+      "Rånarna",
+      "Albino Alligator",
+      "Bird",
+      "מרדף חצות",
+      "סחרור מסוכן",
+      "דוני בראסקו",
+      "אמא חורגת",
+      "Dead Men Don't Wear Plaid"
+    ]
+  },
+  "original_filename": "Inside_Man.mp4"
+}

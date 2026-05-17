@@ -1,0 +1,122 @@
+{
+  "id": "movie_068",
+  "title": {
+    "en": "Marriage Story",
+    "he": "סיפור נישואים"
+  },
+  "year": 2019,
+  "director": {
+    "name": {
+      "en": "Noah Baumbach",
+      "he": "Noah Baumbach"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/pNCt2m8jfiX3YOiCdnJT3OPxNvm.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Noah Baumbach",
+      "he": "Noah Baumbach"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/pNCt2m8jfiX3YOiCdnJT3OPxNvm.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Adam Driver",
+        "he": "Adam Driver"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/b5w381C8Z33D1iF30KT4k8tJNsk.jpg"
+    },
+    {
+      "name": {
+        "en": "Scarlett Johansson",
+        "he": "Scarlett Johansson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6bBCPmc55gzP7TR9Th4WbykrYd0.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Dern",
+        "he": "Laura Dern"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gB9PnGEvxKg33OSlcqptQwTBwPE.jpg"
+    },
+    {
+      "name": {
+        "en": "Alan Alda",
+        "he": "Alan Alda"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6ccCKFhXiMmjLoiFDyJaU4eJaQO.jpg"
+    },
+    {
+      "name": {
+        "en": "Ray Liotta",
+        "he": "Ray Liotta"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jdwGJbJNSRQiG2kB5MJxiu2clCQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Julie Hagerty",
+        "he": "Julie Hagerty"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bQZ0bcFNyE4a3GDNfYMmfO7eWMl.jpg"
+    },
+    {
+      "name": {
+        "en": "Merritt Wever",
+        "he": "Merritt Wever"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ldd1WntzQ72DVuNLoko8yMFHH7j.jpg"
+    },
+    {
+      "name": {
+        "en": "Azhy Robertson",
+        "he": "Azhy Robertson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eTTpOO97m9JLwKjWD2ByjKJPDPr.jpg"
+    },
+    {
+      "name": {
+        "en": "Wallace Shawn",
+        "he": "Wallace Shawn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wVaM1WlFKDce4esThwL4XtNLhOe.jpg"
+    },
+    {
+      "name": {
+        "en": "Martha Kelly",
+        "he": "Martha Kelly"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ac7HoARDIHdYNqpzgJBzpmKHXHR.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_068/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/2JRyCKaRKyJAVpsIHeLvPw5nHmw.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "The Thin Red Line",
+      "Derailed",
+      "Donnie Brasco",
+      "A Civil Action",
+      "The Royal Tenenbaums",
+      "Kiss the Girls",
+      "The Nameless"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "הקו האדום",
+      "מחיר הבגידה",
+      "דוני בראסקו",
+      "תביעה אזרחית",
+      "משפחת טננבאום",
+      "חתום בנשיקה",
+      "חסרי השם"
+    ]
+  },
+  "original_filename": "Marriage_Story.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_031",
+  "title": {
+    "en": "Empire of the Sun",
+    "he": "אימפריית השמש"
+  },
+  "year": 1987,
+  "director": {
+    "name": {
+      "en": "Steven Spielberg",
+      "he": "Steven Spielberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Kathleen Kennedy",
+      "he": "Kathleen Kennedy"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/ndgYlie0PHkyqEiEBGM8SqrPOkr.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Christian Bale",
+        "he": "Christian Bale"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7Pxez9J8fuPd2Mn9kex13YALrCQ.jpg"
+    },
+    {
+      "name": {
+        "en": "John Malkovich",
+        "he": "John Malkovich"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7GoOdGNc4ra1L0F5nJTkmIB37iu.jpg"
+    },
+    {
+      "name": {
+        "en": "Miranda Richardson",
+        "he": "Miranda Richardson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2IEW3fxqHb4AHBl5xU8JuipJbNK.jpg"
+    },
+    {
+      "name": {
+        "en": "Nigel Havers",
+        "he": "Nigel Havers"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/75jjShxtJnsvWu4QwiYPjNPQjsf.jpg"
+    },
+    {
+      "name": {
+        "en": "Joe Pantoliano",
+        "he": "Joe Pantoliano"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3OHUI3nX4SYGGItDk3xqeIvWtIf.jpg"
+    },
+    {
+      "name": {
+        "en": "Leslie Phillips",
+        "he": "Leslie Phillips"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xD1ud9ud75GRRQz2EDATyE7NhUV.jpg"
+    },
+    {
+      "name": {
+        "en": "Masatô Ibu",
+        "he": "Masatô Ibu"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iXa9IhA5RTTI0os3mguDKNDfhup.jpg"
+    },
+    {
+      "name": {
+        "en": "Emily Richard",
+        "he": "Emily Richard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pvkA2ld8XP5ntOO84Oo1fmW6pJC.jpg"
+    },
+    {
+      "name": {
+        "en": "Rupert Frazer",
+        "he": "Rupert Frazer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u5Gns0q6jv2Jv9z1VWUG3A91Dze.jpg"
+    },
+    {
+      "name": {
+        "en": "Peter Gale",
+        "he": "Peter Gale"
+      },
+      "image": null
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_031/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/gEaCzjwHoPgyQFcwHql7o5YLHAU.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "The Final Countdown",
+      "The Thin Red Line",
+      "Bones and All",
+      "We Grown Now",
+      "Flame & Citron",
+      "Great Times",
+      "The Sure Thing"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "הנימיץ אינה עונה",
+      "הקו האדום",
+      "עצמות והכול",
+      "מתבגרים עכשיו",
+      "פלאם וציטרון",
+      "Zlaté časy",
+      "רומן על בטוח"
+    ]
+  },
+  "original_filename": "Empire_of_the_Sun.mp4"
+}

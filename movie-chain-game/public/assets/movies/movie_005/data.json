@@ -1,0 +1,122 @@
+{
+  "id": "movie_005",
+  "title": {
+    "en": "Apocalypse Now",
+    "he": "אפוקליפסה עכשיו"
+  },
+  "year": 1979,
+  "director": {
+    "name": {
+      "en": "Francis Ford Coppola",
+      "he": "Francis Ford Coppola"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/IwGgkmW6IoJ9vuNF0T9CU3FYUX.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Francis Ford Coppola",
+      "he": "Francis Ford Coppola"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/IwGgkmW6IoJ9vuNF0T9CU3FYUX.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Martin Sheen",
+        "he": "Martin Sheen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/m2Y3Q0uyuW6htrn2W9UWCWMkpZu.jpg"
+    },
+    {
+      "name": {
+        "en": "Marlon Brando",
+        "he": "Marlon Brando"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eEHCjqKMWSvQU4bmwhLMsg4RtEr.jpg"
+    },
+    {
+      "name": {
+        "en": "Frederic Forrest",
+        "he": "Frederic Forrest"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gxHgIe9swYgCcxSSCewQTF4J4VO.jpg"
+    },
+    {
+      "name": {
+        "en": "Albert Hall",
+        "he": "Albert Hall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jvcOpEO0vSNy3KaDkhIldI1CoaU.jpg"
+    },
+    {
+      "name": {
+        "en": "Laurence Fishburne",
+        "he": "Laurence Fishburne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2GbXERENPpl5MmlqOLlPVaVtifD.jpg"
+    },
+    {
+      "name": {
+        "en": "Sam Bottoms",
+        "he": "Sam Bottoms"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/82ACmkTCHtKAuw42Jwx4JbjuVw0.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Duvall",
+        "he": "Robert Duvall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3tcKxC5Sc3DJ6XPDKKC2EAomEWn.jpg"
+    },
+    {
+      "name": {
+        "en": "G.D. Spradlin",
+        "he": "G.D. Spradlin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pWNa9H3ABB3Ug9CwTfVNtHsCFjV.jpg"
+    },
+    {
+      "name": {
+        "en": "Harrison Ford",
+        "he": "Harrison Ford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+    },
+    {
+      "name": {
+        "en": "Jerry Ziesmer",
+        "he": "Jerry Ziesmer"
+      },
+      "image": null
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_005/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/gQB8Y5RCMkv2zwzFHbUJX3kAhvA.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "The Thin Red Line",
+      "Bones and All",
+      "Che: Part Two",
+      "Che: Part One",
+      "Derailed",
+      "Sleep Sweet, My Darling",
+      "The Last of the Mohicans"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "הקו האדום",
+      "עצמות והכול",
+      "צ'ה: חלק ב' - גרילה",
+      "צ'ה: חלק א' - הארגנטינאי",
+      "מחיר הבגידה",
+      "Snivaj, zlato moje",
+      "המוהיקני האחרון"
+    ]
+  },
+  "original_filename": "Apocalypse_Now.mp4"
+}

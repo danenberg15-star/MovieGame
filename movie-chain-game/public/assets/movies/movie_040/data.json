@@ -1,0 +1,122 @@
+{
+  "id": "movie_040",
+  "title": {
+    "en": "Gone Girl",
+    "he": "נעלמת"
+  },
+  "year": 2014,
+  "director": {
+    "name": {
+      "en": "David Fincher",
+      "he": "David Fincher"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tpEczFclQZeKAiCeKZZ0adRvtfz.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Reese Witherspoon",
+      "he": "Reese Witherspoon"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mfjunuTHrd0wnh8UG1ImMN9FSws.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Ben Affleck",
+        "he": "Ben Affleck"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aTcqu8cI4wMohU17xTdqmXKTGrw.jpg"
+    },
+    {
+      "name": {
+        "en": "Rosamund Pike",
+        "he": "Rosamund Pike"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8ObNklHDi2hjdz0ayzJFB9jtqzm.jpg"
+    },
+    {
+      "name": {
+        "en": "Neil Patrick Harris",
+        "he": "Neil Patrick Harris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/r2twLWLwDpKJ7JyhWsD1YsL7rJV.jpg"
+    },
+    {
+      "name": {
+        "en": "Tyler Perry",
+        "he": "Tyler Perry"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8KU0OizemVLrERXt5HJIa0PAkIN.jpg"
+    },
+    {
+      "name": {
+        "en": "Carrie Coon",
+        "he": "Carrie Coon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vWChiHhXFjZVKC6HbACyyRFmdW4.jpg"
+    },
+    {
+      "name": {
+        "en": "Kim Dickens",
+        "he": "Kim Dickens"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yr6kstI1hdLP6LXz2xyBB4ovduj.jpg"
+    },
+    {
+      "name": {
+        "en": "Patrick Fugit",
+        "he": "Patrick Fugit"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bsONcodcqRKV97p1Oo1jcPkEnDA.jpg"
+    },
+    {
+      "name": {
+        "en": "David Clennon",
+        "he": "David Clennon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jLOf8nYolcb4P8LUDOW7QK5Y9pH.jpg"
+    },
+    {
+      "name": {
+        "en": "Lisa Banes",
+        "he": "Lisa Banes"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bSYs9z8Su9Ewg71XO8LdiNu2OwU.jpg"
+    },
+    {
+      "name": {
+        "en": "Missi Pyle",
+        "he": "Missi Pyle"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lKMPTI0PbPv6kGQiublwHOp73Ff.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_040/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/ts996lKsxvjkO2yiYG0ht4qAicO.jpg",
+  "decoy_answers": {
+    "en": [
+      "Fifty Shades Darker",
+      "Johan Falk: Blood Diamonds",
+      "Return from Hell",
+      "Those Who Pay with Their Lives",
+      "The Big Score",
+      "Don Juan from Zhashkiv",
+      "A Quiet Place Part II",
+      "National Theatre Live: Life of Pi",
+      "A Question of Suspense"
+    ],
+    "he": [
+      "חמישים גוונים של אופל",
+      "Johan Falk: Blodsdiamanter",
+      "Întoarcerea din iad",
+      "Cei care plătesc cu viața",
+      "The Big Score",
+      "Дон Жуан із Жашкова",
+      "מקום שקט 2",
+      "National Theatre Live: Life of Pi",
+      "A Question of Suspense"
+    ]
+  },
+  "original_filename": "Gone_Girl.mp4"
+}

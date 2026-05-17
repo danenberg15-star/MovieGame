@@ -1,0 +1,122 @@
+{
+  "id": "movie_004",
+  "title": {
+    "en": "A Star Is Born",
+    "he": "כוכב נולד"
+  },
+  "year": 2018,
+  "director": {
+    "name": {
+      "en": "Bradley Cooper",
+      "he": "Bradley Cooper"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/sQq0nft6YZmJ7EMQwPcbaxym3AL.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Bradley Cooper",
+      "he": "Bradley Cooper"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/sQq0nft6YZmJ7EMQwPcbaxym3AL.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Lady Gaga",
+        "he": "Lady Gaga"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9Y4Pz7AEXhB9qNar2tMsx5EVXML.jpg"
+    },
+    {
+      "name": {
+        "en": "Bradley Cooper",
+        "he": "Bradley Cooper"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sQq0nft6YZmJ7EMQwPcbaxym3AL.jpg"
+    },
+    {
+      "name": {
+        "en": "Sam Elliott",
+        "he": "Sam Elliott"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3DXgGHPFK2dOlwU1HqHrtTwluTD.jpg"
+    },
+    {
+      "name": {
+        "en": "Andrew Dice Clay",
+        "he": "Andrew Dice Clay"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xwNn8mJrhww89P2pIVkWnaTlqHw.jpg"
+    },
+    {
+      "name": {
+        "en": "Rafi Gavron",
+        "he": "Rafi Gavron"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/avCWoO9fLwEhbT6cvu0TJcSj49g.jpg"
+    },
+    {
+      "name": {
+        "en": "Anthony Ramos",
+        "he": "Anthony Ramos"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gCeRfH3aetIpZwKxe8Wl4ZYcQg5.jpg"
+    },
+    {
+      "name": {
+        "en": "Dave Chappelle",
+        "he": "Dave Chappelle"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hDVe67wjmjtbOTzDrFaJfcobcE.jpg"
+    },
+    {
+      "name": {
+        "en": "Alec Baldwin",
+        "he": "Alec Baldwin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hzKy7x574eeUS3wt1R3yvWBRpeR.jpg"
+    },
+    {
+      "name": {
+        "en": "Marlon Williams",
+        "he": "Marlon Williams"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5Ad1GJ6Vda3dhsMcnBhZPjdTYMP.jpg"
+    },
+    {
+      "name": {
+        "en": "Brandi Carlile",
+        "he": "Brandi Carlile"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4FlGvdzs6isbMerhq6aSj49W3FP.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_004/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/wrFpXMNBRj2PBiN4Z5kix51XaIZ.jpg",
+  "decoy_answers": {
+    "en": [
+      "Pushkin Hills",
+      "Withdrawal",
+      "Pathu Thala",
+      "BABYMETAL WORLD TOUR 2014 - Live in London - The Forum",
+      "Namasthe Bali",
+      "All Access To Rossa 25 Shining Years",
+      "Men",
+      "Maior que o Mundo",
+      "Violent Road"
+    ],
+    "he": [
+      "Заповедник",
+      "Withdrawal",
+      "פאתו תאלה",
+      "BABYMETAL WORLD TOUR 2014 - Live in London - The Forum",
+      "നമസ്തേ ബാലി",
+      "All Access To Rossa 25 Shining Years",
+      "Men",
+      "Maior que o Mundo",
+      "Violent Road"
+    ]
+  },
+  "original_filename": "A_Star_Is_Born.mp4"
+}

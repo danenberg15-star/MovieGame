@@ -1,0 +1,122 @@
+{
+  "id": "movie_107",
+  "title": {
+    "en": "Se7en",
+    "he": "שבעה חטאים"
+  },
+  "year": 1995,
+  "director": {
+    "name": {
+      "en": "David Fincher",
+      "he": "David Fincher"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tpEczFclQZeKAiCeKZZ0adRvtfz.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Phyllis Carlyle",
+      "he": "Phyllis Carlyle"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Morgan Freeman",
+        "he": "Morgan Freeman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jPsLqiYGSofU4s6BjrxnefMfabb.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Gwyneth Paltrow",
+        "he": "Gwyneth Paltrow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ylN4A7fnnNXvHURENl5sQI8Jbib.jpg"
+    },
+    {
+      "name": {
+        "en": "John Cassini",
+        "he": "John Cassini"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kn2Rtn0I8ivCR7ydZTY74XUBh1K.jpg"
+    },
+    {
+      "name": {
+        "en": "Peter Crombie",
+        "he": "Peter Crombie"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pMvhE1wwQo3eTSp4vwq8Hb22CwN.jpg"
+    },
+    {
+      "name": {
+        "en": "Reg E. Cathey",
+        "he": "Reg E. Cathey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cgyJJQUdbK4S7ihkL9hgIIwutk3.jpg"
+    },
+    {
+      "name": {
+        "en": "R. Lee Ermey",
+        "he": "R. Lee Ermey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aXFJlEGHlQT7bwxkKwq6Sx7PeEp.jpg"
+    },
+    {
+      "name": {
+        "en": "Daniel Zacapa",
+        "he": "Daniel Zacapa"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/85Ve9cyC2RG3cY20HHv1JrtMqdC.jpg"
+    },
+    {
+      "name": {
+        "en": "Andrew Kevin Walker",
+        "he": "Andrew Kevin Walker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/t7O6bNRscxOYadGNB1EWvBaSC0d.jpg"
+    },
+    {
+      "name": {
+        "en": "George Christy",
+        "he": "George Christy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8kmZnMFtItkqASxsRtsSBZbbBBl.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_107/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg",
+  "decoy_answers": {
+    "en": [
+      "Cannibal Apocalypse",
+      "Albino Alligator",
+      "The Ice Harvest",
+      "The Insider",
+      "Silentium",
+      "All the Boys Love Mandy Lane",
+      "One Hour Photo",
+      "Anaconda",
+      "Red Corner"
+    ],
+    "he": [
+      "Apocalypse Domani",
+      "Albino Alligator",
+      "קרח דק",
+      "המקור",
+      "Silentium",
+      "כל הבנים אוהבים את מנדי ליין",
+      "לחיות בתמונות",
+      "אנקונדה",
+      "צדק אדום"
+    ]
+  },
+  "original_filename": "Se7en.mp4"
+}

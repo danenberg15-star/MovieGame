@@ -1,0 +1,122 @@
+{
+  "id": "movie_087",
+  "title": {
+    "en": "Philadelphia",
+    "he": "פילדלפיה"
+  },
+  "year": 1993,
+  "director": {
+    "name": {
+      "en": "Jonathan Demme",
+      "he": "Jonathan Demme"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/w9Lw3xTEFQUYELkl9AH5i3p5OhJ.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Jonathan Demme",
+      "he": "Jonathan Demme"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/w9Lw3xTEFQUYELkl9AH5i3p5OhJ.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Hanks",
+        "he": "Tom Hanks"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oFvZoKI6lvU03n4YoNGAll9rkas.jpg"
+    },
+    {
+      "name": {
+        "en": "Denzel Washington",
+        "he": "Denzel Washington"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jj2Gcobpopokal0YstuCQW0ldJ4.jpg"
+    },
+    {
+      "name": {
+        "en": "Jason Robards",
+        "he": "Jason Robards"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9y0HAtWWBkB02gVzh8QDdz6UYZH.jpg"
+    },
+    {
+      "name": {
+        "en": "Mary Steenburgen",
+        "he": "Mary Steenburgen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yJhfuqS3yXW7kLSyvRU6n3b35mq.jpg"
+    },
+    {
+      "name": {
+        "en": "Antonio Banderas",
+        "he": "Antonio Banderas"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fce7zl6elUzsv7wudHFc7RgFtjD.jpg"
+    },
+    {
+      "name": {
+        "en": "Ron Vawter",
+        "he": "Ron Vawter"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/f5WDxaiBGOP5bg3JsZEpotnJYbE.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Ridgely",
+        "he": "Robert Ridgely"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9KXMqTrSeIxcW6hlCJZ6CTzNeMB.jpg"
+    },
+    {
+      "name": {
+        "en": "Charles Napier",
+        "he": "Charles Napier"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/w16LEJlHDtqGWeFCk5a7a2GDeBK.jpg"
+    },
+    {
+      "name": {
+        "en": "Lisa Summerour",
+        "he": "Lisa Summerour"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hN6jxYkoEgwOAExnwuaPMlLQTkS.jpg"
+    },
+    {
+      "name": {
+        "en": "Obba Babatundé",
+        "he": "Obba Babatundé"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jkvxfhETmwR877VluO5kfbxxNER.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_087/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/5RLPhlKVmoggebXqizgKqwtmRvJ.jpg",
+  "decoy_answers": {
+    "en": [
+      "My Days of Mercy",
+      "Bones and All",
+      "I Love You",
+      "Your Mother's Son",
+      "Looking for Rohmer",
+      "A Civil Action",
+      "Apt Pupil",
+      "Engaged",
+      "Fragments"
+    ],
+    "he": [
+      "My Days of Mercy",
+      "עצמות והכול",
+      "Volim te",
+      "Anak Ka Ng Ina Mo",
+      "Looking for Rohmer",
+      "תביעה אזרחית",
+      "תלמיד מצטיין מדי",
+      "Engaged",
+      "רסיסים"
+    ]
+  },
+  "original_filename": "Philadelphia.mp4"
+}

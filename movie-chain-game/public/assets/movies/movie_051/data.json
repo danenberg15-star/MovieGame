@@ -1,0 +1,122 @@
+{
+  "id": "movie_051",
+  "title": {
+    "en": "Inglourious Basterds",
+    "he": "ממזרים חסרי כבוד"
+  },
+  "year": 2009,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Bender",
+      "he": "Lawrence Bender"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mZRwkIvUj8USnS7Jfwd6VdHkY2x.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Mélanie Laurent",
+        "he": "Mélanie Laurent"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/i99ogEo4gQyanCmHWYYoS6hsUqL.jpg"
+    },
+    {
+      "name": {
+        "en": "Christoph Waltz",
+        "he": "Christoph Waltz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jMvLGCVXLaBqjRLf5olyvEucZob.jpg"
+    },
+    {
+      "name": {
+        "en": "Eli Roth",
+        "he": "Eli Roth"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qQTkpxzh1FlBGL1HD5hzdUMxv49.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Fassbender",
+        "he": "Michael Fassbender"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg"
+    },
+    {
+      "name": {
+        "en": "Diane Kruger",
+        "he": "Diane Kruger"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/o5gVowcjVw4ThYi0L3883Y4X7kH.jpg"
+    },
+    {
+      "name": {
+        "en": "Daniel Brühl",
+        "he": "Daniel Brühl"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3YlmTfiy5qZXkrdKGjaM1uMjGKP.jpg"
+    },
+    {
+      "name": {
+        "en": "Til Schweiger",
+        "he": "Til Schweiger"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3Jk7y4sKgckrN9RzAAt0drlR0QG.jpg"
+    },
+    {
+      "name": {
+        "en": "Gedeon Burkhard",
+        "he": "Gedeon Burkhard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oC2C7AEh5WUa7XShz7SMpuNwheP.jpg"
+    },
+    {
+      "name": {
+        "en": "Jacky Ido",
+        "he": "Jacky Ido"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qvPeXby2lTt0bHCk6diaUY0pmdv.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_051/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/7sfbEnaARXDDhKm0CZ7D7uc2sbo.jpg",
+  "decoy_answers": {
+    "en": [
+      "Stunt Squad",
+      "Chronicle of Poor Lovers",
+      "Great Transport",
+      "One Silver Piece",
+      "Nathalie: Escape from Hell",
+      "Force of Arms",
+      "A Boy's Summer in 1945",
+      "A Child in the Crowd",
+      "A Letter From Bataan"
+    ],
+    "he": [
+      "La polizia è sconfitta",
+      "Cronache di poveri amanti",
+      "Veliki transport",
+      "Jeden stříbrný",
+      "Nathalie rescapée de l'enfer",
+      "Force of Arms",
+      "美しい夏キリシマ",
+      "Un enfant dans la foule",
+      "A Letter From Bataan"
+    ]
+  },
+  "original_filename": "Inglourious_Basterds.mp4"
+}

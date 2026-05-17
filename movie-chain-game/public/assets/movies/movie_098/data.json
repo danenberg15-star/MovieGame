@@ -1,0 +1,122 @@
+{
+  "id": "movie_098",
+  "title": {
+    "en": "Ray",
+    "he": "ריי"
+  },
+  "year": 2004,
+  "director": {
+    "name": {
+      "en": "Taylor Hackford",
+      "he": "Taylor Hackford"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/aAP9RYT7XxUiC2NZL9Hi2gEdxGB.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Howard Baldwin",
+      "he": "Howard Baldwin"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Jamie Foxx",
+        "he": "Jamie Foxx"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/25zzvFA6yx2Q9BYnugsbd4JWDfu.jpg"
+    },
+    {
+      "name": {
+        "en": "Kerry Washington",
+        "he": "Kerry Washington"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/h50ibjjpR9lF566PHoV7u7CuWGY.jpg"
+    },
+    {
+      "name": {
+        "en": "Regina King",
+        "he": "Regina King"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tqgHkoh2g8NfFPquJuEs3kvAAgF.jpg"
+    },
+    {
+      "name": {
+        "en": "Harry Lennix",
+        "he": "Harry Lennix"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kNGiizWpetf4pyAkINkjkWacmCL.jpg"
+    },
+    {
+      "name": {
+        "en": "Clifton Powell",
+        "he": "Clifton Powell"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nLErcBpgV79K2an7l57J7FQQxLz.jpg"
+    },
+    {
+      "name": {
+        "en": "Bokeem Woodbine",
+        "he": "Bokeem Woodbine"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pnPyA5pJn94zUzuLWTNkGBNZxza.jpg"
+    },
+    {
+      "name": {
+        "en": "Sharon Warren",
+        "he": "Sharon Warren"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "C.J. Sanders",
+        "he": "C.J. Sanders"
+      },
+      "image": null
+    },
+    {
+      "name": {
+        "en": "Curtis Armstrong",
+        "he": "Curtis Armstrong"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3ZAX6NoU47Qshk0svFxkEcJ5fhI.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Schiff",
+        "he": "Richard Schiff"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1kg1X6OWRuMdBBYqZLQ6UqMlEPC.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_098/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/tSPC7sO2XYNL9QcMmK88tuUALL5.jpg",
+  "decoy_answers": {
+    "en": [
+      "Withdrawal",
+      "Kitty",
+      "The Divine Emma",
+      "The Story of Alfred Nobel",
+      "Round About Midnight",
+      "All Access To Rossa 25 Shining Years",
+      "Sonder",
+      "The Fire of Immortality",
+      "Shoe Shine Boy"
+    ],
+    "he": [
+      "Withdrawal",
+      "Kitty",
+      "Božská Ema",
+      "The Story of Alfred Nobel",
+      "真夜中まで",
+      "All Access To Rossa 25 Shining Years",
+      "Sonder",
+      "Костёр бессмертия",
+      "Shoe Shine Boy"
+    ]
+  },
+  "original_filename": "Ray.mp4"
+}

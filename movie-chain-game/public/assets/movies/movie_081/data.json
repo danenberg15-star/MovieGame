@@ -1,0 +1,122 @@
+{
+  "id": "movie_081",
+  "title": {
+    "en": "Mystic River",
+    "he": "מיסטיק ריבר"
+  },
+  "year": 2003,
+  "director": {
+    "name": {
+      "en": "Clint Eastwood",
+      "he": "Clint Eastwood"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/8TwdCfeOZH7ucRlfLZ6wObxa7cO.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Robert Lorenz",
+      "he": "Robert Lorenz"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rzScPaVbrCTFk9KmKYrP274icJr.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Sean Penn",
+        "he": "Sean Penn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9glqNTVpFpdN1nFklKaHPUyCwR6.jpg"
+    },
+    {
+      "name": {
+        "en": "Tim Robbins",
+        "he": "Tim Robbins"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3FfJMIVwXgsIXbAT8ECBSZJAncR.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Bacon",
+        "he": "Kevin Bacon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rjX2Oz3tCZMfSwOoIAyEhdtXnTE.jpg"
+    },
+    {
+      "name": {
+        "en": "Laurence Fishburne",
+        "he": "Laurence Fishburne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2GbXERENPpl5MmlqOLlPVaVtifD.jpg"
+    },
+    {
+      "name": {
+        "en": "Marcia Gay Harden",
+        "he": "Marcia Gay Harden"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5vxcHIHABJxqhweAsTiXVOhT4SE.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Linney",
+        "he": "Laura Linney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yIopIq7l7eIvjoQqnZJkpdQEvds.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Chapman",
+        "he": "Kevin Chapman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sCUwtlhaT2MspHCUx2veRAA9ZXx.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Guiry",
+        "he": "Tom Guiry"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/j8M7rA6JUqjavIRz8ZhYkniBOjj.jpg"
+    },
+    {
+      "name": {
+        "en": "Emmy Rossum",
+        "he": "Emmy Rossum"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wq9ALe33ZGg38Yf1JsKnEcbhZQo.jpg"
+    },
+    {
+      "name": {
+        "en": "Spencer Treat Clark",
+        "he": "Spencer Treat Clark"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8qb2Unu2907rU7k6UxmF9PFamau.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_081/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/hCHVDbo6XJGj3r2i4hVjKhE0GKF.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "The Vanishing",
+      "The Thin Red Line",
+      "At Point Blank",
+      "Hamlet Goes Business",
+      "Bones and All",
+      "Flame & Citron",
+      "10 Sekunden"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "ההיעלמות",
+      "הקו האדום",
+      "Rånarna",
+      "Hamlet liikemaailmassa",
+      "עצמות והכול",
+      "פלאם וציטרון",
+      "10 Sekunden"
+    ]
+  },
+  "original_filename": "Mystic_River.mp4"
+}

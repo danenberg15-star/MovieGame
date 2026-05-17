@@ -1,0 +1,122 @@
+{
+  "id": "movie_053",
+  "title": {
+    "en": "Interstellar",
+    "he": "בין כוכבים"
+  },
+  "year": 2014,
+  "director": {
+    "name": {
+      "en": "Christopher Nolan",
+      "he": "Christopher Nolan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Christopher Nolan",
+      "he": "Christopher Nolan"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Matthew McConaughey",
+        "he": "Matthew McConaughey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lCySuYjhXix3FzQdS4oceDDrXKI.jpg"
+    },
+    {
+      "name": {
+        "en": "Anne Hathaway",
+        "he": "Anne Hathaway"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/s6tflSD20MGz04ZR2R1lZvhmC4Y.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Caine",
+        "he": "Michael Caine"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg"
+    },
+    {
+      "name": {
+        "en": "Jessica Chastain",
+        "he": "Jessica Chastain"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lodMzLKSdrPcBry6TdoDsMN3Vge.jpg"
+    },
+    {
+      "name": {
+        "en": "Casey Affleck",
+        "he": "Casey Affleck"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/304ilSygaCRWykoBWAL67TOw8g9.jpg"
+    },
+    {
+      "name": {
+        "en": "Wes Bentley",
+        "he": "Wes Bentley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/voD93lzFZrr9xfAggwFcPRBi84i.jpg"
+    },
+    {
+      "name": {
+        "en": "Topher Grace",
+        "he": "Topher Grace"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oJQxl4DG0KSCtOGrpWNhYz9gUZA.jpg"
+    },
+    {
+      "name": {
+        "en": "Mackenzie Foy",
+        "he": "Mackenzie Foy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gW9BdiA9eooBWa5bzHWkV7rbTa8.jpg"
+    },
+    {
+      "name": {
+        "en": "Ellen Burstyn",
+        "he": "Ellen Burstyn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zGihSIVRzwmCqilnA4PmNM4C2RT.jpg"
+    },
+    {
+      "name": {
+        "en": "John Lithgow",
+        "he": "John Lithgow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ajfuBSm1HuVqFJlbTmAlza62Xxr.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_053/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
+  "decoy_answers": {
+    "en": [
+      "Doomsday",
+      "Minari",
+      "Awake",
+      "LEGO Hero Factory: Savage Planet",
+      "We Were Here",
+      "Israfil",
+      "Chrysalis",
+      "Spiderhead",
+      "Ice Princess"
+    ],
+    "he": [
+      "יום הדין",
+      "מינארי",
+      "ערים",
+      "LEGO Hero Factory: Savage Planet",
+      "We Were Here",
+      "اسرافیل",
+      "גולם",
+      "ראש העכביש",
+      "נסיכת הקרח"
+    ]
+  },
+  "original_filename": "Interstellar.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_062",
+  "title": {
+    "en": "Legends of the Fall",
+    "he": "רוחות של תשוקה"
+  },
+  "year": 1994,
+  "director": {
+    "name": {
+      "en": "Edward Zwick",
+      "he": "Edward Zwick"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/RzRjOpqfob68smXTj5RPjankKr.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "William D. Wittliff",
+      "he": "William D. Wittliff"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Anthony Hopkins",
+        "he": "Anthony Hopkins"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dYVQTK1dPrQl1mugeLEWSSmA6Im.jpg"
+    },
+    {
+      "name": {
+        "en": "Aidan Quinn",
+        "he": "Aidan Quinn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/viUuUmhiGdsfoQh0IpO5N312qNd.jpg"
+    },
+    {
+      "name": {
+        "en": "Julia Ormond",
+        "he": "Julia Ormond"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u7Oz6nHfMSlXuT34K7Ffp4f2qgP.jpg"
+    },
+    {
+      "name": {
+        "en": "Henry Thomas",
+        "he": "Henry Thomas"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tyTcpTMIAyIIy30u8N59G0PI06f.jpg"
+    },
+    {
+      "name": {
+        "en": "Karina Lombard",
+        "he": "Karina Lombard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yiRO0bdHkPccjQDA3HdEPmJUEA7.jpg"
+    },
+    {
+      "name": {
+        "en": "Gordon Tootoosis",
+        "he": "Gordon Tootoosis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ls9gOUs7nSZyutuL5MULC1PZftN.jpg"
+    },
+    {
+      "name": {
+        "en": "John Novak",
+        "he": "John Novak"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xh8EyWCDggvZkyAlNGsTvH6KarE.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Wisden",
+        "he": "Robert Wisden"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lLl40wVqPB9dylabUAu4qvWUu6O.jpg"
+    },
+    {
+      "name": {
+        "en": "Tantoo Cardinal",
+        "he": "Tantoo Cardinal"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rxhjfygJlPwztf36iRI7UDn5dr7.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_062/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/t1KPGlW0UGd0m515LPQmk2F4nu1.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Shell Seekers",
+      "The Thin Red Line",
+      "Albino Alligator",
+      "Eagle vs Shark",
+      "Looks That Kill",
+      "Bones and All",
+      "Derailed",
+      "Just Like Heaven"
+    ],
+    "he": [
+      "לגעת במוות",
+      "The Shell Seekers",
+      "הקו האדום",
+      "Albino Alligator",
+      "נשר נגד כריש",
+      "מבט קטלני",
+      "עצמות והכול",
+      "מחיר הבגידה",
+      "זוג משמיים"
+    ]
+  },
+  "original_filename": "Legends_of_the_Fall.mp4"
+}
