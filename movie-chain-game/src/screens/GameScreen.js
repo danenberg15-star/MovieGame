@@ -22,7 +22,8 @@ import {
   getConnectionHint,
   checkWinCondition,
   initializeGameState,
-  getSuccessMessage
+  getSuccessMessage,
+  getNextRequiredConnectionType
 } from '../utils/gameLogic';
 import botPlayer from '../utils/botPlayer';
 
@@ -39,6 +40,7 @@ function GameScreen() {
   const [currentMovie, setCurrentMovie] = useState(null);
   const [answerOptions, setAnswerOptions] = useState([]);
   const [eliminatedAnswers, setEliminatedAnswers] = useState([]);
+  const [requiredConnectionType, setRequiredConnectionType] = useState(null);
   
   // Phase Management
   const [phase, setPhase] = useState('loading');
@@ -67,15 +69,17 @@ function GameScreen() {
   const language = i18n.language;
 
  // Start new round
-const startNewRound = useCallback((state, movies) => {
+const startNewRound = useCallback((state, movies, reqConnectionType) => {
     console.log('🔄 Starting new round...');
+    console.log('🎨 Required connection type:', reqConnectionType);
     
     const nextMovie = selectNextMovie(
       movies,
       state.usedMovieIds,
       state.teamA.cards,
       state.teamB.cards,
-      currentTurn
+      currentTurn,
+      reqConnectionType
     );
   
     console.log('🎬 Next movie selected:', nextMovie);
@@ -154,11 +158,17 @@ const startNewRound = useCallback((state, movies) => {
           setTeamBData(existingState.teamB);
           setCurrentTurn(existingState.currentTurn);
           
+          // Load or initialize required connection type
+          const reqType = existingState.lastConnectionType 
+            ? getNextRequiredConnectionType(existingState.lastConnectionType)
+            : 'actor';
+          setRequiredConnectionType(reqType);
+          
           console.log('✅ Existing game state loaded');
           console.log('🎬 Starting round from existing state...');
           
           // Start the round
-          startNewRound(existingState, movies);
+          startNewRound(existingState, movies, reqType);
         } else {
           console.log('🆕 Step 4: Initializing NEW game...');
           
@@ -167,6 +177,7 @@ const startNewRound = useCallback((state, movies) => {
           console.log('⚓ Anchor cards selected:', anchorCards);
           
           const initialState = initializeGameState(anchorCards, movies);
+          initialState.lastConnectionType = null; // Start with no preference
           console.log('🎲 Initial state created:', initialState);
           
           // Save to Firebase
@@ -180,9 +191,12 @@ const startNewRound = useCallback((state, movies) => {
           setTeamAData(initialState.teamA);
           setTeamBData(initialState.teamB);
           
+          // First round starts with 'actor' connection type
+          setRequiredConnectionType('actor');
+          
           console.log('🎬 Starting first round...');
           // Start first round
-          startNewRound(initialState, movies);
+          startNewRound(initialState, movies, 'actor');
         }
 
         setIsLoading(false);
@@ -258,16 +272,18 @@ const startNewRound = useCallback((state, movies) => {
     }, 500);
   };
 
-  // Handle answer selection
+  // Handle answer selected
   const handleAnswerSelected = async (answer, isCorrect, team = currentTurn) => {
-    console.log('✅ Answer selected:', { answer, isCorrect, team });
+    console.log(`📝 Answer selected by Team ${team}:`, answer, 'Correct:', isCorrect);
+    
+    // Add to attempted teams
+    setAttemptedTeams(prev => [...prev, team]);
     
     if (isCorrect) {
-      // Correct answer - earn token and go to decision phase
-      showMessage(t('correct') + '! 🎉', 'success');
+      // Correct answer - earn 1 token
+      showMessage(t('correct') || '✅ Correct!', 'success');
       
       const updatedState = { ...gameState };
-      
       if (team === 'A') {
         updatedState.teamA.tokens += 1;
         setTeamAData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
@@ -276,36 +292,34 @@ const startNewRound = useCallback((state, movies) => {
         setTeamBData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
       }
       
-      updatedState.usedMovieIds.push(currentMovie.id);
-      
       // Update Firebase
       await updateGameState(updatedState);
       
-      // Go to decision phase
+      // Move to decision phase
       setWonCard(currentMovie);
       setDecisionTeam(team);
       setPhase('decision');
       
-      console.log('🎯 Moving to decision phase');
-      
       // Bot's decision in QA mode
       if (isQAMode && team === 'B') {
-        handleBotDecision();
+        setTimeout(() => {
+          handleBotDecision();
+        }, 1000);
       }
     } else {
       // Wrong answer
-      showMessage(t('incorrect') + ' ❌', 'error');
-      
-      // Add to eliminated answers
+      showMessage(t('incorrect') || '❌ Incorrect', 'error');
       setEliminatedAnswers(prev => [...prev, answer]);
-      setAttemptedTeams(prev => [...prev, team]);
       
-      console.log('❌ Wrong answer - attempted teams:', [...attemptedTeams, team]);
+      // Check if both teams already attempted
+      const bothAttempted = attemptedTeams.includes('A') && attemptedTeams.includes('B');
       
-      // Check if both teams failed
-      if (attemptedTeams.length >= 1 && !attemptedTeams.includes(team)) {
+      if (bothAttempted) {
         // Both teams failed - card returns to pool
-        showMessage(t('both_teams_failed'), 'warning');
+        showMessage(
+          t('both_teams_failed') || '🔄 Both teams failed - card returns!',
+          'warning'
+        );
         
         setTimeout(() => {
           switchToNextRound();
@@ -351,7 +365,7 @@ const startNewRound = useCallback((state, movies) => {
     const validation = validateConnection(wonCard, targetCard, connectionType);
     
     if (validation.valid) {
-      // Successful connection
+      // Successful connection - earn 3 tokens
       const successMsg = getSuccessMessage(
         connectionType,
         validation.connection,
@@ -359,21 +373,31 @@ const startNewRound = useCallback((state, movies) => {
       );
       showMessage(successMsg, 'success');
       
-      // Add card to team
+      // Add card to team + award 3 tokens
       const updatedState = { ...gameState };
       if (team === 'A') {
         updatedState.teamA.cards.push(wonCard);
+        updatedState.teamA.tokens += 3;
         setTeamAData(prev => ({ 
           ...prev, 
-          cards: [...prev.cards, wonCard] 
+          cards: [...prev.cards, wonCard],
+          tokens: prev.tokens + 3
         }));
       } else {
         updatedState.teamB.cards.push(wonCard);
+        updatedState.teamB.tokens += 3;
         setTeamBData(prev => ({ 
           ...prev, 
-          cards: [...prev.cards, wonCard] 
+          cards: [...prev.cards, wonCard],
+          tokens: prev.tokens + 3
         }));
       }
+      
+      // Update last connection type for diversity
+      updatedState.lastConnectionType = connectionType;
+      const nextReqType = getNextRequiredConnectionType(connectionType);
+      setRequiredConnectionType(nextReqType);
+      console.log(`🎨 Connection successful! Next required type: ${nextReqType}`);
       
       // Update Firebase
       await updateGameState(updatedState);
@@ -385,9 +409,9 @@ const startNewRound = useCallback((state, movies) => {
         return;
       }
       
-      // Continue to next round
+      // Continue to next round with new required type
       setTimeout(() => {
-        switchToNextRound();
+        switchToNextRound(nextReqType);
       }, 2000);
     } else {
       // Failed connection - show hint
@@ -397,9 +421,9 @@ const startNewRound = useCallback((state, movies) => {
         'error'
       );
       
-      // Card stays in pool, continue to next round
+      // Card stays in pool, continue to next round (keep same required type)
       setTimeout(() => {
-        switchToNextRound();
+        switchToNextRound(requiredConnectionType);
       }, 3000);
     }
   };
@@ -408,22 +432,34 @@ const startNewRound = useCallback((state, movies) => {
   const handleSaveToken = async (team = decisionTeam) => {
     showMessage(t('token_saved') || '🎫 Token saved!', 'info');
     
+    // Award 1 token for saving
+    const updatedState = { ...gameState };
+    if (team === 'A') {
+      updatedState.teamA.tokens += 1;
+      setTeamAData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
+    } else {
+      updatedState.teamB.tokens += 1;
+      setTeamBData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
+    }
+    
+    await updateGameState(updatedState);
+    
     // Card stays in pool
-    // Continue to next round
+    // Continue to next round (keep same required type)
     setTimeout(() => {
-      switchToNextRound();
+      switchToNextRound(requiredConnectionType);
     }, 1500);
   };
 
   // Switch to next round
-  const switchToNextRound = () => {
+  const switchToNextRound = (nextReqType = requiredConnectionType) => {
     console.log('⏭️ Switching to next round...');
     const nextTurn = currentTurn === 'A' ? 'B' : 'A';
     setCurrentTurn(nextTurn);
     setWonCard(null);
     setDecisionTeam(null);
     
-    startNewRound(gameState, allMovies);
+    startNewRound(gameState, allMovies, nextReqType);
   };
 
   // Update game state in Firebase
