@@ -11,6 +11,7 @@ import TeamStatus from '../components/TeamStatus';
 import TrailerPlayer from '../components/TrailerPlayer';
 import AnswerOptions from '../components/AnswerOptions';
 import DecisionPhase from '../components/DecisionPhase';
+import AnchorReveal from '../components/AnchorReveal';
 
 // Utils
 import {
@@ -23,7 +24,8 @@ import {
   checkWinCondition,
   initializeGameState,
   getSuccessMessage,
-  getNextRequiredConnectionType
+  getNextRequiredConnectionType,
+  getConnectionPoints
 } from '../utils/gameLogic';
 import botPlayer from '../utils/botPlayer';
 
@@ -46,6 +48,9 @@ function GameScreen() {
   const [phase, setPhase] = useState('loading');
   const [currentTurn, setCurrentTurn] = useState('A');
   const [attemptedTeams, setAttemptedTeams] = useState([]);
+  
+  // Anchor cards for reveal
+  const [anchorCards, setAnchorCards] = useState(null);
   
   // Team Data
   const [teamAData, setTeamAData] = useState({ cards: [], tokens: 0 });
@@ -167,16 +172,22 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
           console.log('✅ Existing game state loaded');
           console.log('🎬 Starting round from existing state...');
           
+          // Skip anchor reveal if game already started
+          setIsLoading(false);
+          setGameInitialized(true);
+          
           // Start the round
           startNewRound(existingState, movies, reqType);
         } else {
           console.log('🆕 Step 4: Initializing NEW game...');
           
           // Initialize new game
-          const anchorCards = selectAnchorCards(movies);
-          console.log('⚓ Anchor cards selected:', anchorCards);
+          const selectedAnchors = selectAnchorCards(movies);
+          console.log('⚓ Anchor cards selected:', selectedAnchors);
           
-          const initialState = initializeGameState(anchorCards, movies);
+          setAnchorCards(selectedAnchors);
+          
+          const initialState = initializeGameState(selectedAnchors, movies);
           initialState.lastConnectionType = null; // Start with no preference
           console.log('🎲 Initial state created:', initialState);
           
@@ -194,14 +205,13 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
           // First round starts with 'actor' connection type
           setRequiredConnectionType('actor');
           
-          console.log('🎬 Starting first round...');
-          // Start first round
-          startNewRound(initialState, movies, 'actor');
+          setIsLoading(false);
+          setGameInitialized(true);
+          
+          // Show anchor reveal phase
+          console.log('🎬 Showing anchor cards...');
+          setPhase('anchor_reveal');
         }
-
-        setIsLoading(false);
-        setGameInitialized(true);
-        console.log('✅ Game initialization complete!');
       } catch (error) {
         console.error('❌ Error initializing game:', error);
         alert('Failed to initialize game: ' + error.message);
@@ -241,6 +251,12 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
 
     return () => unsubscribe();
   }, [roomCode, gameInitialized]);
+
+  // Handle anchor reveal continue
+  const handleAnchorContinue = () => {
+    console.log('▶️ Anchor reveal complete - starting first round');
+    startNewRound(gameState, allMovies, 'actor');
+  };
 
   // Handle trailer end
   const handleTrailerEnd = () => {
@@ -512,6 +528,18 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
         <div className="loading-spinner"></div>
         <p>{t('loading') || 'Loading game...'}</p>
       </div>
+    );
+  }
+
+  // Anchor Reveal Phase
+  if (phase === 'anchor_reveal' && anchorCards) {
+    return (
+      <AnchorReveal
+        teamACard={anchorCards.teamA}
+        teamBCard={anchorCards.teamB}
+        onContinue={handleAnchorContinue}
+        language={language}
+      />
     );
   }
 
