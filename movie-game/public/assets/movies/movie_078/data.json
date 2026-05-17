@@ -1,0 +1,122 @@
+{
+  "id": "movie_078",
+  "title": {
+    "en": "Monsters, Inc.",
+    "he": "מפלצות בע''מ"
+  },
+  "year": 2001,
+  "director": {
+    "name": {
+      "en": "Pete Docter",
+      "he": "Pete Docter"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/vITDphkNpSn1LP5gUEheAnlclnl.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Darla K. Anderson",
+      "he": "Darla K. Anderson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/xpP4WdzAdp0ojP6rwmiSGkANeSd.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "John Goodman",
+        "he": "John Goodman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yyYqoyKHO7hE1zpgEV2XlqYWcNV.jpg"
+    },
+    {
+      "name": {
+        "en": "Billy Crystal",
+        "he": "Billy Crystal"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jfcCceTnP7rrHz1pSjCxiqRosw3.jpg"
+    },
+    {
+      "name": {
+        "en": "Mary Gibbs",
+        "he": "Mary Gibbs"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nqYOXIaf8ztfacrludRtS1Bytzz.jpg"
+    },
+    {
+      "name": {
+        "en": "Steve Buscemi",
+        "he": "Steve Buscemi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+    },
+    {
+      "name": {
+        "en": "James Coburn",
+        "he": "James Coburn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9GApjInyrVvjnTAr652C1aViPqZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Jennifer Tilly",
+        "he": "Jennifer Tilly"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9vYoYF385cVq9oDO3pDpXihP4vz.jpg"
+    },
+    {
+      "name": {
+        "en": "Bob Peterson",
+        "he": "Bob Peterson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dJe3nTCIToebjj1WHFHP7LmZKyk.jpg"
+    },
+    {
+      "name": {
+        "en": "John Ratzenberger",
+        "he": "John Ratzenberger"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oRtDEOuIO1yDhTz5dORBdxXuLMO.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Oz",
+        "he": "Frank Oz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mb2JbT8s6LIgaxj6QTph0NW1pmI.jpg"
+    },
+    {
+      "name": {
+        "en": "Daniel Gerson",
+        "he": "Daniel Gerson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/amOuK3ytWV7KXeWrpl9joCglRlF.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_078/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/wFSpyMsp7H0ttERbxY7Trlv8xry.jpg",
+  "decoy_answers": {
+    "en": [
+      "Yours, Mine & Ours",
+      "The Good Night",
+      "The Perfect Score",
+      "Sex Drive",
+      "Fanboys",
+      "We Can Be Heroes",
+      "The Waiters' Picnic",
+      "Fast Times at Ridgemont High",
+      "Ice Princess"
+    ],
+    "he": [
+      "שלך, שלי ושלנו",
+      "הלילה הטוב",
+      "תוצאה מושלמת",
+      "סקס דרייב",
+      "שרופים",
+      "גיבורים זה אנחנו",
+      "The Waiters' Picnic",
+      "נעורים בקצב מהיר",
+      "נסיכת הקרח"
+    ]
+  },
+  "original_filename": "Monsters__Inc_.mp4"
+}

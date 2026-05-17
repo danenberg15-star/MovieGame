@@ -5,8 +5,10 @@ import { useTranslation } from 'react-i18next';
 import './App.css';
 import './i18n';
 
-// Import screens (we'll create these next)
+// Import screens
 import HomeScreen from './screens/HomeScreen';
+import LobbyScreen from './screens/LobbyScreen';
+import GameScreen from './screens/GameScreen';
 
 function App() {
   const { i18n } = useTranslation();
@@ -59,6 +61,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
+          <Route path="/lobby/:roomCode" element={<LobbyScreen />} />
+          <Route path="/game/:roomCode" element={<GameScreen />} />
           <Route path="/room/:roomCode" element={<HomeScreen />} />
         </Routes>
       </Router>

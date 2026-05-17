@@ -1,0 +1,122 @@
+{
+  "id": "movie_044",
+  "title": {
+    "en": "Harry Potter and the Chamber of Secrets",
+    "he": "הארי פוטר וחדר הסודות"
+  },
+  "year": 2002,
+  "director": {
+    "name": {
+      "en": "Chris Columbus",
+      "he": "Chris Columbus"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/yCyEz90NqjEXKZ7HYcEhDXlLlPc.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "David Heyman",
+      "he": "David Heyman"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/m39R6xbVfHfCEO4H0s2Fhwh9mkt.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Daniel Radcliffe",
+        "he": "Daniel Radcliffe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/e64VeB4Mybwm2tOhyLY1h7XQQ8N.jpg"
+    },
+    {
+      "name": {
+        "en": "Rupert Grint",
+        "he": "Rupert Grint"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+    },
+    {
+      "name": {
+        "en": "Emma Watson",
+        "he": "Emma Watson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+    },
+    {
+      "name": {
+        "en": "Kenneth Branagh",
+        "he": "Kenneth Branagh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AbCqqFxNi5w3nDUFdQt0DGMFh5H.jpg"
+    },
+    {
+      "name": {
+        "en": "Toby Jones",
+        "he": "Toby Jones"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/y6kLmjLgZ1sceaE4Zi1fwF0YsvZ.jpg"
+    },
+    {
+      "name": {
+        "en": "Robbie Coltrane",
+        "he": "Robbie Coltrane"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Harris",
+        "he": "Richard Harris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lCvcVMuxrg1f5A8OMqY9AqkkcZR.jpg"
+    },
+    {
+      "name": {
+        "en": "Alan Rickman",
+        "he": "Alan Rickman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Felton",
+        "he": "Tom Felton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg"
+    },
+    {
+      "name": {
+        "en": "Jason Isaacs",
+        "he": "Jason Isaacs"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/s6XRFjqUsrDJfDQuXPOoExAYPmb.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_044/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/sdEOH0992YZ0QSxgXNIGLq1ToUi.jpg",
+  "decoy_answers": {
+    "en": [
+      "How the Grinch Stole Christmas",
+      "DC Showcase - Constantine: The House of Mystery",
+      "The Santa Clause 2",
+      "Lord of Illusions",
+      "Kung Fu Hustle",
+      "The Sword in the Stone",
+      "Shanghai Noon",
+      "Casper",
+      "DragonHeart"
+    ],
+    "he": [
+      "הגרינץ'",
+      "קונסטנטין: בית המסתורין",
+      "סנטה במשרה חלקית 2",
+      "אדון האשליות",
+      "מהומה בשנחאי",
+      "החרב באבן",
+      "שנחאי נון",
+      "קספר",
+      "לב הדרקון"
+    ]
+  },
+  "original_filename": "Harry_Potter_and_the_Chamber_of_Secrets.mp4"
+}

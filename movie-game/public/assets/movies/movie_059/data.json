@@ -1,0 +1,122 @@
+{
+  "id": "movie_059",
+  "title": {
+    "en": "Kill Bill: The Whole Bloody Affair",
+    "he": "להרוג את ביל: סיפור הדמים המלא"
+  },
+  "year": 2011,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Bender",
+      "he": "Lawrence Bender"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mZRwkIvUj8USnS7Jfwd6VdHkY2x.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Uma Thurman",
+        "he": "Uma Thurman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sBgAZWi3o4FsnaTvnTNtK6jpQcF.jpg"
+    },
+    {
+      "name": {
+        "en": "Lucy Liu",
+        "he": "Lucy Liu"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9nbtjqsx3De7hO2XDtrBQ7M9VCH.jpg"
+    },
+    {
+      "name": {
+        "en": "Vivica A. Fox",
+        "he": "Vivica A. Fox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oIzevp0dqjIxqRQ2VoSzjiDCBt.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Madsen",
+        "he": "Michael Madsen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fvr2EXEPrVwsF2JlfRp0Olbj4g8.jpg"
+    },
+    {
+      "name": {
+        "en": "Daryl Hannah",
+        "he": "Daryl Hannah"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5FllFmoiaru7tjXJ6Orc11OpQcw.jpg"
+    },
+    {
+      "name": {
+        "en": "David Carradine",
+        "he": "David Carradine"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1X2GlkMKS9FIG1kGou7o6LRqAjz.jpg"
+    },
+    {
+      "name": {
+        "en": "Julie Dreyfus",
+        "he": "Julie Dreyfus"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4dOHTPwEdCsRkMQZtUMFqpTzX9g.jpg"
+    },
+    {
+      "name": {
+        "en": "Chiaki Kuriyama",
+        "he": "Chiaki Kuriyama"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2lGs2rzx9VovrtBFsKM5Fy1Uja5.jpg"
+    },
+    {
+      "name": {
+        "en": "Sonny Chiba",
+        "he": "Sonny Chiba"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/k3kHcYUBj8RskpAEDaJ0FR6ynSx.jpg"
+    },
+    {
+      "name": {
+        "en": "Gordon Liu Chia-Hui",
+        "he": "Gordon Liu Chia-Hui"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nGpgPSRGXJ808e1ay54nym3qUdp.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_059/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/nSOJfWJCdVFZQwXQA7RXn7FIIiY.jpg",
+  "decoy_answers": {
+    "en": [
+      "Man of the House",
+      "Sword In The Moon",
+      "Kid with the Golden Arm",
+      "Last Hurrah for Chivalry",
+      "Fanboys",
+      "The Doom Generation",
+      "Nobody",
+      "Moment of Terror",
+      "A Chinese Odyssey Part One: Pandora's Box"
+    ],
+    "he": [
+      "הכי גבר בבית",
+      "חרב בירח",
+      "金臂童",
+      "豪俠",
+      "שרופים",
+      "The Doom Generation",
+      "סתם אחד",
+      "ひき逃げ",
+      "西遊記第壹佰零壹回之月光寶盒"
+    ]
+  },
+  "original_filename": "Kill_Bill__The_Whole_Bloody_Affair.mp4"
+}

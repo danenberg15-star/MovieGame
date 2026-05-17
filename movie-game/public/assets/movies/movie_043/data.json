@@ -1,0 +1,122 @@
+{
+  "id": "movie_043",
+  "title": {
+    "en": "Hacksaw Ridge",
+    "he": "הסרבן"
+  },
+  "year": 2016,
+  "director": {
+    "name": {
+      "en": "Mel Gibson",
+      "he": "Mel Gibson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/jnqHMaOslt8cef2atSmOpGRvNla.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Bruce Davey",
+      "he": "Bruce Davey"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Andrew Garfield",
+        "he": "Andrew Garfield"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/beO5YvbTjrr5yy8hW26KVDMSr35.jpg"
+    },
+    {
+      "name": {
+        "en": "Sam Worthington",
+        "he": "Sam Worthington"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mflBcox36s9ZPbsZPVOuhf6axaJ.jpg"
+    },
+    {
+      "name": {
+        "en": "Vince Vaughn",
+        "he": "Vince Vaughn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qImHvsd7SFJh46Ujx50xUfkeMNz.jpg"
+    },
+    {
+      "name": {
+        "en": "Teresa Palmer",
+        "he": "Teresa Palmer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sjSiLSCp9LS1Z0nyGpmquTBuUyr.jpg"
+    },
+    {
+      "name": {
+        "en": "Luke Bracey",
+        "he": "Luke Bracey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ot2h7IrXpC8XSnIZDSVsj2FQ5cx.jpg"
+    },
+    {
+      "name": {
+        "en": "Hugo Weaving",
+        "he": "Hugo Weaving"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lSC8Et0PYi5zeQb3IpPkFje7hgR.jpg"
+    },
+    {
+      "name": {
+        "en": "Rachel Griffiths",
+        "he": "Rachel Griffiths"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n7rKwLjZmbkBKWBwhj9SYzsRaF6.jpg"
+    },
+    {
+      "name": {
+        "en": "Ryan Corr",
+        "he": "Ryan Corr"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iVV9HFbI562kqMOkvw0js7nzoK8.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Roxburgh",
+        "he": "Richard Roxburgh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/de1XpxnOuW4v4fFWFEjmBqmHaRf.jpg"
+    },
+    {
+      "name": {
+        "en": "Goran D. Kleut",
+        "he": "Goran D. Kleut"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vsN8BI3t4c8JHLoLznCZxO9gZ6r.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_043/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/fnOMP6mjmOmZwmlC1n0K7ivrzt1.jpg",
+  "decoy_answers": {
+    "en": [
+      "Admiral",
+      "Battle of the Bulge",
+      "Shattered Glass",
+      "Suzume Iro Doki",
+      "One Day Before the Rainy Season",
+      "Hitler's Hollywood",
+      "Sweetwater",
+      "Meet Me There",
+      "The Man from Earth"
+    ],
+    "he": [
+      "אדמירל",
+      "יום לפני הכניעה",
+      "חשיפה",
+      "雀色時",
+      "अषाढ़ का एक दिन",
+      "Hitlers Hollywood",
+      "Sweetwater",
+      "Meet Me There",
+      "האיש מכוכב ארץ"
+    ]
+  },
+  "original_filename": "Hacksaw_Ridge.mp4"
+}

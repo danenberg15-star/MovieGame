@@ -1,0 +1,122 @@
+{
+  "id": "movie_103",
+  "title": {
+    "en": "RoboCop",
+    "he": "רובוקופ"
+  },
+  "year": 1987,
+  "director": {
+    "name": {
+      "en": "Paul Verhoeven",
+      "he": "Paul Verhoeven"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/2TQvrRCtS7GD0EEgODwfNMmkMbG.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Arne Schmidt",
+      "he": "Arne Schmidt"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Peter Weller",
+        "he": "Peter Weller"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mVRJX38zabRadVPJe0XOTObVzhp.jpg"
+    },
+    {
+      "name": {
+        "en": "Nancy Allen",
+        "he": "Nancy Allen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ok87WkvJJJTDsTzqgmoC5BHv6Wh.jpg"
+    },
+    {
+      "name": {
+        "en": "Dan O'Herlihy",
+        "he": "Dan O'Herlihy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vhZodGF9IiHdpbU78ShpyCgBr3X.jpg"
+    },
+    {
+      "name": {
+        "en": "Ronny Cox",
+        "he": "Ronny Cox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cKkVkqft2RacSDhsKxO8nMFgeAd.jpg"
+    },
+    {
+      "name": {
+        "en": "Kurtwood Smith",
+        "he": "Kurtwood Smith"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7dqsk4NYbNZNnmppv2zPuf1hKBn.jpg"
+    },
+    {
+      "name": {
+        "en": "Miguel Ferrer",
+        "he": "Miguel Ferrer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n6VZ8OQmozHmnJQRwR55gBH8Tl0.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert DoQui",
+        "he": "Robert DoQui"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/uLQsWehFSYRn2LNfzT9fUjSRpkF.jpg"
+    },
+    {
+      "name": {
+        "en": "Ray Wise",
+        "he": "Ray Wise"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/60313U01R1j9eueDBXiIh9o55RQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Felton Perry",
+        "he": "Felton Perry"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vHH6ciuv8Wc03iKqYTmz4TcWcnv.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul McCrane",
+        "he": "Paul McCrane"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nzFUnpptZ5hhiivD1lsUcPDB8V0.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_103/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/esmAU0fCO28FbS6bUBKLAzJrohZ.jpg",
+  "decoy_answers": {
+    "en": [
+      "Dystopia",
+      "Nemesis 3: Time Lapse",
+      "Mobile Suit Gundam: Cucuruz Doan's Island",
+      "Lady Battle Cop",
+      "Sunscream",
+      "The Golden Glove",
+      "Ikatan Darah",
+      "Truth & Treason",
+      "The Toxic Avenger Unrated"
+    ],
+    "he": [
+      "Mad World",
+      "Nemesis 3: Time Lapse",
+      "機動戦士ガンダム ククルス・ドアンの島",
+      "女バトルコップ",
+      "Sunscream",
+      "Der Goldene Handschuh",
+      "Ikatan Darah",
+      "אמת ובגידה",
+      "טוקסיק אוונג'ר"
+    ]
+  },
+  "original_filename": "RoboCop.mp4"
+}

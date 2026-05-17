@@ -1,0 +1,122 @@
+{
+  "id": "movie_045",
+  "title": {
+    "en": "Harry Potter and the Philosopher's Stone",
+    "he": "הארי פוטר ואבן החכמים"
+  },
+  "year": 2001,
+  "director": {
+    "name": {
+      "en": "Chris Columbus",
+      "he": "Chris Columbus"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/yCyEz90NqjEXKZ7HYcEhDXlLlPc.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "David Heyman",
+      "he": "David Heyman"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/m39R6xbVfHfCEO4H0s2Fhwh9mkt.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Daniel Radcliffe",
+        "he": "Daniel Radcliffe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/e64VeB4Mybwm2tOhyLY1h7XQQ8N.jpg"
+    },
+    {
+      "name": {
+        "en": "Rupert Grint",
+        "he": "Rupert Grint"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+    },
+    {
+      "name": {
+        "en": "Emma Watson",
+        "he": "Emma Watson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Harris",
+        "he": "Richard Harris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lCvcVMuxrg1f5A8OMqY9AqkkcZR.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Felton",
+        "he": "Tom Felton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg"
+    },
+    {
+      "name": {
+        "en": "Alan Rickman",
+        "he": "Alan Rickman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+    },
+    {
+      "name": {
+        "en": "Robbie Coltrane",
+        "he": "Robbie Coltrane"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg"
+    },
+    {
+      "name": {
+        "en": "Maggie Smith",
+        "he": "Maggie Smith"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/Ae7DnC7mLIiHVtQZE6YPs8MInx7.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Griffiths",
+        "he": "Richard Griffiths"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bFUo1pzPw74X8Zl9afzzXCBdV95.jpg"
+    },
+    {
+      "name": {
+        "en": "Ian Hart",
+        "he": "Ian Hart"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xMC8aPDwhEZcjRHEFcgytSr3BzM.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_045/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
+  "decoy_answers": {
+    "en": [
+      "Temple of a Thousand Lights",
+      "National Theatre Live: Life of Pi",
+      "The Prince of Magicians",
+      "Argoman the Fantastic Superman",
+      "Mickey 17",
+      "The Klutzy Witch: Fuuka and the Dark Witch",
+      "Okko's Inn",
+      "Sharpe's Revenge",
+      "WarHunt"
+    ],
+    "he": [
+      "La montagna di luce",
+      "National Theatre Live: Life of Pi",
+      "Excelsior !",
+      "Come rubare la corona d'Inghilterra",
+      "מיקי 17",
+      "らくだい魔女　フウカと闇の魔女",
+      "הפונדק של אוקו",
+      "Sharpe's Revenge",
+      "מצוד צבאי"
+    ]
+  },
+  "original_filename": "Harry_Potter_and_the_Philosopher_s_Stone.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_016",
+  "title": {
+    "en": "Black Hawk Down",
+    "he": "בלאק הוק דאון"
+  },
+  "year": 2001,
+  "director": {
+    "name": {
+      "en": "Ridley Scott",
+      "he": "Ridley Scott"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/97SO7H0UlS3racqjeW5JTy8c6GM.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Jerry Bruckheimer",
+      "he": "Jerry Bruckheimer"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/sYjNrmbMi4DGAPX6Kt8wVy7LNXI.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Josh Hartnett",
+        "he": "Josh Hartnett"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9JS3PeypxTmHVXOnLCMRzJzySxO.jpg"
+    },
+    {
+      "name": {
+        "en": "Eric Bana",
+        "he": "Eric Bana"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/l9yoDgw3YFC2gMD1HTo5djGOwSY.jpg"
+    },
+    {
+      "name": {
+        "en": "Ewan McGregor",
+        "he": "Ewan McGregor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/q2UDxfwWnmXTB7khOUF3J9puBVP.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Sizemore",
+        "he": "Tom Sizemore"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/soINOuacuiThRb2LyPD4tTWve7C.jpg"
+    },
+    {
+      "name": {
+        "en": "William Fichtner",
+        "he": "William Fichtner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wWtJOoaNAwPparpzMNuRBjvxwEf.jpg"
+    },
+    {
+      "name": {
+        "en": "Sam Shepard",
+        "he": "Sam Shepard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mVR3Le1rSGIbQmld3Ve42RVFcyI.jpg"
+    },
+    {
+      "name": {
+        "en": "Jason Isaacs",
+        "he": "Jason Isaacs"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/s6XRFjqUsrDJfDQuXPOoExAYPmb.jpg"
+    },
+    {
+      "name": {
+        "en": "Ewen Bremner",
+        "he": "Ewen Bremner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u80rtfJRqCg4qKcdEPmYv8IkCvu.jpg"
+    },
+    {
+      "name": {
+        "en": "Orlando Bloom",
+        "he": "Orlando Bloom"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lwQoA0qJTCZ6l2FH6PjmhRQjiaB.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Hardy",
+        "he": "Tom Hardy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_016/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/7fU5dSqKRL4XHeEUz62rCKBfYok.jpg",
+  "decoy_answers": {
+    "en": [
+      "Stunt Squad",
+      "Longitud de Guerra",
+      "Figures in a Landscape",
+      "Guy Ritchie's The Covenant",
+      "Christmas Carol",
+      "The Guy with the Secret Kung Fu",
+      "Alia: A Bosniac Rhapsody",
+      "A Man There Was",
+      "Pope John XXIII"
+    ],
+    "he": [
+      "La polizia è sconfitta",
+      "Longitud de Guerra",
+      "Figures in a Landscape",
+      "החוזה",
+      "크리스마스 캐럴",
+      "סוד הקונג-פו",
+      "Alia: A Bosniac Rhapsody",
+      "Terje Vigen",
+      "Papa Giovanni - Ioannes XXIII"
+    ]
+  },
+  "original_filename": "Black_Hawk_Down.mp4"
+}

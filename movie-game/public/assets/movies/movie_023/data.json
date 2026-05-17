@@ -1,0 +1,59 @@
+{
+  "id": "movie_023",
+  "title": {
+    "en": "Day & Night",
+    "he": "יום ולילה"
+  },
+  "year": 2010,
+  "director": {
+    "name": {
+      "en": "Teddy Newton",
+      "he": "Teddy Newton"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mUFJqwDSjafLmacLSjoTFx74XiA.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Kevin Reher",
+      "he": "Kevin Reher"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/ulnGGeHrys0tkTq9vFBSmHpdCQX.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Wayne Dyer",
+        "he": "Wayne Dyer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xVJFf5dMVWH2dYMXHSO67ivhzTf.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_023/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/hn2tOtidoYZ0D56jR4yknpdP1mU.jpg",
+  "decoy_answers": {
+    "en": [
+      "Fiona",
+      "URVAN",
+      "Shrek the Halls",
+      "Ben",
+      "Leon in Wintertime",
+      "The Most Important Sparrow",
+      "Hunting Season",
+      "Family Marathon",
+      "Tale About Greed"
+    ],
+    "he": [
+      "Fiona",
+      "URVAN",
+      "חג שמח עם שרק",
+      "Ben",
+      "L'Hiver de Léon",
+      "Найголовніший горобець",
+      "Сезон охоты",
+      "Сімейний марафон",
+      "Казка про жадність"
+    ]
+  },
+  "original_filename": "Day___Night.mp4"
+}

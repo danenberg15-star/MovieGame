@@ -1,0 +1,122 @@
+{
+  "id": "movie_067",
+  "title": {
+    "en": "Magnolia",
+    "he": "מגנוליה"
+  },
+  "year": 1999,
+  "director": {
+    "name": {
+      "en": "Paul Thomas Anderson",
+      "he": "Paul Thomas Anderson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wKAs2LtLYSUzt3ZZ8pnxMwuEWuR.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "JoAnne Sellar",
+      "he": "JoAnne Sellar"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1Z3PwpavLD7aRtaYCGiExwJz1B5.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Cruise",
+        "he": "Tom Cruise"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/maf8PhSvDCdEwjEMbYfGpojR5RP.jpg"
+    },
+    {
+      "name": {
+        "en": "Philip Baker Hall",
+        "he": "Philip Baker Hall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ef7M9soBIv6iGnGEiCdsQ6ppjFl.jpg"
+    },
+    {
+      "name": {
+        "en": "Philip Seymour Hoffman",
+        "he": "Philip Seymour Hoffman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/50rqDkmvXwjwVhFH7q6ph2Rkw7S.jpg"
+    },
+    {
+      "name": {
+        "en": "Julianne Moore",
+        "he": "Julianne Moore"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3YF19rWusxWfEI59ZM33dFhasRq.jpg"
+    },
+    {
+      "name": {
+        "en": "William H. Macy",
+        "he": "William H. Macy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+    },
+    {
+      "name": {
+        "en": "John C. Reilly",
+        "he": "John C. Reilly"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iDQ8w4qcxU3le5ZWoCKpHs1QNok.jpg"
+    },
+    {
+      "name": {
+        "en": "Melora Walters",
+        "he": "Melora Walters"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/FSxiDBekrKgmzow1j3UhmNHOhI.jpg"
+    },
+    {
+      "name": {
+        "en": "Jeremy Blackman",
+        "he": "Jeremy Blackman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/b808xW1vRkPhmteQ1bOzaseSL2g.jpg"
+    },
+    {
+      "name": {
+        "en": "Jason Robards",
+        "he": "Jason Robards"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9y0HAtWWBkB02gVzh8QDdz6UYZH.jpg"
+    },
+    {
+      "name": {
+        "en": "Melinda Dillon",
+        "he": "Melinda Dillon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3ZExGr8OpI6s9ON1FPbSdxQGmcp.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_067/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/tpfC325Jk6S38VTe5dDWjWtoyxr.jpg",
+  "decoy_answers": {
+    "en": [
+      "Der blinde Fleck",
+      "Bringing Out the Dead",
+      "Charlie Bartlett",
+      "The Shell Seekers",
+      "Hamlet Goes Business",
+      "10 Sekunden",
+      "Private Parts",
+      "The Royal Tenenbaums",
+      "The Nameless"
+    ],
+    "he": [
+      "Der blinde Fleck",
+      "לגעת במוות",
+      "צ'ארלי ברטלט",
+      "The Shell Seekers",
+      "Hamlet liikemaailmassa",
+      "10 Sekunden",
+      "פרטים אינטימיים",
+      "משפחת טננבאום",
+      "חסרי השם"
+    ]
+  },
+  "original_filename": "Magnolia.mp4"
+}

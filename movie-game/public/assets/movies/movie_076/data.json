@@ -1,0 +1,122 @@
+{
+  "id": "movie_076",
+  "title": {
+    "en": "Misery",
+    "he": "מיזרי"
+  },
+  "year": 1990,
+  "director": {
+    "name": {
+      "en": "Rob Reiner",
+      "he": "Rob Reiner"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rcmPU3YlhHQVzZlV197qhmRsgEL.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Andrew Scheinman",
+      "he": "Andrew Scheinman"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Kathy Bates",
+        "he": "Kathy Bates"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qZRTzTjV4OC1Ii9a0n8QBS9zMOd.jpg"
+    },
+    {
+      "name": {
+        "en": "James Caan",
+        "he": "James Caan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z2Lz3rtxZ7aJjzBUkCnExvo8stn.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Farnsworth",
+        "he": "Richard Farnsworth"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zwomo8lekrM7dkJ00JmqsslwrIB.jpg"
+    },
+    {
+      "name": {
+        "en": "Lauren Bacall",
+        "he": "Lauren Bacall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iCOzbSzCSUC6D9EcyXtVb2FRNu0.jpg"
+    },
+    {
+      "name": {
+        "en": "Frances Sternhagen",
+        "he": "Frances Sternhagen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/95zg4ses3DIBGBEBtVJnsedDgHE.jpg"
+    },
+    {
+      "name": {
+        "en": "Graham Jarvis",
+        "he": "Graham Jarvis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bVwjPeo7mAvzqCulFE4Yhx6NYsa.jpg"
+    },
+    {
+      "name": {
+        "en": "Jerry Potter",
+        "he": "Jerry Potter"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fQRVJzjvNauRvQqMoXiJ9EhnHZ3.jpg"
+    },
+    {
+      "name": {
+        "en": "Thomas Brunelle",
+        "he": "Thomas Brunelle"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/r534P9QfWoAzml2n3pOJKl4HHzg.jpg"
+    },
+    {
+      "name": {
+        "en": "June Christopher",
+        "he": "June Christopher"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2qKwPPLiDcpz0W3BxdCXOCZWLSi.jpg"
+    },
+    {
+      "name": {
+        "en": "Julie Payne",
+        "he": "Julie Payne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nouIvMBS6G7jZGE197xHLHZQdVo.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_076/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/klPO5oh1LOxiPpdDXZo1ADgpKcw.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "Dream",
+      "The Shell Seekers",
+      "Taken",
+      "The Thin Red Line",
+      "Nirvana",
+      "Bones and All",
+      "Eight Legged Freaks",
+      "Hollow Man II"
+    ],
+    "he": [
+      "לגעת במוות",
+      "비몽",
+      "The Shell Seekers",
+      "חטופה",
+      "הקו האדום",
+      "Nirvana",
+      "עצמות והכול",
+      "עכבישים נגד אנשים",
+      "בלתי נראה 2"
+    ]
+  },
+  "original_filename": "Misery.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_074",
+  "title": {
+    "en": "Million Dollar Baby",
+    "he": "מיליון דולר בייבי"
+  },
+  "year": 2004,
+  "director": {
+    "name": {
+      "en": "Clint Eastwood",
+      "he": "Clint Eastwood"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/8TwdCfeOZH7ucRlfLZ6wObxa7cO.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Tom Rosenberg",
+      "he": "Tom Rosenberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/yQqDxtJM4kPpj9sWDsGo0OxH5Uz.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Clint Eastwood",
+        "he": "Clint Eastwood"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8TwdCfeOZH7ucRlfLZ6wObxa7cO.jpg"
+    },
+    {
+      "name": {
+        "en": "Hilary Swank",
+        "he": "Hilary Swank"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/uin6aAehUGpPCiJCaSjZG8B7M7d.jpg"
+    },
+    {
+      "name": {
+        "en": "Morgan Freeman",
+        "he": "Morgan Freeman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jPsLqiYGSofU4s6BjrxnefMfabb.jpg"
+    },
+    {
+      "name": {
+        "en": "Jay Baruchel",
+        "he": "Jay Baruchel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1GYJeQzPcY9Pfmc3FFsBwClkCv7.jpg"
+    },
+    {
+      "name": {
+        "en": "Mike Colter",
+        "he": "Mike Colter"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9LG9AzoY2ak6M2kwhKlGkLOUUot.jpg"
+    },
+    {
+      "name": {
+        "en": "Lucia Rijker",
+        "he": "Lucia Rijker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6v7Ec32c70aJWJqkuq4UrMxxEj7.jpg"
+    },
+    {
+      "name": {
+        "en": "Brían F. O'Byrne",
+        "he": "Brían F. O'Byrne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9obqr2sZ0cf4z2ZsZoaHslSx45V.jpg"
+    },
+    {
+      "name": {
+        "en": "Anthony Mackie",
+        "he": "Anthony Mackie"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kfTwOYr3iUucmYz8kPjhYy07G2Z.jpg"
+    },
+    {
+      "name": {
+        "en": "Margo Martindale",
+        "he": "Margo Martindale"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6ANuYnZZJTuQLL4bbt8vH1qDYje.jpg"
+    },
+    {
+      "name": {
+        "en": "Riki Lindhome",
+        "he": "Riki Lindhome"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kJAGFp0ZW5sY0NoysFZcfSRykZa.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_074/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/jcfEqKdWF1zeyvECPqp3mkWLct2.jpg",
+  "decoy_answers": {
+    "en": [
+      "Brutal Glory",
+      "Bringing Out the Dead",
+      "Charlie Bartlett",
+      "Bones and All",
+      "Spirit: Stallion of the Cimarron",
+      "Before the Fall",
+      "A Civil Action",
+      "Soldier",
+      "Chariots of Fire"
+    ],
+    "he": [
+      "Brutal Glory",
+      "לגעת במוות",
+      "צ'ארלי ברטלט",
+      "עצמות והכול",
+      "סוס פרא",
+      "נפולה",
+      "תביעה אזרחית",
+      "חייל קטלני",
+      "מרכבות האש"
+    ]
+  },
+  "original_filename": "Million_Dollar_Baby.mp4"
+}

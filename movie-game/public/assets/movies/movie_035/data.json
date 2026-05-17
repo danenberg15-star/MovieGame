@@ -1,0 +1,122 @@
+{
+  "id": "movie_035",
+  "title": {
+    "en": "Fight Club",
+    "he": "מועדון קרב"
+  },
+  "year": 1999,
+  "director": {
+    "name": {
+      "en": "David Fincher",
+      "he": "David Fincher"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tpEczFclQZeKAiCeKZZ0adRvtfz.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Art Linson",
+      "he": "Art Linson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/p9JPMQt4RRHYdQgvnrmFNiZ4eW6.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Edward Norton",
+        "he": "Edward Norton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8nytsqL59SFJTVYVrN72k6qkGgJ.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Helena Bonham Carter",
+        "he": "Helena Bonham Carter"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg"
+    },
+    {
+      "name": {
+        "en": "Meat Loaf",
+        "he": "Meat Loaf"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1zkohpaG3my4qQAZGVgzgPuXwZ6.jpg"
+    },
+    {
+      "name": {
+        "en": "Jared Leto",
+        "he": "Jared Leto"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ca3x0OfIKbJppZh8S1Alx3GfUZO.jpg"
+    },
+    {
+      "name": {
+        "en": "Zach Grenier",
+        "he": "Zach Grenier"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fSyQKZO39sUsqY283GXiScOg3Hi.jpg"
+    },
+    {
+      "name": {
+        "en": "Holt McCallany",
+        "he": "Holt McCallany"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iRo9YUNMwZg4UCq7dapo0HydDmI.jpg"
+    },
+    {
+      "name": {
+        "en": "Eion Bailey",
+        "he": "Eion Bailey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3DW13W47cKk4LQZwS4EvRaNBoVu.jpg"
+    },
+    {
+      "name": {
+        "en": "Richmond Arquette",
+        "he": "Richmond Arquette"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7byGiVac0GjBSVD1h6ylZlVXZK6.jpg"
+    },
+    {
+      "name": {
+        "en": "David Andrews",
+        "he": "David Andrews"
+      },
+      "image": null
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_035/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+  "decoy_answers": {
+    "en": [
+      "Doomsday",
+      "The Up and Comer",
+      "Arn: The Kingdom at Road's End",
+      "Burnt Offerings",
+      "The Doom Generation",
+      "White FLags",
+      "Room",
+      "The Sisters Brothers",
+      "That Complicated Guy"
+    ],
+    "he": [
+      "יום הדין",
+      "The Up and Comer",
+      "ארן: הממלכה בסוף הדרך",
+      "Burnt Offerings",
+      "The Doom Generation",
+      "თეთრი ბაირაღები",
+      "חדר",
+      "האחים סיסטרז",
+      "複雑な彼"
+    ]
+  },
+  "original_filename": "Fight_Club.mp4"
+}

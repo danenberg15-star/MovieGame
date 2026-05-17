@@ -1,0 +1,387 @@
+/* src/components/DecisionPhase.css */
+
+.decision-phase {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .decision-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .decision-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .decision-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+  
+  /* Won Card Display */
+  .won-card-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .card-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  .movie-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .movie-card.won {
+    width: 280px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
+  }
+  
+  .card-poster {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .card-info {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+  
+  .card-year {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+  }
+  
+  /* Decision Actions */
+  .decision-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 40px;
+    font-size: 20px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 220px;
+    justify-content: center;
+  }
+  
+  .btn-connect {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  .btn-connect:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+  
+  .btn-save-token {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+  }
+  
+  .btn-save-token:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+  }
+  
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  .btn-icon {
+    font-size: 24px;
+  }
+  
+  /* Connection Selection */
+  .connection-selection {
+    animation: slideIn 0.4s ease;
+  }
+  
+  .selection-step {
+    margin-bottom: 30px;
+  }
+  
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Team Cards Grid */
+  .team-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .movie-card.selectable {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .movie-card.selectable:hover {
+    transform: translateY(-5px);
+    border-color: #667eea;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+  
+  .movie-card.selectable.selected {
+    border-color: #4caf50;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+  }
+  
+  .movie-card.selectable .card-poster {
+    height: 240px;
+  }
+  
+  .movie-card.selectable .card-title {
+    font-size: 14px;
+  }
+  
+  .movie-card.selectable .card-year {
+    font-size: 12px;
+  }
+  
+  .selected-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: #4caf50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
+    animation: popIn 0.3s ease;
+  }
+  
+  [dir="rtl"] .selected-badge {
+    right: auto;
+    left: 10px;
+  }
+  
+  /* Connection Types Grid */
+  .connection-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .connection-type-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .connection-type-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #667eea;
+    transform: translateY(-2px);
+  }
+  
+  .connection-type-btn.selected {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: #4caf50;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+  }
+  
+  .type-icon {
+    font-size: 24px;
+  }
+  
+  .type-label {
+    flex: 1;
+  }
+  
+  .selected-check {
+    font-size: 20px;
+    color: #4caf50;
+    animation: popIn 0.3s ease;
+  }
+  
+  /* Confirm Actions */
+  .confirm-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .btn-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .btn-confirm {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+  }
+  
+  .btn-confirm:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+  }
+  
+  /* Animations */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes popIn {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .team-cards-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+  
+    .connection-types-grid {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .decision-phase {
+      padding: 20px;
+    }
+  
+    .decision-title {
+      font-size: 24px;
+    }
+  
+    .decision-subtitle {
+      font-size: 16px;
+    }
+  
+    .movie-card.won {
+      width: 100%;
+      max-width: 250px;
+    }
+  
+    .decision-actions {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .btn {
+      width: 100%;
+      min-width: auto;
+      padding: 15px 30px;
+      font-size: 18px;
+    }
+  
+    .team-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .connection-types-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .confirm-actions {
+      flex-direction: column;
+    }
+  
+    .btn-cancel,
+    .btn-confirm {
+      width: 100%;
+    }
+  }

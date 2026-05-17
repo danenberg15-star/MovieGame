@@ -1,0 +1,122 @@
+{
+  "id": "movie_033",
+  "title": {
+    "en": "Escape from Alcatraz",
+    "he": "הבריחה מאלקטרז"
+  },
+  "year": 1979,
+  "director": {
+    "name": {
+      "en": "Don Siegel",
+      "he": "Don Siegel"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wjhr8oJr3fVfOphN7lIlr0R6nF9.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Don Siegel",
+      "he": "Don Siegel"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wjhr8oJr3fVfOphN7lIlr0R6nF9.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Clint Eastwood",
+        "he": "Clint Eastwood"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8TwdCfeOZH7ucRlfLZ6wObxa7cO.jpg"
+    },
+    {
+      "name": {
+        "en": "Patrick McGoohan",
+        "he": "Patrick McGoohan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xtUMgFYGF7KmJg1KqiYQuwYTTe3.jpg"
+    },
+    {
+      "name": {
+        "en": "Roberts Blossom",
+        "he": "Roberts Blossom"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/CP19Dvjvx2xSrkyJQEdmAC4wug.jpg"
+    },
+    {
+      "name": {
+        "en": "Jack Thibeau",
+        "he": "Jack Thibeau"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cKJ2ck7NfxY7KXS9jZInnluKMig.jpg"
+    },
+    {
+      "name": {
+        "en": "Fred Ward",
+        "he": "Fred Ward"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/t3tZduAwP1LMR8Vc13HZ39wKJ1q.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Benjamin",
+        "he": "Paul Benjamin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6t4RCyCoynTG0mk5godo7AW3doK.jpg"
+    },
+    {
+      "name": {
+        "en": "Larry Hankin",
+        "he": "Larry Hankin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2uR8SZ9geiSQOpBhKrerh9qY7CX.jpg"
+    },
+    {
+      "name": {
+        "en": "Bruce M. Fischer",
+        "he": "Bruce M. Fischer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zy7FkwUdqV4iZ5ESs8OqIoepySC.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Ronzio",
+        "he": "Frank Ronzio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vTnh9zRPqfsak3BY0PymAd6CVPX.jpg"
+    },
+    {
+      "name": {
+        "en": "Fred Stuthman",
+        "he": "Fred Stuthman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4nBc5UBvSdrmfiNtBMkuL9eiDS8.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_033/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/uORr2GXQnyqgBOg6tVsRCJD2qxc.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Isle",
+      "K-19: The Widowmaker",
+      "The Shell Seekers",
+      "Calendar Girls",
+      "Pacarrete",
+      "The Thin Red Line",
+      "Bones and All",
+      "We Grown Now"
+    ],
+    "he": [
+      "לגעת במוות",
+      "섬",
+      "קיי-19: סכנה בלב ים",
+      "The Shell Seekers",
+      "נערות לוח השנה",
+      "Pacarrete",
+      "הקו האדום",
+      "עצמות והכול",
+      "מתבגרים עכשיו"
+    ]
+  },
+  "original_filename": "Escape_from_Alcatraz.mp4"
+}

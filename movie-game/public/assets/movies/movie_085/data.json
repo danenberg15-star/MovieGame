@@ -1,0 +1,122 @@
+{
+  "id": "movie_085",
+  "title": {
+    "en": "One Battle After Another",
+    "he": "קרב רודף קרב"
+  },
+  "year": 2025,
+  "director": {
+    "name": {
+      "en": "Paul Thomas Anderson",
+      "he": "Paul Thomas Anderson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wKAs2LtLYSUzt3ZZ8pnxMwuEWuR.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Adam Somner",
+      "he": "Adam Somner"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/8yegOwN4N6JcTdnDGuPGCEsJLPT.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Leonardo DiCaprio",
+        "he": "Leonardo DiCaprio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg"
+    },
+    {
+      "name": {
+        "en": "Sean Penn",
+        "he": "Sean Penn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9glqNTVpFpdN1nFklKaHPUyCwR6.jpg"
+    },
+    {
+      "name": {
+        "en": "Chase Infiniti",
+        "he": "Chase Infiniti"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6tO5t5anIb7D1Nwr6TQjAXMog5N.jpg"
+    },
+    {
+      "name": {
+        "en": "Benicio del Toro",
+        "he": "Benicio del Toro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aYomJWx0B2B8ra6Rmgt8lr0XCrw.jpg"
+    },
+    {
+      "name": {
+        "en": "Regina Hall",
+        "he": "Regina Hall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jiFZ4xNrvUUZLBHnJu71CvdN4kj.jpg"
+    },
+    {
+      "name": {
+        "en": "Teyana Taylor",
+        "he": "Teyana Taylor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5b2dAuTsBejBsdm9SkWX4F7jG9w.jpg"
+    },
+    {
+      "name": {
+        "en": "Wood Harris",
+        "he": "Wood Harris"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/v3puIl2KncqUd6amDyD1Y0crzkF.jpg"
+    },
+    {
+      "name": {
+        "en": "Tony Goldwyn",
+        "he": "Tony Goldwyn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/A3hXimbzDtFxQ1PXNo8gG7RZeN4.jpg"
+    },
+    {
+      "name": {
+        "en": "D.W. Moffett",
+        "he": "D.W. Moffett"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7lcIxTqarAgkdLiNlc7Ad57vcP1.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Grimstad",
+        "he": "Paul Grimstad"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/maPuaFdSLnz3br46Ar2GptK4okK.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_085/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/lbBWwxBht4JFP5PsuJ5onpMqugW.jpg",
+  "decoy_answers": {
+    "en": [
+      "Es lebe die Liebe",
+      "Man of the House",
+      "Texas Rangers",
+      "The Up and Comer",
+      "Burnt Offerings",
+      "We Can Be Heroes",
+      "Room",
+      "The Sisters Brothers",
+      "Fast Times at Ridgemont High"
+    ],
+    "he": [
+      "Es lebe die Liebe",
+      "הכי גבר בבית",
+      "טקסס רנג'רס",
+      "The Up and Comer",
+      "Burnt Offerings",
+      "גיבורים זה אנחנו",
+      "חדר",
+      "האחים סיסטרז",
+      "נעורים בקצב מהיר"
+    ]
+  },
+  "original_filename": "One_Battle_After_Another.mp4"
+}

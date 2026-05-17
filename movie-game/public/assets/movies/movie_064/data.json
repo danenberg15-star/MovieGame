@@ -1,0 +1,122 @@
+{
+  "id": "movie_064",
+  "title": {
+    "en": "Little Women",
+    "he": "נשים קטנות"
+  },
+  "year": 2019,
+  "director": {
+    "name": {
+      "en": "Greta Gerwig",
+      "he": "Greta Gerwig"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/3H0xzU12GTNJyQTpGysEuI9KyiQ.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Amy Pascal",
+      "he": "Amy Pascal"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/texxoBV4naFHyuSii6jyxlfuEvK.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Saoirse Ronan",
+        "he": "Saoirse Ronan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/w88uhQ5f8CXw9pQx5HtDrDpzQ4x.jpg"
+    },
+    {
+      "name": {
+        "en": "Emma Watson",
+        "he": "Emma Watson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+    },
+    {
+      "name": {
+        "en": "Florence Pugh",
+        "he": "Florence Pugh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wcDXv5Oc8w01QfxJMla96xIDROT.jpg"
+    },
+    {
+      "name": {
+        "en": "Eliza Scanlen",
+        "he": "Eliza Scanlen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bxSr2EH0KLN2SqQBJiITUx35cF6.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Dern",
+        "he": "Laura Dern"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gB9PnGEvxKg33OSlcqptQwTBwPE.jpg"
+    },
+    {
+      "name": {
+        "en": "Timothée Chalamet",
+        "he": "Timothée Chalamet"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg"
+    },
+    {
+      "name": {
+        "en": "Tracy Letts",
+        "he": "Tracy Letts"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/x318yEddF10ASORC5U958C2kowf.jpg"
+    },
+    {
+      "name": {
+        "en": "Bob Odenkirk",
+        "he": "Bob Odenkirk"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rF0Lb6SBhGSTvjRffmlKRSeI3jE.jpg"
+    },
+    {
+      "name": {
+        "en": "James Norton",
+        "he": "James Norton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jQElUV2w7pMNEPX44qFMmr4zDDC.jpg"
+    },
+    {
+      "name": {
+        "en": "Louis Garrel",
+        "he": "Louis Garrel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iKJ1SL0im6tJVnE777HNLX2kUeG.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_064/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/yn5ihODtZ7ofn8pDYfxCmxh8AXI.jpg",
+  "decoy_answers": {
+    "en": [
+      "Fifty Shades Darker",
+      "Return from Hell",
+      "Those Who Pay with Their Lives",
+      "Don Juan from Zhashkiv",
+      "National Theatre Live: Life of Pi",
+      "A Question of Suspense",
+      "Shoesmachine",
+      "Evening Primrose",
+      "Beggarman, Thief"
+    ],
+    "he": [
+      "חמישים גוונים של אופל",
+      "Întoarcerea din iad",
+      "Cei care plătesc cu viața",
+      "Дон Жуан із Жашкова",
+      "National Theatre Live: Life of Pi",
+      "A Question of Suspense",
+      "Botostroj",
+      "Evening Primrose",
+      "Beggarman, Thief"
+    ]
+  },
+  "original_filename": "Little_Women.mp4"
+}

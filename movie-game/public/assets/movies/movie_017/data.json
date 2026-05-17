@@ -1,0 +1,122 @@
+{
+  "id": "movie_017",
+  "title": {
+    "en": "Bohemian Rhapsody",
+    "he": "רפסודיה בוהמית"
+  },
+  "year": 2018,
+  "director": {
+    "name": {
+      "en": "Bryan Singer",
+      "he": "Bryan Singer"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/ts06thbCv9Ug2mNpcbcrmLGRL4Q.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Jim Beach",
+      "he": "Jim Beach"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/j96rsmcrK1SnvJAB7msFaveb81E.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Rami Malek",
+        "he": "Rami Malek"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mESIaMPIPxtyWDQ6DAChUBobOp5.jpg"
+    },
+    {
+      "name": {
+        "en": "Gwilym Lee",
+        "he": "Gwilym Lee"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bHSmjJLJyrg5Q0tC0W2FFreuOnO.jpg"
+    },
+    {
+      "name": {
+        "en": "Ben Hardy",
+        "he": "Ben Hardy"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/b20ijbr2tbqlGvqZgkCpNZ5AYvS.jpg"
+    },
+    {
+      "name": {
+        "en": "Joseph Mazzello",
+        "he": "Joseph Mazzello"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/44gsv7TlXOOKDGg5aRtqxZjM9ae.jpg"
+    },
+    {
+      "name": {
+        "en": "Lucy Boynton",
+        "he": "Lucy Boynton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wKNUTqAfi3QW2t2MwMotwOXKkZx.jpg"
+    },
+    {
+      "name": {
+        "en": "Aidan Gillen",
+        "he": "Aidan Gillen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fWWRgyJEGjOPcx43CaFiUCWMBLo.jpg"
+    },
+    {
+      "name": {
+        "en": "Allen Leech",
+        "he": "Allen Leech"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cJZSyKNUKwdNPEgkt2ocXohtUBH.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Hollander",
+        "he": "Tom Hollander"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cqZiJsImFZ6TaeShRRg49AZ9TyT.jpg"
+    },
+    {
+      "name": {
+        "en": "Mike Myers",
+        "he": "Mike Myers"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gjfDl52Kk02MPgUYFjs9bOy33OY.jpg"
+    },
+    {
+      "name": {
+        "en": "Aaron McCusker",
+        "he": "Aaron McCusker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/34n0otWafAvVLIF2BqqOD0kl2Z2.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_017/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/lHu1wtNaczFPGFDTrjCSzeLPTKN.jpg",
+  "decoy_answers": {
+    "en": [
+      "Occidental",
+      "Shattered Glass",
+      "Ride or Die",
+      "Minari",
+      "Ma Rainey's Black Bottom",
+      "One Day Before the Rainy Season",
+      "Perfect Obedience",
+      "Pretty Boy",
+      "Rift"
+    ],
+    "he": [
+      "Occidental",
+      "חשיפה",
+      "איתך באש ובמים",
+      "מינארי",
+      "הבלוז של מא רייני",
+      "अषाढ़ का एक दिन",
+      "Obediencia Perfecta",
+      "Pretty Boy",
+      "קרע"
+    ]
+  },
+  "original_filename": "Bohemian_Rhapsody.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_013",
+  "title": {
+    "en": "Back to the Future Part II",
+    "he": "בחזרה לעתיד 2"
+  },
+  "year": 1989,
+  "director": {
+    "name": {
+      "en": "Robert Zemeckis",
+      "he": "Robert Zemeckis"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lPYDQ5LYNJ12rJZENtyASmVZ1Ql.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Neil Canton",
+      "he": "Neil Canton"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/gYfxHlG9RMusHFFi5gxYRm4VJrj.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Michael J. Fox",
+        "he": "Michael J. Fox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2JB4FMgQmnhbBlQ4SxWFN9EIVDi.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Lloyd",
+        "he": "Christopher Lloyd"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nxVjpyb3UrfbPZnEyDNlQVlFAs5.jpg"
+    },
+    {
+      "name": {
+        "en": "Lea Thompson",
+        "he": "Lea Thompson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vsi9xdehaMWMoPKyq1qKxqN9Zz4.jpg"
+    },
+    {
+      "name": {
+        "en": "Thomas F. Wilson",
+        "he": "Thomas F. Wilson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mVhm65ZVBIRIptWGiMIvoUy0Khi.jpg"
+    },
+    {
+      "name": {
+        "en": "Elisabeth Shue",
+        "he": "Elisabeth Shue"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1pmjDSLvOuqKW1P2KRPlpFMeUFe.jpg"
+    },
+    {
+      "name": {
+        "en": "James Tolkan",
+        "he": "James Tolkan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/euEktcyVXm1pq5UBC16v3zuBq7J.jpg"
+    },
+    {
+      "name": {
+        "en": "Jeffrey Weissman",
+        "he": "Jeffrey Weissman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rdxAEWflihoR5Vt1TvsR0XcI6N5.jpg"
+    },
+    {
+      "name": {
+        "en": "Casey Siemaszko",
+        "he": "Casey Siemaszko"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7Ba8fFtFsh1SX01UxfIADtTTVl9.jpg"
+    },
+    {
+      "name": {
+        "en": "Billy Zane",
+        "he": "Billy Zane"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wr4fuwLzQvW1G0MS7cmQ3ObFjvL.jpg"
+    },
+    {
+      "name": {
+        "en": "J.J. Cohen",
+        "he": "J.J. Cohen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/RHjGEuSnDymcTUfjEvXb9CAQ9B.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_013/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/hQq8xZe5uLjFzSBt4LanNP7SQjl.jpg",
+  "decoy_answers": {
+    "en": [
+      "Chicken Run: Dawn of the Nugget",
+      "A Quiet Place Part II",
+      "Nemesis 3: Time Lapse",
+      "Kid Speed",
+      "Bank of Dave 2: The Loan Ranger",
+      "The Adam Project",
+      "Championext",
+      "Full Moon High",
+      "Horst Schlämmer sucht das Glück"
+    ],
+    "he": [
+      "מרד התרנגולים: עלייתם של הנאגטס",
+      "מקום שקט 2",
+      "Nemesis 3: Time Lapse",
+      "Kid Speed",
+      "Bank of Dave 2: The Loan Ranger",
+      "פרויקט אדם",
+      "אלופי החיים",
+      "Full Moon High",
+      "Horst Schlämmer sucht das Glück"
+    ]
+  },
+  "original_filename": "Back_to_the_Future_Part_II.mp4"
+}

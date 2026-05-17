@@ -1,0 +1,122 @@
+{
+  "id": "movie_060",
+  "title": {
+    "en": "Knives Out",
+    "he": "רצח כתוב היטב"
+  },
+  "year": 2019,
+  "director": {
+    "name": {
+      "en": "Rian Johnson",
+      "he": "Rian Johnson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/uPWwvdppeZVKPbYcjXKU8zyuAVh.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Ram Bergman",
+      "he": "Ram Bergman"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/7wAQ2pBptBaaD7dhLHHDj3OxCoe.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Daniel Craig",
+        "he": "Daniel Craig"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/iFerDZUmC5Fu26i4qI8xnUVEHc7.jpg"
+    },
+    {
+      "name": {
+        "en": "Chris Evans",
+        "he": "Chris Evans"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3bOGNsHlrswhyW79uvIHH1V43JI.jpg"
+    },
+    {
+      "name": {
+        "en": "Ana de Armas",
+        "he": "Ana de Armas"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tkBWBvcLTihUcVf6iwbMQTFqEEv.jpg"
+    },
+    {
+      "name": {
+        "en": "Jamie Lee Curtis",
+        "he": "Jamie Lee Curtis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eb0lIt32WwrjtCULe5z6l9eBf06.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Shannon",
+        "he": "Michael Shannon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6mMczfjM8CiS1WuBOgo5Xom1TcR.jpg"
+    },
+    {
+      "name": {
+        "en": "Don Johnson",
+        "he": "Don Johnson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6s6oav541p7xspCG6PvXut7knkP.jpg"
+    },
+    {
+      "name": {
+        "en": "Toni Collette",
+        "he": "Toni Collette"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lzXRh16qe4HHeBN6tMyw0DHvaMn.jpg"
+    },
+    {
+      "name": {
+        "en": "LaKeith Stanfield",
+        "he": "LaKeith Stanfield"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/x3k0HCpMNqEtVf2VKQrSCol1ia2.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Plummer",
+        "he": "Christopher Plummer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/u0YBwss0ebEUp8sjRtQKnK2wZdR.jpg"
+    },
+    {
+      "name": {
+        "en": "Katherine Langford",
+        "he": "Katherine Langford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fuF3tveGFXfuGUmFiC8v9r7I2jd.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_060/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+  "decoy_answers": {
+    "en": [
+      "Light From the Tower",
+      "Blade",
+      "Smile",
+      "Take the Stand",
+      "Murder on Flight 502",
+      "Teesri Manzil",
+      "Ivide",
+      "Missing Girlfriend",
+      "Arabella: Black Angel"
+    ],
+    "he": [
+      "Light From the Tower",
+      "Blade",
+      "סמייל",
+      "Take the Stand",
+      "Murder on Flight 502",
+      "तीसरी मंज़िल",
+      "ഇവിടെ",
+      "消失的女友",
+      "Arabella l'angelo nero"
+    ]
+  },
+  "original_filename": "Knives_Out.mp4"
+}

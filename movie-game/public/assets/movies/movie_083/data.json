@@ -1,0 +1,122 @@
+{
+  "id": "movie_083",
+  "title": {
+    "en": "Ocean's Eleven",
+    "he": "אושן 11"
+  },
+  "year": 2001,
+  "director": {
+    "name": {
+      "en": "Steven Soderbergh",
+      "he": "Steven Soderbergh"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/y8JlSDcQzd7gAaKyxFpExupMwDz.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Jerry Weintraub",
+      "he": "Jerry Weintraub"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/4CXByDT1Zc4jicCwwqU01Qbs3WX.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "George Clooney",
+        "he": "George Clooney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dt0a7DT0SQeHb7NpURD6ifyEzsN.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Andy Garcia",
+        "he": "Andy Garcia"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9EivXoBlczZcFBet96WOoFbDsfF.jpg"
+    },
+    {
+      "name": {
+        "en": "Matt Damon",
+        "he": "Matt Damon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg"
+    },
+    {
+      "name": {
+        "en": "Julia Roberts",
+        "he": "Julia Roberts"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mQ7076pL4Ac0ZzY4w31labWIdQt.jpg"
+    },
+    {
+      "name": {
+        "en": "Casey Affleck",
+        "he": "Casey Affleck"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/304ilSygaCRWykoBWAL67TOw8g9.jpg"
+    },
+    {
+      "name": {
+        "en": "Scott Caan",
+        "he": "Scott Caan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hX5X4K7BfzOOGcxiNQ24EpPZrfC.jpg"
+    },
+    {
+      "name": {
+        "en": "Elliott Gould",
+        "he": "Elliott Gould"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vqjRBbuqXOvalAx5JZEaWx6kQOw.jpg"
+    },
+    {
+      "name": {
+        "en": "Eddie Jemison",
+        "he": "Eddie Jemison"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zGnEYsiIm4FUrujbDvMfQEivvnj.jpg"
+    },
+    {
+      "name": {
+        "en": "Bernie Mac",
+        "he": "Bernie Mac"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/o1LQ83S4ZYvj84HYeWAzEV7Cg95.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_083/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/hQQCdZrsHtZyR6NbKH2YyCqd2fR.jpg",
+  "decoy_answers": {
+    "en": [
+      "How We Robbed the Bank of Italy",
+      "Crackerjack",
+      "Pathu Thala",
+      "Diamonds",
+      "Perfect Proposal",
+      "Hair of the Bear",
+      "Killer Force",
+      "Game Over",
+      "The Final Heist"
+    ],
+    "he": [
+      "Come svaligiammo la Banca d'Italia",
+      "Crackerjack",
+      "פאתו תאלה",
+      "יהלומים",
+      "은밀한 유혹",
+      "Hair of the Bear",
+      "Killer Force",
+      "Game Over",
+      "The Final Heist"
+    ]
+  },
+  "original_filename": "Ocean_s_Eleven.mp4"
+}

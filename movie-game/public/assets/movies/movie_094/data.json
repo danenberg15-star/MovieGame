@@ -1,0 +1,122 @@
+{
+  "id": "movie_094",
+  "title": {
+    "en": "Pulp Fiction",
+    "he": "ספרות זולה"
+  },
+  "year": 1994,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Bender",
+      "he": "Lawrence Bender"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mZRwkIvUj8USnS7Jfwd6VdHkY2x.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "John Travolta",
+        "he": "John Travolta"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ap8eEYfBKTLixmVVpRlq4NslDD5.jpg"
+    },
+    {
+      "name": {
+        "en": "Samuel L. Jackson",
+        "he": "Samuel L. Jackson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+    },
+    {
+      "name": {
+        "en": "Uma Thurman",
+        "he": "Uma Thurman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sBgAZWi3o4FsnaTvnTNtK6jpQcF.jpg"
+    },
+    {
+      "name": {
+        "en": "Bruce Willis",
+        "he": "Bruce Willis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/w3aXr1e7gQCn8MSp1vW4sXHn99P.jpg"
+    },
+    {
+      "name": {
+        "en": "Ving Rhames",
+        "he": "Ving Rhames"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tOVDvu1EQP78AwaUw6uh1wN818E.jpg"
+    },
+    {
+      "name": {
+        "en": "Harvey Keitel",
+        "he": "Harvey Keitel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7P30hza1neYWW3r7rSQOC736K2Z.jpg"
+    },
+    {
+      "name": {
+        "en": "Eric Stoltz",
+        "he": "Eric Stoltz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/idFuM00MeVmwGAiqvDaJcBiLAmD.jpg"
+    },
+    {
+      "name": {
+        "en": "Tim Roth",
+        "he": "Tim Roth"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qSizF2i9gz6c6DbAC5RoIq8sVqX.jpg"
+    },
+    {
+      "name": {
+        "en": "Amanda Plummer",
+        "he": "Amanda Plummer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wEwyajjePFVVn2wFdH1NH7z9Qn5.jpg"
+    },
+    {
+      "name": {
+        "en": "Maria de Medeiros",
+        "he": "Maria de Medeiros"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/v53G55qSYaVRvbgUZ2uch4gVHT6.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_094/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+  "decoy_answers": {
+    "en": [
+      "Cannibal Apocalypse",
+      "The Little Thief",
+      "It Stains the Sands Red",
+      "Hollow Man II",
+      "Derailed",
+      "Hellraiser",
+      "Just Like Heaven",
+      "Dog Days",
+      "Police Story 4: First Strike"
+    ],
+    "he": [
+      "Apocalypse Domani",
+      "La Petite Voleuse",
+      "It Stains the Sands Red",
+      "בלתי נראה 2",
+      "מחיר הבגידה",
+      "מעורר השאול",
+      "זוג משמיים",
+      "Hundstage",
+      "המכה הראשונה"
+    ]
+  },
+  "original_filename": "Pulp_Fiction.mp4"
+}

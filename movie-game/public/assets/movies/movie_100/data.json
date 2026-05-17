@@ -1,0 +1,122 @@
+{
+  "id": "movie_100",
+  "title": {
+    "en": "Reservoir Dogs",
+    "he": "כלבי אשמורת"
+  },
+  "year": 1992,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Bender",
+      "he": "Lawrence Bender"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mZRwkIvUj8USnS7Jfwd6VdHkY2x.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Harvey Keitel",
+        "he": "Harvey Keitel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7P30hza1neYWW3r7rSQOC736K2Z.jpg"
+    },
+    {
+      "name": {
+        "en": "Tim Roth",
+        "he": "Tim Roth"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qSizF2i9gz6c6DbAC5RoIq8sVqX.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Madsen",
+        "he": "Michael Madsen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fvr2EXEPrVwsF2JlfRp0Olbj4g8.jpg"
+    },
+    {
+      "name": {
+        "en": "Chris Penn",
+        "he": "Chris Penn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rePKftsRntg7gO8vPzDDAOddXmC.jpg"
+    },
+    {
+      "name": {
+        "en": "Steve Buscemi",
+        "he": "Steve Buscemi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+    },
+    {
+      "name": {
+        "en": "Lawrence Tierney",
+        "he": "Lawrence Tierney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/crtpxUAnPrZFSrLjbsTUTdGn72W.jpg"
+    },
+    {
+      "name": {
+        "en": "Randy Brooks",
+        "he": "Randy Brooks"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mSZl3TZZcrkfAlZT8IDX7iHF5EC.jpg"
+    },
+    {
+      "name": {
+        "en": "Kirk Baltz",
+        "he": "Kirk Baltz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8PkKnqLOjfWm33GFk2Azt7MvY2Q.jpg"
+    },
+    {
+      "name": {
+        "en": "Edward Bunker",
+        "he": "Edward Bunker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/or5afkJZ6wVCL9XWOxs7tjft2El.jpg"
+    },
+    {
+      "name": {
+        "en": "Quentin Tarantino",
+        "he": "Quentin Tarantino"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_100/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/xi8Iu6qyTfyZVDVy60raIOYJJmk.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bird",
+      "Gomorrah",
+      "Hellraiser",
+      "The Ice Harvest",
+      "The Insider",
+      "Cliffhanger",
+      "One Hour Photo",
+      "Anaconda",
+      "Fallen"
+    ],
+    "he": [
+      "Bird",
+      "גומורה: המאפיה של נאפולי",
+      "מעורר השאול",
+      "קרח דק",
+      "המקור",
+      "סחרור מסוכן",
+      "לחיות בתמונות",
+      "אנקונדה",
+      "נקודת מגע"
+    ]
+  },
+  "original_filename": "Reservoir_Dogs.mp4"
+}

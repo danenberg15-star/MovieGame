@@ -1,0 +1,122 @@
+{
+  "id": "movie_041",
+  "title": {
+    "en": "GoodFellas",
+    "he": "החבר'ה הטובים"
+  },
+  "year": 1990,
+  "director": {
+    "name": {
+      "en": "Martin Scorsese",
+      "he": "Martin Scorsese"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/9U9Y5GQuWX3EZy39B8nkk4NY01S.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Irwin Winkler",
+      "he": "Irwin Winkler"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/eUDvzwxbcMbTcPnSmRfnL1ORZrK.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Robert De Niro",
+        "he": "Robert De Niro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cT8htcckIuyI1Lqwt1CvD02ynTh.jpg"
+    },
+    {
+      "name": {
+        "en": "Ray Liotta",
+        "he": "Ray Liotta"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jdwGJbJNSRQiG2kB5MJxiu2clCQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Joe Pesci",
+        "he": "Joe Pesci"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zbAdhqbMfRXSz26TjxJvB5f2eL5.jpg"
+    },
+    {
+      "name": {
+        "en": "Lorraine Bracco",
+        "he": "Lorraine Bracco"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tAtpCzN4sTOy1RHpMpJj52zTO4S.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Sorvino",
+        "he": "Paul Sorvino"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1gF0UskusEdDcNaBDJ2CMsz5Agi.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Sivero",
+        "he": "Frank Sivero"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eqvhj0iNtcsN6EJhd21Goqi1DSq.jpg"
+    },
+    {
+      "name": {
+        "en": "Tony Darrow",
+        "he": "Tony Darrow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kc6cGKm2yYx5ekHo4zGizhMLBge.jpg"
+    },
+    {
+      "name": {
+        "en": "Mike Starr",
+        "he": "Mike Starr"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hJGhV91dSUiFJ8GwGDTEEri79LX.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Vincent",
+        "he": "Frank Vincent"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tkKFnuEmgecPYRqAlDZqfWRMst2.jpg"
+    },
+    {
+      "name": {
+        "en": "Chuck Low",
+        "he": "Chuck Low"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zaw5Tyk2K6aawV13fQ4tSPdbEUp.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_041/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Good Night",
+      "Arn: The Kingdom at Road's End",
+      "Suburban Girl",
+      "Gaslight",
+      "City by the Sea",
+      "Shattered Glass",
+      "American Nightmare",
+      "Borderland",
+      "The Doom Generation"
+    ],
+    "he": [
+      "הלילה הטוב",
+      "ארן: הממלכה בסוף הדרך",
+      "אהבה בסימן קריאה!",
+      "אורות הגז",
+      "עיר ליד הים",
+      "חשיפה",
+      "American Nightmare",
+      "הגבול",
+      "The Doom Generation"
+    ]
+  },
+  "original_filename": "GoodFellas.mp4"
+}

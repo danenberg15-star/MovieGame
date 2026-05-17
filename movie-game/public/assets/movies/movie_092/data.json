@@ -1,0 +1,122 @@
+{
+  "id": "movie_092",
+  "title": {
+    "en": "Primal Fear",
+    "he": "פחד ראשוני"
+  },
+  "year": 1996,
+  "director": {
+    "name": {
+      "en": "Gregory Hoblit",
+      "he": "Gregory Hoblit"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1YUF4UpcCX3j3J65a4L1KoLOHAl.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Gary Lucchesi",
+      "he": "Gary Lucchesi"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wbyBRFWpQWKIID0FG06oLuKBSZd.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Richard Gere",
+        "he": "Richard Gere"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/i7wcBNmFldh2E4QInCvmv7CPSIR.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Linney",
+        "he": "Laura Linney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yIopIq7l7eIvjoQqnZJkpdQEvds.jpg"
+    },
+    {
+      "name": {
+        "en": "Edward Norton",
+        "he": "Edward Norton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8nytsqL59SFJTVYVrN72k6qkGgJ.jpg"
+    },
+    {
+      "name": {
+        "en": "John Mahoney",
+        "he": "John Mahoney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/paVSw7Brdp6MKa2j4UPukA0KHs3.jpg"
+    },
+    {
+      "name": {
+        "en": "Alfre Woodard",
+        "he": "Alfre Woodard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jaojqEDdOBWfDpQfdWIbvyLDy5z.jpg"
+    },
+    {
+      "name": {
+        "en": "Frances McDormand",
+        "he": "Frances McDormand"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gBkoteKZshmQXEyEoyT6WE7N0tF.jpg"
+    },
+    {
+      "name": {
+        "en": "Terry O'Quinn",
+        "he": "Terry O'Quinn"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kSweOGPprLe1vDvu38wJQaWIih7.jpg"
+    },
+    {
+      "name": {
+        "en": "Andre Braugher",
+        "he": "Andre Braugher"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zdemT9c1U4Muxf7hi0iFq2zHNLd.jpg"
+    },
+    {
+      "name": {
+        "en": "Steven Bauer",
+        "he": "Steven Bauer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7eu9I2BaQfcJEsil7FxGm1ioZ6k.jpg"
+    },
+    {
+      "name": {
+        "en": "Joe Spano",
+        "he": "Joe Spano"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rHiJspLrlb4uDmWfchwd8Fv13k7.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_092/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/qJf2TzE8nRTFbFMPJNW6c8mI0KU.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "Charlie Bartlett",
+      "The Shell Seekers",
+      "The Thin Red Line",
+      "Bones and All",
+      "We Grown Now",
+      "A Christmas Tale",
+      "Sherlock Holmes and Dr. Watson: Bloody Inscription",
+      "Derailed"
+    ],
+    "he": [
+      "לגעת במוות",
+      "צ'ארלי ברטלט",
+      "The Shell Seekers",
+      "הקו האדום",
+      "עצמות והכול",
+      "מתבגרים עכשיו",
+      "סיפור חג",
+      "Шерлок Холмс и доктор Ватсон: Кровавая надпись",
+      "מחיר הבגידה"
+    ]
+  },
+  "original_filename": "Primal_Fear.mp4"
+}

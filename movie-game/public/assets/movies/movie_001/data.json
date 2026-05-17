@@ -1,0 +1,122 @@
+{
+  "id": "movie_001",
+  "title": {
+    "en": "A Few Good Men",
+    "he": "בחורים טובים"
+  },
+  "year": 1992,
+  "director": {
+    "name": {
+      "en": "Rob Reiner",
+      "he": "Rob Reiner"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rcmPU3YlhHQVzZlV197qhmRsgEL.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Andrew Scheinman",
+      "he": "Andrew Scheinman"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Cruise",
+        "he": "Tom Cruise"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/maf8PhSvDCdEwjEMbYfGpojR5RP.jpg"
+    },
+    {
+      "name": {
+        "en": "Jack Nicholson",
+        "he": "Jack Nicholson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hBHcQIEa6P48HQAlLZkh0eKSSkG.jpg"
+    },
+    {
+      "name": {
+        "en": "Demi Moore",
+        "he": "Demi Moore"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gPgZSodybMFBodw7nKRTALONIr2.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Bacon",
+        "he": "Kevin Bacon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rjX2Oz3tCZMfSwOoIAyEhdtXnTE.jpg"
+    },
+    {
+      "name": {
+        "en": "Kiefer Sutherland",
+        "he": "Kiefer Sutherland"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tK5zjdvao2NELns3bqT7PPqPeJI.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Pollak",
+        "he": "Kevin Pollak"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jWhKIVtmc3vIoS2l1VsdNwMAMJB.jpg"
+    },
+    {
+      "name": {
+        "en": "James Marshall",
+        "he": "James Marshall"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ieK50VhhwNXx0rgOidaEG3JqrDT.jpg"
+    },
+    {
+      "name": {
+        "en": "J.T. Walsh",
+        "he": "J.T. Walsh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4yQXzRXMqQxKgYaUteluNmAKBX4.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Guest",
+        "he": "Christopher Guest"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ofLhsKLZ4YAet8XIsNj7oA3blgh.jpg"
+    },
+    {
+      "name": {
+        "en": "J.A. Preston",
+        "he": "J.A. Preston"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dIrnlrYi3ab8uf6qyzZogbEisKo.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_001/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/rLOk4z9zL1tTukIYV56P94aZXKk.jpg",
+  "decoy_answers": {
+    "en": [
+      "Shanghai Madness",
+      "Electroma",
+      "Ma Rainey's Black Bottom",
+      "Nobleza baturra",
+      "Candida",
+      "LSD: Trip to Where?",
+      "Racewalkers",
+      "Antwone Fisher",
+      "Wristcutters: A Love Story"
+    ],
+    "he": [
+      "Shanghai Madness",
+      "דאפט פאנק: אלקטרומה",
+      "הבלוז של מא רייני",
+      "Nobleza baturra",
+      "Candida",
+      "LSD: Trip to Where?",
+      "Racewalkers",
+      "אנטואן פישר",
+      "חותכי ורידים: סיפור אהבה"
+    ]
+  },
+  "original_filename": "A_Few_Good_Men.mp4"
+}

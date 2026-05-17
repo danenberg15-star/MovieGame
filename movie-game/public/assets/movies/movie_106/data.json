@@ -1,0 +1,122 @@
+{
+  "id": "movie_106",
+  "title": {
+    "en": "Scream 7",
+    "he": "צעקה 7"
+  },
+  "year": 2026,
+  "director": {
+    "name": {
+      "en": "Kevin Williamson",
+      "he": "Kevin Williamson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/COwE9mGlyMHy2OWkidCffoyap2.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "William Sherak",
+      "he": "William Sherak"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lOh6jL1NKoCbaNZgRF0VMkwT0xb.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Neve Campbell",
+        "he": "Neve Campbell"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zQzNg6Kiufj2VCltprI6jilNtl3.jpg"
+    },
+    {
+      "name": {
+        "en": "Courteney Cox",
+        "he": "Courteney Cox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cSOORhCRPJiwKghozXVXrOBi3Tp.jpg"
+    },
+    {
+      "name": {
+        "en": "Isabel May",
+        "he": "Isabel May"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/RJ4djIbfvUHXCCgniiAi0ebhED.jpg"
+    },
+    {
+      "name": {
+        "en": "Jasmin Savoy Brown",
+        "he": "Jasmin Savoy Brown"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yWaCA2iKmVps20SFxwiB1DvbN6j.jpg"
+    },
+    {
+      "name": {
+        "en": "Mason Gooding",
+        "he": "Mason Gooding"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bmlry1xqBzNgv8Chm783ss93Cvg.jpg"
+    },
+    {
+      "name": {
+        "en": "Roger L. Jackson",
+        "he": "Roger L. Jackson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kDAoLRPVKgfTXRhDep0JNouhyAV.jpg"
+    },
+    {
+      "name": {
+        "en": "Anna Camp",
+        "he": "Anna Camp"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/32H0SJbTK3tvLVgf3X1aiaUdcxe.jpg"
+    },
+    {
+      "name": {
+        "en": "Joel McHale",
+        "he": "Joel McHale"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7iwIiaYhIPaiAyiaZOc2Gl1ZAY4.jpg"
+    },
+    {
+      "name": {
+        "en": "Celeste O'Connor",
+        "he": "Celeste O'Connor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jI3pNOhj9Gr7ym9cUcv8vsI0lCF.jpg"
+    },
+    {
+      "name": {
+        "en": "Sam Rechner",
+        "he": "Sam Rechner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cjFwkjJY7G2MxNnTzPuM1rPXG3G.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_106/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/jjyuk0edLiW8vOSnlfwWCCLpbh5.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Road Killers",
+      "Stunt Squad",
+      "A Quiet Place Part II",
+      "Light From the Tower",
+      "Doom: Annihilation",
+      "The Sadist of Notre Dame",
+      "Blade",
+      "Relentless IV: Ashes to Ashes",
+      "He Lives by Night"
+    ],
+    "he": [
+      "The Road Killers",
+      "La polizia è sconfitta",
+      "מקום שקט 2",
+      "Light From the Tower",
+      "דום: הכחדה",
+      "El sádico de Notre-Dame",
+      "Blade",
+      "Relentless IV: Ashes to Ashes",
+      "夜驚魂"
+    ]
+  },
+  "original_filename": "Scream.mp4"
+}

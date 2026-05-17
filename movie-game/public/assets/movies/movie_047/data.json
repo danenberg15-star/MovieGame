@@ -1,0 +1,122 @@
+{
+  "id": "movie_047",
+  "title": {
+    "en": "Hidden Figures",
+    "he": "מאחורי המספרים"
+  },
+  "year": 2016,
+  "director": {
+    "name": {
+      "en": "Theodore Melfi",
+      "he": "Theodore Melfi"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/hn2z28ofSNRxx4UTo6qOqzYCx0u.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Peter Chernin",
+      "he": "Peter Chernin"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/6c7tilaP8n2bYJB0H6BZyEkd64k.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Taraji P. Henson",
+        "he": "Taraji P. Henson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jUU2X9mDwJaAniEmJOfvImBS9qb.jpg"
+    },
+    {
+      "name": {
+        "en": "Octavia Spencer",
+        "he": "Octavia Spencer"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zDGydyM1fmvNWzQlTAns9IZjNxT.jpg"
+    },
+    {
+      "name": {
+        "en": "Janelle Monáe",
+        "he": "Janelle Monáe"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/axTIbPz6ZbqlcCwkNBgD59gY3lx.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Costner",
+        "he": "Kevin Costner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/608blZipRDZkDpzp8VItB64qMaT.jpg"
+    },
+    {
+      "name": {
+        "en": "Kirsten Dunst",
+        "he": "Kirsten Dunst"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yhLKGjuiMMdbGnFrR8AREkCZcVF.jpg"
+    },
+    {
+      "name": {
+        "en": "Jim Parsons",
+        "he": "Jim Parsons"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gbFlludUECPpy70K4tZLbOwmoUr.jpg"
+    },
+    {
+      "name": {
+        "en": "Mahershala Ali",
+        "he": "Mahershala Ali"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9ZmSejm5lnUVY5IJ1iNx2QEjnHb.jpg"
+    },
+    {
+      "name": {
+        "en": "Glen Powell",
+        "he": "Glen Powell"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fUnIaJkdgvQTztyR1nLeUceSzly.jpg"
+    },
+    {
+      "name": {
+        "en": "Ariana Neal",
+        "he": "Ariana Neal"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ewm9byOrir9ssi7K95Ti3hcTopz.jpg"
+    },
+    {
+      "name": {
+        "en": "Saniyya Sidney",
+        "he": "Saniyya Sidney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3GO94ImDSWeFiBIkKpghkcjz0Fk.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_047/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/9lfz2W2uGjyow3am00rsPJ8iOyq.jpg",
+  "decoy_answers": {
+    "en": [
+      "Debris",
+      "London Recruits",
+      "The Divine Emma",
+      "Canary Season",
+      "The Story of Alfred Nobel",
+      "The Fire of Immortality",
+      "Hallelujah!",
+      "The Dolly Sisters",
+      "The Man Who Made It Snow"
+    ],
+    "he": [
+      "Desecho",
+      "London Recruits",
+      "Božská Ema",
+      "Сезонът на канарчетата",
+      "The Story of Alfred Nobel",
+      "Костёр бессмертия",
+      "Hallelujah!",
+      "The Dolly Sisters",
+      "The Man Who Made It Snow"
+    ]
+  },
+  "original_filename": "Hidden_Figures.mp4"
+}

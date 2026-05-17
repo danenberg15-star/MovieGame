@@ -1,0 +1,122 @@
+{
+  "id": "movie_030",
+  "title": {
+    "en": "Dune",
+    "he": "חולית"
+  },
+  "year": 2021,
+  "director": {
+    "name": {
+      "en": "Denis Villeneuve",
+      "he": "Denis Villeneuve"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/zdDx9Xs93UIrJFWYApYR28J8M6b.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Cale Boyter",
+      "he": "Cale Boyter"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/jeRsKRHuSJcTdciWmkO6LrBULw2.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Timothée Chalamet",
+        "he": "Timothée Chalamet"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg"
+    },
+    {
+      "name": {
+        "en": "Rebecca Ferguson",
+        "he": "Rebecca Ferguson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lJloTOheuQSirSLXNA3JHsrMNfH.jpg"
+    },
+    {
+      "name": {
+        "en": "Oscar Isaac",
+        "he": "Oscar Isaac"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg"
+    },
+    {
+      "name": {
+        "en": "Jason Momoa",
+        "he": "Jason Momoa"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3troAR6QbSb6nUFMDu61YCCWLKa.jpg"
+    },
+    {
+      "name": {
+        "en": "Stellan Skarsgård",
+        "he": "Stellan Skarsgård"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mW7xmtGV4y79kQGn0zkKVGDMAmw.jpg"
+    },
+    {
+      "name": {
+        "en": "Stephen McKinley Henderson",
+        "he": "Stephen McKinley Henderson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z2weSPo4sdMNj47tP5o0me41r2z.jpg"
+    },
+    {
+      "name": {
+        "en": "Josh Brolin",
+        "he": "Josh Brolin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sX2etBbIkxRaCsATyw5ZpOVMPTD.jpg"
+    },
+    {
+      "name": {
+        "en": "Javier Bardem",
+        "he": "Javier Bardem"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dKArLTzGUBqRwV6MI3Atc1xN9bc.jpg"
+    },
+    {
+      "name": {
+        "en": "Sharon Duncan-Brewster",
+        "he": "Sharon Duncan-Brewster"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gp5h6rOrqBrIGgID4AMd58O6Ow6.jpg"
+    },
+    {
+      "name": {
+        "en": "Chang Chen",
+        "he": "Chang Chen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4BOQ5pJXdsArkMHvyVhrV8Ditnr.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_030/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/gDzOcq0pfeCeqMBwKIJlSmQpjkZ.jpg",
+  "decoy_answers": {
+    "en": [
+      "Nirvana",
+      "Space/Time",
+      "Red Planet",
+      "Sherlock Holmes and Dr. Watson: Bloody Inscription",
+      "Treasure Planet",
+      "Mad Max Beyond Thunderdome",
+      "Anaconda",
+      "Tremors",
+      "Babylon A.D."
+    ],
+    "he": [
+      "Nirvana",
+      "Space/Time",
+      "כוכב אדום",
+      "Шерлок Холмс и доктор Ватсон: Кровавая надпись",
+      "כוכב המטמון",
+      "מקס הזועם 3: כיפת הרעם",
+      "אנקונדה",
+      "פחד עד מוות",
+      "בבילון A.D."
+    ]
+  },
+  "original_filename": "Dune.mp4"
+}

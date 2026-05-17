@@ -1,0 +1,122 @@
+{
+  "id": "movie_097",
+  "title": {
+    "en": "Rain Man",
+    "he": "איש הגשם"
+  },
+  "year": 1988,
+  "director": {
+    "name": {
+      "en": "Barry Levinson",
+      "he": "Barry Levinson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/auf7SnoOE9FULo8KhSSL8c2Yrlb.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Mark Johnson",
+      "he": "Mark Johnson"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/gLuXkOQjqB81aHMGJ2OtYzEpHQu.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Dustin Hoffman",
+        "he": "Dustin Hoffman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yxNGnTiou25c3zjppT5dW2eWAve.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Cruise",
+        "he": "Tom Cruise"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/maf8PhSvDCdEwjEMbYfGpojR5RP.jpg"
+    },
+    {
+      "name": {
+        "en": "Valeria Golino",
+        "he": "Valeria Golino"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bLw0lNPEhICtbTLtnTswamefN7C.jpg"
+    },
+    {
+      "name": {
+        "en": "Gerald R. Molen",
+        "he": "Gerald R. Molen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/m1C2E9MWClm3ITzxQzUxmE1qphL.jpg"
+    },
+    {
+      "name": {
+        "en": "Jack Murdock",
+        "he": "Jack Murdock"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1NJNRsutn8djjkvNOtk0HYq24lQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael D. Roberts",
+        "he": "Michael D. Roberts"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eIa9PbE2nC6yhlmEPjkuEiWge6g.jpg"
+    },
+    {
+      "name": {
+        "en": "Ralph Seymour",
+        "he": "Ralph Seymour"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/p7mAxGF0n94491Rsc49M70OxIaE.jpg"
+    },
+    {
+      "name": {
+        "en": "Lucinda Jenney",
+        "he": "Lucinda Jenney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ahR0bNUJRi9Phpd7RZWx4ILiMEb.jpg"
+    },
+    {
+      "name": {
+        "en": "Bonnie Hunt",
+        "he": "Bonnie Hunt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tT9C6uLztgN8OxJULq6F9iEzqlA.jpg"
+    },
+    {
+      "name": {
+        "en": "Kim Robillard",
+        "he": "Kim Robillard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rUrWO5Eo4dSYsVNgK6I8bm87OCG.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_097/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/iTNHwO896WKkaoPtpMMS74d8VNi.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Road Killers",
+      "Namasthe Bali",
+      "Hollywood",
+      "A Fare to Remember",
+      "Jack of the Red Hearts",
+      "Monuments",
+      "Bungee Jumping of Their Own",
+      "Fast Sofa",
+      "The Broken Tower"
+    ],
+    "he": [
+      "The Road Killers",
+      "നമസ്തേ ബാലി",
+      "Hollywood",
+      "A Fare to Remember",
+      "Jack of the Red Hearts",
+      "Monuments",
+      "번지점프를 하다",
+      "Fast Sofa",
+      "The Broken Tower"
+    ]
+  },
+  "original_filename": "Rain_Man.mp4"
+}

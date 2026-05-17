@@ -1,0 +1,122 @@
+{
+  "id": "movie_027",
+  "title": {
+    "en": "Django Unchained",
+    "he": "ג'אנגו ללא מעצורים"
+  },
+  "year": 2012,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Reginald Hudlin",
+      "he": "Reginald Hudlin"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/z2O30pOwkKpZBCyZpwZ80ouKcQA.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Jamie Foxx",
+        "he": "Jamie Foxx"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/25zzvFA6yx2Q9BYnugsbd4JWDfu.jpg"
+    },
+    {
+      "name": {
+        "en": "Christoph Waltz",
+        "he": "Christoph Waltz"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jMvLGCVXLaBqjRLf5olyvEucZob.jpg"
+    },
+    {
+      "name": {
+        "en": "Leonardo DiCaprio",
+        "he": "Leonardo DiCaprio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg"
+    },
+    {
+      "name": {
+        "en": "Kerry Washington",
+        "he": "Kerry Washington"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/h50ibjjpR9lF566PHoV7u7CuWGY.jpg"
+    },
+    {
+      "name": {
+        "en": "Samuel L. Jackson",
+        "he": "Samuel L. Jackson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+    },
+    {
+      "name": {
+        "en": "Walton Goggins",
+        "he": "Walton Goggins"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5lcVMJbWrNDFiWa1WxK4oR8zwev.jpg"
+    },
+    {
+      "name": {
+        "en": "Dennis Christopher",
+        "he": "Dennis Christopher"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bZMnSpQ6KEBuwUfnngNEpmqhEK.jpg"
+    },
+    {
+      "name": {
+        "en": "James Remar",
+        "he": "James Remar"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/56LwfMaMge2LmWYI46O6R2Wm0YX.jpg"
+    },
+    {
+      "name": {
+        "en": "David Steen",
+        "he": "David Steen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/frsLHFlVY6UVwh0ux4vrqHixO5C.jpg"
+    },
+    {
+      "name": {
+        "en": "Dana Gourrier",
+        "he": "Dana Gourrier"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/v3krc3R7LKMsHJEm8esPqEa7CR.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_027/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg",
+  "decoy_answers": {
+    "en": [
+      "Maverick",
+      "Enduring Love",
+      "The Edge",
+      "He Got Game",
+      "Violet Evergarden: Eternity and the Auto Memory Doll",
+      "The Great Silence",
+      "Tristan & Isolde",
+      "Just Cause",
+      "Ali"
+    ],
+    "he": [
+      "מווריק",
+      "אין סוף לאהבה",
+      "על הסף",
+      "יש לו את זה",
+      "‏ויולט אברגרדן: בובת הזיכרון האוטומטית",
+      "סיילנס הנהדר",
+      "טריסטן + איזולדה",
+      "סיבה מוצדקת",
+      "עלי"
+    ]
+  },
+  "original_filename": "Django_Unchained.mp4"
+}

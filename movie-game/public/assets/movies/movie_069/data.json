@@ -1,0 +1,122 @@
+{
+  "id": "movie_069",
+  "title": {
+    "en": "Marty Supreme",
+    "he": "מרטי סופרים"
+  },
+  "year": 2025,
+  "director": {
+    "name": {
+      "en": "Josh Safdie",
+      "he": "Josh Safdie"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/jrTdXoo1NWxG2t0iFwdP5LLbJNV.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Timothée Chalamet",
+      "he": "Timothée Chalamet"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Timothée Chalamet",
+        "he": "Timothée Chalamet"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg"
+    },
+    {
+      "name": {
+        "en": "Gwyneth Paltrow",
+        "he": "Gwyneth Paltrow"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ylN4A7fnnNXvHURENl5sQI8Jbib.jpg"
+    },
+    {
+      "name": {
+        "en": "Odessa A'zion",
+        "he": "Odessa A'zion"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fGgP2Ik5PbWlDVQNp6SN8oPsu0P.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin O'Leary",
+        "he": "Kevin O'Leary"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/eUDfTddvXHOAZR5Sh1hs3IVF5mb.jpg"
+    },
+    {
+      "name": {
+        "en": "Tyler, The Creator",
+        "he": "Tyler, The Creator"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1jr8XMXd9C6yRk2VitXIum0FGSy.jpg"
+    },
+    {
+      "name": {
+        "en": "Fran Drescher",
+        "he": "Fran Drescher"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kQzvZ4ksLunfs3QZQtzRhzLJPBY.jpg"
+    },
+    {
+      "name": {
+        "en": "Abel Ferrara",
+        "he": "Abel Ferrara"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wdOxXWyxE3HjrtdeOJvc9xB5eUv.jpg"
+    },
+    {
+      "name": {
+        "en": "Emory Cohen",
+        "he": "Emory Cohen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mtummZcNxmcJQ1JIoQUcV3Fwb3.jpg"
+    },
+    {
+      "name": {
+        "en": "Géza Röhrig",
+        "he": "Géza Röhrig"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/3XrYcL5wC1wQnmqJautgZK3XuiM.jpg"
+    },
+    {
+      "name": {
+        "en": "Koto Kawaguchi",
+        "he": "Koto Kawaguchi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aTR2fKtjr2mTXTtU5ywNAKJv1jG.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_069/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/lYWEXbQgRTR4ZQleSXAgRbxAjvq.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "Snake Eyes",
+      "Che: Part One",
+      "Donnie Brasco",
+      "Thank You for Smoking",
+      "Stepmom",
+      "Chariots of Fire",
+      "The Corruptor",
+      "Serpico"
+    ],
+    "he": [
+      "לגעת במוות",
+      "עיני נחש",
+      "צ'ה: חלק א' - הארגנטינאי",
+      "דוני בראסקו",
+      "תודה שעישנתם",
+      "אמא חורגת",
+      "מרכבות האש",
+      "אחד משלהם",
+      "סרפיקו"
+    ]
+  },
+  "original_filename": "Marty_Supreme.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_055",
+  "title": {
+    "en": "Jackie Brown",
+    "he": "ג'קי בראון"
+  },
+  "year": 1997,
+  "director": {
+    "name": {
+      "en": "Quentin Tarantino",
+      "he": "Quentin Tarantino"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Lawrence Bender",
+      "he": "Lawrence Bender"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/mZRwkIvUj8USnS7Jfwd6VdHkY2x.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Pam Grier",
+        "he": "Pam Grier"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/irCJf8OTSaPkThijP8PWkP1A7ls.jpg"
+    },
+    {
+      "name": {
+        "en": "Samuel L. Jackson",
+        "he": "Samuel L. Jackson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert De Niro",
+        "he": "Robert De Niro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cT8htcckIuyI1Lqwt1CvD02ynTh.jpg"
+    },
+    {
+      "name": {
+        "en": "Bridget Fonda",
+        "he": "Bridget Fonda"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ylGktmhDCLnaaV8owSPL8cVlsbn.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Keaton",
+        "he": "Michael Keaton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tYSja1KByFnZ4Hkp3stPqkKHnNL.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Forster",
+        "he": "Robert Forster"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vGDifxN2PnO69rnpg6FoWkocFCD.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Bowen",
+        "he": "Michael Bowen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/dYIzQQ4yozTIlpqJbmDkSyDd86C.jpg"
+    },
+    {
+      "name": {
+        "en": "Chris Tucker",
+        "he": "Chris Tucker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/k0oLIL0xTgDR6Qn3yCsNuLCJhFT.jpg"
+    },
+    {
+      "name": {
+        "en": "LisaGay Hamilton",
+        "he": "LisaGay Hamilton"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bqfowff4gF0cGaQ1c7F89HAL3DH.jpg"
+    },
+    {
+      "name": {
+        "en": "Tommy Lister Jr.",
+        "he": "Tommy Lister Jr."
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kHrfRLYyLhwfJEHHH8VNK9SyxpO.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_055/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/rOUx7qg4KmEh1juEDwqzbDSL1Nr.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Up and Comer",
+      "Arn: The Kingdom at Road's End",
+      "Burnt Offerings",
+      "White FLags",
+      "Room",
+      "The Sisters Brothers",
+      "That Complicated Guy",
+      "Fast Times at Ridgemont High",
+      "A Chinese Odyssey Part One: Pandora's Box"
+    ],
+    "he": [
+      "The Up and Comer",
+      "ארן: הממלכה בסוף הדרך",
+      "Burnt Offerings",
+      "თეთრი ბაირაღები",
+      "חדר",
+      "האחים סיסטרז",
+      "複雑な彼",
+      "נעורים בקצב מהיר",
+      "西遊記第壹佰零壹回之月光寶盒"
+    ]
+  },
+  "original_filename": "Jackie_Brown.mp4"
+}

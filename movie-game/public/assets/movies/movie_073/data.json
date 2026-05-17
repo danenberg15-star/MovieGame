@@ -1,0 +1,122 @@
+{
+  "id": "movie_073",
+  "title": {
+    "en": "Miller's Crossing",
+    "he": "צומת מילר"
+  },
+  "year": 1990,
+  "director": {
+    "name": {
+      "en": "Joel Coen",
+      "he": "Joel Coen"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rgVaJNkZCgMarUcZuUAsVfXMWk3.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Ethan Coen",
+      "he": "Ethan Coen"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lbL8LEcvuxNrzda37g3mysOS2qS.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Gabriel Byrne",
+        "he": "Gabriel Byrne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9r9oDGENg92VYYFMkV4C09IUlrb.jpg"
+    },
+    {
+      "name": {
+        "en": "Marcia Gay Harden",
+        "he": "Marcia Gay Harden"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5vxcHIHABJxqhweAsTiXVOhT4SE.jpg"
+    },
+    {
+      "name": {
+        "en": "John Turturro",
+        "he": "John Turturro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/63zA58rSyJxBMLBdgeMjjETmpDQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Jon Polito",
+        "he": "Jon Polito"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4HjxMy4Ir2dWz7ycX5l3sgxOY4g.jpg"
+    },
+    {
+      "name": {
+        "en": "J.E. Freeman",
+        "he": "J.E. Freeman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/75VHiPXkan70jXZF247yOCdCROV.jpg"
+    },
+    {
+      "name": {
+        "en": "Albert Finney",
+        "he": "Albert Finney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/a2qJxu55s97ySRdjsy2ywIXJvhf.jpg"
+    },
+    {
+      "name": {
+        "en": "Mike Starr",
+        "he": "Mike Starr"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hJGhV91dSUiFJ8GwGDTEEri79LX.jpg"
+    },
+    {
+      "name": {
+        "en": "Al Mancini",
+        "he": "Al Mancini"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n0qbIl2T4O6fGT1l97sqqucZoun.jpg"
+    },
+    {
+      "name": {
+        "en": "Steve Buscemi",
+        "he": "Steve Buscemi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n0pZumkrcZrAPMoPq684RhYnjPV.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Woods",
+        "he": "Richard Woods"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/fppW4NSl5krl8DONopfO6YTnf9j.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_073/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/i83gYdglRCjCRLSsmCk5nRWRmDM.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "Cannibal Apocalypse",
+      "Albino Alligator",
+      "It Stains the Sands Red",
+      "Pale Rider",
+      "Gomorrah",
+      "C(r)ook",
+      "Hollow Man II",
+      "Derailed"
+    ],
+    "he": [
+      "לגעת במוות",
+      "Apocalypse Domani",
+      "Albino Alligator",
+      "It Stains the Sands Red",
+      "הנוקם",
+      "גומורה: המאפיה של נאפולי",
+      "c[r]ook",
+      "בלתי נראה 2",
+      "מחיר הבגידה"
+    ]
+  },
+  "original_filename": "Miller_s_Crossing.mp4"
+}

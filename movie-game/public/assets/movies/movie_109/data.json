@@ -1,0 +1,122 @@
+{
+  "id": "movie_109",
+  "title": {
+    "en": "Snatch",
+    "he": "סנאץ׳"
+  },
+  "year": 2000,
+  "director": {
+    "name": {
+      "en": "Guy Ritchie",
+      "he": "Guy Ritchie"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/9pLUnjMgIEWXi0mlHYzie9cKUTD.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Matthew Vaughn",
+      "he": "Matthew Vaughn"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/Dnbz3B7yy4u0abixuD5LakZgsy.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Jason Statham",
+        "he": "Jason Statham"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pXGSq2UpcDE2NMF8LR56QZf5U1q.jpg"
+    },
+    {
+      "name": {
+        "en": "Alan Ford",
+        "he": "Alan Ford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nSlngfcFsCPENxiqCwZnB1twKuC.jpg"
+    },
+    {
+      "name": {
+        "en": "Stephen Graham",
+        "he": "Stephen Graham"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yguEO9zFvuccq87kOJpFLsmUgvs.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Dennis Farina",
+        "he": "Dennis Farina"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4hEWe0ZcDpGlB3nRizLkVMcG13B.jpg"
+    },
+    {
+      "name": {
+        "en": "Robbie Gee",
+        "he": "Robbie Gee"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mzzfbA0e4DWgxvIYjaryMolkiqm.jpg"
+    },
+    {
+      "name": {
+        "en": "Lennie James",
+        "he": "Lennie James"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lUcouck90jXNzyJr5uBJJiYMHAN.jpg"
+    },
+    {
+      "name": {
+        "en": "Benicio del Toro",
+        "he": "Benicio del Toro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aYomJWx0B2B8ra6Rmgt8lr0XCrw.jpg"
+    },
+    {
+      "name": {
+        "en": "Rade Šerbedžija",
+        "he": "Rade Šerbedžija"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1mJC5oD3pLH1vAS3wJ4sGNxYeqJ.jpg"
+    },
+    {
+      "name": {
+        "en": "Vinnie Jones",
+        "he": "Vinnie Jones"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tkYWG9gY2QpoBfOh4OWNz8yQfsw.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_109/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/kJZoAHq1SLDdWjeNGtlHAnGpmFV.jpg",
+  "decoy_answers": {
+    "en": [
+      "Fool's Gold",
+      "Snake Eyes",
+      "Cannibal Apocalypse",
+      "Calendar Girls",
+      "Dikkenek",
+      "It Stains the Sands Red",
+      "Gomorrah",
+      "C(r)ook",
+      "The Ice Harvest"
+    ],
+    "he": [
+      "המירוץ לזהב",
+      "עיני נחש",
+      "Apocalypse Domani",
+      "נערות לוח השנה",
+      "Dikkenek",
+      "It Stains the Sands Red",
+      "גומורה: המאפיה של נאפולי",
+      "c[r]ook",
+      "קרח דק"
+    ]
+  },
+  "original_filename": "Snatch.mp4"
+}

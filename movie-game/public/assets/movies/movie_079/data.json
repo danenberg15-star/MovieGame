@@ -1,0 +1,122 @@
+{
+  "id": "movie_079",
+  "title": {
+    "en": "Moulin Rouge!",
+    "he": "מולין רוז׳"
+  },
+  "year": 2001,
+  "director": {
+    "name": {
+      "en": "Baz Luhrmann",
+      "he": "Baz Luhrmann"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/8K8ih7uFyGanOApYYzlzdxzcfDF.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Fred Baron",
+      "he": "Fred Baron"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Ewan McGregor",
+        "he": "Ewan McGregor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/q2UDxfwWnmXTB7khOUF3J9puBVP.jpg"
+    },
+    {
+      "name": {
+        "en": "Nicole Kidman",
+        "he": "Nicole Kidman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4KSQDodyBtTDMaREYgMdWD1LbH1.jpg"
+    },
+    {
+      "name": {
+        "en": "John Leguizamo",
+        "he": "John Leguizamo"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kwYCdxTlDh9zauUCg4mp2XTCQTw.jpg"
+    },
+    {
+      "name": {
+        "en": "Jim Broadbent",
+        "he": "Jim Broadbent"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/s7lXYfrsJoGA4vKmyv61SPgABmR.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Roxburgh",
+        "he": "Richard Roxburgh"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/de1XpxnOuW4v4fFWFEjmBqmHaRf.jpg"
+    },
+    {
+      "name": {
+        "en": "Garry McDonald",
+        "he": "Garry McDonald"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/h5cMwoi2OK0BWhqX5tBHKlC348k.jpg"
+    },
+    {
+      "name": {
+        "en": "Jacek Koman",
+        "he": "Jacek Koman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/t72LPCMYV7xkGeRel1tGPyP4V1r.jpg"
+    },
+    {
+      "name": {
+        "en": "Matthew Whittet",
+        "he": "Matthew Whittet"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ji9JDJUWBc60NJcXhPU3WpBnGjk.jpg"
+    },
+    {
+      "name": {
+        "en": "Kerry Walker",
+        "he": "Kerry Walker"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nIvYnyp2Ti2dzqFEhCcrNN4K1uS.jpg"
+    },
+    {
+      "name": {
+        "en": "Caroline O'Connor",
+        "he": "Caroline O'Connor"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bTt8g6vjV5ynJIoBmjTY4Vh6Aoe.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_079/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/2kjM5CUZRIU5yOANUowrbJcRL9L.jpg",
+  "decoy_answers": {
+    "en": [
+      "Texas Rangers",
+      "Sex Drive",
+      "Holidate",
+      "The Sisters Brothers",
+      "Israfil",
+      "A Room with a View",
+      "White Christmas",
+      "Ice Princess",
+      "Since Otar Left"
+    ],
+    "he": [
+      "טקסס רנג'רס",
+      "סקס דרייב",
+      "הולידייט",
+      "האחים סיסטרז",
+      "اسرافیل",
+      "A Room with a View",
+      "חג מולד לבן",
+      "נסיכת הקרח",
+      "מאז שאוטר עזב"
+    ]
+  },
+  "original_filename": "Moulin_Rouge_.mp4"
+}

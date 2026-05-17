@@ -1,0 +1,122 @@
+{
+  "id": "movie_018",
+  "title": {
+    "en": "Captain Phillips",
+    "he": "קפטן פיליפס"
+  },
+  "year": 2013,
+  "director": {
+    "name": {
+      "en": "Paul Greengrass",
+      "he": "Paul Greengrass"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/kJxQWrERq8p7gxRP2fIcS8suwme.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Michael De Luca",
+      "he": "Michael De Luca"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/i87R2uZafgOmFdbT7PgCBXjsL5s.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Hanks",
+        "he": "Tom Hanks"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oFvZoKI6lvU03n4YoNGAll9rkas.jpg"
+    },
+    {
+      "name": {
+        "en": "Barkhad Abdi",
+        "he": "Barkhad Abdi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/utfeg8GnGyW3aVNcRfhII9RCXB6.jpg"
+    },
+    {
+      "name": {
+        "en": "Barkhad Abdirahman",
+        "he": "Barkhad Abdirahman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/o5K3tGiClerpgpCOpqFZGJ5cd28.jpg"
+    },
+    {
+      "name": {
+        "en": "Faysal  Ahmed",
+        "he": "Faysal  Ahmed"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jrnwwBq4Xq3UADdAb028ddK32eD.jpg"
+    },
+    {
+      "name": {
+        "en": "Mahat M. Ali",
+        "he": "Mahat M. Ali"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lV31hBFhk0YT7ktv7OVMqonA7yz.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Chernus",
+        "he": "Michael Chernus"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/Df2ZE3P9BiXawPtewinxLPNAu2.jpg"
+    },
+    {
+      "name": {
+        "en": "David Warshofsky",
+        "he": "David Warshofsky"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pLABX1wyaVE4CcEZVmoM2Y5XbQU.jpg"
+    },
+    {
+      "name": {
+        "en": "Corey Johnson",
+        "he": "Corey Johnson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mhNbf4vGzixPL5mTIOBUPguqvpB.jpg"
+    },
+    {
+      "name": {
+        "en": "Chris Mulkey",
+        "he": "Chris Mulkey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kpJid21QcIBGvwP0Bddvw0p8wEl.jpg"
+    },
+    {
+      "name": {
+        "en": "Yul Vazquez",
+        "he": "Yul Vazquez"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/chAxqgeJVoRoQukw7zRYgtlo4KI.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_018/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/8Td0kkocW6sD3uRpzwfMfkqMWhx.jpg",
+  "decoy_answers": {
+    "en": [
+      "Shattered Glass",
+      "Borderland",
+      "Sweetwater",
+      "Chrysalis",
+      "Antwone Fisher",
+      "Withnail & I",
+      "October Sky",
+      "Keane",
+      "A Husband to Die For: The Lisa Aguilar Story"
+    ],
+    "he": [
+      "חשיפה",
+      "הגבול",
+      "Sweetwater",
+      "גולם",
+      "אנטואן פישר",
+      "וית'נייל ואני",
+      "שמי אוקטובר",
+      "קין",
+      "A Husband to Die For: The Lisa Aguilar Story"
+    ]
+  },
+  "original_filename": "Captain_Phillips.mp4"
+}

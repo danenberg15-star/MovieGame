@@ -1,0 +1,122 @@
+{
+  "id": "movie_050",
+  "title": {
+    "en": "Indiana Jones and the Last Crusade",
+    "he": "אינדיאנה ג'ונס ומסע הצלב האחרון"
+  },
+  "year": 1989,
+  "director": {
+    "name": {
+      "en": "Steven Spielberg",
+      "he": "Steven Spielberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Robert Watts",
+      "he": "Robert Watts"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/28BlqdvRGNAdbWuzdXAIYissbgZ.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Harrison Ford",
+        "he": "Harrison Ford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+    },
+    {
+      "name": {
+        "en": "Sean Connery",
+        "he": "Sean Connery"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/hbB676mW62gjsh0f51ICYE11niG.jpg"
+    },
+    {
+      "name": {
+        "en": "Denholm Elliott",
+        "he": "Denholm Elliott"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qqgkT4QMMUbiFztfcUVLPYRXAxD.jpg"
+    },
+    {
+      "name": {
+        "en": "Alison Doody",
+        "he": "Alison Doody"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/q5CpMFAjLP40JHgwS6qWku6arSC.jpg"
+    },
+    {
+      "name": {
+        "en": "John Rhys-Davies",
+        "he": "John Rhys-Davies"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qpXl1YnqQsUKYEDm3BB2zK5wbhe.jpg"
+    },
+    {
+      "name": {
+        "en": "Julian Glover",
+        "he": "Julian Glover"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/diwVEgax6O2YwJu2VcW8zC0qhot.jpg"
+    },
+    {
+      "name": {
+        "en": "River Phoenix",
+        "he": "River Phoenix"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/m6fAk9U6ws76aWCBanu2cj2Lgh0.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Byrne",
+        "he": "Michael Byrne"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cWUhkJPdyPFbWAskmTuzgEXYR8X.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevork Malikyan",
+        "he": "Kevork Malikyan"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6rIgKwXjAFo2x4fEBuqOYC9oFq6.jpg"
+    },
+    {
+      "name": {
+        "en": "Robert Eddison",
+        "he": "Robert Eddison"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vABVhicQpeFrOQa5mwOqqK5xspO.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_050/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/sizg1AU8f8JDZX4QIgE4pjUMBvx.jpg",
+  "decoy_answers": {
+    "en": [
+      "Star Trek",
+      "Arn: The Knight Templar",
+      "Frontier(s)",
+      "Bangkok Dangerous",
+      "The Wrecking Crew",
+      "Futurama: Bender's Game",
+      "Zoom",
+      "Marry My Dead Body",
+      "The Villainess"
+    ],
+    "he": [
+      "סטארטרק",
+      "ארן: אביר מסדר הטמפלר",
+      "גבול",
+      "בנגקוק מסוכנת",
+      "צוות ההרס",
+      "פיוצ'רמה: המשחק של בנדר",
+      "זום: בי''ס לגיבורי-על",
+      "בעלי, רוח הרפאים",
+      "악녀"
+    ]
+  },
+  "original_filename": "Indiana_Jones_and_the_Last_Crusade.mp4"
+}

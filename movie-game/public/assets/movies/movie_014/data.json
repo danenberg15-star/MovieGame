@@ -1,0 +1,122 @@
+{
+  "id": "movie_014",
+  "title": {
+    "en": "Back to the Future Part III",
+    "he": "בחזרה לעתיד 3"
+  },
+  "year": 1990,
+  "director": {
+    "name": {
+      "en": "Robert Zemeckis",
+      "he": "Robert Zemeckis"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lPYDQ5LYNJ12rJZENtyASmVZ1Ql.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Bob Gale",
+      "he": "Bob Gale"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wZLj3qLrieFQzt49i981lMVijPm.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Michael J. Fox",
+        "he": "Michael J. Fox"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2JB4FMgQmnhbBlQ4SxWFN9EIVDi.jpg"
+    },
+    {
+      "name": {
+        "en": "Christopher Lloyd",
+        "he": "Christopher Lloyd"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nxVjpyb3UrfbPZnEyDNlQVlFAs5.jpg"
+    },
+    {
+      "name": {
+        "en": "Mary Steenburgen",
+        "he": "Mary Steenburgen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yJhfuqS3yXW7kLSyvRU6n3b35mq.jpg"
+    },
+    {
+      "name": {
+        "en": "Thomas F. Wilson",
+        "he": "Thomas F. Wilson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/mVhm65ZVBIRIptWGiMIvoUy0Khi.jpg"
+    },
+    {
+      "name": {
+        "en": "Lea Thompson",
+        "he": "Lea Thompson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vsi9xdehaMWMoPKyq1qKxqN9Zz4.jpg"
+    },
+    {
+      "name": {
+        "en": "Elisabeth Shue",
+        "he": "Elisabeth Shue"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/1pmjDSLvOuqKW1P2KRPlpFMeUFe.jpg"
+    },
+    {
+      "name": {
+        "en": "Matt Clark",
+        "he": "Matt Clark"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/n5TJz5CaTqRXLpAOl0wHJXrPQOk.jpg"
+    },
+    {
+      "name": {
+        "en": "Richard Dysart",
+        "he": "Richard Dysart"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/yQOaZexN3YbqGWOguu2VrjsvX2G.jpg"
+    },
+    {
+      "name": {
+        "en": "Pat Buttram",
+        "he": "Pat Buttram"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jRVB0shCimyljcDYlIUpdcAVe8E.jpg"
+    },
+    {
+      "name": {
+        "en": "Harry Carey, Jr.",
+        "he": "Harry Carey, Jr."
+      },
+      "image": "https://image.tmdb.org/t/p/w500/7O61xbnqAMDOKVCh9ZH8deW6M30.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_014/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/crzoVQnMzIrRfHtQw0tLBirNfVg.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Tram",
+      "The Doom Generation",
+      "Meg 2: The Trench",
+      "Survival of a Dragon",
+      "Christmas in the Clouds",
+      "Star Trek",
+      "Hellboy Animated: Blood and Iron",
+      "Train Man",
+      "Zyuden Sentai Kyoryuger vs. Go-Busters: The Great Dinosaur War"
+    ],
+    "he": [
+      "Трамвай",
+      "The Doom Generation",
+      "אימה במצולות 2: התהום",
+      "Zai xi ying xiong",
+      "חג המולד בעננים",
+      "סטארטרק",
+      "הלבוי: דם וברזל",
+      "電車男",
+      "獣電戦隊キョウリュウジャーVSゴーバスターズ 恐竜大決戦！さらば永遠の友よ"
+    ]
+  },
+  "original_filename": "Back_to_the_Future_Part_III.mp4"
+}

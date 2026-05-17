@@ -1,0 +1,122 @@
+{
+  "id": "movie_039",
+  "title": {
+    "en": "Fury",
+    "he": "זעם"
+  },
+  "year": 2014,
+  "director": {
+    "name": {
+      "en": "David Ayer",
+      "he": "David Ayer"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/7JmWK2wg2StEc9eYjY96s7OJgb7.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Ethan Smith",
+      "he": "Ethan Smith"
+    },
+    "image": null
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Brad Pitt",
+        "he": "Brad Pitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/9OfnD7lxgIj3BNQpJFnwxnwl6w5.jpg"
+    },
+    {
+      "name": {
+        "en": "Shia LaBeouf",
+        "he": "Shia LaBeouf"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kHS5Ft8gQn0Pq9m24qN049YgUsD.jpg"
+    },
+    {
+      "name": {
+        "en": "Logan Lerman",
+        "he": "Logan Lerman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ckcpgSvSWOhi8mvAfR1Cpsakg3S.jpg"
+    },
+    {
+      "name": {
+        "en": "Michael Peña",
+        "he": "Michael Peña"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/afs4PCiwn8LR93a10drULLVeVLo.jpg"
+    },
+    {
+      "name": {
+        "en": "Jon Bernthal",
+        "he": "Jon Bernthal"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/o0t6EVkJOrFAjESDilZUlf46IbQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Jim Parrack",
+        "he": "Jim Parrack"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kojTolzA20itC8zd82QVaeTfQsJ.jpg"
+    },
+    {
+      "name": {
+        "en": "Brad William Henke",
+        "he": "Brad William Henke"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ynte6cntUQ87iZcbWMxesf7mD59.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevin Vance",
+        "he": "Kevin Vance"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/w0CsNlqcGxBhIuJ94vEDMY7gcRz.jpg"
+    },
+    {
+      "name": {
+        "en": "Xavier Samuel",
+        "he": "Xavier Samuel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gHvKqCXfpzaGp46gqsy9MVDfmSf.jpg"
+    },
+    {
+      "name": {
+        "en": "Jason Isaacs",
+        "he": "Jason Isaacs"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/s6XRFjqUsrDJfDQuXPOoExAYPmb.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_039/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/pfte7wdMobMF4CVHuOxyu6oqeeA.jpg",
+  "decoy_answers": {
+    "en": [
+      "The Final Countdown",
+      "The Thin Red Line",
+      "Che: Part Two",
+      "Che: Part One",
+      "Flame & Citron",
+      "Great Times",
+      "Europa Europa",
+      "Outpost",
+      "The Marine"
+    ],
+    "he": [
+      "הנימיץ אינה עונה",
+      "הקו האדום",
+      "צ'ה: חלק ב' - גרילה",
+      "צ'ה: חלק א' - הארגנטינאי",
+      "פלאם וציטרון",
+      "Zlaté časy",
+      "אירופה אירופה",
+      "מוצב הרפאים",
+      "איש המארינס"
+    ]
+  },
+  "original_filename": "Fury.mp4"
+}

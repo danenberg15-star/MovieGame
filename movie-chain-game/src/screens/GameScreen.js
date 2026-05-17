@@ -1,0 +1,510 @@
+// src/screens/GameScreen.js
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ref, onValue, update, get } from 'firebase/database';
+import { database } from '../firebase';
+import './GameScreen.css';
+
+// Components
+import TeamStatus from '../components/TeamStatus';
+import TrailerPlayer from '../components/TrailerPlayer';
+import AnswerOptions from '../components/AnswerOptions';
+import DecisionPhase from '../components/DecisionPhase';
+
+// Utils
+import {
+  loadMoviesData,
+  selectAnchorCards,
+  selectNextMovie,
+  generateAnswerOptions,
+  checkAnswer,
+  validateConnection,
+  getConnectionHint,
+  checkWinCondition,
+  initializeGameState,
+  getSuccessMessage
+} from '../utils/gameLogic';
+import botPlayer from '../utils/botPlayer';
+
+function GameScreen() {
+  const { t, i18n } = useTranslation();
+  const { roomCode } = useParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const playerId = searchParams.get('playerId');
+
+  // Game State
+  const [gameState, setGameState] = useState(null);
+  const [allMovies, setAllMovies] = useState([]);
+  const [currentMovie, setCurrentMovie] = useState(null);
+  const [answerOptions, setAnswerOptions] = useState([]);
+  const [eliminatedAnswers, setEliminatedAnswers] = useState([]);
+  
+  // Phase Management
+  const [phase, setPhase] = useState('loading'); // 'loading', 'trailer', 'answering', 'decision', 'finished'
+  const [currentTurn, setCurrentTurn] = useState('A');
+  const [attemptedTeams, setAttemptedTeams] = useState([]);
+  
+  // Team Data
+  const [teamAData, setTeamAData] = useState({ cards: [], tokens: 0 });
+  const [teamBData, setTeamBData] = useState({ cards: [], tokens: 0 });
+  
+  // Player Info
+  const [myTeam, setMyTeam] = useState(null);
+  const [isQAMode, setIsQAMode] = useState(false);
+  const [winner, setWinner] = useState(null);
+  
+  // Decision Phase
+  const [wonCard, setWonCard] = useState(null);
+  const [decisionTeam, setDecisionTeam] = useState(null);
+  
+  // UI State
+  const [message, setMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Get current language
+  const language = i18n.language;
+
+  // Initialize game
+  useEffect(() => {
+    const initGame = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Check if QA Mode
+        const qaMode = roomCode === '99999';
+        setIsQAMode(qaMode);
+
+        // Load movies data
+        const movies = await loadMoviesData();
+        setAllMovies(movies);
+
+        if (movies.length === 0) {
+          throw new Error('No movies data loaded');
+        }
+
+        // Get room data from Firebase
+        const roomRef = ref(database, `rooms/${roomCode}`);
+        const roomSnapshot = await get(roomRef);
+        
+        if (!roomSnapshot.exists()) {
+          throw new Error('Room not found');
+        }
+
+        const roomData = roomSnapshot.val();
+        
+        // Get my team
+        const myPlayerData = roomData.players?.[playerId];
+        if (myPlayerData) {
+          setMyTeam(myPlayerData.team);
+        }
+
+        // Check if game already initialized
+        if (roomData.gameState) {
+          // Load existing game state
+          setGameState(roomData.gameState);
+          setTeamAData(roomData.gameState.teamA);
+          setTeamBData(roomData.gameState.teamB);
+          setCurrentTurn(roomData.gameState.currentTurn);
+          setPhase(roomData.gameState.phase);
+        } else {
+          // Initialize new game
+          const anchorCards = selectAnchorCards(movies);
+          const initialState = initializeGameState(anchorCards, movies);
+          
+          // Save to Firebase
+          await update(roomRef, {
+            gameState: initialState,
+            status: 'playing'
+          });
+
+          setGameState(initialState);
+          setTeamAData(initialState.teamA);
+          setTeamBData(initialState.teamB);
+          
+          // Start first round
+          startNewRound(initialState, movies);
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error initializing game:', error);
+        alert('Failed to initialize game: ' + error.message);
+        navigate('/');
+      }
+    };
+
+    if (roomCode && playerId) {
+      initGame();
+    }
+  }, [roomCode, playerId, navigate]);
+
+  // Listen to game state changes
+  useEffect(() => {
+    if (!roomCode) return;
+
+    const gameStateRef = ref(database, `rooms/${roomCode}/gameState`);
+    const unsubscribe = onValue(gameStateRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setGameState(data);
+        setTeamAData(data.teamA);
+        setTeamBData(data.teamB);
+        setCurrentTurn(data.currentTurn);
+        setPhase(data.phase);
+        
+        if (data.winner) {
+          setWinner(data.winner);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [roomCode]);
+
+  // Start new round
+  const startNewRound = useCallback((state, movies) => {
+    const nextMovie = selectNextMovie(
+      movies,
+      state.usedMovieIds,
+      [...state.teamA.cards, ...state.teamB.cards]
+    );
+
+    if (!nextMovie) {
+      // No more movies
+      endGame(state);
+      return;
+    }
+
+    setCurrentMovie(nextMovie);
+    setAnswerOptions(generateAnswerOptions(nextMovie, movies, language));
+    setEliminatedAnswers([]);
+    setAttemptedTeams([]);
+    setPhase('trailer');
+    
+    showMessage(t('watch_trailer') || 'Watch the trailer carefully!', 'info');
+  }, [language, t]);
+
+  // Handle trailer end
+  const handleTrailerEnd = () => {
+    setPhase('answering');
+    showMessage(
+      currentTurn === myTeam 
+        ? t('your_turn') 
+        : `${t(currentTurn === 'A' ? 'team_a' : 'team_b')}'s turn`,
+      'info'
+    );
+
+    // Bot's turn in QA mode
+    if (isQAMode && currentTurn === 'B') {
+      handleBotAnswer();
+    }
+  };
+
+  // Handle bot answer (QA Mode)
+  const handleBotAnswer = async () => {
+    const correctAnswer = currentMovie.title[language];
+    const answer = await botPlayer.chooseAnswer(correctAnswer, answerOptions);
+    
+    setTimeout(() => {
+      handleAnswerSelected(answer, answer === correctAnswer, 'B');
+    }, 500);
+  };
+
+  // Handle answer selection
+  const handleAnswerSelected = async (answer, isCorrect, team = currentTurn) => {
+    if (isCorrect) {
+      // Correct answer - earn token and go to decision phase
+      showMessage(t('correct') + '! 🎉', 'success');
+      
+      const updatedState = { ...gameState };
+      
+      if (team === 'A') {
+        updatedState.teamA.tokens += 1;
+        setTeamAData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
+      } else {
+        updatedState.teamB.tokens += 1;
+        setTeamBData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
+      }
+      
+      updatedState.usedMovieIds.push(currentMovie.id);
+      
+      // Update Firebase
+      await updateGameState(updatedState);
+      
+      // Go to decision phase
+      setWonCard(currentMovie);
+      setDecisionTeam(team);
+      setPhase('decision');
+      
+      // Bot's decision in QA mode
+      if (isQAMode && team === 'B') {
+        handleBotDecision();
+      }
+    } else {
+      // Wrong answer
+      showMessage(t('incorrect') + ' ❌', 'error');
+      
+      // Add to eliminated answers
+      setEliminatedAnswers(prev => [...prev, answer]);
+      setAttemptedTeams(prev => [...prev, team]);
+      
+      // Check if both teams failed
+      if (attemptedTeams.length >= 1 && !attemptedTeams.includes(team)) {
+        // Both teams failed - card returns to pool
+        showMessage(t('both_teams_failed'), 'warning');
+        
+        setTimeout(() => {
+          switchToNextRound();
+        }, 2000);
+      } else {
+        // Switch turn to other team
+        const nextTurn = team === 'A' ? 'B' : 'A';
+        setCurrentTurn(nextTurn);
+        
+        showMessage(
+          `${t(nextTurn === 'A' ? 'team_a' : 'team_b')}'s turn`,
+          'info'
+        );
+        
+        // Bot's turn in QA mode
+        if (isQAMode && nextTurn === 'B') {
+          setTimeout(() => {
+            handleBotAnswer();
+          }, 1000);
+        }
+      }
+    }
+  };
+
+  // Handle bot decision (QA Mode)
+  const handleBotDecision = async () => {
+    const teamCards = teamBData.cards;
+    const decision = await botPlayer.tryConnect(currentMovie, teamCards);
+    
+    setTimeout(() => {
+      if (decision.action === 'connect') {
+        handleConnect(decision.targetCard, decision.connectionType, 'B');
+      } else {
+        handleSaveToken('B');
+      }
+    }, 500);
+  };
+
+  // Handle connect attempt
+  const handleConnect = async (targetCard, connectionType, team = decisionTeam) => {
+    const validation = validateConnection(wonCard, targetCard, connectionType);
+    
+    if (validation.valid) {
+      // Successful connection
+      const successMsg = getSuccessMessage(
+        connectionType,
+        validation.connection,
+        language
+      );
+      showMessage(successMsg, 'success');
+      
+      // Add card to team
+      const updatedState = { ...gameState };
+      if (team === 'A') {
+        updatedState.teamA.cards.push(wonCard);
+        setTeamAData(prev => ({ 
+          ...prev, 
+          cards: [...prev.cards, wonCard] 
+        }));
+      } else {
+        updatedState.teamB.cards.push(wonCard);
+        setTeamBData(prev => ({ 
+          ...prev, 
+          cards: [...prev.cards, wonCard] 
+        }));
+      }
+      
+      // Update Firebase
+      await updateGameState(updatedState);
+      
+      // Check win condition
+      const teamCards = team === 'A' ? updatedState.teamA.cards : updatedState.teamB.cards;
+      if (checkWinCondition(teamCards)) {
+        endGame(updatedState, team);
+        return;
+      }
+      
+      // Continue to next round
+      setTimeout(() => {
+        switchToNextRound();
+      }, 2000);
+    } else {
+      // Failed connection - show hint
+      const hint = getConnectionHint(wonCard, targetCard, language);
+      showMessage(
+        t('incorrect') + '\n💡 ' + hint.message,
+        'error'
+      );
+      
+      // Card stays in pool, continue to next round
+      setTimeout(() => {
+        switchToNextRound();
+      }, 3000);
+    }
+  };
+
+  // Handle save token
+  const handleSaveToken = async (team = decisionTeam) => {
+    showMessage(t('token_saved') || '🎫 Token saved!', 'info');
+    
+    // Card stays in pool
+    // Continue to next round
+    setTimeout(() => {
+      switchToNextRound();
+    }, 1500);
+  };
+
+  // Switch to next round
+  const switchToNextRound = () => {
+    const nextTurn = currentTurn === 'A' ? 'B' : 'A';
+    setCurrentTurn(nextTurn);
+    setWonCard(null);
+    setDecisionTeam(null);
+    
+    startNewRound(gameState, allMovies);
+  };
+
+  // Update game state in Firebase
+  const updateGameState = async (newState) => {
+    try {
+      const roomRef = ref(database, `rooms/${roomCode}/gameState`);
+      await update(roomRef, newState);
+      setGameState(newState);
+    } catch (error) {
+      console.error('Error updating game state:', error);
+    }
+  };
+
+  // End game
+  const endGame = async (state, winningTeam = null) => {
+    let finalWinner = winningTeam;
+    
+    if (!finalWinner) {
+      // Determine winner by card count
+      if (state.teamA.cards.length >= 10) {
+        finalWinner = 'A';
+      } else if (state.teamB.cards.length >= 10) {
+        finalWinner = 'B';
+      }
+    }
+    
+    setWinner(finalWinner);
+    setPhase('finished');
+    
+    // Update Firebase
+    const roomRef = ref(database, `rooms/${roomCode}/gameState`);
+    await update(roomRef, {
+      ...state,
+      phase: 'finished',
+      winner: finalWinner
+    });
+  };
+
+  // Show message
+  const showMessage = (text, type = 'info') => {
+    setMessage({ text, type });
+    setTimeout(() => setMessage(null), 3000);
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="game-screen loading">
+        <div className="loading-spinner"></div>
+        <p>{t('loading') || 'Loading game...'}</p>
+      </div>
+    );
+  }
+
+  // Finished state
+  if (phase === 'finished' && winner) {
+    return (
+      <div className="game-screen finished">
+        <div className="winner-container">
+          <h1 className="winner-title">
+            🏆 {t(winner === 'A' ? 'team_a' : 'team_b')} {t('wins') || 'Wins!'}
+          </h1>
+          <div className="final-scores">
+            <div className="team-final-score">
+              <h3>{t('team_a')}</h3>
+              <p className="score">{teamAData.cards.length} {t('cards')}</p>
+              <p className="tokens">{teamAData.tokens} {t('tokens')}</p>
+            </div>
+            <div className="vs">VS</div>
+            <div className="team-final-score">
+              <h3>{t('team_b')}</h3>
+              <p className="score">{teamBData.cards.length} {t('cards')}</p>
+              <p className="tokens">{teamBData.tokens} {t('tokens')}</p>
+            </div>
+          </div>
+          <button 
+            className="btn btn-primary"
+            onClick={() => navigate('/')}
+          >
+            {t('play_again') || '🎮 Play Again'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="game-screen">
+      <div className="container">
+        {/* Message Banner */}
+        {message && (
+          <div className={`message-banner ${message.type}`}>
+            {message.text}
+          </div>
+        )}
+
+        {/* Team Status */}
+        <TeamStatus 
+          teamA={teamAData}
+          teamB={teamBData}
+          currentTurn={currentTurn}
+        />
+
+        {/* Trailer Phase */}
+        {phase === 'trailer' && currentMovie && (
+          <TrailerPlayer
+            movieId={currentMovie.id}
+            onTrailerEnd={handleTrailerEnd}
+            autoPlay={true}
+          />
+        )}
+
+        {/* Answering Phase */}
+        {phase === 'answering' && currentMovie && (
+          <AnswerOptions
+            options={answerOptions}
+            correctAnswer={currentMovie.title[language]}
+            onAnswerSelected={(answer, isCorrect) => handleAnswerSelected(answer, isCorrect)}
+            disabled={currentTurn !== myTeam && !isQAMode}
+            eliminatedAnswers={eliminatedAnswers}
+          />
+        )}
+
+        {/* Decision Phase */}
+        {phase === 'decision' && wonCard && (
+          <DecisionPhase
+            wonCard={wonCard}
+            teamCards={decisionTeam === 'A' ? teamAData.cards : teamBData.cards}
+            onConnect={handleConnect}
+            onSaveToken={handleSaveToken}
+            language={language}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default GameScreen;

@@ -1,0 +1,122 @@
+{
+  "id": "movie_104",
+  "title": {
+    "en": "Saving Private Ryan",
+    "he": "להציל את טוראי ריאן"
+  },
+  "year": 1998,
+  "director": {
+    "name": {
+      "en": "Steven Spielberg",
+      "he": "Steven Spielberg"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Mark Gordon",
+      "he": "Mark Gordon"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/lATsud5NyaXaKE5p8H1kEkUsbWN.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Tom Hanks",
+        "he": "Tom Hanks"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oFvZoKI6lvU03n4YoNGAll9rkas.jpg"
+    },
+    {
+      "name": {
+        "en": "Tom Sizemore",
+        "he": "Tom Sizemore"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/soINOuacuiThRb2LyPD4tTWve7C.jpg"
+    },
+    {
+      "name": {
+        "en": "Edward Burns",
+        "he": "Edward Burns"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/pTLdPUSxDUcdmvy91LGCF3pk0AM.jpg"
+    },
+    {
+      "name": {
+        "en": "Barry Pepper",
+        "he": "Barry Pepper"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xBvW4dMoz496rItLQU6TGteYCEP.jpg"
+    },
+    {
+      "name": {
+        "en": "Adam Goldberg",
+        "he": "Adam Goldberg"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xEbqDqTWlSSCi4v8FI3S9YSEPJz.jpg"
+    },
+    {
+      "name": {
+        "en": "Vin Diesel",
+        "he": "Vin Diesel"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nZdVry7lnUkE24PnXakok9okvL4.jpg"
+    },
+    {
+      "name": {
+        "en": "Giovanni Ribisi",
+        "he": "Giovanni Ribisi"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8EAiS9D3YtGOrwNM0OrwmDpWK7s.jpg"
+    },
+    {
+      "name": {
+        "en": "Jeremy Davies",
+        "he": "Jeremy Davies"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tNtcpQnMxzl0OqVDsyA63oAgPbI.jpg"
+    },
+    {
+      "name": {
+        "en": "Matt Damon",
+        "he": "Matt Damon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg"
+    },
+    {
+      "name": {
+        "en": "Ted Danson",
+        "he": "Ted Danson"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2QUEYVhrKbOkRKeFEUnc5sJby6a.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_104/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg",
+  "decoy_answers": {
+    "en": [
+      "Battle of the Bulge",
+      "Shattered Glass",
+      "Hitler's Hollywood",
+      "Sweetwater",
+      "Seeking Sun Paths",
+      "Antwone Fisher",
+      "October Sky",
+      "Iron Cross: The Road to Normandy",
+      "Fortress of Flesh and Blood"
+    ],
+    "he": [
+      "יום לפני הכניעה",
+      "חשיפה",
+      "Hitlers Hollywood",
+      "Sweetwater",
+      "Rrugicat që kërkonin diell",
+      "אנטואן פישר",
+      "שמי אוקטובר",
+      "Iron Cross: The Road to Normandy",
+      "血肉長城"
+    ]
+  },
+  "original_filename": "Saving_Private_Ryan.mp4"
+}

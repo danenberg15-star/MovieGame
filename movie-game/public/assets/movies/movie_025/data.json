@@ -1,0 +1,122 @@
+{
+  "id": "movie_025",
+  "title": {
+    "en": "Deadpool & Wolverine",
+    "he": "דדפול & וולברין"
+  },
+  "year": 2024,
+  "director": {
+    "name": {
+      "en": "Shawn Levy",
+      "he": "Shawn Levy"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/uZ40wDFzxPmzROJl9KxPgEGv9ME.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Ryan Reynolds",
+      "he": "Ryan Reynolds"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/trzgptffGvAlAT6MEu01fz47cLW.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Ryan Reynolds",
+        "he": "Ryan Reynolds"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/trzgptffGvAlAT6MEu01fz47cLW.jpg"
+    },
+    {
+      "name": {
+        "en": "Hugh Jackman",
+        "he": "Hugh Jackman"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oX6CpXmnXCHLyqsa4NEed1DZAKx.jpg"
+    },
+    {
+      "name": {
+        "en": "Emma Corrin",
+        "he": "Emma Corrin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/wqGOVOsHzZaHeHymIS40elGCnY0.jpg"
+    },
+    {
+      "name": {
+        "en": "Matthew Macfadyen",
+        "he": "Matthew Macfadyen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sFaIfkykJdftwrc3BdEfpdg2mYW.jpg"
+    },
+    {
+      "name": {
+        "en": "Dafne Keen",
+        "he": "Dafne Keen"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/g325OIjIHrFr0te8ewPfhKQ2SKj.jpg"
+    },
+    {
+      "name": {
+        "en": "Jon Favreau",
+        "he": "Jon Favreau"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tnx7iMVydPQXGOoLsxXl84PXtbA.jpg"
+    },
+    {
+      "name": {
+        "en": "Morena Baccarin",
+        "he": "Morena Baccarin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kBSKKaOtsqIzZPhtEeHfCBmhWl9.jpg"
+    },
+    {
+      "name": {
+        "en": "Rob Delaney",
+        "he": "Rob Delaney"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xirfT1znRkkughLiPemKu3NhkKQ.jpg"
+    },
+    {
+      "name": {
+        "en": "Leslie Uggams",
+        "he": "Leslie Uggams"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/peLaqLcs3y2WY4TbrLOXQGt9I8S.jpg"
+    },
+    {
+      "name": {
+        "en": "Jennifer Garner",
+        "he": "Jennifer Garner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/ftymEXqdTnXfaI6dGd9qrJoFOSE.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_025/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+  "decoy_answers": {
+    "en": [
+      "Orgazmo",
+      "Dragon Ball Super: Super Hero",
+      "Secret Headquarters",
+      "Wayne's World",
+      "Wayne's World 2",
+      "DC Showcase: Blue Beetle",
+      "DC Showcase - Constantine: The House of Mystery",
+      "The Marine",
+      "EuroTrip"
+    ],
+    "he": [
+      "אורגזמו",
+      "דרגון בול סופר: סופר הירו",
+      "מפקדה סודית",
+      "עולמו של ויין",
+      "עולמו של ויין 2",
+      "די.סי. מציגים: בלו ביטל",
+      "קונסטנטין: בית המסתורין",
+      "איש המארינס",
+      "יורוטריפ"
+    ]
+  },
+  "original_filename": "Deadpool.mp4"
+}

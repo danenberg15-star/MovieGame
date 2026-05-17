@@ -1,0 +1,122 @@
+{
+  "id": "movie_038",
+  "title": {
+    "en": "Full Metal Jacket",
+    "he": "מטאל ג'אקט"
+  },
+  "year": 1987,
+  "director": {
+    "name": {
+      "en": "Stanley Kubrick",
+      "he": "Stanley Kubrick"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/yFT0VyIelI9aegZrsAwOG5iVP4v.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Stanley Kubrick",
+      "he": "Stanley Kubrick"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/yFT0VyIelI9aegZrsAwOG5iVP4v.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Matthew Modine",
+        "he": "Matthew Modine"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z974QEHL12qUvLyk6hlWGAmDgom.jpg"
+    },
+    {
+      "name": {
+        "en": "Adam Baldwin",
+        "he": "Adam Baldwin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lfbyJWNWGbiYfU0Yr1tjn6Trd2V.jpg"
+    },
+    {
+      "name": {
+        "en": "Vincent D'Onofrio",
+        "he": "Vincent D'Onofrio"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/qkyiLolEqYMGH25xD4sFIXAjZQB.jpg"
+    },
+    {
+      "name": {
+        "en": "R. Lee Ermey",
+        "he": "R. Lee Ermey"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/aXFJlEGHlQT7bwxkKwq6Sx7PeEp.jpg"
+    },
+    {
+      "name": {
+        "en": "Dorian Harewood",
+        "he": "Dorian Harewood"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/j3Nc0uNpe3MkonLtOrzVegO22QO.jpg"
+    },
+    {
+      "name": {
+        "en": "Kevyn Major Howard",
+        "he": "Kevyn Major Howard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/utYdHRALnc34u49jm3Mc6U5R98u.jpg"
+    },
+    {
+      "name": {
+        "en": "Arliss Howard",
+        "he": "Arliss Howard"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/28bQJ5fqLem4Ml7x9LZ7QEnwaTa.jpg"
+    },
+    {
+      "name": {
+        "en": "Ed O'Ross",
+        "he": "Ed O'Ross"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/6hzovUAs5hFcrZvPdk84NR3KcHU.jpg"
+    },
+    {
+      "name": {
+        "en": "John Terry",
+        "he": "John Terry"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/2paelsnx3mEZam5ZJZMmUuurgJq.jpg"
+    },
+    {
+      "name": {
+        "en": "Kieron Jecchinis",
+        "he": "Kieron Jecchinis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gYtqlYJylewxBf1iHRcZ2G5l3M1.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_038/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/kMKyx1k8hWWscYFnPbnxxN4Eqo4.jpg",
+  "decoy_answers": {
+    "en": [
+      "Bringing Out the Dead",
+      "The Isle",
+      "The Shell Seekers",
+      "The Thin Red Line",
+      "Bones and All",
+      "It Stains the Sands Red",
+      "Pale Rider",
+      "It's Hard Being Loved by Jerks",
+      "Derailed"
+    ],
+    "he": [
+      "לגעת במוות",
+      "섬",
+      "The Shell Seekers",
+      "הקו האדום",
+      "עצמות והכול",
+      "It Stains the Sands Red",
+      "הנוקם",
+      "C'est dur d'être aimé par des cons",
+      "מחיר הבגידה"
+    ]
+  },
+  "original_filename": "Full_Metal_Jacket.mp4"
+}

@@ -1,0 +1,122 @@
+{
+  "id": "movie_095",
+  "title": {
+    "en": "Raging Bull",
+    "he": "השור הזועם"
+  },
+  "year": 1980,
+  "director": {
+    "name": {
+      "en": "Martin Scorsese",
+      "he": "Martin Scorsese"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/9U9Y5GQuWX3EZy39B8nkk4NY01S.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Robert Chartoff",
+      "he": "Robert Chartoff"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/wvdwbjxPS4kde4ozrAhcMwyJ43I.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Robert De Niro",
+        "he": "Robert De Niro"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/cT8htcckIuyI1Lqwt1CvD02ynTh.jpg"
+    },
+    {
+      "name": {
+        "en": "Cathy Moriarty",
+        "he": "Cathy Moriarty"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/5Ja7K0QtvgUnImSSfRqe8hQeoqr.jpg"
+    },
+    {
+      "name": {
+        "en": "Joe Pesci",
+        "he": "Joe Pesci"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zbAdhqbMfRXSz26TjxJvB5f2eL5.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Vincent",
+        "he": "Frank Vincent"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/tkKFnuEmgecPYRqAlDZqfWRMst2.jpg"
+    },
+    {
+      "name": {
+        "en": "Nicholas Colasanto",
+        "he": "Nicholas Colasanto"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/xxLH9OyleTGlhAqSPavcYoSMpQB.jpg"
+    },
+    {
+      "name": {
+        "en": "Theresa Saldana",
+        "he": "Theresa Saldana"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/VWTUbbQQX1Sq1b8AIwbXDuT93u.jpg"
+    },
+    {
+      "name": {
+        "en": "Mario Gallo",
+        "he": "Mario Gallo"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/rogY5uQfrQHI0rr68q3AMmMOvay.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Adonis",
+        "he": "Frank Adonis"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/kp5HFPwnh00HFcrov50dfnTOeIo.jpg"
+    },
+    {
+      "name": {
+        "en": "Joseph Bono",
+        "he": "Joseph Bono"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/vxgNID1kmRmr3Cxbm31e0cR8BXB.jpg"
+    },
+    {
+      "name": {
+        "en": "Frank Topham",
+        "he": "Frank Topham"
+      },
+      "image": null
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_095/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/1WV7WlTS8LI1L5NkCgjWT9GSW3O.jpg",
+  "decoy_answers": {
+    "en": [
+      "Fifty Shades Darker",
+      "The Divine Emma",
+      "The Story of Alfred Nobel",
+      "Teenagers",
+      "A Woman and a Man",
+      "No Longer Heroine",
+      "The Assassination of Ryoma",
+      "The Day Silence Died",
+      "The Catered Affair"
+    ],
+    "he": [
+      "חמישים גוונים של אופל",
+      "Božská Ema",
+      "The Story of Alfred Nobel",
+      "المراهقات‎‎",
+      "امرأة ورجل",
+      "ヒロイン失格",
+      "竜馬暗殺",
+      "El día que murió el Silencio",
+      "The Catered Affair"
+    ]
+  },
+  "original_filename": "Raging_Bull.mp4"
+}

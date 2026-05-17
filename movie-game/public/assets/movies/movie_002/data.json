@@ -1,0 +1,122 @@
+{
+  "id": "movie_002",
+  "title": {
+    "en": "A Perfect World",
+    "he": "עולם מושלם"
+  },
+  "year": 1993,
+  "director": {
+    "name": {
+      "en": "Clint Eastwood",
+      "he": "Clint Eastwood"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/8TwdCfeOZH7ucRlfLZ6wObxa7cO.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "David Valdes",
+      "he": "David Valdes"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/4gbCUGBWd4WeRsu9DeknpJUMlvz.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Kevin Costner",
+        "he": "Kevin Costner"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/608blZipRDZkDpzp8VItB64qMaT.jpg"
+    },
+    {
+      "name": {
+        "en": "Clint Eastwood",
+        "he": "Clint Eastwood"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/8TwdCfeOZH7ucRlfLZ6wObxa7cO.jpg"
+    },
+    {
+      "name": {
+        "en": "Laura Dern",
+        "he": "Laura Dern"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/gB9PnGEvxKg33OSlcqptQwTBwPE.jpg"
+    },
+    {
+      "name": {
+        "en": "T.J. Lowther",
+        "he": "T.J. Lowther"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jRQJboPYY2LGf79j8OfKdjUUvD.jpg"
+    },
+    {
+      "name": {
+        "en": "Bradley Whitford",
+        "he": "Bradley Whitford"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/oeDv2qZWTxELLaNtOIoeG72leNY.jpg"
+    },
+    {
+      "name": {
+        "en": "Keith Szarabajka",
+        "he": "Keith Szarabajka"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/z45Goe7lfBvs3cBP5igsCE8ISWG.jpg"
+    },
+    {
+      "name": {
+        "en": "Leo Burmester",
+        "he": "Leo Burmester"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/o7ZXSICrTDzhxIyd95HBwVjBi1f.jpg"
+    },
+    {
+      "name": {
+        "en": "Paul Hewitt",
+        "he": "Paul Hewitt"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/4thMoXKH9Fi5S5p317BRA8H9lUx.jpg"
+    },
+    {
+      "name": {
+        "en": "Ray McKinnon",
+        "he": "Ray McKinnon"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/nZSmJVTSq2eEcE4FeEoKVNYUGM9.jpg"
+    },
+    {
+      "name": {
+        "en": "Jennifer Griffin",
+        "he": "Jennifer Griffin"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/jih8vkxQu2IBSelEo1VaN9d5Bj6.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_002/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/kWX2CYM5TbWaZwll4ysh7OjVUmJ.jpg",
+  "decoy_answers": {
+    "en": [
+      "Texas Rangers",
+      "Spiderhead",
+      "Withnail & I",
+      "Impasse",
+      "Holiday",
+      "Friday Night Lights",
+      "The Spacewalker",
+      "Auto Focus",
+      "Girl in the Picture"
+    ],
+    "he": [
+      "טקסס רנג'רס",
+      "ראש העכביש",
+      "וית'נייל ואני",
+      "炎と女",
+      "홀리데이",
+      "אורות של ליל שישי",
+      "מעבר לכוכבים",
+      "מאחורי המצלמה",
+      "הנערה שבתמונה"
+    ]
+  },
+  "original_filename": "A_Perfect_World.mp4"
+}

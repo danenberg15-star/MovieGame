@@ -1,0 +1,122 @@
+{
+  "id": "movie_088",
+  "title": {
+    "en": "Pirates of the Caribbean: The Curse of the Black Pearl",
+    "he": "שודדי הקאריביים: קללת הפנינה השחורה"
+  },
+  "year": 2003,
+  "director": {
+    "name": {
+      "en": "Gore Verbinski",
+      "he": "Gore Verbinski"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/rSQRdmLNAwdKxrtvBSSlBmWeSsj.jpg"
+  },
+  "producer": {
+    "name": {
+      "en": "Jerry Bruckheimer",
+      "he": "Jerry Bruckheimer"
+    },
+    "image": "https://image.tmdb.org/t/p/w500/sYjNrmbMi4DGAPX6Kt8wVy7LNXI.jpg"
+  },
+  "cast": [
+    {
+      "name": {
+        "en": "Johnny Depp",
+        "he": "Johnny Depp"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/k2xt6EUxQDwYRKIyI4IBdZxfs8n.jpg"
+    },
+    {
+      "name": {
+        "en": "Geoffrey Rush",
+        "he": "Geoffrey Rush"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/npXFjaFQzBNroCEPllGPTZ5IisA.jpg"
+    },
+    {
+      "name": {
+        "en": "Orlando Bloom",
+        "he": "Orlando Bloom"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lwQoA0qJTCZ6l2FH6PjmhRQjiaB.jpg"
+    },
+    {
+      "name": {
+        "en": "Keira Knightley",
+        "he": "Keira Knightley"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bRC1B2VwV0wK3ElciFAK6QZf2wD.jpg"
+    },
+    {
+      "name": {
+        "en": "Jack Davenport",
+        "he": "Jack Davenport"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/shGH0YWJBfiJznidS0f2ZfN056c.jpg"
+    },
+    {
+      "name": {
+        "en": "Jonathan Pryce",
+        "he": "Jonathan Pryce"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/zwSv5uXzPTtmitFe39UdqnVwmdL.jpg"
+    },
+    {
+      "name": {
+        "en": "Lee Arenberg",
+        "he": "Lee Arenberg"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/sjv8tdXzLwC8lZi6Ou6i6z5RbrW.jpg"
+    },
+    {
+      "name": {
+        "en": "Mackenzie Crook",
+        "he": "Mackenzie Crook"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/lN96i9ez4FUrQgpYdLMYr0l3Ggy.jpg"
+    },
+    {
+      "name": {
+        "en": "Damian O'Hare",
+        "he": "Damian O'Hare"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/bO6TMDYluACYKy7zWEloym1SUa5.jpg"
+    },
+    {
+      "name": {
+        "en": "Giles New",
+        "he": "Giles New"
+      },
+      "image": "https://image.tmdb.org/t/p/w500/e0Ap9fkLAFcxLVHpK8KH2TQV3wI.jpg"
+    }
+  ],
+  "oscars": [],
+  "trailer": "/assets/movies/movie_088/trailer.mp4",
+  "poster": "https://image.tmdb.org/t/p/w500/kvDwL2gTf6yxujbsWbsGQB3Z9Wa.jpg",
+  "decoy_answers": {
+    "en": [
+      "Dragon Ball Super: Super Hero",
+      "The Last of the Mohicans",
+      "Turks & Caicos",
+      "Charlie's Angels: Full Throttle",
+      "Shanghai Noon",
+      "Casper",
+      "Jingle All the Way",
+      "The Lion of St. Mark",
+      "Pirates of Blood Island"
+    ],
+    "he": [
+      "דרגון בול סופר: סופר הירו",
+      "המוהיקני האחרון",
+      "Turks & Caicos",
+      "המלאכיות של צ'רלי: בהילוך גבוה",
+      "שנחאי נון",
+      "קספר",
+      "מתנה בלתי אפשרית",
+      "Il leone di San Marco",
+      "La rebelión de los bucaneros"
+    ]
+  },
+  "original_filename": "Pirates_of_the_Caribbean__The_Curse_of_the_Black_Pearl.mp4"
+}
