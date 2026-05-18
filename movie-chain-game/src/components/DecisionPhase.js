@@ -18,9 +18,7 @@ function DecisionPhase({
   const connectionTypes = [
     { id: 'actor', label: t('connection_types.actor'), icon: '🎭' },
     { id: 'director', label: t('connection_types.director'), icon: '🎬' },
-    { id: 'producer', label: t('connection_types.producer'), icon: '🎥' },
-    { id: 'year', label: t('connection_types.year'), icon: '📅' },
-    { id: 'oscar', label: t('connection_types.oscar'), icon: '🏆' }
+    { id: 'year', label: t('connection_types.year'), icon: '📅' }
   ];
 
   const handleConnectClick = () => {

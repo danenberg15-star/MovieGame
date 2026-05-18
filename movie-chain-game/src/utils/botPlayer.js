@@ -133,8 +133,8 @@ class BotPlayer {
         if (connections && connections.length > 0) {
           console.log(`🤖 Found ${connections.length} connections between ${wonCard.title?.en} and ${teamCard.title?.en}`);
           
-          // Prefer actor connections, then director, then others
-          const priorityOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
+          // Prefer actor connections, then director, then year
+          const priorityOrder = ['actor', 'director', 'year'];
           
           for (const priorityType of priorityOrder) {
             const connection = connections.find(c => c.type === priorityType);

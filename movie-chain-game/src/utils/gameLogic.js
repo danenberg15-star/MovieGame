@@ -39,33 +39,29 @@ export function selectAnchorCards(allMovies) {
 
 // Helper function to get connection points - EXPORTED
 export function getConnectionPoints(connectionType) {
-switch (connectionType) {
-  case 'actor':
-    return 5;
-  case 'director':
-    return 4;
-  case 'producer':
-    return 3;
-  case 'year':
-    return 2;
-  case 'oscar':
-    return 1;
-  default:
-    return 0;
-}
+  switch (connectionType) {
+    case 'actor':
+      return 5;
+    case 'director':
+      return 3;
+    case 'year':
+      return 1;
+    default:
+      return 0;
+  }
 }
 
 // Helper function to pick from top scored movies
 function pickFromTopScored(moviesWithScores, description) {
-// Sort by score (highest first)
-moviesWithScores.sort((a, b) => b.score - a.score);
+  // Sort by score (highest first)
+  moviesWithScores.sort((a, b) => b.score - a.score);
 
-// Pick from top 3 to add some variety
-const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
-const randomIndex = Math.floor(Math.random() * topMovies.length);
+  // Pick from top 3 to add some variety
+  const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
+  const randomIndex = Math.floor(Math.random() * topMovies.length);
 
-console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
-return topMovies[randomIndex].movie;
+  console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
+  return topMovies[randomIndex].movie;
 }
 
 // Select next movie with smart algorithm
@@ -226,16 +222,16 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
 
 // Get next required connection type (cycle through types)
 export function getNextRequiredConnectionType(lastConnectionType) {
-const cycleOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
+  const cycleOrder = ['actor', 'director', 'year'];
 
-if (!lastConnectionType) {
-  return cycleOrder[0]; // Start with actor
-}
+  if (!lastConnectionType) {
+    return cycleOrder[0]; // Start with actor
+  }
 
-const currentIndex = cycleOrder.indexOf(lastConnectionType);
-const nextIndex = (currentIndex + 1) % cycleOrder.length;
+  const currentIndex = cycleOrder.indexOf(lastConnectionType);
+  const nextIndex = (currentIndex + 1) % cycleOrder.length;
 
-return cycleOrder[nextIndex];
+  return cycleOrder[nextIndex];
 }
 
 // Generate 10 answer options (1 correct + 9 decoys)
@@ -321,50 +317,13 @@ export function findConnection(movie1, movie2) {
     }
   }
   
-  // 3. Check for same producer
-  if (movie1.producer && movie2.producer &&
-      movie1.producer.name && movie2.producer.name &&
-      movie1.producer.name.en && movie2.producer.name.en) {
-    
-    if (movie1.producer.name.en.trim() === movie2.producer.name.en.trim()) {
-      console.log(`   ✅ PRODUCER MATCH: ${movie1.producer.name.en}`);
-      connections.push({
-        type: 'producer',
-        value: movie1.producer.name,
-        producer: movie1.producer
-      });
-    }
-  }
-  
-  // 4. Check for same year
+  // 3. Check for same year
   if (movie1.year && movie2.year && movie1.year === movie2.year) {
     console.log(`   ✅ YEAR MATCH: ${movie1.year}`);
     connections.push({
       type: 'year',
       value: movie1.year
     });
-  }
-  
-  // 5. Check for same Oscar type
-  if (movie1.oscars && movie2.oscars && 
-      Array.isArray(movie1.oscars) && Array.isArray(movie2.oscars) &&
-      movie1.oscars.length > 0 && movie2.oscars.length > 0) {
-    
-    for (const oscar1 of movie1.oscars) {
-      if (!oscar1 || !oscar1.type || !oscar1.type.en) continue;
-      
-      for (const oscar2 of movie2.oscars) {
-        if (!oscar2 || !oscar2.type || !oscar2.type.en) continue;
-        
-        if (oscar1.type.en.trim() === oscar2.type.en.trim()) {
-          console.log(`   ✅ OSCAR MATCH: ${oscar1.type.en}`);
-          connections.push({
-            type: 'oscar',
-            value: oscar1.type
-          });
-        }
-      }
-    }
   }
   
   if (connections.length === 0) {
@@ -418,20 +377,10 @@ export function getConnectionHint(sourceCard, targetCard, language = 'en') {
         ? `רמז: הסרטים מקושרים דרך הבמאי ${firstConnection.value.he}`
         : `Hint: The movies are connected through director ${firstConnection.value.en}`;
       break;
-    case 'producer':
-      hintMessage = language === 'he'
-        ? `רמז: הסרטים מקושרים דרך המפיק ${firstConnection.value.he}`
-        : `Hint: The movies are connected through producer ${firstConnection.value.en}`;
-      break;
     case 'year':
       hintMessage = language === 'he'
         ? `רמז: שני הסרטים יצאו באותה שנה (${firstConnection.value})`
         : `Hint: Both movies were released in the same year (${firstConnection.value})`;
-      break;
-    case 'oscar':
-      hintMessage = language === 'he'
-        ? `רמז: שני הסרטים זכו באותו סוג אוסקר`
-        : `Hint: Both movies won the same type of Oscar`;
       break;
     default:
       hintMessage = language === 'he'
@@ -493,20 +442,10 @@ export function getSuccessMessage(connectionType, connectionData, language = 'en
         ? `צדקתם! שניהם בוימו על ידי ${connectionData.value.he}`
         : `Correct! Both directed by ${connectionData.value.en}`;
     
-    case 'producer':
-      return language === 'he'
-        ? `צדקתם! שניהם הופקו על ידי ${connectionData.value.he}`
-        : `Correct! Both produced by ${connectionData.value.en}`;
-    
     case 'year':
       return language === 'he'
         ? `צדקתם! שניהם יצאו ב-${connectionData.value}`
         : `Correct! Both released in ${connectionData.value}`;
-    
-    case 'oscar':
-      return language === 'he'
-        ? `צדקתם! שניהם זכו ב-${connectionData.value.he}`
-        : `Correct! Both won ${connectionData.value.en}`;
     
     default:
       return language === 'he' ? 'צדקתם!' : 'Correct!';

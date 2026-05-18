@@ -44,16 +44,12 @@ const resources = {
       connection_types: {
         actor: "Same Actor/Actress",
         director: "Same Director",
-        producer: "Same Producer",
-        year: "Same Year",
-        oscar: "Same Oscar Type"
+        year: "Same Year"
       },
       success_messages: {
         actor: "Correct! {{name}} played in both movies",
         director: "Correct! Both directed by {{name}}",
-        producer: "Correct! Both produced by {{name}}",
-        year: "Correct! Both released in {{year}}",
-        oscar: "Correct! Both won {{oscar_type}}"
+        year: "Correct! Both released in {{year}}"
       }
     }
   },
@@ -98,16 +94,12 @@ const resources = {
       connection_types: {
         actor: "שחקן/ית זהה/ה",
         director: "במאי זהה",
-        producer: "מפיק זהה",
-        year: "שנת יציאה זהה",
-        oscar: "אוסקר מאותו סוג"
+        year: "שנת יציאה זהה"
       },
       success_messages: {
         actor: "צדקתם! {{name}} שיחק/ה בשני הסרטים",
         director: "צדקתם! שניהם בוימו על ידי {{name}}",
-        producer: "צדקתם! שניהם הופקו על ידי {{name}}",
-        year: "צדקתם! שניהם יצאו ב-{{year}}",
-        oscar: "צדקתם! שניהם זכו ב-{{oscar_type}}"
+        year: "צדקתם! שניהם יצאו ב-{{year}}"
       }
     }
   }
