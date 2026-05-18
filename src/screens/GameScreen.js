@@ -430,82 +430,96 @@ function GameScreen() {
 
 // Handle connection attempt
 const handleConnect = async (targetCard, connectionType, team = decisionTeam) => {
-  console.log(`🔗 Team ${team} attempting to connect:`, wonCard.title.en, '→', targetCard.title.en, 'via', connectionType);    
+  // ✅ בדיקה קריטית - וודא שהכרטיסים קיימים
+  if (!wonCard || !targetCard) {
+    console.error('❌ Invalid cards for connection:', { wonCard, targetCard, team, connectionType });
+    showMessage(t('error_invalid_cards') || 'Error: Invalid cards', 'error');
+    return;
+  }
+
+  // ✅ בדיקה נוספת - וודא שיש title
+  if (!wonCard.title || !targetCard.title) {
+    console.error('❌ Cards missing title:', { wonCard, targetCard });
+    showMessage(t('error_invalid_cards') || 'Error: Invalid cards', 'error');
+    return;
+  }
+
+  console.log(`🔗 Team ${team} attempting to connect:`, wonCard.title.en, '→', targetCard.title.en, 'via', connectionType);
   
-    // Validate connection
-    const validation = validateConnection(wonCard, targetCard, connectionType);
+  // Validate connection
+  const validation = validateConnection(wonCard, targetCard, connectionType);
+  
+  if (validation.valid) {
+    // Success!
+    const successMsg = getSuccessMessage(
+      connectionType,
+      validation.connection,
+      language
+    );
+    showMessage(successMsg, 'success');
     
-    if (validation.valid) {
-      // Success!
-      const successMsg = getSuccessMessage(
-        connectionType,
-        validation.connection,
-        language
-      );
-      showMessage(successMsg, 'success');
-      
-      // Add card to team + award 3 tokens
-      const updatedState = { ...gameState };
-      if (team === 'A') {
-        updatedState.teamA.cards.push(wonCard);
-        updatedState.teamA.tokens += 3;
-        setTeamAData(prev => ({ 
-          ...prev, 
-          cards: [...prev.cards, wonCard],
-          tokens: prev.tokens + 3
-        }));
-      } else {
-        updatedState.teamB.cards.push(wonCard);
-        updatedState.teamB.tokens += 3;
-        setTeamBData(prev => ({ 
-          ...prev, 
-          cards: [...prev.cards, wonCard],
-          tokens: prev.tokens + 3
-        }));
-      }
-      
-      // Update last connection type for diversity
-      updatedState.lastConnectionType = connectionType;
-      const nextReqType = getNextRequiredConnectionType(connectionType);
-      setRequiredConnectionType(nextReqType);
-      console.log(`🎨 Connection successful! Next required type: ${nextReqType}`);
-      
-      // Update Firebase
-      await updateGameState(updatedState);
-      
-      // Check win condition
-      const teamCards = team === 'A' ? updatedState.teamA.cards : updatedState.teamB.cards;
-      if (checkWinCondition(teamCards)) {
-        console.log('🔓 Game won - UNLOCKING');
-        isRoundActiveRef.current = false;
-        endGame(updatedState, team);
-        return;
-      }
-      
-      // UNLOCK and continue to next round
-      console.log('🔓 Connection successful - UNLOCKING');
-      isRoundActiveRef.current = false;
-      
-      addTimeout(() => {
-        switchToNextRound(nextReqType);
-      }, 2000);
+    // Add card to team + award 3 tokens
+    const updatedState = { ...gameState };
+    if (team === 'A') {
+      updatedState.teamA.cards.push(wonCard);
+      updatedState.teamA.tokens += 3;
+      setTeamAData(prev => ({ 
+        ...prev, 
+        cards: [...prev.cards, wonCard],
+        tokens: prev.tokens + 3
+      }));
     } else {
-      // Failed connection - show hint
-      const hint = getConnectionHint(wonCard, targetCard, language);
-      showMessage(
-        t('incorrect') + '\n💡 ' + hint.message,
-        'error'
-      );
-      
-      // UNLOCK and continue to next round
-      console.log('🔓 Connection failed - UNLOCKING');
-      isRoundActiveRef.current = false;
-      
-      addTimeout(() => {
-        switchToNextRound(requiredConnectionType);
-      }, 3000);
+      updatedState.teamB.cards.push(wonCard);
+      updatedState.teamB.tokens += 3;
+      setTeamBData(prev => ({ 
+        ...prev, 
+        cards: [...prev.cards, wonCard],
+        tokens: prev.tokens + 3
+      }));
     }
-  };
+    
+    // Update last connection type for diversity
+    updatedState.lastConnectionType = connectionType;
+    const nextReqType = getNextRequiredConnectionType(connectionType);
+    setRequiredConnectionType(nextReqType);
+    console.log(`🎨 Connection successful! Next required type: ${nextReqType}`);
+    
+    // Update Firebase
+    await updateGameState(updatedState);
+    
+    // Check win condition
+    const teamCards = team === 'A' ? updatedState.teamA.cards : updatedState.teamB.cards;
+    if (checkWinCondition(teamCards)) {
+      console.log('🔓 Game won - UNLOCKING');
+      isRoundActiveRef.current = false;
+      endGame(updatedState, team);
+      return;
+    }
+    
+    // Continue to next round with new required type
+    console.log('🔓 Connection success - UNLOCKING for next round');
+    isRoundActiveRef.current = false;
+    
+    addTimeout(() => {
+      switchToNextRound(nextReqType);
+    }, 2000);
+  } else {
+    // Failed connection - show hint
+    const hint = getConnectionHint(wonCard, targetCard, language);
+    showMessage(
+      t('incorrect') + '\n💡 ' + hint.message,
+      'error'
+    );
+    
+    // Card stays in pool, continue to next round (keep same required type)
+    console.log('🔓 Connection failed - UNLOCKING for next round');
+    isRoundActiveRef.current = false;
+    
+    addTimeout(() => {
+      switchToNextRound(requiredConnectionType);
+    }, 3000);
+  }
+};
 
   // Handle save token
   const handleSaveToken = async (team = decisionTeam) => {
