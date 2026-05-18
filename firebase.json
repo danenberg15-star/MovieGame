@@ -6,17 +6,15 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "cleanUrls": false,
+    "trailingSlash": false,
     "headers": [
       {
         "source": "**/*.json",
         "headers": [
           {
             "key": "Content-Type",
-            "value": "application/json; charset=utf-8"
-          },
-          {
-            "key": "Access-Control-Allow-Origin",
-            "value": "*"
+            "value": "application/json"
           }
         ]
       },
@@ -26,10 +24,6 @@
           {
             "key": "Content-Type",
             "value": "video/mp4"
-          },
-          {
-            "key": "Accept-Ranges",
-            "value": "bytes"
           }
         ]
       }

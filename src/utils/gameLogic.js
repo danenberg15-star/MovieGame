@@ -1,3 +1,6 @@
+// Import movies data directly
+import moviesData from '../data/movies-clean.json';
+
 // src/utils/gameLogic.js
 
 /**
@@ -5,25 +8,17 @@
  * All helper functions for game mechanics
  */
 
-// Load all movies data from centralized database
+// Load all movies data from local JSON file
 export async function loadMoviesData() {
   try {
-    console.log('📥 Loading movies from clean database...');
-    console.log('🔍 URL: /assets/movies/movies-clean.json');
+    console.log('📥 Loading movies from local database...');
     
-    // Load from the clean database (561 validated movies)
-    const response = await fetch('/assets/movies/movies-clean.json');
-    
-    console.log('🔍 Response status:', response.status);
-    console.log('🔍 Response OK:', response.ok);
-    
-    if (!response.ok) {
-      throw new Error('Failed to load movies database - status: ' + response.status);
+    if (!moviesData || !moviesData.movies) {
+      throw new Error('Movies data is missing or invalid');
     }
     
-    const data = await response.json();
-    console.log(`✅ Loaded ${data.movies.length} movies from clean database`);
-    return data.movies;
+    console.log(`✅ Loaded ${moviesData.movies.length} movies from local database`);
+    return moviesData.movies;
     
   } catch (error) {
     console.error('❌ Error loading movies data:', error);
@@ -32,6 +27,7 @@ export async function loadMoviesData() {
     return [];
   }
 }
+
 // Select random anchor cards for both teams
 export function selectAnchorCards(allMovies) {
   if (allMovies.length < 2) return null;
