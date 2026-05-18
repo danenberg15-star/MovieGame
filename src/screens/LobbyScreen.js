@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ref, onValue, update, set, get, remove } from 'firebase/database';
+import { ref, onValue, update, set, remove } from 'firebase/database';
 import { database } from '../firebase';
 import './LobbyScreen.css';
 
