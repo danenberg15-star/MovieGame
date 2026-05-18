@@ -8,27 +8,35 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(json|mp4|jpg|jpeg|png|webp|svg|css|js)",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/octet-stream"
-          }
-        ]
-      },
-      {
         "source": "**/*.json",
         "headers": [
           {
             "key": "Content-Type",
-            "value": "application/json"
+            "value": "application/json; charset=utf-8"
+          },
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      },
+      {
+        "source": "**/*.mp4",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "video/mp4"
+          },
+          {
+            "key": "Accept-Ranges",
+            "value": "bytes"
           }
         ]
       }
     ],
     "rewrites": [
       {
-        "source": "!**/*.@(json|mp4|jpg|jpeg|png|webp|svg|css|js|woff|woff2|ttf|eot|ico)",
+        "source": "**",
         "destination": "/index.html"
       }
     ]
