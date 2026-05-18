@@ -73,28 +73,37 @@ return topMovies[randomIndex].movie;
 
 // Select next movie with smart algorithm
 export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn, requiredConnectionType = null) {
+  console.log('');
+  console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE START ===== 🎬🎬🎬');
+  console.log(`📍 Current turn: Team ${currentTurn}`);
+  console.log(`🎨 Required connection type: ${requiredConnectionType || 'ANY'}`);
+  console.log(`📦 Team A has ${teamACards.length} cards`);
+  console.log(`📦 Team B has ${teamBCards.length} cards`);
+  console.log(`🚫 Used movies: ${usedMovieIds.length}`);
+  
   // Filter out already used movies
   const availableMovies = allMovies.filter(
     movie => !usedMovieIds.includes(movie.id)
   );
   
+  console.log(`✅ Available movies (not used yet): ${availableMovies.length}`);
+  
   if (availableMovies.length === 0) {
     console.log('❌ No more movies available');
+    console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (NULL) ===== 🎬🎬🎬');
     return null;
   }
   
   // Get current team cards
   const currentTeamCards = currentTurn === 'A' ? teamACards : teamBCards;
   
-  console.log(`🎯 Selecting movie for Team ${currentTurn} - they have ${currentTeamCards.length} cards`);
-  
-  if (requiredConnectionType) {
-    console.log(`🎨 Required connection type: ${requiredConnectionType}`);
-  }
+  console.log(`🎯 Current team (Team ${currentTurn}) has ${currentTeamCards.length} cards to connect with`);
   
   // Smart algorithm: ONLY movies that have connections
   const moviesWithConnectionsToBoth = [];
   const moviesWithConnectionsToCurrent = [];
+  
+  console.log('🔍 Starting to scan all available movies for connections...');
   
   for (const movie of availableMovies) {
     let connectionScoreCurrent = 0;
@@ -147,28 +156,34 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
       if (hasRequiredConnectionTypeToCurrent) {
         if (hasConnectionToOther) {
           // Best: has required type + connects to both teams
+          console.log(`   ✅ "${movie.title?.en}" - HAS required type '${requiredConnectionType}' + connects to BOTH teams (score: ${connectionScoreAll})`);
           moviesWithConnectionsToBoth.push({
             movie,
             score: connectionScoreAll
           });
         } else {
           // Good: has required type + connects to current team only
+          console.log(`   ✅ "${movie.title?.en}" - HAS required type '${requiredConnectionType}' + connects to current team (score: ${connectionScoreCurrent})`);
           moviesWithConnectionsToCurrent.push({
             movie,
             score: connectionScoreCurrent
           });
         }
+      } else if (hasConnectionToCurrent) {
+        console.log(`   ⚠️ "${movie.title?.en}" - Has connection but NOT of required type '${requiredConnectionType}' - SKIPPING`);
       }
       // Skip movies that don't have the required connection type
     } else {
       // No required type - accept any connection to current team
       if (hasConnectionToCurrent) {
         if (hasConnectionToOther) {
+          console.log(`   ✅ "${movie.title?.en}" - Connects to BOTH teams (score: ${connectionScoreAll})`);
           moviesWithConnectionsToBoth.push({
             movie,
             score: connectionScoreAll
           });
         } else {
+          console.log(`   ✅ "${movie.title?.en}" - Connects to current team only (score: ${connectionScoreCurrent})`);
           moviesWithConnectionsToCurrent.push({
             movie,
             score: connectionScoreCurrent
@@ -178,21 +193,36 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
     }
   }
   
-  console.log(`📊 Movies with connections - Both teams: ${moviesWithConnectionsToBoth.length}, Current team: ${moviesWithConnectionsToCurrent.length}`);
+  console.log('');
+  console.log(`📊 RESULTS:`);
+  console.log(`   - Movies connecting to BOTH teams: ${moviesWithConnectionsToBoth.length}`);
+  console.log(`   - Movies connecting to CURRENT team: ${moviesWithConnectionsToCurrent.length}`);
+  console.log(`   - Total movies with connections: ${moviesWithConnectionsToBoth.length + moviesWithConnectionsToCurrent.length}`);
   
   // Priority 1: Movies that connect to both teams
   if (moviesWithConnectionsToBoth.length > 0) {
-    return pickFromTopScored(moviesWithConnectionsToBoth, 'both teams');
+    const selected = pickFromTopScored(moviesWithConnectionsToBoth, 'both teams');
+    console.log(`🎯 SELECTED: "${selected.title?.en}" (connects to both teams)`);
+    console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (SUCCESS) ===== 🎬🎬🎬');
+    console.log('');
+    return selected;
   }
   
   // Priority 2: Movies that connect to current team only
   if (moviesWithConnectionsToCurrent.length > 0) {
-    return pickFromTopScored(moviesWithConnectionsToCurrent, `Team ${currentTurn}`);
+    const selected = pickFromTopScored(moviesWithConnectionsToCurrent, `Team ${currentTurn}`);
+    console.log(`🎯 SELECTED: "${selected.title?.en}" (connects to Team ${currentTurn} only)`);
+    console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (SUCCESS) ===== 🎬🎬🎬');
+    console.log('');
+    return selected;
   }
   
   // If we're filtering by required type and found nothing, try WITHOUT the filter
   if (requiredConnectionType) {
-    console.log(`⚠️ No movies found with required type '${requiredConnectionType}' - trying any connection...`);
+    console.log('');
+    console.log(`⚠️⚠️⚠️ WARNING: No movies found with required type '${requiredConnectionType}'`);
+    console.log(`🔄 Trying again WITHOUT the required type filter...`);
+    console.log('');
     
     // Try again without the required type restriction
     const moviesWithAnyConnection = [];
@@ -212,18 +242,29 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
       }
       
       if (hasConnectionToCurrent) {
+        console.log(`   ✅ "${movie.title?.en}" - Has ANY connection (score: ${score})`);
         moviesWithAnyConnection.push({ movie, score });
       }
     }
     
     if (moviesWithAnyConnection.length > 0) {
-      console.log(`✅ Found ${moviesWithAnyConnection.length} movies with ANY connection type`);
-      return pickFromTopScored(moviesWithAnyConnection, `Team ${currentTurn} (any type)`);
+      const selected = pickFromTopScored(moviesWithAnyConnection, `Team ${currentTurn} (any type)`);
+      console.log(`🎯 SELECTED: "${selected.title?.en}" (any connection type)`);
+      console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (SUCCESS - FALLBACK) ===== 🎬🎬🎬');
+      console.log('');
+      return selected;
     }
   }
   
   // If absolutely NO connections found - game should end
-  console.log('❌ No movies with connections found - game cannot continue');
+  console.log('');
+  console.log('❌❌❌ CRITICAL: NO MOVIES WITH CONNECTIONS FOUND!');
+  console.log(`   - Team ${currentTurn} has ${currentTeamCards.length} cards`);
+  console.log(`   - Available movies: ${availableMovies.length}`);
+  console.log(`   - Required type: ${requiredConnectionType || 'ANY'}`);
+  console.log('❌ Game cannot continue - returning NULL');
+  console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (FAILED - NULL) ===== 🎬🎬🎬');
+  console.log('');
   return null;
 }
 
@@ -285,12 +326,10 @@ export function findConnection(movie1, movie2) {
     return connections;
   }
   
-  console.log(`🔗 Checking connections between "${movie1.title?.en}" (${movie1.year}) and "${movie2.title?.en}" (${movie2.year})`);
+  console.log(`   🔗 Checking connections: "${movie1.title?.en}" ↔ "${movie2.title?.en}"`);
   
   // 1. Check for same actor/actress
   if (movie1.cast && movie2.cast && Array.isArray(movie1.cast) && Array.isArray(movie2.cast)) {
-    console.log(`   👥 Checking ${movie1.cast.length} actors vs ${movie2.cast.length} actors`);
-    
     for (const actor1 of movie1.cast) {
       if (!actor1 || !actor1.name || !actor1.name.en) continue;
       
@@ -298,7 +337,7 @@ export function findConnection(movie1, movie2) {
         if (!actor2 || !actor2.name || !actor2.name.en) continue;
         
         if (actor1.name.en.trim() === actor2.name.en.trim()) {
-          console.log(`   ✅ ACTOR MATCH: ${actor1.name.en}`);
+          console.log(`      ✅ ACTOR: ${actor1.name.en}`);
           connections.push({
             type: 'actor',
             value: actor1.name,
@@ -315,7 +354,7 @@ export function findConnection(movie1, movie2) {
       movie1.director.name.en && movie2.director.name.en) {
     
     if (movie1.director.name.en.trim() === movie2.director.name.en.trim()) {
-      console.log(`   ✅ DIRECTOR MATCH: ${movie1.director.name.en}`);
+      console.log(`      ✅ DIRECTOR: ${movie1.director.name.en}`);
       connections.push({
         type: 'director',
         value: movie1.director.name,
@@ -330,7 +369,7 @@ export function findConnection(movie1, movie2) {
       movie1.producer.name.en && movie2.producer.name.en) {
     
     if (movie1.producer.name.en.trim() === movie2.producer.name.en.trim()) {
-      console.log(`   ✅ PRODUCER MATCH: ${movie1.producer.name.en}`);
+      console.log(`      ✅ PRODUCER: ${movie1.producer.name.en}`);
       connections.push({
         type: 'producer',
         value: movie1.producer.name,
@@ -341,7 +380,7 @@ export function findConnection(movie1, movie2) {
   
   // 4. Check for same year
   if (movie1.year && movie2.year && movie1.year === movie2.year) {
-    console.log(`   ✅ YEAR MATCH: ${movie1.year}`);
+    console.log(`      ✅ YEAR: ${movie1.year}`);
     connections.push({
       type: 'year',
       value: movie1.year
@@ -360,7 +399,7 @@ export function findConnection(movie1, movie2) {
         if (!oscar2 || !oscar2.type || !oscar2.type.en) continue;
         
         if (oscar1.type.en.trim() === oscar2.type.en.trim()) {
-          console.log(`   ✅ OSCAR MATCH: ${oscar1.type.en}`);
+          console.log(`      ✅ OSCAR: ${oscar1.type.en}`);
           connections.push({
             type: 'oscar',
             value: oscar1.type
@@ -371,9 +410,7 @@ export function findConnection(movie1, movie2) {
   }
   
   if (connections.length === 0) {
-    console.log(`   ❌ No connections found`);
-  } else {
-    console.log(`   ✅ Found ${connections.length} connection(s):`, connections.map(c => c.type));
+    console.log(`      ❌ No connections`);
   }
   
   return connections;
