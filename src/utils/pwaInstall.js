@@ -76,7 +76,10 @@ window.addEventListener('appinstalled', (e) => {
   deferredPrompt = null;
 });
 
-export default {
+// Named export object
+const pwaUtils = {
   installPWA,
   isPWAInstalled
 };
+
+export default pwaUtils;
