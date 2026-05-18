@@ -119,9 +119,10 @@ function GameScreen() {
       state.teamA.cards,
       state.teamB.cards,
       currentTurn,
-      reqConnectionType
+      reqConnectionType,
+      state.moviesIndex  // ← רק להוסיף את השורה הזו!
     );
-  
+      
     console.log('🎬 Next movie selected:', nextMovie?.id, nextMovie?.title?.en);
   
     if (!nextMovie) {
