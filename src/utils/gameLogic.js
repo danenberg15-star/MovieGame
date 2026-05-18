@@ -8,37 +8,21 @@
 // Load all movies data from centralized database
 export async function loadMoviesData() {
   try {
-    console.log('📥 Loading movies from centralized database...');
-    console.log('🔍 Trying URL: /assets/movies/movies-database-enriched.json');
+    console.log('📥 Loading movies from clean database...');
+    console.log('🔍 URL: /assets/movies/movies-clean.json');
     
-    // Load from the enriched database
-    const response = await fetch('/assets/movies/movies-database-enriched.json');
+    // Load from the clean database (561 validated movies)
+    const response = await fetch('/assets/movies/movies-clean.json');
     
     console.log('🔍 Response status:', response.status);
     console.log('🔍 Response OK:', response.ok);
-    console.log('🔍 Response type:', response.type);
     
     if (!response.ok) {
-      // Fallback to regular database if enriched doesn't exist
-      console.log('⚠️ Enriched database not found (status ' + response.status + '), trying regular database...');
-      console.log('🔍 Trying URL: /assets/movies/movies-database.json');
-      
-      const fallbackResponse = await fetch('/assets/movies/movies-database.json');
-      
-      console.log('🔍 Fallback Response status:', fallbackResponse.status);
-      console.log('🔍 Fallback Response OK:', fallbackResponse.ok);
-      
-      if (!fallbackResponse.ok) {
-        throw new Error('Failed to load movies database - status: ' + fallbackResponse.status);
-      }
-      
-      const data = await fallbackResponse.json();
-      console.log(`✅ Loaded ${data.movies.length} movies from regular database`);
-      return data.movies;
+      throw new Error('Failed to load movies database - status: ' + response.status);
     }
     
     const data = await response.json();
-    console.log(`✅ Loaded ${data.movies.length} movies from enriched database`);
+    console.log(`✅ Loaded ${data.movies.length} movies from clean database`);
     return data.movies;
     
   } catch (error) {
