@@ -11,6 +11,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
   const [error, setError] = useState(false);
   const [errorDetails, setErrorDetails] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isMuted, setIsMuted] = useState(true); // Start muted for mobile autoplay
 
   useEffect(() => {
     const video = videoRef.current;
@@ -73,13 +74,23 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       console.log('✅ Video can play - ready to start');
       setIsLoading(false);
       
-      // Try to play automatically
+      // Try to play automatically with muted (required for mobile autoplay)
       if (autoPlay) {
-        video.play().catch(err => {
-          console.error('❌ Auto-play failed:', err);
-          // On mobile, autoplay often fails - user needs to tap play button
-          setIsLoading(false);
-        });
+        video.muted = true; // Force muted for autoplay
+        video.play()
+          .then(() => {
+            console.log('✅ Playing muted - will unmute after user interaction');
+            // Unmute after 0.5 seconds (after video started)
+            setTimeout(() => {
+              video.muted = false;
+              setIsMuted(false);
+              console.log('🔊 Sound enabled');
+            }, 500);
+          })
+          .catch(err => {
+            console.error('❌ Auto-play failed:', err);
+            setIsLoading(false);
+          });
       }
     };
 
@@ -174,7 +185,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
           src={`/assets/movies/${movieId}/trailer.mp4`}
           preload="auto"
           playsInline
-          muted={false}
+          muted={isMuted}
           controls={false}
           webkit-playsinline="true"
         />
