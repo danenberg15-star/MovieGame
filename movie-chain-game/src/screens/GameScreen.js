@@ -73,10 +73,11 @@ function GameScreen() {
   // Get current language
   const language = i18n.language;
 
- // Start new round
+ // Start new round - FIXED VERSION
 const startNewRound = useCallback((state, movies, reqConnectionType) => {
     console.log('🔄 Starting new round...');
     console.log('🎨 Required connection type:', reqConnectionType);
+    console.log('📊 Current usedMovieIds:', state.usedMovieIds);
     
     const nextMovie = selectNextMovie(
       movies,
@@ -87,12 +88,23 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
       reqConnectionType
     );
   
-    console.log('🎬 Next movie selected:', nextMovie);
+    console.log('🎬 Next movie selected:', nextMovie?.id, nextMovie?.title?.en);
   
     if (!nextMovie) {
       console.log('⚠️ No more movies - ending game');
       endGame(state);
       return;
+    }
+  
+    // ✅ FIX: Add the selected movie to usedMovieIds
+    const updatedState = { ...state };
+    if (!updatedState.usedMovieIds.includes(nextMovie.id)) {
+      updatedState.usedMovieIds.push(nextMovie.id);
+      console.log('✅ Added movie to usedMovieIds:', nextMovie.id);
+      console.log('📊 Updated usedMovieIds:', updatedState.usedMovieIds);
+      
+      // Update Firebase with new usedMovieIds
+      updateGameState(updatedState);
     }
   
     setCurrentMovie(nextMovie);
@@ -252,53 +264,52 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
     return () => unsubscribe();
   }, [roomCode, gameInitialized]);
 
-  // Handle anchor reveal continue
+  // Anchor reveal continue
   const handleAnchorContinue = () => {
-    console.log('▶️ Anchor reveal complete - starting first round');
+    console.log('✅ Anchor reveal done - starting first round');
+    setPhase('trailer');
+    
+    // Start first round
     startNewRound(gameState, allMovies, 'actor');
   };
 
-  // Handle trailer end
+  // Trailer ends
   const handleTrailerEnd = () => {
     console.log('🎬 Trailer ended - switching to answering phase');
     setPhase('answering');
-    showMessage(
-      currentTurn === myTeam 
-        ? t('your_turn') 
-        : `${t(currentTurn === 'A' ? 'team_a' : 'team_b')}'s turn`,
-      'info'
-    );
-
-    // Bot's turn in QA mode
+    
+    // If QA Mode and Bot's turn, trigger bot answer
     if (isQAMode && currentTurn === 'B') {
-      console.log('🤖 Bot turn - handling answer');
-      handleBotAnswer();
+      setTimeout(() => {
+        botPlayer.chooseAnswer(
+          currentMovie,
+          answerOptions,
+          language,
+          (selectedAnswer, isCorrect) => {
+            handleAnswerSelected(selectedAnswer, isCorrect, 'B');
+          }
+        );
+      }, 500);
     }
   };
 
-  // Handle bot answer (QA Mode)
-  const handleBotAnswer = async () => {
-    console.log('🤖 Bot choosing answer...');
-    const correctAnswer = currentMovie.title[language];
-    const answer = await botPlayer.chooseAnswer(correctAnswer, answerOptions);
-    console.log('🤖 Bot selected:', answer);
+  // Answer selected
+  const handleAnswerSelected = async (selectedAnswer, isCorrect, team = currentTurn) => {
+    console.log(`📝 Answer selected by Team ${team}:`, selectedAnswer, isCorrect ? '✅' : '❌');
     
-    setTimeout(() => {
-      handleAnswerSelected(answer, answer === correctAnswer, 'B');
-    }, 500);
-  };
+    if (attemptedTeams.includes(team)) {
+      console.log('⚠️ Team already attempted');
+      return;
+    }
 
-  // Handle answer selected
-  const handleAnswerSelected = async (answer, isCorrect, team = currentTurn) => {
-    console.log(`📝 Answer selected by Team ${team}:`, answer, 'Correct:', isCorrect);
-    
-    // Add to attempted teams
-    setAttemptedTeams(prev => [...prev, team]);
-    
+    const newAttemptedTeams = [...attemptedTeams, team];
+    setAttemptedTeams(newAttemptedTeams);
+
     if (isCorrect) {
-      // Correct answer - earn 1 token
+      // Correct answer - earn token and go to decision phase
       showMessage(t('correct') || '✅ Correct!', 'success');
       
+      // Award 1 token
       const updatedState = { ...gameState };
       if (team === 'A') {
         updatedState.teamA.tokens += 1;
@@ -308,80 +319,75 @@ const startNewRound = useCallback((state, movies, reqConnectionType) => {
         setTeamBData(prev => ({ ...prev, tokens: prev.tokens + 1 }));
       }
       
-      // Update Firebase
       await updateGameState(updatedState);
       
-      // Move to decision phase
+      // Go to decision phase
       setWonCard(currentMovie);
       setDecisionTeam(team);
       setPhase('decision');
       
-      // Bot's decision in QA mode
+      // If QA Mode and Bot won, trigger bot decision
       if (isQAMode && team === 'B') {
         setTimeout(() => {
-          handleBotDecision();
-        }, 1000);
+          botPlayer.makeDecision(
+            currentMovie,
+            teamBData.cards,
+            (decision) => {
+              if (decision.action === 'connect') {
+                handleConnect(decision.targetCard, decision.connectionType, 'B');
+              } else {
+                handleSaveToken('B');
+              }
+            }
+          );
+        }, 2000);
       }
     } else {
       // Wrong answer
       showMessage(t('incorrect') || '❌ Incorrect', 'error');
-      setEliminatedAnswers(prev => [...prev, answer]);
       
-      // Check if both teams already attempted
-      const bothAttempted = attemptedTeams.includes('A') && attemptedTeams.includes('B');
+      // Eliminate this answer
+      setEliminatedAnswers(prev => [...prev, selectedAnswer]);
       
-      if (bothAttempted) {
-        // Both teams failed - card returns to pool
-        showMessage(
-          t('both_teams_failed') || '🔄 Both teams failed - card returns!',
-          'warning'
-        );
+      // Check if both teams failed
+      if (newAttemptedTeams.length >= 2) {
+        showMessage(t('both_teams_failed') || '❌ Both teams failed - card will return!', 'warning');
         
+        // Card stays in pool - continue to next round
         setTimeout(() => {
-          switchToNextRound();
+          switchToNextRound(requiredConnectionType);
         }, 2000);
       } else {
-        // Switch turn to other team
-        const nextTurn = team === 'A' ? 'B' : 'A';
-        setCurrentTurn(nextTurn);
+        // Switch to other team
+        const nextTeam = team === 'A' ? 'B' : 'A';
+        setCurrentTurn(nextTeam);
         
-        console.log('🔄 Switching turn to:', nextTurn);
-        
-        showMessage(
-          `${t(nextTurn === 'A' ? 'team_a' : 'team_b')}'s turn`,
-          'info'
-        );
-        
-        // Bot's turn in QA mode
-        if (isQAMode && nextTurn === 'B') {
+        // If QA Mode and Bot's turn, trigger bot answer
+        if (isQAMode && nextTeam === 'B') {
           setTimeout(() => {
-            handleBotAnswer();
+            botPlayer.chooseAnswer(
+              currentMovie,
+              answerOptions,
+              language,
+              (selectedAnswer, isCorrect) => {
+                handleAnswerSelected(selectedAnswer, isCorrect, 'B');
+              }
+            );
           }, 1000);
         }
       }
     }
   };
 
-  // Handle bot decision (QA Mode)
-  const handleBotDecision = async () => {
-    const teamCards = teamBData.cards;
-    const decision = await botPlayer.tryConnect(currentMovie, teamCards);
-    
-    setTimeout(() => {
-      if (decision.action === 'connect') {
-        handleConnect(decision.targetCard, decision.connectionType, 'B');
-      } else {
-        handleSaveToken('B');
-      }
-    }, 500);
-  };
-
-  // Handle connect attempt
+  // Handle connection attempt
   const handleConnect = async (targetCard, connectionType, team = decisionTeam) => {
+    console.log(`🔗 Team ${team} attempting to connect:`, wonCard.title.en, '→', targetCard.title.en, 'via', connectionType);
+    
+    // Validate connection
     const validation = validateConnection(wonCard, targetCard, connectionType);
     
     if (validation.valid) {
-      // Successful connection - earn 3 tokens
+      // Success!
       const successMsg = getSuccessMessage(
         connectionType,
         validation.connection,
