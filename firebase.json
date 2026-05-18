@@ -6,9 +6,29 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "headers": [
+      {
+        "source": "**/*.@(json|mp4|jpg|jpeg|png|webp|svg|css|js)",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/octet-stream"
+          }
+        ]
+      },
+      {
+        "source": "**/*.json",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      }
+    ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "!**/*.@(json|mp4|jpg|jpeg|png|webp|svg|css|js|woff|woff2|ttf|eot|ico)",
         "destination": "/index.html"
       }
     ]
