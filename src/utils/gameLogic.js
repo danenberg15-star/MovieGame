@@ -1,29 +1,30 @@
-// Import movies data directly
-import moviesData from '../data/movies-clean.json';
-
 // src/utils/gameLogic.js
+import { ref, get } from 'firebase/database';
+import { database } from '../firebase';
 
 /**
  * Game Logic Utilities
  * All helper functions for game mechanics
  */
 
-// Load all movies data from local JSON file
+// Load movies from Firebase Realtime Database
 export async function loadMoviesData() {
   try {
-    console.log('📥 Loading movies from local database...');
+    console.log('📥 Loading movies from Firebase Database...');
     
-    if (!moviesData || !moviesData.movies) {
-      throw new Error('Movies data is missing or invalid');
+    const moviesRef = ref(database, 'movies/movies');
+    const snapshot = await get(moviesRef);
+    
+    if (!snapshot.exists()) {
+      throw new Error('Movies data not found in database');
     }
     
-    console.log(`✅ Loaded ${moviesData.movies.length} movies from local database`);
-    return moviesData.movies;
+    const movies = snapshot.val();
+    console.log(`✅ Loaded ${movies.length} movies from Firebase Database`);
+    return movies;
     
   } catch (error) {
-    console.error('❌ Error loading movies data:', error);
-    console.error('❌ Error message:', error.message);
-    console.error('❌ Error stack:', error.stack);
+    console.error('❌ Error loading movies from Firebase:', error);
     return [];
   }
 }
@@ -41,33 +42,33 @@ export function selectAnchorCards(allMovies) {
 
 // Helper function to get connection points - EXPORTED
 export function getConnectionPoints(connectionType) {
-  switch (connectionType) {
-    case 'actor':
-      return 5;
-    case 'director':
-      return 4;
-    case 'producer':
-      return 3;
-    case 'year':
-      return 2;
-    case 'oscar':
-      return 1;
-    default:
-      return 0;
-  }
+switch (connectionType) {
+  case 'actor':
+    return 5;
+  case 'director':
+    return 4;
+  case 'producer':
+    return 3;
+  case 'year':
+    return 2;
+  case 'oscar':
+    return 1;
+  default:
+    return 0;
+}
 }
 
 // Helper function to pick from top scored movies
 function pickFromTopScored(moviesWithScores, description) {
-  // Sort by score (highest first)
-  moviesWithScores.sort((a, b) => b.score - a.score);
+// Sort by score (highest first)
+moviesWithScores.sort((a, b) => b.score - a.score);
 
-  // Pick from top 3 to add some variety
-  const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
-  const randomIndex = Math.floor(Math.random() * topMovies.length);
+// Pick from top 3 to add some variety
+const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
+const randomIndex = Math.floor(Math.random() * topMovies.length);
 
-  console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
-  return topMovies[randomIndex].movie;
+console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
+return topMovies[randomIndex].movie;
 }
 
 // Select next movie with smart algorithm
@@ -228,16 +229,16 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
 
 // Get next required connection type (cycle through types)
 export function getNextRequiredConnectionType(lastConnectionType) {
-  const cycleOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
+const cycleOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
 
-  if (!lastConnectionType) {
-    return cycleOrder[0]; // Start with actor
-  }
+if (!lastConnectionType) {
+  return cycleOrder[0]; // Start with actor
+}
 
-  const currentIndex = cycleOrder.indexOf(lastConnectionType);
-  const nextIndex = (currentIndex + 1) % cycleOrder.length;
+const currentIndex = cycleOrder.indexOf(lastConnectionType);
+const nextIndex = (currentIndex + 1) % cycleOrder.length;
 
-  return cycleOrder[nextIndex];
+return cycleOrder[nextIndex];
 }
 
 // Generate 10 answer options (1 correct + 9 decoys)
@@ -377,6 +378,7 @@ export function findConnection(movie1, movie2) {
   
   return connections;
 }
+
 
 // Validate connection attempt
 export function validateConnection(sourceCard, targetCard, connectionType) {
