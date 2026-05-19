@@ -5,7 +5,7 @@ import { ref, onValue, update, get } from 'firebase/database';
 import { database } from '../firebase';
 import { useTranslation } from 'react-i18next';
 import TrailerPlayer from './components/TrailerPlayer';
-import DecisionPhase from './DecisionPhase';
+import DecisionPhase from './components/DecisionPhase';
 import botPlayer from '../utils/botPlayer';
 import {
   loadMoviesData,
