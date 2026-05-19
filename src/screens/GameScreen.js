@@ -35,7 +35,7 @@ function GameScreen() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showHint, setShowHint] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
-  const [connectionResult, setConnectionResult] = useState(null); // 🆕 NEW
+  const [connectionResult, setConnectionResult] = useState(null);
   
   const stateRef = useRef(state);
   const isLockedRef = useRef(isLocked);
@@ -124,7 +124,7 @@ function GameScreen() {
   // Update Firebase
   const updateGameState = async (newState) => {
     try {
-      console.log('🔥 Firebase update - updating state ONLY (no round start)');
+      console.log('🔥 Firebase update - updating state');
       
       const gameRef = ref(database, `games/${roomCode}`);
       const { allMovies, moviesIndex, ...stateToSync } = newState;
@@ -144,11 +144,7 @@ function GameScreen() {
     }
 
     console.log('🔄 Starting new round...');
-    console.log('🎨 Required connection type:', stateRef.current.lastConnectionType);
-    console.log('📊 Current usedMovieIds:', stateRef.current.usedMovieIds);
-
     setIsLocked(true);
-    console.log('🔒 ROUND LOCKED');
 
     const nextMovie = selectNextMovie(
       stateRef.current.allMovies,
@@ -159,8 +155,6 @@ function GameScreen() {
       stateRef.current.lastConnectionType,
       stateRef.current.moviesIndex
     );
-
-    console.log('🎬 Next movie selected:', nextMovie?.id, nextMovie?.title?.en);
 
     if (!nextMovie) {
       console.log('❌ No movie found - game over');
@@ -176,8 +170,6 @@ function GameScreen() {
     }
 
     const newUsedMovieIds = [...stateRef.current.usedMovieIds, nextMovie.id];
-    console.log('✅ Added movie to usedMovieIds:', nextMovie.id);
-
     const options = generateAnswerOptions(nextMovie, stateRef.current.allMovies, language);
 
     const newState = {
@@ -193,10 +185,9 @@ function GameScreen() {
     setAnswerOptions(options);
     setSelectedAnswer(null);
     setShowHint(false);
-    setConnectionResult(null); // 🆕 Clear previous connection result
+    setConnectionResult(null);
 
     await updateGameState(newState);
-    console.log('✅ Round started - Phase: trailer - LOCK REMAINS');
   };
 
   // Handle trailer end
@@ -213,7 +204,6 @@ function GameScreen() {
 
     // If bot's turn, trigger bot answer
     if (stateRef.current.currentTurn === 'B' && roomCode === '99999') {
-      console.log('🤖 Bot turn - triggering answer in 500ms...');
       setTimeout(() => {
         handleBotAnswer();
       }, 500);
@@ -227,12 +217,8 @@ function GameScreen() {
       return;
     }
 
-    console.log(`📝 Answer selected by Team ${stateRef.current.currentTurn}: ${answer}`);
-
     setSelectedAnswer(answer);
     const isCorrect = checkAnswer(answer, stateRef.current.currentMovie, language);
-
-    console.log(isCorrect ? '✅ Correct!' : '❌ Wrong!');
 
     if (isCorrect) {
       // Correct answer - go to decision phase
@@ -248,11 +234,9 @@ function GameScreen() {
 
       setState(newState);
       await updateGameState(newState);
-      console.log('✅ Going to decision phase - LOCK STAYS');
 
       // If bot won, trigger bot decision
       if (stateRef.current.currentTurn === 'B' && roomCode === '99999') {
-        console.log('🤖 Bot won - triggering decision in 2s...');
         setTimeout(() => {
           handleBotDecision();
         }, 2000);
@@ -264,7 +248,6 @@ function GameScreen() {
 
       if (attempts.length >= 2) {
         // Both teams failed
-        console.log('❌ Both teams failed - card returns to pool');
         alert(t('both_teams_failed'));
 
         const newState = {
@@ -277,13 +260,10 @@ function GameScreen() {
         await updateGameState(newState);
 
         setIsLocked(false);
-        console.log('🔓 Both failed - UNLOCKING');
-
         startNewRound();
       } else {
         // Switch to other team
         const nextTurn = stateRef.current.currentTurn === 'A' ? 'B' : 'A';
-        console.log(`🔄 Switching to Team ${nextTurn} - LOCK STAYS`);
 
         const newState = {
           ...stateRef.current,
@@ -296,7 +276,6 @@ function GameScreen() {
 
         // If switched to bot, trigger bot answer
         if (nextTurn === 'B' && roomCode === '99999') {
-          console.log('🤖 Bot turn after failed attempt - triggering in 1s...');
           setTimeout(() => {
             handleBotAnswer();
           }, 1000);
@@ -308,7 +287,6 @@ function GameScreen() {
   // Bot answer
   const handleBotAnswer = () => {
     if (!stateRef.current || stateRef.current.phase !== 'answering') {
-      console.log('⚠️ Bot answer ignored - wrong phase');
       return;
     }
 
@@ -324,7 +302,6 @@ function GameScreen() {
   // Bot decision
   const handleBotDecision = () => {
     if (!stateRef.current || stateRef.current.phase !== 'decision') {
-      console.log('⚠️ Bot decision ignored - wrong phase');
       return;
     }
 
@@ -334,8 +311,6 @@ function GameScreen() {
       stateRef.current.currentMovie,
       teamBCards,
       (decision) => {
-        console.log('🤖 Bot decision:', decision);
-
         if (decision.action === 'connect') {
           handleConnectionAttempt(decision.targetCard, decision.connectionType);
         } else {
@@ -347,25 +322,13 @@ function GameScreen() {
 
   // Handle connection attempt
   const handleConnectionAttempt = async (targetCard, connectionType) => {
-    console.log('🔗 Connection attempt:', {
-      source: state.currentMovie?.title?.en,
-      target: targetCard?.title?.en,
-      type: connectionType
-    });
-
-    // Validate connection
     const result = validateConnection(state.currentMovie, targetCard, connectionType);
-    
-    console.log('✅ Validation result:', result);
 
     if (result.valid) {
-      console.log('✅ Connection is VALID!');
-      
       // Success - add card to team
       const currentTeam = state.currentTurn === 'A' ? 'teamA' : 'teamB';
       const newCards = [...state[currentTeam].cards, state.currentMovie];
       
-      // Update state
       const newState = {
         ...state,
         [currentTeam]: {
@@ -378,11 +341,10 @@ function GameScreen() {
       };
 
       setState(newState);
-      setConnectionResult(null); // 🆕 Clear any previous result
+      setConnectionResult(null);
       
       // Check win condition
       if (checkWinCondition(newCards)) {
-        console.log(`🎉 Team ${state.currentTurn} WINS!`);
         newState.winner = state.currentTurn;
         newState.phase = 'finished';
         setState(newState);
@@ -390,28 +352,21 @@ function GameScreen() {
         return;
       }
 
-      // Sync to Firebase
       await updateGameState(newState);
       
-      // Show success message
       const successMsg = getSuccessMessage(connectionType, result.connection, language);
       alert(successMsg);
       
-      // Start next round
       startNewRound();
       
     } else {
-      console.log('❌ Connection is INVALID');
-      
-      // 🆕 Store the failed attempt result
+      // Failed connection
       setConnectionResult({
         success: false,
         attemptedType: connectionType,
         targetCard: targetCard
       });
       
-      // Card goes back to pool - don't add usedMovieIds
-      // Stay in decision phase so user can try again or save token
       alert(language === 'he' 
         ? `לא נכון - אין קשר מסוג '${connectionType}'`
         : `Incorrect - no connection of type '${connectionType}' found`
@@ -421,21 +376,16 @@ function GameScreen() {
 
   // Handle save token
   const handleSaveToken = async () => {
-    console.log('🎫 Token saved');
-
     const newState = {
       ...state,
       phase: 'playing'
     };
 
     setState(newState);
-    setConnectionResult(null); // 🆕 Clear connection result
+    setConnectionResult(null);
     await updateGameState(newState);
 
-    console.log('🔓 Token saved - UNLOCKING');
     setIsLocked(false);
-
-    console.log('⏭️ Switching to next round...');
     startNewRound();
   };
 
@@ -476,87 +426,123 @@ function GameScreen() {
 
   return (
     <div className="game-screen">
-      {/* Header */}
+      {/* Compact Header */}
       <div className="game-header">
         <h1 className="game-title">
           {t('app_title') || 'MOVIE CHAIN'} - {t('room')} {roomCode}
         </h1>
-        <div className="game-info">
-          <div className="team-info">
-            <span className="team-label">{t('team_a')}</span>
-            <span className="team-score">
-              {t('cards')}: {state.teamA.cards.length}/10 | {t('tokens')}: {state.teamA.tokens}
-            </span>
-          </div>
-          <div className="team-info">
-            <span className="team-label">{t('team_b')}</span>
-            <span className="team-score">
-              {t('cards')}: {state.teamB.cards.length}/10 | {t('tokens')}: {state.teamB.tokens}
-            </span>
-          </div>
-        </div>
-        <div className="current-turn">
-          {t('current_turn')}: {state.currentTurn === 'A' ? t('team_a') : t('team_b')}
-        </div>
       </div>
 
-      {/* Game Content */}
-      <div className="game-content">
-        {/* Trailer Phase */}
-        {state.phase === 'trailer' && state.currentMovie && (
-          <TrailerPlayer
-            movieId={state.currentMovie.id}
-            onTrailerEnd={handleTrailerEnd}
-          />
-        )}
-
-        {/* Answering Phase */}
-        {state.phase === 'answering' && (
-          <div className="answering-phase">
-            <h2>{t('choose_answer')}</h2>
-            <div className="answer-options">
-              {answerOptions.map((option, index) => (
-                <button
-                  key={index}
-                  className={`answer-option ${selectedAnswer === option ? 'selected' : ''}`}
-                  onClick={() => handleAnswerSelect(option)}
-                  disabled={selectedAnswer !== null}
-                >
-                  {option}
-                </button>
-              ))}
+      {/* Main Layout with Sidebars */}
+      <div className="game-main-layout">
+        {/* Left Sidebar - Team A */}
+        <div className="team-sidebar left">
+          <div className="team-sidebar-label">
+            {t('team_a') || 'Team A'}
+          </div>
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎬</div>
+            <div className="team-stat-value">{state.teamA.cards.length}/10</div>
+            <div className="team-stat-label">{t('cards') || 'Cards'}</div>
+          </div>
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎫</div>
+            <div className="team-stat-value">{state.teamA.tokens}</div>
+            <div className="team-stat-label">{t('tokens') || 'Tokens'}</div>
+          </div>
+          
+          {state.currentTurn === 'A' && (
+            <div className="turn-indicator">
+              {t('your_turn') || 'Your Turn'}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Decision Phase */}
-        {state.phase === 'decision' && state.currentMovie && (
-          <DecisionPhase
-            wonCard={state.currentMovie}
-            teamCards={currentTeamCards}
-            onConnect={handleConnectionAttempt}
-            onSaveToken={handleSaveToken}
-            language={language}
-            connectionResult={connectionResult} // 🆕 ADD THIS LINE
-          />
-        )}
+        {/* Center Content */}
+        <div className="game-content">
+          {/* Trailer Phase */}
+          {state.phase === 'trailer' && state.currentMovie && (
+            <TrailerPlayer
+              movieId={state.currentMovie.id}
+              onTrailerEnd={handleTrailerEnd}
+            />
+          )}
 
-        {/* Finished Phase */}
-        {state.phase === 'finished' && (
-          <div className="game-finished">
-            <h1>{t('game_over')}</h1>
-            {state.winner ? (
-              <h2>
-                {state.winner === 'A' ? t('team_a') : t('team_b')} {t('wins')}!
-              </h2>
-            ) : (
-              <h2>{t('draw')}</h2>
-            )}
-            <button onClick={() => navigate('/')}>
-              {t('back_to_home')}
-            </button>
+          {/* Answering Phase */}
+          {state.phase === 'answering' && (
+            <div className="answering-phase">
+              <h2>{t('choose_answer') || 'Choose the correct movie:'}</h2>
+              <div className="answer-options">
+                {answerOptions.map((option, index) => (
+                  <button
+                    key={index}
+                    className={`answer-option ${selectedAnswer === option ? 'selected' : ''}`}
+                    onClick={() => handleAnswerSelect(option)}
+                    disabled={selectedAnswer !== null}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Decision Phase */}
+          {state.phase === 'decision' && state.currentMovie && (
+            <DecisionPhase
+              wonCard={state.currentMovie}
+              teamCards={currentTeamCards}
+              onConnect={handleConnectionAttempt}
+              onSaveToken={handleSaveToken}
+              language={language}
+              connectionResult={connectionResult}
+            />
+          )}
+
+          {/* Finished Phase */}
+          {state.phase === 'finished' && (
+            <div className="game-finished">
+              <h1>{t('game_over') || 'Game Over'}</h1>
+              {state.winner ? (
+                <h2>
+                  {state.winner === 'A' ? t('team_a') : t('team_b')} {t('wins') || 'Wins'}!
+                </h2>
+              ) : (
+                <h2>{t('draw') || 'Draw'}</h2>
+              )}
+              <button onClick={() => navigate('/')}>
+                {t('back_to_home') || 'Back to Home'}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Right Sidebar - Team B */}
+        <div className="team-sidebar right">
+          <div className="team-sidebar-label">
+            {t('team_b') || 'Team B'}
           </div>
-        )}
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎬</div>
+            <div className="team-stat-value">{state.teamB.cards.length}/10</div>
+            <div className="team-stat-label">{t('cards') || 'Cards'}</div>
+          </div>
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎫</div>
+            <div className="team-stat-value">{state.teamB.tokens}</div>
+            <div className="team-stat-label">{t('tokens') || 'Tokens'}</div>
+          </div>
+          
+          {state.currentTurn === 'B' && (
+            <div className="turn-indicator">
+              {t('your_turn') || 'Your Turn'}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

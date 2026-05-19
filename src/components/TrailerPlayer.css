@@ -2,15 +2,18 @@
 
 .trailer-player {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
   background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
   backdrop-filter: blur(10px);
-  border-radius: clamp(16px, 4vw, 24px);
+  border-radius: clamp(12px, 3vw, 16px);
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.05);
   animation: fadeIn 0.5s ease-out;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes fadeIn {
@@ -24,29 +27,33 @@
   }
 }
 
-/* Trailer Header */
+/* Trailer Header - Compact */
 .trailer-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: clamp(16px, 4vw, 20px);
+  padding: clamp(10px, 2.5vw, 14px);
   text-align: center;
   position: relative;
+  flex-shrink: 0;
 }
 
 .trailer-title {
-  font-size: clamp(18px, 4.5vw, 24px);
+  font-size: clamp(14px, 3.5vw, 18px);
   font-weight: 700;
   color: white;
   margin: 0;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Video Container */
+/* Video Container - Fills remaining space */
 .trailer-video-container {
   position: relative;
-  width: 100%;
+  flex: 1;
   background: #000000;
-  aspect-ratio: 16 / 9;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
 }
 
 .trailer-video {
@@ -74,13 +81,13 @@
 }
 
 .trailer-spinner {
-  width: clamp(50px, 12vw, 70px);
-  height: clamp(50px, 12vw, 70px);
+  width: clamp(40px, 10vw, 60px);
+  height: clamp(40px, 10vw, 60px);
   border: 4px solid rgba(255, 255, 255, 0.1);
   border-top-color: #667eea;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: clamp(16px, 4vw, 20px);
+  margin-bottom: clamp(12px, 3vw, 16px);
 }
 
 @keyframes spin {
@@ -90,22 +97,22 @@
 }
 
 .trailer-loading p {
-  font-size: clamp(14px, 3.5vw, 16px);
+  font-size: clamp(12px, 3vw, 14px);
   color: rgba(255, 255, 255, 0.8);
   margin: 0;
 }
 
-/* Controls Overlay */
+/* Controls Overlay - Compact */
 .trailer-controls {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-  padding: clamp(12px, 3vw, 20px);
+  padding: clamp(8px, 2vw, 12px);
   display: flex;
   align-items: center;
-  gap: clamp(12px, 3vw, 16px);
+  gap: clamp(8px, 2vw, 12px);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 5;
@@ -113,6 +120,13 @@
 
 .trailer-video-container:hover .trailer-controls {
   opacity: 1;
+}
+
+/* Always show controls on touch devices */
+@media (hover: none) {
+  .trailer-controls {
+    opacity: 1;
+  }
 }
 
 /* Progress Bar */
@@ -131,18 +145,18 @@
   background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
   transition: width 0.1s linear;
   border-radius: 3px;
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
 }
 
 /* Timer */
 .trailer-timer {
-  font-size: clamp(12px, 3vw, 14px);
+  font-size: clamp(11px, 2.8vw, 13px);
   font-weight: 600;
   color: white;
   background: rgba(0, 0, 0, 0.5);
   padding: clamp(4px, 1vw, 6px) clamp(8px, 2vw, 10px);
   border-radius: clamp(4px, 1vw, 6px);
-  min-width: clamp(40px, 10vw, 50px);
+  min-width: clamp(38px, 9.5vw, 48px);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
@@ -152,18 +166,19 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  width: clamp(36px, 9vw, 44px);
-  height: clamp(36px, 9vw, 44px);
+  width: clamp(32px, 8vw, 40px);
+  height: clamp(32px, 8vw, 40px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: clamp(16px, 4vw, 20px);
+  font-size: clamp(14px, 3.5vw, 18px);
   backdrop-filter: blur(10px);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
 .sound-button:hover {
@@ -193,24 +208,24 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.9);
-  padding: clamp(20px, 5vw, 32px);
+  padding: clamp(16px, 4vw, 24px);
   text-align: center;
   z-index: 10;
 }
 
 .trailer-error-icon {
-  font-size: clamp(48px, 12vw, 64px);
-  margin-bottom: clamp(16px, 4vw, 20px);
+  font-size: clamp(40px, 10vw, 56px);
+  margin-bottom: clamp(12px, 3vw, 16px);
 }
 
 .trailer-error h3 {
-  font-size: clamp(18px, 4.5vw, 24px);
+  font-size: clamp(16px, 4vw, 20px);
   color: #ff416c;
-  margin: 0 0 clamp(8px, 2vw, 12px) 0;
+  margin: 0 0 clamp(6px, 1.5vw, 8px) 0;
 }
 
 .trailer-error p {
-  font-size: clamp(14px, 3.5vw, 16px);
+  font-size: clamp(12px, 3vw, 14px);
   color: rgba(255, 255, 255, 0.7);
   margin: 0;
 }
@@ -221,7 +236,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(80px, 20vw, 120px);
+  font-size: clamp(60px, 15vw, 100px);
   font-weight: 700;
   color: white;
   text-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 
@@ -250,18 +265,19 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  width: clamp(36px, 9vw, 44px);
-  height: clamp(36px, 9vw, 44px);
+  width: clamp(32px, 8vw, 40px);
+  height: clamp(32px, 8vw, 40px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: clamp(16px, 4vw, 20px);
+  font-size: clamp(14px, 3.5vw, 18px);
   backdrop-filter: blur(10px);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
 .fullscreen-button:hover {
@@ -274,36 +290,36 @@
   transform: scale(0.95);
 }
 
-/* Mobile landscape optimizations */
+/* Landscape mode optimizations */
 @media (max-height: 500px) and (orientation: landscape) {
   .trailer-player {
-    max-width: 100%;
     border-radius: 0;
   }
   
   .trailer-header {
-    padding: 8px 12px;
+    padding: 6px 10px;
   }
   
   .trailer-title {
-    font-size: 16px;
+    font-size: 13px;
   }
   
   .trailer-controls {
-    padding: 8px 12px;
-    gap: 8px;
+    padding: 6px 10px;
+    gap: 6px;
   }
   
   .trailer-timer {
-    font-size: 12px;
-    padding: 4px 6px;
+    font-size: 11px;
+    padding: 3px 6px;
+    min-width: 36px;
   }
   
   .sound-button,
   .fullscreen-button {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
   }
 }
 
@@ -319,9 +335,9 @@
 /* Safe area for notched devices */
 @supports (padding: max(0px)) {
   .trailer-controls {
-    padding-left: max(12px, env(safe-area-inset-left));
-    padding-right: max(12px, env(safe-area-inset-right));
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
   }
 }
 
@@ -336,7 +352,7 @@
 
 /* RTL Support */
 [dir="rtl"] .trailer-controls {
-  direction: ltr; /* Keep controls LTR for consistency */
+  direction: ltr;
 }
 
 /* Animation for when trailer ends */
