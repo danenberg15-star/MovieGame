@@ -1,6 +1,7 @@
 // src/components/DecisionPhase.js
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { findAllPossibleConnections } from '../utils/gameLogic';
 import './DecisionPhase.css';
 
 function DecisionPhase({ 
@@ -8,7 +9,8 @@ function DecisionPhase({
   teamCards, 
   onConnect, 
   onSaveToken,
-  language = 'en'
+  language = 'en',
+  connectionResult = null // NEW: Result from connection attempt
 }) {
   const { t } = useTranslation();
   const [selectedCard, setSelectedCard] = useState(null);
@@ -60,6 +62,119 @@ function DecisionPhase({
     setSelectedConnectionType(null);
   };
 
+  // 🆕 NEW: Render possible connections after failure
+  const renderPossibleConnections = () => {
+    if (!connectionResult || connectionResult.success || !wonCard || !teamCards) {
+      return null;
+    }
+
+    // Find all possible connections
+    const possibleConnections = findAllPossibleConnections(wonCard, teamCards);
+
+    if (possibleConnections.length === 0) {
+      return (
+        <div className="connection-feedback error">
+          <div className="feedback-icon">❌</div>
+          <div className="feedback-message">
+            <strong>{language === 'he' ? 'לא נכון' : 'Incorrect'}</strong>
+            <p>
+              {language === 'he' 
+                ? `אין קשר מסוג '${getConnectionTypeLabel(connectionResult.attemptedType, language)}'`
+                : `No connection of type '${getConnectionTypeLabel(connectionResult.attemptedType, language)}' found`
+              }
+            </p>
+            <p className="no-connections">
+              {language === 'he' 
+                ? '💡 אין קשרים אפשריים בין הסרט הזה לקלפים שלך'
+                : '💡 No possible connections between this card and your cards'
+              }
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // Show first possible connection as example
+    const firstPossible = possibleConnections[0];
+    const firstConnection = firstPossible.connections[0];
+
+    return (
+      <div className="connection-feedback error-with-hint">
+        <div className="feedback-icon">❌</div>
+        <div className="feedback-message">
+          <strong>{language === 'he' ? 'לא נכון' : 'Incorrect'}</strong>
+          <p>
+            {language === 'he' 
+              ? `אין קשר מסוג '${getConnectionTypeLabel(connectionResult.attemptedType, language)}'`
+              : `No connection of type '${getConnectionTypeLabel(connectionResult.attemptedType, language)}' found`
+            }
+          </p>
+        </div>
+
+        <div className="possible-connections-hint">
+          <div className="hint-title">
+            {language === 'he' ? '💡 אבל היית יכול לשייך את הסרט הזה ל:' : '💡 But you could have connected this card to:'}
+          </div>
+          <div className="hint-connection">
+            <div className="hint-card">
+              <strong>"{firstPossible.targetCard.title[language]}"</strong>
+            </div>
+            <div className="hint-type">
+              {renderConnectionDetails(firstConnection, language)}
+            </div>
+          </div>
+          {possibleConnections.length > 1 && (
+            <p className="more-connections">
+              {language === 'he' 
+                ? `(ועוד ${possibleConnections.length - 1} אפשרויות נוספות)`
+                : `(and ${possibleConnections.length - 1} more option${possibleConnections.length > 2 ? 's' : ''})`
+              }
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Helper to render connection details
+  const renderConnectionDetails = (connection, lang) => {
+    switch (connection.type) {
+      case 'actor':
+        return (
+          <span>
+            {lang === 'he' ? '🎭 שחקן משותף: ' : '🎭 Shared actor: '}
+            <strong>{connection.value[lang]}</strong>
+          </span>
+        );
+      case 'director':
+        return (
+          <span>
+            {lang === 'he' ? '🎬 במאי זהה: ' : '🎬 Same director: '}
+            <strong>{connection.value[lang]}</strong>
+          </span>
+        );
+      case 'year':
+        return (
+          <span>
+            {lang === 'he' ? '📅 שנת יציאה זהה: ' : '📅 Same year: '}
+            <strong>{connection.value}</strong>
+          </span>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // Helper to get connection type label
+  const getConnectionTypeLabel = (type, lang) => {
+    const labels = {
+      actor: lang === 'he' ? 'שחקן זהה' : 'Same Actor',
+      director: lang === 'he' ? 'במאי זהה' : 'Same Director',
+      year: lang === 'he' ? 'שנה זהה' : 'Same Year'
+    };
+    return labels[type] || type;
+  };
+
   return (
     <div className="decision-phase">
       <div className="decision-header">
@@ -88,6 +203,9 @@ function DecisionPhase({
           </div>
         </div>
       </div>
+
+      {/* 🆕 Show connection feedback if there was an attempt */}
+      {renderPossibleConnections()}
 
       {!showCardSelection ? (
         /* Main Decision Buttons */

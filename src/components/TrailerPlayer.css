@@ -1,188 +1,354 @@
 /* src/components/TrailerPlayer.css */
 
 .trailer-player {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    border-radius: 16px;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: clamp(16px, 4vw, 24px);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Trailer Header */
+.trailer-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: clamp(16px, 4vw, 20px);
+  text-align: center;
+  position: relative;
+}
+
+.trailer-title {
+  font-size: clamp(18px, 4.5vw, 24px);
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Video Container */
+.trailer-video-container {
+  position: relative;
+  width: 100%;
+  background: #000000;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.trailer-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000000;
+}
+
+/* Loading State */
+.trailer-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 10;
+}
+
+.trailer-spinner {
+  width: clamp(50px, 12vw, 70px);
+  height: clamp(50px, 12vw, 70px);
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: clamp(16px, 4vw, 20px);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.trailer-loading p {
+  font-size: clamp(14px, 3.5vw, 16px);
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Controls Overlay */
+.trailer-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  padding: clamp(12px, 3vw, 20px);
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3vw, 16px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.trailer-video-container:hover .trailer-controls {
+  opacity: 1;
+}
+
+/* Progress Bar */
+.trailer-progress {
+  flex: 1;
+  height: clamp(4px, 1vw, 6px);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.trailer-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.1s linear;
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+/* Timer */
+.trailer-timer {
+  font-size: clamp(12px, 3vw, 14px);
+  font-weight: 600;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: clamp(4px, 1vw, 6px) clamp(8px, 2vw, 10px);
+  border-radius: clamp(4px, 1vw, 6px);
+  min-width: clamp(40px, 10vw, 50px);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sound Button */
+.sound-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: clamp(36px, 9vw, 44px);
+  height: clamp(36px, 9vw, 44px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: clamp(16px, 4vw, 20px);
+  backdrop-filter: blur(10px);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sound-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.sound-button:active {
+  transform: scale(0.95);
+}
+
+.sound-button.muted {
+  background: rgba(255, 65, 108, 0.2);
+  border-color: rgba(255, 65, 108, 0.4);
+}
+
+/* Error State */
+.trailer-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  padding: clamp(20px, 5vw, 32px);
+  text-align: center;
+  z-index: 10;
+}
+
+.trailer-error-icon {
+  font-size: clamp(48px, 12vw, 64px);
+  margin-bottom: clamp(16px, 4vw, 20px);
+}
+
+.trailer-error h3 {
+  font-size: clamp(18px, 4.5vw, 24px);
+  color: #ff416c;
+  margin: 0 0 clamp(8px, 2vw, 12px) 0;
+}
+
+.trailer-error p {
+  font-size: clamp(14px, 3.5vw, 16px);
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* Countdown Overlay */
+.trailer-countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(80px, 20vw, 120px);
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 
+               0 0 60px rgba(102, 126, 234, 0.6);
+  animation: countdown 1s ease-in-out;
+  z-index: 15;
+  pointer-events: none;
+}
+
+@keyframes countdown {
+  0% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Fullscreen button (optional) */
+.fullscreen-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: clamp(36px, 9vw, 44px);
+  height: clamp(36px, 9vw, 44px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: clamp(16px, 4vw, 20px);
+  backdrop-filter: blur(10px);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fullscreen-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.fullscreen-button:active {
+  transform: scale(0.95);
+}
+
+/* Mobile landscape optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .trailer-player {
+    max-width: 100%;
+    border-radius: 0;
   }
   
-  .video-container {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background: #000;
-    overflow: hidden;
+  .trailer-header {
+    padding: 8px 12px;
   }
   
-  .trailer-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #000;
-  }
-  
-  /* Timer Overlay */
-  .timer-overlay {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-  }
-  
-  [dir="rtl"] .timer-overlay {
-    right: auto;
-    left: 20px;
-  }
-  
-  .timer-circle {
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  
-  .timer-svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-  
-  .timer-bg {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.2);
-    stroke-width: 8;
-  }
-  
-  .timer-progress {
-    fill: none;
-    stroke: #667eea;
-    stroke-width: 8;
-    stroke-linecap: round;
-    transition: stroke-dasharray 0.3s linear;
-  }
-  
-  .timer-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-  }
-  
-  /* Play/Pause Button */
-  .play-pause-btn {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 10;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  .play-pause-btn:hover {
-    background: #fff;
-    transform: translateX(-50%) scale(1.1);
-  }
-  
-  .play-pause-btn:active {
-    transform: translateX(-50%) scale(0.95);
-  }
-  
-  /* Trailer Info */
-  .trailer-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .info-icon {
-    font-size: 20px;
-  }
-  
-  .info-text {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-  }
-  
-  /* Error State */
-  .trailer-player.error {
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .error-message {
-    text-align: center;
-    padding: 40px;
-  }
-  
-  .error-icon {
-    font-size: 48px;
-    display: block;
-    margin-bottom: 15px;
-  }
-  
-  .error-message p {
+  .trailer-title {
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
   }
   
-  /* Responsive */
-  @media (max-width: 768px) {
-    .timer-circle {
-      width: 60px;
-      height: 60px;
-    }
-  
-    .timer-text {
-      font-size: 18px;
-    }
-  
-    .timer-overlay {
-      top: 10px;
-      right: 10px;
-    }
-  
-    [dir="rtl"] .timer-overlay {
-      left: 10px;
-    }
-  
-    .play-pause-btn {
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
-    }
-  
-    .trailer-info {
-      padding: 10px 15px;
-    }
-  
-    .info-text {
-      font-size: 12px;
-    }
+  .trailer-controls {
+    padding: 8px 12px;
+    gap: 8px;
   }
+  
+  .trailer-timer {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+  
+  .sound-button,
+  .fullscreen-button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+/* Prevent video controls in iOS */
+.trailer-video::-webkit-media-controls {
+  display: none !important;
+}
+
+.trailer-video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  .trailer-controls {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .trailer-player,
+  .sound-button,
+  .fullscreen-button {
+    border-width: 0.5px;
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] .trailer-controls {
+  direction: ltr; /* Keep controls LTR for consistency */
+}
+
+/* Animation for when trailer ends */
+.trailer-ending {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

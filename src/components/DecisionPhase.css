@@ -1,387 +1,473 @@
 /* src/components/DecisionPhase.css */
 
 .decision-phase {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(12px, 3vw, 24px);
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .decision-header {
-    text-align: center;
-    margin-bottom: 30px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .decision-title {
-    font-size: 32px;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Header */
+.decision-header {
+  text-align: center;
+  margin-bottom: clamp(16px, 4vw, 32px);
+}
+
+.decision-title {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 clamp(8px, 2vw, 12px) 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.decision-subtitle {
+  font-size: clamp(14px, 3.5vw, 18px);
+  color: #b0b0b0;
+  margin: 0;
+}
+
+/* Won Card Display */
+.won-card-display {
+  position: relative;
+  margin-bottom: clamp(20px, 5vw, 32px);
+}
+
+.card-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: clamp(6px, 1.5vw, 10px) clamp(12px, 3vw, 20px);
+  border-radius: 20px;
+  font-size: clamp(12px, 2.8vw, 14px);
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: clamp(8px, 2vw, 12px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.movie-card {
+  background: linear-gradient(145deg, #2a2a2a 0%, #1f1f1f 100%);
+  border-radius: clamp(12px, 3vw, 20px);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.movie-card.won {
+  border: 3px solid #667eea;
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+}
+
+.card-poster {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+}
+
+.card-info {
+  padding: clamp(12px, 3vw, 20px);
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+}
+
+.card-title {
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
+}
+
+/* 🆕 Connection Feedback */
+.connection-feedback {
+  margin: clamp(16px, 4vw, 24px) 0;
+  padding: clamp(16px, 4vw, 24px);
+  border-radius: clamp(12px, 3vw, 16px);
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
   }
-  
-  .decision-subtitle {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  /* Won Card Display */
-  .won-card-display {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 30px;
+}
+
+.connection-feedback.error {
+  background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+  color: white;
+  box-shadow: 0 8px 20px rgba(255, 65, 108, 0.3);
+}
+
+.connection-feedback.error-with-hint {
+  background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
+  border: 2px solid #ff416c;
+  color: white;
+}
+
+.feedback-icon {
+  font-size: clamp(32px, 8vw, 48px);
+  margin-bottom: clamp(8px, 2vw, 12px);
+  text-align: center;
+}
+
+.feedback-message {
+  text-align: center;
+}
+
+.feedback-message strong {
+  font-size: clamp(18px, 4.5vw, 24px);
+  display: block;
+  margin-bottom: clamp(8px, 2vw, 12px);
+}
+
+.feedback-message p {
+  font-size: clamp(14px, 3.5vw, 16px);
+  margin: clamp(6px, 1.5vw, 8px) 0;
+  opacity: 0.95;
+}
+
+.no-connections {
+  margin-top: clamp(12px, 3vw, 16px);
+  padding-top: clamp(12px, 3vw, 16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: clamp(14px, 3.5vw, 16px);
+}
+
+/* Possible Connections Hint */
+.possible-connections-hint {
+  margin-top: clamp(16px, 4vw, 20px);
+  padding: clamp(16px, 4vw, 20px);
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: clamp(8px, 2vw, 12px);
+  border-left: 4px solid #667eea;
+}
+
+.hint-title {
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: 600;
+  margin-bottom: clamp(12px, 3vw, 16px);
+  color: #667eea;
+}
+
+.hint-connection {
+  background: rgba(255, 255, 255, 0.05);
+  padding: clamp(12px, 3vw, 16px);
+  border-radius: clamp(6px, 1.5vw, 8px);
+  margin-bottom: clamp(8px, 2vw, 12px);
+}
+
+.hint-card {
+  margin-bottom: clamp(8px, 2vw, 10px);
+}
+
+.hint-card strong {
+  font-size: clamp(15px, 3.8vw, 18px);
+  color: #ffffff;
+}
+
+.hint-type {
+  font-size: clamp(14px, 3.5vw, 16px);
+  color: #b0b0b0;
+}
+
+.hint-type strong {
+  color: #667eea;
+}
+
+.more-connections {
+  font-size: clamp(13px, 3.2vw, 14px);
+  color: #888;
+  font-style: italic;
+  margin-top: clamp(8px, 2vw, 10px);
+  text-align: center;
+}
+
+/* Decision Actions */
+.decision-actions {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 3vw, 16px);
+  margin-top: clamp(20px, 5vw, 32px);
+}
+
+.btn {
+  padding: clamp(14px, 3.5vw, 18px) clamp(24px, 6vw, 32px);
+  font-size: clamp(16px, 4vw, 18px);
+  font-weight: 600;
+  border: none;
+  border-radius: clamp(10px, 2.5vw, 14px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-icon {
+  font-size: clamp(20px, 5vw, 24px);
+}
+
+.btn-text {
+  font-size: clamp(16px, 4vw, 18px);
+}
+
+.btn-connect {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-connect:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-connect:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-save-token {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.btn-save-token:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+}
+
+/* Connection Selection */
+.connection-selection {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .card-badge {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .movie-card {
-    background: rgba(255, 255, 255, 0.08);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .movie-card.won {
-    width: 280px;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-    border-color: #667eea;
-  }
-  
-  .card-poster {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    display: block;
-  }
-  
-  .card-info {
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.5);
-  }
-  
-  .card-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 5px;
-    line-height: 1.3;
-  }
-  
-  .card-year {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-  }
-  
-  /* Decision Actions */
-  .decision-actions {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 20px 40px;
-    font-size: 20px;
-    font-weight: 700;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 220px;
-    justify-content: center;
-  }
-  
-  .btn-connect {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  }
-  
-  .btn-connect:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-  }
-  
-  .btn-save-token {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-  }
-  
-  .btn-save-token:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
-  }
-  
-  .btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none !important;
-  }
-  
-  .btn-icon {
-    font-size: 24px;
-  }
-  
-  /* Connection Selection */
-  .connection-selection {
-    animation: slideIn 0.4s ease;
-  }
-  
-  .selection-step {
-    margin-bottom: 30px;
-  }
-  
-  .step-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Team Cards Grid */
+}
+
+.selection-step {
+  margin-bottom: clamp(24px, 6vw, 32px);
+}
+
+.step-title {
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: clamp(16px, 4vw, 20px);
+  text-align: center;
+}
+
+/* Team Cards Grid */
+.team-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: clamp(12px, 3vw, 16px);
+  margin-bottom: clamp(20px, 5vw, 24px);
+}
+
+@media (max-width: 480px) {
   .team-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .movie-card.selectable {
-    position: relative;
-    width: 100%;
-    cursor: pointer;
-  }
-  
-  .movie-card.selectable:hover {
-    transform: translateY(-5px);
-    border-color: #667eea;
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-  }
-  
-  .movie-card.selectable.selected {
-    border-color: #4caf50;
-    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
-  }
-  
-  .movie-card.selectable .card-poster {
-    height: 240px;
-  }
-  
-  .movie-card.selectable .card-title {
-    font-size: 14px;
-  }
-  
-  .movie-card.selectable .card-year {
-    font-size: 12px;
-  }
-  
-  .selected-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    background: #4caf50;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
-    animation: popIn 0.3s ease;
-  }
-  
-  [dir="rtl"] .selected-badge {
-    right: auto;
-    left: 10px;
-  }
-  
-  /* Connection Types Grid */
+}
+
+.movie-card.selectable {
+  cursor: pointer;
+  position: relative;
+}
+
+.movie-card.selectable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.movie-card.selectable.selected {
+  border: 3px solid #667eea;
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+  transform: scale(1.03);
+}
+
+.selected-badge {
+  position: absolute;
+  top: clamp(8px, 2vw, 12px);
+  right: clamp(8px, 2vw, 12px);
+  background: #667eea;
+  color: white;
+  width: clamp(28px, 7vw, 36px);
+  height: clamp(28px, 7vw, 36px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+  z-index: 10;
+}
+
+/* Connection Types Grid */
+.connection-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: clamp(12px, 3vw, 16px);
+}
+
+@media (max-width: 480px) {
   .connection-types-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: 1fr;
   }
-  
-  .connection-type-btn {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 24px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .connection-type-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: #667eea;
-    transform: translateY(-2px);
-  }
-  
-  .connection-type-btn.selected {
-    background: rgba(76, 175, 80, 0.2);
-    border-color: #4caf50;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-  }
-  
-  .type-icon {
-    font-size: 24px;
-  }
-  
-  .type-label {
-    flex: 1;
-  }
-  
-  .selected-check {
-    font-size: 20px;
-    color: #4caf50;
-    animation: popIn 0.3s ease;
-  }
-  
-  /* Confirm Actions */
+}
+
+.connection-type-btn {
+  background: linear-gradient(145deg, #2a2a2a 0%, #1f1f1f 100%);
+  border: 2px solid #3a3a3a;
+  border-radius: clamp(10px, 2.5vw, 14px);
+  padding: clamp(16px, 4vw, 20px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 2vw, 10px);
+  position: relative;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.connection-type-btn:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
+
+.connection-type-btn.selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+  box-shadow: 0 0 24px rgba(102, 126, 234, 0.5);
+  transform: scale(1.05);
+}
+
+.connection-type-btn:active {
+  transform: scale(0.98);
+}
+
+.type-icon {
+  font-size: clamp(28px, 7vw, 36px);
+}
+
+.type-label {
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+}
+
+.selected-check {
+  position: absolute;
+  top: clamp(6px, 1.5vw, 8px);
+  right: clamp(6px, 1.5vw, 8px);
+  background: white;
+  color: #667eea;
+  width: clamp(22px, 5.5vw, 28px);
+  height: clamp(22px, 5.5vw, 28px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: bold;
+}
+
+/* Confirm Actions */
+.confirm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 3vw, 16px);
+  margin-top: clamp(24px, 6vw, 32px);
+}
+
+@media (min-width: 600px) {
   .confirm-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
+    flex-direction: row;
   }
-  
-  .btn-cancel {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-cancel {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  flex: 1;
+}
+
+.btn-cancel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(108, 117, 125, 0.3);
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  flex: 2;
+}
+
+.btn-confirm:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* RTL Support */
+[dir="rtl"] .card-badge,
+[dir="rtl"] .hint-title {
+  text-align: right;
+}
+
+[dir="rtl"] .possible-connections-hint {
+  border-left: none;
+  border-right: 4px solid #667eea;
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  .decision-phase {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
   }
-  
-  .btn-cancel:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.5);
-  }
-  
-  .btn-confirm {
-    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-  }
-  
-  .btn-confirm:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
-  }
-  
-  /* Animations */
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes popIn {
-    0% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
-  /* Responsive */
-  @media (max-width: 1024px) {
-    .team-cards-grid {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 12px;
-    }
-  
-    .connection-types-grid {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .decision-phase {
-      padding: 20px;
-    }
-  
-    .decision-title {
-      font-size: 24px;
-    }
-  
-    .decision-subtitle {
-      font-size: 16px;
-    }
-  
-    .movie-card.won {
-      width: 100%;
-      max-width: 250px;
-    }
-  
-    .decision-actions {
-      flex-direction: column;
-      gap: 15px;
-    }
-  
-    .btn {
-      width: 100%;
-      min-width: auto;
-      padding: 15px 30px;
-      font-size: 18px;
-    }
-  
-    .team-cards-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  
-    .connection-types-grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .confirm-actions {
-      flex-direction: column;
-    }
-  
-    .btn-cancel,
-    .btn-confirm {
-      width: 100%;
-    }
-  }
+}

@@ -42,328 +42,171 @@ export function selectAnchorCards(allMovies) {
 
 // Helper function to get connection points - EXPORTED
 export function getConnectionPoints(connectionType) {
-switch (connectionType) {
-  case 'actor':
-    return 5;
-  case 'director':
-    return 4;
-  case 'producer':
-    return 3;
-  case 'year':
-    return 2;
-  case 'oscar':
-    return 1;
-  default:
-    return 0;
-}
+  switch (connectionType) {
+    case 'actor':
+      return 5;
+    case 'director':
+      return 4;
+    case 'year':
+      return 2;
+    default:
+      return 0;
+  }
 }
 
-/**
- * Build an index of all movies by actors, directors, and years
- * This allows fast lookup of movies that share these attributes
- * @param {Array} allMovies - All available movies
- * @returns {Object} Index with actors, directors, and years
- */
+// Build movies index for fast lookups
 export function buildMoviesIndex(allMovies) {
   console.log('🔨 Building movies index...');
   
-  const index = {
-    actors: {},      // { "Actor Name": [movieId1, movieId2, ...] }
-    directors: {},   // { "Director Name": [movieId1, movieId2, ...] }
-    years: {}        // { 2010: [movieId1, movieId2, ...] }
-  };
+  const actorsIndex = {};
+  const directorsIndex = {};
+  const yearsIndex = {};
   
   for (const movie of allMovies) {
-    if (!movie || !movie.id) continue;
-    
-    // Index by actors
+    // Index actors
     if (movie.cast && Array.isArray(movie.cast)) {
       for (const actor of movie.cast) {
-        if (!actor || !actor.name || !actor.name.en) continue;
-        
-        const actorName = actor.name.en.trim();
-        if (!index.actors[actorName]) {
-          index.actors[actorName] = [];
-        }
-        if (!index.actors[actorName].includes(movie.id)) {
-          index.actors[actorName].push(movie.id);
+        if (actor && actor.name && actor.name.en) {
+          const actorName = actor.name.en.trim();
+          if (!actorsIndex[actorName]) {
+            actorsIndex[actorName] = [];
+          }
+          actorsIndex[actorName].push(movie.id);
         }
       }
     }
     
-    // Index by director
+    // Index director
     if (movie.director && movie.director.name && movie.director.name.en) {
       const directorName = movie.director.name.en.trim();
-      if (!index.directors[directorName]) {
-        index.directors[directorName] = [];
+      if (!directorsIndex[directorName]) {
+        directorsIndex[directorName] = [];
       }
-      if (!index.directors[directorName].includes(movie.id)) {
-        index.directors[directorName].push(movie.id);
-      }
+      directorsIndex[directorName].push(movie.id);
     }
     
-    // Index by year
+    // Index year
     if (movie.year) {
-      const year = movie.year;
-      if (!index.years[year]) {
-        index.years[year] = [];
+      if (!yearsIndex[movie.year]) {
+        yearsIndex[movie.year] = [];
       }
-      if (!index.years[year].includes(movie.id)) {
-        index.years[year].push(movie.id);
-      }
+      yearsIndex[movie.year].push(movie.id);
     }
   }
   
-  console.log(`✅ Index built:`);
-  console.log(`   - ${Object.keys(index.actors).length} unique actors`);
-  console.log(`   - ${Object.keys(index.directors).length} unique directors`);
-  console.log(`   - ${Object.keys(index.years).length} unique years`);
+  console.log(`✅ Index built: ${Object.keys(actorsIndex).length} actors, ${Object.keys(directorsIndex).length} directors, ${Object.keys(yearsIndex).length} years`);
   
-  return index;
+  return {
+    actors: actorsIndex,
+    directors: directorsIndex,
+    years: yearsIndex
+  };
 }
 
 // Helper function to pick from top scored movies
 function pickFromTopScored(moviesWithScores, description) {
-// Sort by score (highest first)
-moviesWithScores.sort((a, b) => b.score - a.score);
+  // Sort by score (highest first)
+  moviesWithScores.sort((a, b) => b.score - a.score);
 
-// Pick from top 3 to add some variety
-const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
-const randomIndex = Math.floor(Math.random() * topMovies.length);
+  // Pick from top 3 to add some variety
+  const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
+  const randomIndex = Math.floor(Math.random() * topMovies.length);
 
-console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
-return topMovies[randomIndex].movie;
+  console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
+  return topMovies[randomIndex].movie;
 }
 
-// Select next movie with OPTIMIZED algorithm using index
+// Select next movie with smart algorithm - FIXED TO USE CURRENT TEAM ONLY
 export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn, requiredConnectionType = null, moviesIndex = null) {
-  console.log('');
-  console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE START (OPTIMIZED) ===== 🎬🎬🎬');
-  console.log(`📍 Current turn: Team ${currentTurn}`);
-  console.log(`🎨 Required connection type: ${requiredConnectionType || 'ANY'}`);
-  console.log(`📦 Team A has ${teamACards.length} cards`);
-  console.log(`📦 Team B has ${teamBCards.length} cards`);
-  console.log(`🚫 Used movies: ${usedMovieIds.length}`);
+  // Filter out already used movies
+  const availableMovies = allMovies.filter(
+    movie => !usedMovieIds.includes(movie.id)
+  );
   
-  // Get current team cards
+  if (availableMovies.length === 0) {
+    console.log('❌ No more movies available');
+    return null;
+  }
+  
+  // 🔥 FIX: Get ONLY current team cards (not both teams!)
   const currentTeamCards = currentTurn === 'A' ? teamACards : teamBCards;
-  const otherTeamCards = currentTurn === 'A' ? teamBCards : teamACards;
   
-  console.log(`🎯 Current team (Team ${currentTurn}) has ${currentTeamCards.length} cards to connect with`);
+  console.log(`🎯 Selecting movie for Team ${currentTurn} - they have ${currentTeamCards.length} cards`);
   
-  // If no index provided, fall back to old method
-  if (!moviesIndex) {
-    console.log('⚠️ No index provided - this should not happen!');
-    return null;
+  if (requiredConnectionType) {
+    console.log(`🎨 Required connection type: ${requiredConnectionType}`);
   }
   
-  // Step 1: Collect all actors, directors, and years from current team's cards
-  const targetActors = new Set();
-  const targetDirectors = new Set();
-  const targetYears = new Set();
+  // If we have an index, use the optimized path
+  if (moviesIndex) {
+    return selectNextMovieOptimized(availableMovies, currentTeamCards, requiredConnectionType, moviesIndex);
+  }
   
-  console.log('🔍 Step 1: Collecting attributes from team cards...');
+  // Fallback to full scan (original algorithm)
+  const moviesWithConnections = [];
   
-  for (const card of currentTeamCards) {
-    // Collect actors
-    if (card.cast && Array.isArray(card.cast)) {
-      for (const actor of card.cast) {
-        if (actor && actor.name && actor.name.en) {
-          targetActors.add(actor.name.en.trim());
-        }
-      }
-    }
+  for (const movie of availableMovies) {
+    let connectionScore = 0;
+    let hasConnection = false;
+    let hasRequiredConnectionType = false;
     
-    // Collect director
-    if (card.director && card.director.name && card.director.name.en) {
-      targetDirectors.add(card.director.name.en.trim());
-    }
-    
-    // Collect year
-    if (card.year) {
-      targetYears.add(card.year);
-    }
-  }
-  
-  console.log(`   👥 Found ${targetActors.size} unique actors`);
-  console.log(`   🎬 Found ${targetDirectors.size} unique directors`);
-  console.log(`   📅 Found ${targetYears.size} unique years`);
-  
-  // Step 2: Find candidate movies using the index
-  const candidateMovieIds = new Set();
-  
-  console.log('🔍 Step 2: Finding candidate movies from index...');
-  
-  // Find movies by actors
-  for (const actorName of targetActors) {
-    if (moviesIndex.actors[actorName]) {
-      for (const movieId of moviesIndex.actors[actorName]) {
-        candidateMovieIds.add(movieId);
-      }
-    }
-  }
-  console.log(`   👥 Found ${candidateMovieIds.size} movies with matching actors`);
-  
-  // Find movies by directors
-  const beforeDirectors = candidateMovieIds.size;
-  for (const directorName of targetDirectors) {
-    if (moviesIndex.directors[directorName]) {
-      for (const movieId of moviesIndex.directors[directorName]) {
-        candidateMovieIds.add(movieId);
-      }
-    }
-  }
-  console.log(`   🎬 Added ${candidateMovieIds.size - beforeDirectors} movies with matching directors`);
-  
-  // Find movies by years
-  const beforeYears = candidateMovieIds.size;
-  for (const year of targetYears) {
-    if (moviesIndex.years[year]) {
-      for (const movieId of moviesIndex.years[year]) {
-        candidateMovieIds.add(movieId);
-      }
-    }
-  }
-  console.log(`   📅 Added ${candidateMovieIds.size - beforeYears} movies with matching years`);
-  console.log(`   ✅ Total candidate movies: ${candidateMovieIds.size}`);
-  
-  // Step 3: Filter out used movies and get full movie objects
-  const candidateMovies = [];
-  const movieMap = {};
-  
-  for (const movie of allMovies) {
-    movieMap[movie.id] = movie;
-  }
-  
-  for (const movieId of candidateMovieIds) {
-    if (!usedMovieIds.includes(movieId)) {
-      const movie = movieMap[movieId];
-      if (movie) {
-        candidateMovies.push(movie);
-      }
-    }
-  }
-  
-  console.log(`🔍 Step 3: After filtering used movies: ${candidateMovies.length} candidates remaining`);
-  
-  if (candidateMovies.length === 0) {
-    console.log('❌ No candidate movies found!');
-    console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (NULL) ===== 🎬🎬🎬');
-    console.log('');
-    return null;
-  }
-  
-  // Step 4: Score each candidate and check connection type
-  console.log('🔍 Step 4: Scoring candidates...');
-  
-  const moviesWithConnectionsToBoth = [];
-  const moviesWithConnectionsToCurrent = [];
-  
-  for (const movie of candidateMovies) {
-    let connectionScoreCurrent = 0;
-    let connectionScoreAll = 0;
-    let hasConnectionToCurrent = false;
-    let hasConnectionToOther = false;
-    let hasRequiredConnectionTypeToCurrent = false;
-    let connectionTypes = [];
-    
-    // Check connections with current team cards
+    // Check connections with current team cards ONLY
     for (const teamCard of currentTeamCards) {
       const connections = findConnection(movie, teamCard);
       
       if (connections.length > 0) {
-        hasConnectionToCurrent = true;
+        hasConnection = true;
         
-        for (const conn of connections) {
-          connectionTypes.push(conn.type);
-          const points = getConnectionPoints(conn.type);
-          connectionScoreCurrent += points;
-          connectionScoreAll += points;
-          
-          // Check if required connection type exists
-          if (requiredConnectionType && conn.type === requiredConnectionType) {
-            hasRequiredConnectionTypeToCurrent = true;
+        // Check if required connection type exists
+        if (requiredConnectionType) {
+          const hasRequiredType = connections.some(conn => conn.type === requiredConnectionType);
+          if (hasRequiredType) {
+            hasRequiredConnectionType = true;
           }
         }
-      }
-    }
-    
-    // Check connections with other team cards
-    for (const teamCard of otherTeamCards) {
-      const connections = findConnection(movie, teamCard);
-      
-      if (connections.length > 0) {
-        hasConnectionToOther = true;
         
+        // Score based on connection type priority
         for (const conn of connections) {
-          connectionScoreAll += getConnectionPoints(conn.type);
+          const points = getConnectionPoints(conn.type);
+          connectionScore += points;
         }
       }
     }
     
-    // Apply filtering based on required connection type
+    // If required connection type specified, ONLY accept movies with that type
     if (requiredConnectionType) {
-      if (hasRequiredConnectionTypeToCurrent) {
-        if (hasConnectionToOther) {
-          console.log(`   ✅ "${movie.title?.en}" - HAS '${requiredConnectionType}' + both teams (score: ${connectionScoreAll})`);
-          moviesWithConnectionsToBoth.push({ movie, score: connectionScoreAll });
-        } else {
-          console.log(`   ✅ "${movie.title?.en}" - HAS '${requiredConnectionType}' + current team (score: ${connectionScoreCurrent})`);
-          moviesWithConnectionsToCurrent.push({ movie, score: connectionScoreCurrent });
-        }
-      } else if (hasConnectionToCurrent) {
-        console.log(`   ⚠️ "${movie.title?.en}" - Has [${connectionTypes.join(',')}] but NOT '${requiredConnectionType}' - SKIPPING`);
+      if (hasRequiredConnectionType) {
+        moviesWithConnections.push({
+          movie,
+          score: connectionScore
+        });
       }
     } else {
-      // No required type - accept any connection
-      if (hasConnectionToCurrent) {
-        if (hasConnectionToOther) {
-          console.log(`   ✅ "${movie.title?.en}" - [${connectionTypes.join(',')}] + both teams (score: ${connectionScoreAll})`);
-          moviesWithConnectionsToBoth.push({ movie, score: connectionScoreAll });
-        } else {
-          console.log(`   ✅ "${movie.title?.en}" - [${connectionTypes.join(',')}] + current team (score: ${connectionScoreCurrent})`);
-          moviesWithConnectionsToCurrent.push({ movie, score: connectionScoreCurrent });
-        }
+      // No required type - accept any connection to current team
+      if (hasConnection) {
+        moviesWithConnections.push({
+          movie,
+          score: connectionScore
+        });
       }
     }
   }
   
-  console.log('');
-  console.log(`📊 RESULTS:`);
-  console.log(`   - Movies connecting to BOTH teams: ${moviesWithConnectionsToBoth.length}`);
-  console.log(`   - Movies connecting to CURRENT team: ${moviesWithConnectionsToCurrent.length}`);
-  console.log(`   - Total movies with valid connections: ${moviesWithConnectionsToBoth.length + moviesWithConnectionsToCurrent.length}`);
+  console.log(`📊 Movies with connections to Team ${currentTurn}: ${moviesWithConnections.length}`);
   
-  // Priority 1: Movies that connect to both teams
-  if (moviesWithConnectionsToBoth.length > 0) {
-    const selected = pickFromTopScored(moviesWithConnectionsToBoth, 'both teams');
-    console.log(`🎯 SELECTED: "${selected.title?.en}" (connects to both teams)`);
-    console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (SUCCESS) ===== 🎬🎬🎬');
-    console.log('');
-    return selected;
+  if (moviesWithConnections.length > 0) {
+    return pickFromTopScored(moviesWithConnections, `Team ${currentTurn}`);
   }
   
-  // Priority 2: Movies that connect to current team only
-  if (moviesWithConnectionsToCurrent.length > 0) {
-    const selected = pickFromTopScored(moviesWithConnectionsToCurrent, `Team ${currentTurn}`);
-    console.log(`🎯 SELECTED: "${selected.title?.en}" (connects to Team ${currentTurn})`);
-    console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (SUCCESS) ===== 🎬🎬🎬');
-    console.log('');
-    return selected;
-  }
-  
-  // Fallback: If required type specified and nothing found, try without the filter
+  // If we're filtering by required type and found nothing, try WITHOUT the filter
   if (requiredConnectionType) {
-    console.log('');
-    console.log(`⚠️⚠️⚠️ WARNING: No movies with required type '${requiredConnectionType}'`);
-    console.log(`🔄 Trying again WITHOUT the type filter...`);
-    console.log('');
+    console.log(`⚠️ No movies found with required type '${requiredConnectionType}' - trying any connection...`);
     
     const moviesWithAnyConnection = [];
     
-    for (const movie of candidateMovies) {
-      let score = 0;
+    for (const movie of availableMovies) {
       let hasConnection = false;
+      let score = 0;
       
       for (const teamCard of currentTeamCards) {
         const connections = findConnection(movie, teamCard);
@@ -376,44 +219,160 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
       }
       
       if (hasConnection) {
-        console.log(`   ✅ "${movie.title?.en}" - Has ANY connection (score: ${score})`);
         moviesWithAnyConnection.push({ movie, score });
       }
     }
     
     if (moviesWithAnyConnection.length > 0) {
-      const selected = pickFromTopScored(moviesWithAnyConnection, `Team ${currentTurn} (any type)`);
-      console.log(`🎯 SELECTED: "${selected.title?.en}" (fallback - any type)`);
-      console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (SUCCESS - FALLBACK) ===== 🎬🎬🎬');
-      console.log('');
-      return selected;
+      console.log(`✅ Found ${moviesWithAnyConnection.length} movies with ANY connection type`);
+      return pickFromTopScored(moviesWithAnyConnection, `Team ${currentTurn} (any type)`);
     }
   }
   
-  // No valid movies found
-  console.log('');
-  console.log('❌❌❌ CRITICAL: NO VALID MOVIES FOUND!');
-  console.log(`   - Candidates checked: ${candidateMovies.length}`);
-  console.log(`   - Team ${currentTurn} has ${currentTeamCards.length} cards`);
-  console.log(`   - Required type: ${requiredConnectionType || 'ANY'}`);
-  console.log('❌ Game cannot continue - returning NULL');
-  console.log('🎬🎬🎬 ===== SELECT NEXT MOVIE END (FAILED - NULL) ===== 🎬🎬🎬');
-  console.log('');
+  // If absolutely NO connections found - game should end
+  console.log('❌ No movies with connections found - game cannot continue');
   return null;
+}
+
+// Optimized movie selection using index
+function selectNextMovieOptimized(availableMovies, currentTeamCards, requiredConnectionType, moviesIndex) {
+  console.log('🚀 Using optimized movie selection with index');
+  
+  // Step 1: Collect all unique attributes from current team cards
+  const actorNames = new Set();
+  const directorNames = new Set();
+  const years = new Set();
+  
+  for (const card of currentTeamCards) {
+    // Collect actors
+    if (card.cast && Array.isArray(card.cast)) {
+      for (const actor of card.cast) {
+        if (actor && actor.name && actor.name.en) {
+          actorNames.add(actor.name.en.trim());
+        }
+      }
+    }
+    
+    // Collect director
+    if (card.director && card.director.name && card.director.name.en) {
+      directorNames.add(card.director.name.en.trim());
+    }
+    
+    // Collect year
+    if (card.year) {
+      years.add(card.year);
+    }
+  }
+  
+  console.log(`🔍 Step 1: Collected ${actorNames.size} unique actors, ${directorNames.size} unique directors, ${years.size} unique years from team cards`);
+  
+  // Step 2: Find candidate movies from index
+  const candidateMovieIds = new Set();
+  
+  // Add movies with matching actors
+  for (const actorName of actorNames) {
+    if (moviesIndex.actors[actorName]) {
+      for (const movieId of moviesIndex.actors[actorName]) {
+        candidateMovieIds.add(movieId);
+      }
+    }
+  }
+  console.log(`   👥 Found ${candidateMovieIds.size} movies with matching actors`);
+  
+  // Add movies with matching directors
+  const beforeDirectors = candidateMovieIds.size;
+  for (const directorName of directorNames) {
+    if (moviesIndex.directors[directorName]) {
+      for (const movieId of moviesIndex.directors[directorName]) {
+        candidateMovieIds.add(movieId);
+      }
+    }
+  }
+  console.log(`   🎬 Added ${candidateMovieIds.size - beforeDirectors} movies with matching directors`);
+  
+  // Add movies with matching years
+  const beforeYears = candidateMovieIds.size;
+  for (const year of years) {
+    if (moviesIndex.years[year]) {
+      for (const movieId of moviesIndex.years[year]) {
+        candidateMovieIds.add(movieId);
+      }
+    }
+  }
+  console.log(`   📅 Added ${candidateMovieIds.size - beforeYears} movies with matching years`);
+  console.log(`   ✅ Total candidate movies: ${candidateMovieIds.size}`);
+  
+  // Step 3: Filter to only available (unused) movies
+  const candidateMovies = availableMovies.filter(movie => candidateMovieIds.has(movie.id));
+  console.log(`🔍 Step 3: After filtering used movies: ${candidateMovies.length} candidates remaining`);
+  
+  if (candidateMovies.length === 0) {
+    console.log('❌ No candidate movies found');
+    return null;
+  }
+  
+  // Step 4: Score each candidate
+  console.log('🔍 Step 4: Scoring candidates...');
+  const moviesWithScores = [];
+  
+  for (const movie of candidateMovies) {
+    let score = 0;
+    let hasRequiredType = false;
+    const connectionTypes = new Set();
+    
+    // Check connections with ALL current team cards
+    for (const teamCard of currentTeamCards) {
+      const connections = findConnection(movie, teamCard);
+      
+      for (const conn of connections) {
+        connectionTypes.add(conn.type);
+        score += getConnectionPoints(conn.type);
+        
+        if (requiredConnectionType && conn.type === requiredConnectionType) {
+          hasRequiredType = true;
+        }
+      }
+    }
+    
+    // If required type specified, only include movies with that type
+    if (requiredConnectionType) {
+      if (hasRequiredType) {
+        moviesWithScores.push({ movie, score });
+        console.log(`   ✅ "${movie.title.en}" - [${Array.from(connectionTypes)}] + has required type '${requiredConnectionType}' (score: ${score})`);
+      }
+    } else {
+      if (connectionTypes.size > 0) {
+        moviesWithScores.push({ movie, score });
+        console.log(`   ✅ "${movie.title.en}" - [${Array.from(connectionTypes)}] (score: ${score})`);
+      }
+    }
+  }
+  
+  if (moviesWithScores.length === 0) {
+    if (requiredConnectionType) {
+      console.log(`⚠️ No movies found with required type '${requiredConnectionType}'`);
+      // Try again without type requirement
+      return selectNextMovieOptimized(availableMovies, currentTeamCards, null, moviesIndex);
+    }
+    console.log('❌ No scored movies found');
+    return null;
+  }
+  
+  return pickFromTopScored(moviesWithScores, 'current team');
 }
 
 // Get next required connection type (cycle through types)
 export function getNextRequiredConnectionType(lastConnectionType) {
-const cycleOrder = ['actor', 'director', 'producer', 'year', 'oscar'];
+  const cycleOrder = ['actor', 'director', 'year'];
 
-if (!lastConnectionType) {
-  return cycleOrder[0]; // Start with actor
-}
+  if (!lastConnectionType) {
+    return cycleOrder[0]; // Start with actor
+  }
 
-const currentIndex = cycleOrder.indexOf(lastConnectionType);
-const nextIndex = (currentIndex + 1) % cycleOrder.length;
+  const currentIndex = cycleOrder.indexOf(lastConnectionType);
+  const nextIndex = (currentIndex + 1) % cycleOrder.length;
 
-return cycleOrder[nextIndex];
+  return cycleOrder[nextIndex];
 }
 
 // Generate 10 answer options (1 correct + 9 decoys)
@@ -460,10 +419,12 @@ export function findConnection(movie1, movie2) {
     return connections;
   }
   
-  console.log(`   🔗 Checking connections: "${movie1.title?.en}" ↔ "${movie2.title?.en}"`);
+  console.log(`🔗 Checking connections between "${movie1.title?.en}" (${movie1.year}) and "${movie2.title?.en}" (${movie2.year})`);
   
   // 1. Check for same actor/actress
   if (movie1.cast && movie2.cast && Array.isArray(movie1.cast) && Array.isArray(movie2.cast)) {
+    console.log(`   👥 Checking ${movie1.cast.length} actors vs ${movie2.cast.length} actors`);
+    
     for (const actor1 of movie1.cast) {
       if (!actor1 || !actor1.name || !actor1.name.en) continue;
       
@@ -471,7 +432,7 @@ export function findConnection(movie1, movie2) {
         if (!actor2 || !actor2.name || !actor2.name.en) continue;
         
         if (actor1.name.en.trim() === actor2.name.en.trim()) {
-          console.log(`      ✅ ACTOR: ${actor1.name.en}`);
+          console.log(`   ✅ ACTOR MATCH: ${actor1.name.en}`);
           connections.push({
             type: 'actor',
             value: actor1.name,
@@ -488,7 +449,7 @@ export function findConnection(movie1, movie2) {
       movie1.director.name.en && movie2.director.name.en) {
     
     if (movie1.director.name.en.trim() === movie2.director.name.en.trim()) {
-      console.log(`      ✅ DIRECTOR: ${movie1.director.name.en}`);
+      console.log(`   ✅ DIRECTOR MATCH: ${movie1.director.name.en}`);
       connections.push({
         type: 'director',
         value: movie1.director.name,
@@ -497,59 +458,23 @@ export function findConnection(movie1, movie2) {
     }
   }
   
-  // 3. Check for same producer
-  if (movie1.producer && movie2.producer &&
-      movie1.producer.name && movie2.producer.name &&
-      movie1.producer.name.en && movie2.producer.name.en) {
-    
-    if (movie1.producer.name.en.trim() === movie2.producer.name.en.trim()) {
-      console.log(`      ✅ PRODUCER: ${movie1.producer.name.en}`);
-      connections.push({
-        type: 'producer',
-        value: movie1.producer.name,
-        producer: movie1.producer
-      });
-    }
-  }
-  
-  // 4. Check for same year
+  // 3. Check for same year
   if (movie1.year && movie2.year && movie1.year === movie2.year) {
-    console.log(`      ✅ YEAR: ${movie1.year}`);
+    console.log(`   ✅ YEAR MATCH: ${movie1.year}`);
     connections.push({
       type: 'year',
       value: movie1.year
     });
   }
   
-  // 5. Check for same Oscar type
-  if (movie1.oscars && movie2.oscars && 
-      Array.isArray(movie1.oscars) && Array.isArray(movie2.oscars) &&
-      movie1.oscars.length > 0 && movie2.oscars.length > 0) {
-    
-    for (const oscar1 of movie1.oscars) {
-      if (!oscar1 || !oscar1.type || !oscar1.type.en) continue;
-      
-      for (const oscar2 of movie2.oscars) {
-        if (!oscar2 || !oscar2.type || !oscar2.type.en) continue;
-        
-        if (oscar1.type.en.trim() === oscar2.type.en.trim()) {
-          console.log(`      ✅ OSCAR: ${oscar1.type.en}`);
-          connections.push({
-            type: 'oscar',
-            value: oscar1.type
-          });
-        }
-      }
-    }
-  }
-  
   if (connections.length === 0) {
-    console.log(`      ❌ No connections`);
+    console.log(`   ❌ No connections found`);
+  } else {
+    console.log(`   ✅ Found ${connections.length} connection(s):`, connections.map(c => c.type));
   }
   
   return connections;
 }
-
 
 // Validate connection attempt
 export function validateConnection(sourceCard, targetCard, connectionType) {
@@ -565,7 +490,25 @@ export function validateConnection(sourceCard, targetCard, connectionType) {
   };
 }
 
-// Get hint for failed connection attempt
+// 🆕 NEW FUNCTION: Find all possible connections for a card
+export function findAllPossibleConnections(wonCard, teamCards) {
+  const possibleConnections = [];
+  
+  for (const teamCard of teamCards) {
+    const connections = findConnection(wonCard, teamCard);
+    
+    if (connections.length > 0) {
+      possibleConnections.push({
+        targetCard: teamCard,
+        connections: connections
+      });
+    }
+  }
+  
+  return possibleConnections;
+}
+
+// Get hint for failed connection attempt - UPDATED
 export function getConnectionHint(sourceCard, targetCard, language = 'en') {
   const connections = findConnection(sourceCard, targetCard);
   
@@ -592,20 +535,10 @@ export function getConnectionHint(sourceCard, targetCard, language = 'en') {
         ? `רמז: הסרטים מקושרים דרך הבמאי ${firstConnection.value.he}`
         : `Hint: The movies are connected through director ${firstConnection.value.en}`;
       break;
-    case 'producer':
-      hintMessage = language === 'he'
-        ? `רמז: הסרטים מקושרים דרך המפיק ${firstConnection.value.he}`
-        : `Hint: The movies are connected through producer ${firstConnection.value.en}`;
-      break;
     case 'year':
       hintMessage = language === 'he'
         ? `רמז: שני הסרטים יצאו באותה שנה (${firstConnection.value})`
         : `Hint: Both movies were released in the same year (${firstConnection.value})`;
-      break;
-    case 'oscar':
-      hintMessage = language === 'he'
-        ? `רמז: שני הסרטים זכו באותו סוג אוסקר`
-        : `Hint: Both movies won the same type of Oscar`;
       break;
     default:
       hintMessage = language === 'he'
@@ -626,10 +559,7 @@ export function checkWinCondition(teamCards) {
 }
 
 // Initialize game state
-export function initializeGameState(anchorCards, allMovies) {
-  // Build the movies index for fast lookups
-  const moviesIndex = buildMoviesIndex(allMovies);
-  
+export function initializeGameState(anchorCards, allMovies, moviesIndex) {
   return {
     phase: 'playing', // 'playing', 'decision', 'finished'
     currentTurn: 'A', // 'A' or 'B'
@@ -650,7 +580,7 @@ export function initializeGameState(anchorCards, allMovies) {
     
     usedMovieIds: [anchorCards.teamA.id, anchorCards.teamB.id],
     allMovies: allMovies,
-    moviesIndex: moviesIndex, // Add the index to game state
+    moviesIndex: moviesIndex, // Add index to state
     
     roundNumber: 0,
     winner: null,
@@ -671,20 +601,10 @@ export function getSuccessMessage(connectionType, connectionData, language = 'en
         ? `צדקתם! שניהם בוימו על ידי ${connectionData.value.he}`
         : `Correct! Both directed by ${connectionData.value.en}`;
     
-    case 'producer':
-      return language === 'he'
-        ? `צדקתם! שניהם הופקו על ידי ${connectionData.value.he}`
-        : `Correct! Both produced by ${connectionData.value.en}`;
-    
     case 'year':
       return language === 'he'
         ? `צדקתם! שניהם יצאו ב-${connectionData.value}`
         : `Correct! Both released in ${connectionData.value}`;
-    
-    case 'oscar':
-      return language === 'he'
-        ? `צדקתם! שניהם זכו ב-${connectionData.value.he}`
-        : `Correct! Both won ${connectionData.value.en}`;
     
     default:
       return language === 'he' ? 'צדקתם!' : 'Correct!';

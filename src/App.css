@@ -1,305 +1,293 @@
 /* src/App.css */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #fff;
+.App {
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background-attachment: fixed;
+  color: #ffffff;
+  position: relative;
   overflow-x: hidden;
 }
 
-.App {
+/* Container */
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(12px, 3vw, 20px);
   min-height: 100vh;
+}
+
+/* Global Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15, 12, 41, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: clamp(12px, 3vw, 20px);
+  margin-bottom: clamp(16px, 4vw, 24px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.app-logo {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 12px);
 }
 
-/* RTL/LTR Support */
-[dir="rtl"] {
-  direction: rtl;
-  text-align: right;
+.app-logo-icon {
+  font-size: clamp(28px, 7vw, 36px);
 }
 
-[dir="ltr"] {
-  direction: ltr;
-  text-align: left;
+.app-logo-text {
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Language Switcher */
 .language-switcher {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: clamp(16px, 4vw, 24px);
+  right: clamp(16px, 4vw, 24px);
   z-index: 1000;
+}
+
+.language-button {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-[dir="rtl"] .language-switcher {
-  right: auto;
-  left: 20px;
-}
-
-.language-switcher:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-.language-switcher select {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  outline: none;
-  font-weight: 600;
-}
-
-.language-switcher select option {
-  background: #16213e;
-  color: #fff;
-}
-
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  width: 100%;
-}
-
-/* Buttons */
-.btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 15px 40px;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  margin: 10px;
-  min-width: 200px;
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-}
-
-.btn:active {
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-}
-
-.btn-secondary:hover {
-  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Cards */
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-/* Inputs */
-.input {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 15px 20px;
   color: white;
-  font-size: 18px;
-  width: 100%;
-  max-width: 400px;
-  transition: all 0.3s ease;
-  text-align: center;
-  letter-spacing: 4px;
+  padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
+  border-radius: clamp(8px, 2vw, 12px);
+  font-size: clamp(14px, 3.5vw, 16px);
   font-weight: 600;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #667eea;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-}
-
-.input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: normal;
-}
-
-/* Logo/Title */
-.game-logo {
-  font-size: 48px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* Landscape Lock Message */
-.landscape-lock {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #1a1a2e;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  flex-direction: column;
-  text-align: center;
-  padding: 20px;
-}
-
-.landscape-lock.active {
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.5vw, 8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.landscape-lock h2 {
-  font-size: 32px;
-  margin-bottom: 20px;
+.language-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-.landscape-lock p {
-  font-size: 18px;
-  opacity: 0.8;
+.language-button:active {
+  transform: scale(0.97);
 }
 
-.rotate-icon {
-  font-size: 80px;
-  margin: 30px 0;
-  animation: rotate 2s infinite ease-in-out;
+/* Global loading state */
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: clamp(20px, 5vw, 40px);
 }
 
-@keyframes rotate {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(90deg); }
-}
-
-/* Responsive - Force Landscape */
-@media (orientation: portrait) and (max-width: 1024px) {
-  .landscape-lock {
-    display: flex !important;
-  }
-  
-  .App > *:not(.landscape-lock) {
-    display: none !important;
-  }
-}
-
-/* Loading Animation */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+.app-loading-spinner {
+  width: clamp(60px, 15vw, 80px);
+  height: clamp(60px, 15vw, 80px);
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #667eea;
   border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 1s ease-in-out infinite;
+  animation: spin 1s linear infinite;
+  margin-bottom: clamp(20px, 5vw, 24px);
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
-/* PWA Install Button */
-.pwa-install-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 50%;
-  font-size: 28px;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
-  z-index: 9999;
-  transition: all 0.3s ease;
+
+.app-loading-text {
+  font-size: clamp(16px, 4vw, 20px);
+  color: #b0b0b0;
+  margin: 0;
+}
+
+/* Global error state */
+.app-error {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: pulsePWA 2s ease-in-out infinite;
+  min-height: 100vh;
+  padding: clamp(20px, 5vw, 40px);
+  text-align: center;
 }
 
-.pwa-install-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 30px rgba(102, 126, 234, 0.7);
+.app-error-icon {
+  font-size: clamp(60px, 15vw, 80px);
+  margin-bottom: clamp(16px, 4vw, 24px);
 }
 
-.pwa-install-btn:active {
-  transform: scale(0.95);
+.app-error-title {
+  font-size: clamp(24px, 6vw, 32px);
+  font-weight: 700;
+  color: #ff416c;
+  margin: 0 0 clamp(12px, 3vw, 16px) 0;
 }
 
-@keyframes pulsePWA {
-  0%, 100% {
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+.app-error-message {
+  font-size: clamp(14px, 3.5vw, 16px);
+  color: #b0b0b0;
+  margin: 0 0 clamp(24px, 6vw, 32px) 0;
+  max-width: 500px;
+}
+
+.app-error-button {
+  padding: clamp(12px, 3vw, 16px) clamp(24px, 6vw, 32px);
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: clamp(8px, 2vw, 12px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-error-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.app-error-button:active {
+  transform: scale(0.97);
+}
+
+/* Global toast/notification system (optional) */
+.app-toast {
+  position: fixed;
+  bottom: clamp(20px, 5vw, 30px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(42, 42, 42, 0.95);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: clamp(12px, 3vw, 16px) clamp(20px, 5vw, 24px);
+  border-radius: clamp(8px, 2vw, 12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10000;
+  animation: slideUp 0.3s ease-out;
+  max-width: 90vw;
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
   }
-  50% {
-    box-shadow: 0 4px 30px rgba(102, 126, 234, 0.8);
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
-/* RTL Support for PWA button */
-[dir="rtl"] .pwa-install-btn {
-  right: auto;
-  left: 20px;
+.app-toast.success {
+  border-left: 4px solid #28a745;
 }
 
-/* Hide install button when in standalone mode (already installed) */
-@media all and (display-mode: standalone) {
-  .pwa-install-btn {
-    display: none !important;
+.app-toast.error {
+  border-left: 4px solid #ff416c;
+}
+
+.app-toast.info {
+  border-left: 4px solid #667eea;
+}
+
+/* Responsive font sizes */
+@media (max-width: 375px) {
+  html {
+    font-size: 14px;
   }
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .pwa-install-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    bottom: 15px;
-    right: 15px;
+@media (min-width: 1920px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .app-header {
+    padding: 8px 12px;
+    margin-bottom: 12px;
   }
   
-  [dir="rtl"] .pwa-install-btn {
-    right: auto;
-    left: 15px;
+  .app-logo-icon {
+    font-size: 24px;
+  }
+  
+  .app-logo-text {
+    font-size: 18px;
+  }
+  
+  .language-switcher {
+    top: 12px;
+    right: 12px;
+  }
+  
+  .language-button {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  .app-container {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  
+  .language-switcher {
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+  }
+  
+  .app-toast {
+    bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] .language-switcher {
+  right: auto;
+  left: clamp(16px, 4vw, 24px);
+}
+
+[dir="rtl"] .app-logo {
+  flex-direction: row-reverse;
+}
+
+/* Print styles */
+@media print {
+  .app-header,
+  .language-switcher,
+  .app-toast {
+    display: none;
   }
 }
