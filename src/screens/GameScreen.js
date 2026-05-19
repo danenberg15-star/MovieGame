@@ -19,7 +19,7 @@ import {
   getSuccessMessage,
   buildMoviesIndex
 } from '../utils/gameLogic';
-import '../GameScreen.css';
+import './GameScreen.css';
 
 function GameScreen() {
   const { roomCode } = useParams();
