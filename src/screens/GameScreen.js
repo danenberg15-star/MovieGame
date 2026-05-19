@@ -1,4 +1,4 @@
-// src/components/GameScreen.js
+// src/screens/GameScreen.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ref, onValue, update, get } from 'firebase/database';
@@ -14,13 +14,12 @@ import {
   generateAnswerOptions,
   checkAnswer,
   validateConnection,
-  getConnectionHint,
   checkWinCondition,
   initializeGameState,
   getSuccessMessage,
   buildMoviesIndex
 } from '../utils/gameLogic';
-import './GameScreen.css';
+import '../components/GameScreen.css';
 
 function GameScreen() {
   const { roomCode } = useParams();
@@ -33,7 +32,6 @@ function GameScreen() {
   const [error, setError] = useState(null);
   const [answerOptions, setAnswerOptions] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [showHint, setShowHint] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [connectionResult, setConnectionResult] = useState(null);
   
@@ -184,7 +182,6 @@ function GameScreen() {
     setState(newState);
     setAnswerOptions(options);
     setSelectedAnswer(null);
-    setShowHint(false);
     setConnectionResult(null);
 
     await updateGameState(newState);
