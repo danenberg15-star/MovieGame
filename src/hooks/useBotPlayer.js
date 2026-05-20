@@ -184,7 +184,24 @@ export const useBotPlayer = (
     }, 1000);
 
     answeringTimeoutRef.current = timeoutId;
-  }, [trailerEnded]); // ONLY trailerEnded as dependency!
+  }, [
+    gameState,
+    currentMovie,
+    isQAMode,
+    phase,
+    trailerEnded,
+    botIsThinking,
+    answerOptions,
+    language,
+    roomCode,
+    setBotIsThinking,
+    setSelectedAnswer,
+    setIsCorrect,
+    setResultMessage,
+    setShowResult,
+    setRemovedAnswers,
+    startNextRound
+  ]);
 
   // Bot decision phase
   useEffect(() => {
@@ -224,5 +241,14 @@ export const useBotPlayer = (
     }, Math.floor(Math.random() * 10000) + 5000);
 
     decisionTimeoutRef.current = timeoutId;
-  }, [gameState?.wonCard?.movieId, phase]);
+  }, [
+    gameState,
+    isQAMode,
+    phase,
+    botIsThinking,
+    allMovies,
+    handleConnectionAttempt,
+    handleSaveToken,
+    setBotIsThinking
+  ]);
 };
