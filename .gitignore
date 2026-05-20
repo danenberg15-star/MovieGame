@@ -51,3 +51,4 @@ movies_OLD_109_BACKUP/
 # OS files
 Thumbs.db
 .DS_Store
+serviceAccountKey.json
