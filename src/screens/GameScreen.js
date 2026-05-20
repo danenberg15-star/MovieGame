@@ -115,6 +115,73 @@ function GameScreen() {
     return index;
   }, []);
 
+  // Start next round
+  const startNextRound = useCallback(async () => {
+    if (!gameState || !allMovies.length) return;
+
+    console.log('🎬 Starting next round...');
+
+    try {
+      const teamACards = gameState.teamA?.cards || [];
+      const teamBCards = gameState.teamB?.cards || [];
+      const usedIds = gameState.usedMovieIds || [];
+
+      // Select next movie
+      const nextMovie = selectNextMovie(
+        allMovies,
+        usedIds,
+        teamACards,
+        teamBCards,
+        gameState.currentTurn
+      );
+
+      if (!nextMovie) {
+        console.log('❌ No more movies available - game over');
+        await update(ref(database, `games/${roomCode}`), {
+          phase: 'finished',
+          winner: 'draw'
+        });
+        return;
+      }
+
+      console.log('✅ Selected movie:', nextMovie.title.en);
+
+      // Generate answer options
+      const options = generateAnswerOptions(nextMovie, allMovies, language);
+
+      // Update Firebase
+      await update(ref(database, `games/${roomCode}`), {
+        currentMovie: {
+          id: nextMovie.id,
+          options,
+          removedAnswers: []
+        },
+        roundNumber: (gameState.roundNumber || 0) + 1,
+        phase: 'playing'
+      });
+
+      // Reset local state
+      setCurrentMovie(nextMovie);
+      setAnswerOptions(options);
+      setSelectedAnswer(null);
+      setShowResult(false);
+      setRemovedAnswers([]);
+      setTrailerEnded(false);
+
+      // Play trailer
+      if (videoRef.current) {
+        videoRef.current.src = nextMovie.trailer;
+        videoRef.current.load();
+        videoRef.current.play().catch(err => {
+          console.error('Video play error:', err);
+        });
+      }
+
+    } catch (err) {
+      console.error('❌ Error starting next round:', err);
+    }
+  }, [gameState, allMovies, roomCode, language]);
+
   // Handle connection attempt
   const handleConnectionAttempt = useCallback(async (targetCard, connectionType) => {
     if (!currentMovie) return;
@@ -191,7 +258,7 @@ function GameScreen() {
         startNextRound();
       }, 3000);
     }
-  }, [currentMovie, currentTeam, gameState, roomCode, language]);
+  }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
 
   // Handle save token
   const handleSaveToken = useCallback(async () => {
@@ -207,74 +274,7 @@ function GameScreen() {
 
     setShowConnectionModal(false);
     startNextRound();
-  }, [roomCode, currentTeam]);
-
-  // Start next round
-  const startNextRound = useCallback(async () => {
-    if (!gameState || !allMovies.length) return;
-
-    console.log('🎬 Starting next round...');
-
-    try {
-      const teamACards = gameState.teamA?.cards || [];
-      const teamBCards = gameState.teamB?.cards || [];
-      const usedIds = gameState.usedMovieIds || [];
-
-      // Select next movie
-      const nextMovie = selectNextMovie(
-        allMovies,
-        usedIds,
-        teamACards,
-        teamBCards,
-        gameState.currentTurn
-      );
-
-      if (!nextMovie) {
-        console.log('❌ No more movies available - game over');
-        await update(ref(database, `games/${roomCode}`), {
-          phase: 'finished',
-          winner: 'draw'
-        });
-        return;
-      }
-
-      console.log('✅ Selected movie:', nextMovie.title.en);
-
-      // Generate answer options
-      const options = generateAnswerOptions(nextMovie, allMovies, language);
-
-      // Update Firebase
-      await update(ref(database, `games/${roomCode}`), {
-        currentMovie: {
-          id: nextMovie.id,
-          options,
-          removedAnswers: []
-        },
-        roundNumber: (gameState.roundNumber || 0) + 1,
-        phase: 'playing'
-      });
-
-      // Reset local state
-      setCurrentMovie(nextMovie);
-      setAnswerOptions(options);
-      setSelectedAnswer(null);
-      setShowResult(false);
-      setRemovedAnswers([]);
-      setTrailerEnded(false);
-
-      // Play trailer
-      if (videoRef.current) {
-        videoRef.current.src = nextMovie.trailer;
-        videoRef.current.load();
-        videoRef.current.play().catch(err => {
-          console.error('Video play error:', err);
-        });
-      }
-
-    } catch (err) {
-      console.error('❌ Error starting next round:', err);
-    }
-  }, [gameState, allMovies, roomCode, language]);
+  }, [roomCode, currentTeam, startNextRound]);
 
   // Initialize game
   useEffect(() => {
