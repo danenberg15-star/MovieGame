@@ -2,11 +2,10 @@
 
 .decision-phase {
   width: 100%;
-  max-width: 100%;
   height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: clamp(12px, 3vw, 16px);
   animation: fadeIn 0.4s ease-out;
 }
@@ -26,10 +25,11 @@
 .decision-header {
   text-align: center;
   margin-bottom: clamp(12px, 3vw, 16px);
+  flex-shrink: 0;
 }
 
 .decision-title {
-  font-size: clamp(18px, 4.5vw, 24px);
+  font-size: clamp(16px, 4vw, 22px);
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 clamp(6px, 1.5vw, 8px) 0;
@@ -42,10 +42,21 @@
   margin: 0;
 }
 
-/* Won Card Display - Compact */
+/* Scrollable content area */
+.decision-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* Won Card Display - More compact */
 .won-card-display {
   position: relative;
   margin-bottom: clamp(12px, 3vw, 16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-badge {
@@ -61,6 +72,7 @@
 }
 
 .movie-card {
+  max-width: 200px;
   background: linear-gradient(145deg, #2a2a2a 0%, #1f1f1f 100%);
   border-radius: clamp(10px, 2.5vw, 14px);
   overflow: hidden;
@@ -77,9 +89,10 @@
 .card-poster {
   width: 100%;
   height: auto;
-  max-height: clamp(180px, 40vh, 250px);
-  object-fit: cover;
+  max-height: 250px;
+  object-fit: contain;
   display: block;
+  background: #000000;
 }
 
 .card-info {
@@ -88,14 +101,14 @@
 }
 
 .card-title {
-  font-size: clamp(14px, 3.5vw, 18px);
+  font-size: clamp(12px, 3vw, 14px);
   font-weight: 600;
   color: #ffffff;
   margin: 0;
   text-align: center;
 }
 
-/* Connection Feedback - Compact */
+/* Connection Feedback */
 .connection-feedback {
   margin: clamp(12px, 3vw, 16px) 0;
   padding: clamp(12px, 3vw, 16px);
@@ -137,13 +150,13 @@
 }
 
 .feedback-message strong {
-  font-size: clamp(16px, 4vw, 20px);
+  font-size: clamp(14px, 3.5vw, 18px);
   display: block;
   margin-bottom: clamp(6px, 1.5vw, 8px);
 }
 
 .feedback-message p {
-  font-size: clamp(12px, 3vw, 14px);
+  font-size: clamp(11px, 2.8vw, 13px);
   margin: clamp(4px, 1vw, 6px) 0;
   opacity: 0.95;
 }
@@ -152,10 +165,10 @@
   margin-top: clamp(10px, 2.5vw, 12px);
   padding-top: clamp(10px, 2.5vw, 12px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: clamp(12px, 3vw, 14px);
+  font-size: clamp(11px, 2.8vw, 13px);
 }
 
-/* Possible Connections Hint - Compact */
+/* Possible Connections Hint */
 .possible-connections-hint {
   margin-top: clamp(12px, 3vw, 16px);
   padding: clamp(12px, 3vw, 16px);
@@ -165,7 +178,7 @@
 }
 
 .hint-title {
-  font-size: clamp(12px, 3vw, 14px);
+  font-size: clamp(11px, 2.8vw, 13px);
   font-weight: 600;
   margin-bottom: clamp(10px, 2.5vw, 12px);
   color: #667eea;
@@ -183,12 +196,12 @@
 }
 
 .hint-card strong {
-  font-size: clamp(13px, 3.2vw, 15px);
+  font-size: clamp(12px, 3vw, 14px);
   color: #ffffff;
 }
 
 .hint-type {
-  font-size: clamp(12px, 3vw, 14px);
+  font-size: clamp(11px, 2.8vw, 13px);
   color: #b0b0b0;
 }
 
@@ -197,24 +210,25 @@
 }
 
 .more-connections {
-  font-size: clamp(11px, 2.8vw, 13px);
+  font-size: clamp(10px, 2.5vw, 12px);
   color: #888;
   font-style: italic;
   margin-top: clamp(6px, 1.5vw, 8px);
   text-align: center;
 }
 
-/* Decision Actions - Compact */
+/* Decision Actions */
 .decision-actions {
   display: flex;
   flex-direction: column;
   gap: clamp(10px, 2.5vw, 12px);
   margin-top: clamp(12px, 3vw, 16px);
+  flex-shrink: 0;
 }
 
 .btn {
   padding: clamp(12px, 3vw, 16px) clamp(20px, 5vw, 24px);
-  font-size: clamp(14px, 3.5vw, 16px);
+  font-size: clamp(13px, 3.2vw, 15px);
   font-weight: 600;
   border: none;
   border-radius: clamp(8px, 2vw, 12px);
@@ -234,11 +248,11 @@
 }
 
 .btn-icon {
-  font-size: clamp(18px, 4.5vw, 22px);
+  font-size: clamp(16px, 4vw, 20px);
 }
 
 .btn-text {
-  font-size: clamp(14px, 3.5vw, 16px);
+  font-size: clamp(13px, 3.2vw, 15px);
 }
 
 .btn-connect {
@@ -287,14 +301,14 @@
 }
 
 .step-title {
-  font-size: clamp(14px, 3.5vw, 16px);
+  font-size: clamp(13px, 3.2vw, 15px);
   font-weight: 600;
   color: #ffffff;
   margin-bottom: clamp(12px, 3vw, 16px);
   text-align: center;
 }
 
-/* Team Cards Grid - Compact */
+/* Team Cards Grid */
 .team-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -325,7 +339,7 @@
 }
 
 .movie-card.selectable .card-poster {
-  max-height: clamp(120px, 30vh, 160px);
+  max-height: clamp(100px, 25vh, 140px);
 }
 
 .movie-card.selectable .card-info {
@@ -354,7 +368,7 @@
   z-index: 10;
 }
 
-/* Connection Types Grid - Compact */
+/* Connection Types Grid */
 .connection-types-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -427,7 +441,7 @@
   font-weight: bold;
 }
 
-/* Confirm Actions - Compact */
+/* Confirm Actions */
 .confirm-actions {
   display: flex;
   flex-direction: row;
