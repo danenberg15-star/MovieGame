@@ -1,5 +1,5 @@
 // src/screens/GameScreen.js
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
@@ -38,6 +38,14 @@ function GameScreen() {
 
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
   const isMyTurn = gameState?.currentTurn === currentTeam;
+
+  // Reset trailerEnded when currentMovie changes
+  useEffect(() => {
+    if (currentMovie?.id) {
+      console.log('🎬 New movie detected, resetting trailerEnded:', currentMovie.title?.en);
+      setTrailerEnded(false);
+    }
+  }, [currentMovie?.id]);
 
   // Custom hook for game actions
   const {
@@ -239,17 +247,20 @@ function GameScreen() {
           {phase === 'playing' && currentMovie && (
             <div className="answering-phase">
               {/* Trailer */}
-              <TrailerPlayer
-                movieId={currentMovie.id}
-                onTrailerEnd={handleTrailerEnd}
-                autoPlay={true}
-              />
+              <div className="trailer-container">
+                <TrailerPlayer
+                  key={currentMovie.id}
+                  movieId={currentMovie.id}
+                  onTrailerEnd={handleTrailerEnd}
+                  autoPlay={true}
+                />
+              </div>
 
               {/* Answer Options */}
               {trailerEnded && (
-                <>
+                <div className="answer-section">
                   <h2>{t('choose_answer')}</h2>
-                  <div className="answer-options">
+                  <div className="answer-grid">
                     {answerOptions.filter(opt => !removedAnswers.includes(opt)).map((option, index) => (
                       <button
                         key={index}
@@ -261,7 +272,7 @@ function GameScreen() {
                       </button>
                     ))}
                   </div>
-                </>
+                </div>
               )}
 
               {/* Result Message */}
