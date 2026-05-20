@@ -82,7 +82,7 @@ export const useBotPlayer = (
     };
   }, []);
 
-  // Bot turn handler for answering
+  // Bot turn handler for answering - FAST (1 second)
   useEffect(() => {
     if (!gameState || !currentMovie || !isQAMode) return;
     if (gameState.currentTurn !== 'B') return;
@@ -90,7 +90,7 @@ export const useBotPlayer = (
     if (botIsThinking) return;
     if (!trailerEnded) return;
     if (hasAnsweredRef.current) return;
-    if (currentMovie.id !== currentMovieIdRef.current) return; // Extra safety check
+    if (currentMovie.id !== currentMovieIdRef.current) return;
 
     console.log('🤖 Bot turn starting...');
     hasAnsweredRef.current = true;
@@ -100,7 +100,7 @@ export const useBotPlayer = (
     const correctAnswer = currentMovie.title[language];
     const savedMovieId = currentMovie.id;
 
-    // Store the timeout so we can cancel it
+    // FAST: 1 second delay
     const timeoutId = setTimeout(() => {
       // Double-check we're still on the same movie
       if (savedMovieId !== currentMovieIdRef.current) {
@@ -174,7 +174,7 @@ export const useBotPlayer = (
           setShowResult(false);
         }, 2000);
       });
-    }, Math.floor(Math.random() * 5000) + 3000); // 3-8 seconds
+    }, 1000); // CHANGED: 1 second only!
 
     answeringTimeoutRef.current = timeoutId;
   }, [
@@ -231,7 +231,7 @@ export const useBotPlayer = (
 
         setBotIsThinking(false);
       });
-    }, Math.floor(Math.random() * 10000) + 5000); // 5-15 seconds
+    }, Math.floor(Math.random() * 10000) + 5000); // 5-15 seconds for decision
 
     decisionTimeoutRef.current = timeoutId;
   }, [

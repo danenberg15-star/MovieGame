@@ -65,7 +65,7 @@ export const useGameActions = (
       // Generate answer options
       const options = generateAnswerOptions(nextMovie, allMovies, language);
 
-      // Update Firebase
+      // Update Firebase ONLY - let useGameState handle local state
       await update(ref(database, `games/${roomCode}`), {
         currentMovie: {
           id: nextMovie.id,
@@ -77,17 +77,14 @@ export const useGameActions = (
       });
 
       // Reset local state
-      setCurrentMovie(nextMovie);
-      setAnswerOptions(options);
       setSelectedAnswer(null);
       setShowResult(false);
       setRemovedAnswers([]);
-      setTrailerEnded(false);
 
     } catch (err) {
       console.error('❌ Error starting next round:', err);
     }
-  }, [gameState, allMovies, roomCode, language, setCurrentMovie, setAnswerOptions, setRemovedAnswers, setTrailerEnded]);
+  }, [gameState, allMovies, roomCode, language, setRemovedAnswers]);
 
   // Handle connection attempt
   const handleConnectionAttempt = useCallback(async (targetCard, connectionType) => {
