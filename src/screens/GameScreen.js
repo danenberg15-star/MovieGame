@@ -40,12 +40,13 @@ function GameScreen() {
   const isMyTurn = gameState?.currentTurn === currentTeam;
 
   // Reset trailerEnded when currentMovie changes
-  useEffect(() => {
-    if (currentMovie?.id) {
-      console.log('🎬 New movie detected, resetting trailerEnded:', currentMovie.title?.en);
-      setTrailerEnded(false);
-    }
-  }, [currentMovie?.id]);
+// Reset trailerEnded when currentMovie changes
+useEffect(() => {
+  if (currentMovie?.id) {
+    console.log('🎬 New movie detected, resetting trailerEnded');
+    setTrailerEnded(false);
+  }
+}, [currentMovie?.id]);
 
   // Custom hook for game actions
   const {
