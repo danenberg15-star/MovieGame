@@ -1,5 +1,5 @@
 // src/components/TrailerPlayer.js
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import './TrailerPlayer.css';
 
@@ -11,11 +11,26 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
   const [error, setError] = useState(false);
   const [errorDetails, setErrorDetails] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isMuted, setIsMuted] = useState(true); // Start muted for mobile autoplay
+  const [isMuted, setIsMuted] = useState(true);
+  const hasCalledOnTrailerEnd = useRef(false);
+  const hasInitialized = useRef(false);
+
+  // Memoize callback to prevent re-renders
+  const handleTrailerEndCallback = useCallback(() => {
+    if (hasCalledOnTrailerEnd.current) return;
+    hasCalledOnTrailerEnd.current = true;
+    if (onTrailerEnd) {
+      onTrailerEnd();
+    }
+  }, [onTrailerEnd]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // Prevent multiple initializations
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
 
     const handlePlay = () => {
       console.log('✅ Video started playing');
@@ -64,9 +79,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       // Auto-stop at 15 seconds
       if (video.currentTime >= 15) {
         video.pause();
-        if (onTrailerEnd) {
-          onTrailerEnd();
-        }
+        handleTrailerEndCallback();
       }
     };
 
@@ -76,15 +89,16 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       
       // Try to play automatically with muted (required for mobile autoplay)
       if (autoPlay) {
-        video.muted = true; // Force muted for autoplay
+        video.muted = true;
         video.play()
           .then(() => {
             console.log('✅ Playing muted - will unmute after user interaction');
-            // Unmute after 0.5 seconds (after video started)
             setTimeout(() => {
-              video.muted = false;
-              setIsMuted(false);
-              console.log('🔊 Sound enabled');
+              if (video && !video.paused) {
+                video.muted = false;
+                setIsMuted(false);
+                console.log('🔊 Sound enabled');
+              }
             }, 500);
           })
           .catch(err => {
@@ -128,7 +142,17 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('loadeddata', handleLoadedData);
     };
-  }, [autoPlay, onTrailerEnd]);
+  }, [autoPlay, handleTrailerEndCallback]);
+
+  // Reset on movieId change
+  useEffect(() => {
+    hasCalledOnTrailerEnd.current = false;
+    hasInitialized.current = false;
+    setTimeLeft(15);
+    setIsPlaying(false);
+    setError(false);
+    setIsLoading(true);
+  }, [movieId]);
 
   const handlePlayPause = () => {
     const video = videoRef.current;
@@ -180,6 +204,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
     <div className="trailer-player">
       <div className="video-container">
         <video
+          key={movieId}
           ref={videoRef}
           className="trailer-video"
           src={`/assets/movies/${movieId}/trailer.mp4`}

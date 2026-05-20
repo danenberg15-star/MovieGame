@@ -1,5 +1,5 @@
 // src/hooks/useBotPlayer.js
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
 import botPlayer from '../utils/botPlayer';
@@ -16,6 +16,7 @@ export const useBotPlayer = (
   language,
   roomCode,
   allMovies,
+  handleAnswerSelect,
   setSelectedAnswer,
   setIsCorrect,
   setResultMessage,
@@ -25,6 +26,25 @@ export const useBotPlayer = (
   handleConnectionAttempt,
   handleSaveToken
 ) => {
+  const hasAnsweredRef = useRef(false);
+  const hasDecidedRef = useRef(false);
+
+  // Reset refs when movie changes
+  useEffect(() => {
+    if (currentMovie?.id) {
+      hasAnsweredRef.current = false;
+    }
+  }, [currentMovie?.id]);
+
+  // Reset refs when phase changes
+  useEffect(() => {
+    if (phase === 'decision') {
+      hasDecidedRef.current = false;
+    } else if (phase === 'playing') {
+      hasAnsweredRef.current = false;
+    }
+  }, [phase]);
+
   // Bot turn handler for answering
   useEffect(() => {
     if (!gameState || !currentMovie || !isQAMode) return;
@@ -32,8 +52,10 @@ export const useBotPlayer = (
     if (phase !== 'playing') return;
     if (botIsThinking) return;
     if (!trailerEnded) return;
+    if (hasAnsweredRef.current) return; // Prevent double answering
 
     console.log('🤖 Bot turn starting...');
+    hasAnsweredRef.current = true;
     setBotIsThinking(true);
 
     const options = gameState.currentMovie?.options || answerOptions;
@@ -97,8 +119,7 @@ export const useBotPlayer = (
         setShowResult(false);
       }, 2000);
     });
-
-  }, [gameState, currentMovie, isQAMode, phase, botIsThinking, trailerEnded, answerOptions, language, roomCode, startNextRound, setBotIsThinking, setSelectedAnswer, setIsCorrect, setResultMessage, setShowResult, setRemovedAnswers]);
+  }, [gameState?.currentTurn, currentMovie?.id, isQAMode, phase, botIsThinking, trailerEnded]);
 
   // Bot decision phase
   useEffect(() => {
@@ -106,8 +127,10 @@ export const useBotPlayer = (
     if (phase !== 'decision') return;
     if (gameState.wonCard?.team !== 'B') return;
     if (botIsThinking) return;
+    if (hasDecidedRef.current) return; // Prevent double deciding
 
     console.log('🤖 Bot making decision...');
+    hasDecidedRef.current = true;
     setBotIsThinking(true);
 
     const wonMovie = allMovies.find(m => m.id === gameState.wonCard.movieId);
@@ -124,6 +147,5 @@ export const useBotPlayer = (
 
       setBotIsThinking(false);
     });
-
-  }, [gameState, phase, isQAMode, botIsThinking, allMovies, handleConnectionAttempt, handleSaveToken, setBotIsThinking]);
+  }, [gameState?.wonCard?.movieId, phase, isQAMode, botIsThinking]);
 };

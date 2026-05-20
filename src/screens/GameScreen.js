@@ -1,5 +1,5 @@
 // src/screens/GameScreen.js
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
@@ -65,6 +65,12 @@ function GameScreen() {
     setTrailerEnded
   );
 
+  // Memoize trailer end callback
+  const handleTrailerEnd = useCallback(() => {
+    console.log('🎬 Trailer ended');
+    setTrailerEnded(true);
+  }, []);
+
   // Custom hook for bot player
   useBotPlayer(
     gameState,
@@ -78,7 +84,7 @@ function GameScreen() {
     language,
     roomCode,
     allMovies,
-    (answer) => handleAnswerSelect(answer, isMyTurn, trailerEnded, botIsThinking),
+    handleAnswerSelect,
     (value) => {}, // setSelectedAnswer - handled in useGameActions
     (value) => {}, // setIsCorrect - handled in useGameActions
     (msg) => {}, // setResultMessage - handled in useGameActions
@@ -235,7 +241,7 @@ function GameScreen() {
               {/* Trailer */}
               <TrailerPlayer
                 movieId={currentMovie.id}
-                onTrailerEnd={() => setTrailerEnded(true)}
+                onTrailerEnd={handleTrailerEnd}
                 autoPlay={true}
               />
 
