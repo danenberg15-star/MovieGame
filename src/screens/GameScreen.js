@@ -34,7 +34,7 @@ function GameScreen() {
   const searchParams = new URLSearchParams(window.location.search);
   const playerId = searchParams.get('playerId') || `player_${Date.now()}`;
 
-  const [language, setLanguage] = useState('en');
+  const [language] = useState('en');
   const [gameState, setGameState] = useState(null);
   const [currentMovie, setCurrentMovie] = useState(null);
   const [answerOptions, setAnswerOptions] = useState([]);
