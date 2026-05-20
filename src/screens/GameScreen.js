@@ -21,6 +21,7 @@ import {
 const sanitizeFirebaseKey = (key) => {
   if (!key) return '';
   // Remove invalid characters: . # $ / [ ]
+  // eslint-disable-next-line no-useless-escape
   return key.replace(/[.#$\/\[\]]/g, '_');
 };
 
@@ -43,7 +44,6 @@ function GameScreen() {
   const [selectedTargetCard, setSelectedTargetCard] = useState(null);
   const [selectedConnectionType, setSelectedConnectionType] = useState(null);
   const [connectionResult, setConnectionResult] = useState(null);
-  const [hint, setHint] = useState(null);
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,6 +114,167 @@ function GameScreen() {
     console.log(`✅ Index built: ${Object.keys(index.actors).length} actors, ${Object.keys(index.directors).length} directors, ${Object.keys(index.years).length} years`);
     return index;
   }, []);
+
+  // Handle connection attempt
+  const handleConnectionAttempt = useCallback(async (targetCard, connectionType) => {
+    if (!currentMovie) return;
+
+    console.log('🔗 Attempting connection:', { targetCard: targetCard.title.en, connectionType });
+
+    const validation = validateConnection(currentMovie, targetCard, connectionType);
+
+    if (validation.valid) {
+      // Successful connection
+      const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
+      const currentCards = gameState[teamKey]?.cards || [];
+      const newCards = [...currentCards, currentMovie];
+      const newScore = newCards.length;
+
+      // Use one token
+      const newTokens = Math.max(0, (gameState[teamKey]?.tokens || 0) - 1);
+
+      // Check win condition
+      const hasWon = checkWinCondition(newCards);
+
+      const updates = {
+        [`${teamKey}/cards`]: newCards,
+        [`${teamKey}/score`]: newScore,
+        [`${teamKey}/tokens`]: newTokens,
+        usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
+        currentMovie: null,
+        currentMovieAttempts: [],
+        wonCard: null,
+        currentTurn: currentTeam === 'A' ? 'B' : 'A'
+      };
+
+      if (hasWon) {
+        updates.phase = 'finished';
+        updates.winner = currentTeam;
+      } else {
+        updates.phase = 'playing';
+      }
+
+      await update(ref(database, `games/${roomCode}`), updates);
+
+      const successMsg = getSuccessMessage(connectionType, validation.connection, language);
+      setConnectionResult({ success: true, message: successMsg });
+
+      if (!hasWon) {
+        setTimeout(() => {
+          setShowConnectionModal(false);
+          setConnectionResult(null);
+          startNextRound();
+        }, 2000);
+      }
+
+    } else {
+      // Failed connection - show hint
+      const hintData = getConnectionHint(currentMovie, targetCard, language);
+      
+      await update(ref(database, `games/${roomCode}`), {
+        phase: 'playing',
+        wonCard: null,
+        currentMovie: null,
+        currentMovieAttempts: [],
+        currentTurn: currentTeam === 'A' ? 'B' : 'A'
+      });
+
+      setConnectionResult({ 
+        success: false, 
+        message: language === 'he' ? 'לא נכון' : 'Incorrect',
+        hint: hintData.message
+      });
+
+      setTimeout(() => {
+        setShowConnectionModal(false);
+        setConnectionResult(null);
+        startNextRound();
+      }, 3000);
+    }
+  }, [currentMovie, currentTeam, gameState, roomCode, language]);
+
+  // Handle save token
+  const handleSaveToken = useCallback(async () => {
+    console.log('💾 Saving token...');
+
+    await update(ref(database, `games/${roomCode}`), {
+      phase: 'playing',
+      wonCard: null,
+      currentMovie: null,
+      currentMovieAttempts: [],
+      currentTurn: currentTeam === 'A' ? 'B' : 'A'
+    });
+
+    setShowConnectionModal(false);
+    startNextRound();
+  }, [roomCode, currentTeam]);
+
+  // Start next round
+  const startNextRound = useCallback(async () => {
+    if (!gameState || !allMovies.length) return;
+
+    console.log('🎬 Starting next round...');
+
+    try {
+      const teamACards = gameState.teamA?.cards || [];
+      const teamBCards = gameState.teamB?.cards || [];
+      const usedIds = gameState.usedMovieIds || [];
+
+      // Select next movie
+      const nextMovie = selectNextMovie(
+        allMovies,
+        usedIds,
+        teamACards,
+        teamBCards,
+        gameState.currentTurn
+      );
+
+      if (!nextMovie) {
+        console.log('❌ No more movies available - game over');
+        await update(ref(database, `games/${roomCode}`), {
+          phase: 'finished',
+          winner: 'draw'
+        });
+        return;
+      }
+
+      console.log('✅ Selected movie:', nextMovie.title.en);
+
+      // Generate answer options
+      const options = generateAnswerOptions(nextMovie, allMovies, language);
+
+      // Update Firebase
+      await update(ref(database, `games/${roomCode}`), {
+        currentMovie: {
+          id: nextMovie.id,
+          options,
+          removedAnswers: []
+        },
+        roundNumber: (gameState.roundNumber || 0) + 1,
+        phase: 'playing'
+      });
+
+      // Reset local state
+      setCurrentMovie(nextMovie);
+      setAnswerOptions(options);
+      setSelectedAnswer(null);
+      setShowResult(false);
+      setRemovedAnswers([]);
+      setTrailerEnded(false);
+
+      // Play trailer
+      if (videoRef.current) {
+        videoRef.current.src = nextMovie.trailer;
+        videoRef.current.load();
+        videoRef.current.play().catch(err => {
+          console.error('Video play error:', err);
+        });
+      }
+
+    } catch (err) {
+      console.error('❌ Error starting next round:', err);
+    }
+  }, [gameState, allMovies, roomCode, language]);
 
   // Initialize game
   useEffect(() => {
@@ -251,73 +412,6 @@ function GameScreen() {
     };
   }, [roomCode, playerId, isQAMode, language, buildMoviesIndex]);
 
-  // Start next round
-  const startNextRound = useCallback(async () => {
-    if (!gameState || !allMovies.length) return;
-
-    console.log('🎬 Starting next round...');
-
-    try {
-      const teamACards = gameState.teamA?.cards || [];
-      const teamBCards = gameState.teamB?.cards || [];
-      const usedIds = gameState.usedMovieIds || [];
-
-      // Select next movie
-      const nextMovie = selectNextMovie(
-        allMovies,
-        usedIds,
-        teamACards,
-        teamBCards,
-        gameState.currentTurn
-      );
-
-      if (!nextMovie) {
-        console.log('❌ No more movies available - game over');
-        await update(ref(database, `games/${roomCode}`), {
-          phase: 'finished',
-          winner: 'draw'
-        });
-        return;
-      }
-
-      console.log('✅ Selected movie:', nextMovie.title.en);
-
-      // Generate answer options
-      const options = generateAnswerOptions(nextMovie, allMovies, language);
-
-      // Update Firebase
-      await update(ref(database, `games/${roomCode}`), {
-        currentMovie: {
-          id: nextMovie.id,
-          options,
-          removedAnswers: []
-        },
-        roundNumber: (gameState.roundNumber || 0) + 1,
-        phase: 'playing'
-      });
-
-      // Reset local state
-      setCurrentMovie(nextMovie);
-      setAnswerOptions(options);
-      setSelectedAnswer(null);
-      setShowResult(false);
-      setRemovedAnswers([]);
-      setTrailerEnded(false);
-
-      // Play trailer
-      if (videoRef.current) {
-        videoRef.current.src = nextMovie.trailer;
-        videoRef.current.load();
-        videoRef.current.play().catch(err => {
-          console.error('Video play error:', err);
-        });
-      }
-
-    } catch (err) {
-      console.error('❌ Error starting next round:', err);
-    }
-  }, [gameState, allMovies, roomCode, language]);
-
   // Handle answer selection
   const handleAnswerSelect = async (answer) => {
     if (!isMyTurn || selectedAnswer || !currentMovie || !trailerEnded) return;
@@ -383,102 +477,6 @@ function GameScreen() {
         setRemovedAnswers(newRemovedAnswers);
       }
     }
-  };
-
-  // Handle connection attempt
-  const handleConnectionAttempt = async (targetCard, connectionType) => {
-    if (!currentMovie) return;
-
-    console.log('🔗 Attempting connection:', { targetCard: targetCard.title.en, connectionType });
-
-    const validation = validateConnection(currentMovie, targetCard, connectionType);
-
-    if (validation.valid) {
-      // Successful connection
-      const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
-      const currentCards = gameState[teamKey]?.cards || [];
-      const newCards = [...currentCards, currentMovie];
-      const newScore = newCards.length;
-
-      // Use one token
-      const newTokens = Math.max(0, (gameState[teamKey]?.tokens || 0) - 1);
-
-      // Check win condition
-      const hasWon = checkWinCondition(newCards);
-
-      const updates = {
-        [`${teamKey}/cards`]: newCards,
-        [`${teamKey}/score`]: newScore,
-        [`${teamKey}/tokens`]: newTokens,
-        usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
-        currentMovie: null,
-        currentMovieAttempts: [],
-        wonCard: null,
-        currentTurn: currentTeam === 'A' ? 'B' : 'A'
-      };
-
-      if (hasWon) {
-        updates.phase = 'finished';
-        updates.winner = currentTeam;
-      } else {
-        updates.phase = 'playing';
-      }
-
-      await update(ref(database, `games/${roomCode}`), updates);
-
-      const successMsg = getSuccessMessage(connectionType, validation.connection, language);
-      setConnectionResult({ success: true, message: successMsg });
-
-      if (!hasWon) {
-        setTimeout(() => {
-          setShowConnectionModal(false);
-          setConnectionResult(null);
-          startNextRound();
-        }, 2000);
-      }
-
-    } else {
-      // Failed connection - show hint
-      const hintData = getConnectionHint(currentMovie, targetCard, language);
-      
-      await update(ref(database, `games/${roomCode}`), {
-        phase: 'playing',
-        wonCard: null,
-        currentMovie: null,
-        currentMovieAttempts: [],
-        currentTurn: currentTeam === 'A' ? 'B' : 'A'
-      });
-
-      setConnectionResult({ 
-        success: false, 
-        message: language === 'he' ? 'לא נכון' : 'Incorrect',
-        hint: hintData.message
-      });
-      setHint(hintData.message);
-
-      setTimeout(() => {
-        setShowConnectionModal(false);
-        setConnectionResult(null);
-        setHint(null);
-        startNextRound();
-      }, 3000);
-    }
-  };
-
-  // Handle save token
-  const handleSaveToken = async () => {
-    console.log('💾 Saving token...');
-
-    await update(ref(database, `games/${roomCode}`), {
-      phase: 'playing',
-      wonCard: null,
-      currentMovie: null,
-      currentMovieAttempts: [],
-      currentTurn: currentTeam === 'A' ? 'B' : 'A'
-    });
-
-    setShowConnectionModal(false);
-    startNextRound();
   };
 
   // Bot turn handler
@@ -581,7 +579,7 @@ function GameScreen() {
       setBotIsThinking(false);
     });
 
-  }, [gameState, phase, isQAMode, botIsThinking, allMovies, handleSaveToken]);
+  }, [gameState, phase, isQAMode, botIsThinking, allMovies, handleConnectionAttempt, handleSaveToken]);
 
   // Auto-start first round
   useEffect(() => {
