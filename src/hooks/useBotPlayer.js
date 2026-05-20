@@ -144,6 +144,11 @@ export const useBotPlayer = (
           setResultMessage(language === 'he' ? 'הבוט ענה נכון! +1 אסימון' : 'Bot answered correctly! +1 Token');
           setShowResult(true);
 
+          // 🔥 FIX: Wait 3 seconds before hiding result
+          setTimeout(() => {
+            setShowResult(false);
+          }, 3000);
+
         } else {
           const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), selectedAnswer];
           const attempts = gameState.currentMovieAttempts || [];
@@ -153,6 +158,7 @@ export const useBotPlayer = (
             setResultMessage(language === 'he' ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!' : 'Both teams failed - card will return!');
             setShowResult(true);
 
+            // 🔥 FIX: Wait 3 seconds before starting next round
             setTimeout(async () => {
               await update(ref(database, `games/${roomCode}`), {
                 currentMovie: null,
@@ -160,8 +166,9 @@ export const useBotPlayer = (
                 currentTurn: 'A'
               });
               setBotIsThinking(false);
+              setShowResult(false);
               startNextRound();
-            }, 2000);
+            }, 3000);
 
           } else {
             await update(ref(database, `games/${roomCode}`), {
@@ -174,12 +181,13 @@ export const useBotPlayer = (
             setShowResult(true);
             setRemovedAnswers(newRemovedAnswers);
             setBotIsThinking(false);
+
+            // 🔥 FIX: Wait 3 seconds before hiding result
+            setTimeout(() => {
+              setShowResult(false);
+            }, 3000);
           }
         }
-
-        setTimeout(() => {
-          setShowResult(false);
-        }, 2000);
       });
     }, 1000);
 
