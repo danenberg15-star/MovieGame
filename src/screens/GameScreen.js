@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
 import TrailerPlayer from '../components/TrailerPlayer';
+import DecisionPhase from '../components/DecisionPhase';
 import botPlayer from '../utils/botPlayer';
 import {
   loadMoviesData,
@@ -41,11 +42,7 @@ function GameScreen() {
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState('');
   const [isCorrect, setIsCorrect] = useState(false);
-  const [phase, setPhase] = useState('anchorReveal'); // Start with anchor reveal
-  const [showConnectionModal, setShowConnectionModal] = useState(false);
-  const [selectedTargetCard, setSelectedTargetCard] = useState(null);
-  const [selectedConnectionType, setSelectedConnectionType] = useState(null);
-  const [connectionResult, setConnectionResult] = useState(null);
+  const [phase, setPhase] = useState('anchorReveal');
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const [allMovies, setAllMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +50,7 @@ function GameScreen() {
   const [isInitializing, setIsInitializing] = useState(true);
   const [botIsThinking, setBotIsThinking] = useState(false);
   const [trailerEnded, setTrailerEnded] = useState(false);
+  const [connectionResult, setConnectionResult] = useState(null);
 
   const videoRef = useRef(null);
   const gameStateRef = useRef(null);
@@ -230,7 +228,6 @@ function GameScreen() {
 
       if (!hasWon) {
         setTimeout(() => {
-          setShowConnectionModal(false);
           setConnectionResult(null);
           startNextRound();
         }, 2000);
@@ -251,11 +248,11 @@ function GameScreen() {
       setConnectionResult({ 
         success: false, 
         message: language === 'he' ? 'לא נכון' : 'Incorrect',
-        hint: hintData.message
+        hint: hintData.message,
+        attemptedType: connectionType
       });
 
       setTimeout(() => {
-        setShowConnectionModal(false);
         setConnectionResult(null);
         startNextRound();
       }, 3000);
@@ -266,17 +263,35 @@ function GameScreen() {
   const handleSaveToken = useCallback(async () => {
     console.log('💾 Saving token...');
 
-    await update(ref(database, `games/${roomCode}`), {
-      phase: 'playing',
+    const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
+    const currentCards = gameState[teamKey]?.cards || [];
+    const newCards = [...currentCards, currentMovie];
+    const newScore = newCards.length;
+
+    // Check win condition
+    const hasWon = checkWinCondition(newCards);
+
+    const updates = {
+      [`${teamKey}/cards`]: newCards,
+      [`${teamKey}/score`]: newScore,
+      usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
+      phase: hasWon ? 'finished' : 'playing',
       wonCard: null,
       currentMovie: null,
       currentMovieAttempts: [],
       currentTurn: currentTeam === 'A' ? 'B' : 'A'
-    });
+    };
 
-    setShowConnectionModal(false);
-    startNextRound();
-  }, [roomCode, currentTeam, startNextRound]);
+    if (hasWon) {
+      updates.winner = currentTeam;
+    }
+
+    await update(ref(database, `games/${roomCode}`), updates);
+
+    if (!hasWon) {
+      startNextRound();
+    }
+  }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
 
   // Handle anchor reveal continue
   const handleAnchorContinue = useCallback(async () => {
@@ -603,15 +618,6 @@ function GameScreen() {
         your_turn: 'Your Turn',
         waiting: 'Waiting...',
         choose_answer: 'Choose the correct movie:',
-        connect: 'Connect',
-        save_token: 'Save Token',
-        select_target: 'Select target card:',
-        select_connection: 'Select connection type:',
-        actor: 'Same Actor',
-        director: 'Same Director',
-        producer: 'Same Producer',
-        year: 'Same Year',
-        oscar: 'Same Oscar',
         game_over: 'Game Over!',
         winner: 'Winner',
         back_home: 'Back to Home'
@@ -624,15 +630,6 @@ function GameScreen() {
         your_turn: 'התור שלך',
         waiting: 'ממתין...',
         choose_answer: 'בחרו את הסרט הנכון:',
-        connect: 'שייך',
-        save_token: 'שמור אסימון',
-        select_target: 'בחרו כרטיס יעד:',
-        select_connection: 'בחרו סוג קשר:',
-        actor: 'שחקן זהה',
-        director: 'במאי זהה',
-        producer: 'מפיק זהה',
-        year: 'שנה זהה',
-        oscar: 'אוסקר זהה',
         game_over: 'המשחק הסתיים!',
         winner: 'מנצח',
         back_home: 'חזרה לדף הבית'
@@ -685,192 +682,154 @@ function GameScreen() {
   // Game over screen
   if (phase === 'finished') {
     return (
-      <div className="game-screen game-over">
-        <div className="game-over-content">
-          <h1>🏆 {t('game_over')}</h1>
-          <h2>{t('winner')}: {t(`team_${gameState.winner.toLowerCase()}`)}</h2>
-          
-          <div className="final-scores">
-            <div className="team-final-score">
-              <h3>{t('team_a')}</h3>
-              <p>{gameState.teamA?.cards?.length || 0} {t('cards')}</p>
-            </div>
-            <div className="team-final-score">
-              <h3>{t('team_b')}</h3>
-              <p>{gameState.teamB?.cards?.length || 0} {t('cards')}</p>
+      <div className="game-screen">
+        <div className="game-main-layout">
+          <div className="game-content">
+            <div className="game-finished">
+              <h1>🏆 {t('game_over')}</h1>
+              <h2>{t('winner')}: {t(`team_${gameState.winner.toLowerCase()}`)}</h2>
+              
+              <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '30px' }}>
+                <div>
+                  <h3>{t('team_a')}</h3>
+                  <p style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                    {gameState.teamA?.cards?.length || 0} {t('cards')}
+                  </p>
+                </div>
+                <div>
+                  <h3>{t('team_b')}</h3>
+                  <p style={{ fontSize: '24px', fontWeight: 'bold' }}>
+                    {gameState.teamB?.cards?.length || 0} {t('cards')}
+                  </p>
+                </div>
+              </div>
+
+              <button onClick={() => navigate('/')}>
+                {t('back_home')}
+              </button>
             </div>
           </div>
-
-          <button className="home-button" onClick={() => navigate('/')}>
-            {t('back_home')}
-          </button>
         </div>
       </div>
     );
   }
 
+  // Main Game Screen with Sidebars
+  const teamAData = gameState.teamA || { cards: [], tokens: 0 };
+  const teamBData = gameState.teamB || { cards: [], tokens: 0 };
+
   return (
     <div className={`game-screen ${language === 'he' ? 'rtl' : 'ltr'}`}>
-      {/* Language Toggle */}
-      <div className="language-toggle">
-        <button onClick={() => setLanguage(language === 'en' ? 'he' : 'en')}>
-          🌐 {language.toUpperCase()}
-        </button>
-      </div>
-
-      {/* Score Panel */}
-      <div className="score-panel">
-        <div className={`team-score ${currentTeam === 'A' ? 'active' : ''}`}>
-          <h3>{t('team_a')}</h3>
-          <p>🎬 {t('cards')}: {gameState.teamA?.cards?.length || 0}/10</p>
-          <p>🎫 {t('tokens')}: {gameState.teamA?.tokens || 0}</p>
-        </div>
+      {/* Main Layout: Left Sidebar | Center Content | Right Sidebar */}
+      <div className="game-main-layout">
         
-        <div className={`team-score ${currentTeam === 'B' ? 'active' : ''}`}>
-          <h3>{t('team_b')}</h3>
-          <p>🎬 {t('cards')}: {gameState.teamB?.cards?.length || 0}/10</p>
-          <p>🎫 {t('tokens')}: {gameState.teamB?.tokens || 0}</p>
-        </div>
-      </div>
-
-      {/* Turn Indicator */}
-      <div className="turn-indicator">
-        {isMyTurn ? (
-          <span className="your-turn">⭐ {t('your_turn')}</span>
-        ) : (
-          <span className="waiting">{t('waiting')}</span>
-        )}
-      </div>
-
-      {/* Playing Phase */}
-      {phase === 'playing' && currentMovie && (
-        <div className="playing-phase">
-          {/* Trailer */}
-          <div className="trailer-container">
-            <TrailerPlayer
-              movieId={currentMovie.id}
-              onTrailerEnd={() => setTrailerEnded(true)}
-              autoPlay={true}
-            />
-          </div>
-
-          {/* Answer Options */}
-          {trailerEnded && (
-            <div className="answer-section">
-              <h3>{t('choose_answer')}</h3>
-              <div className="answer-grid">
-                {answerOptions.filter(opt => !removedAnswers.includes(opt)).map((option, index) => (
-                  <button
-                    key={index}
-                    className={`answer-option ${selectedAnswer === option ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
-                    onClick={() => handleAnswerSelect(option)}
-                    disabled={!isMyTurn || selectedAnswer || botIsThinking}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Result Message */}
-          {showResult && (
-            <div className={`result-message ${isCorrect ? 'correct' : 'incorrect'}`}>
-              {resultMessage}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Decision Phase */}
-      {phase === 'decision' && gameState.wonCard?.team === currentTeam && isMyTurn && (
-        <div className="decision-phase">
-          <h3>{language === 'he' ? 'זכיתם בכרטיס! מה תרצו לעשות?' : 'You won a card! What would you like to do?'}</h3>
+        {/* Left Sidebar - Team A */}
+        <div className="team-sidebar left">
+          <div className="team-sidebar-label">{t('team_a')}</div>
           
-          <div className="decision-buttons">
-            <button 
-              className="connect-button"
-              onClick={() => setShowConnectionModal(true)}
-              disabled={(gameState[currentTeam === 'A' ? 'teamA' : 'teamB']?.tokens || 0) === 0}
-            >
-              {t('connect')} (1 {t('tokens')})
-            </button>
-            
-            <button 
-              className="save-button"
-              onClick={handleSaveToken}
-            >
-              {t('save_token')}
-            </button>
+          <div className="team-stat">
+            <div className="team-stat-icon">🎬</div>
+            <div className="team-stat-value">{teamAData.cards.length}/10</div>
+            <div className="team-stat-label">{t('cards')}</div>
           </div>
-        </div>
-      )}
-
-      {/* Connection Modal */}
-      {showConnectionModal && (
-        <div className="modal-overlay">
-          <div className="connection-modal">
-            <h3>{t('select_target')}</h3>
-            
-            <div className="target-cards">
-              {(gameState[currentTeam === 'A' ? 'teamA' : 'teamB']?.cards || []).map((card, index) => (
-                <div
-                  key={index}
-                  className={`target-card ${selectedTargetCard?.id === card.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedTargetCard(card)}
-                >
-                  <img src={card.poster} alt={card.title[language]} />
-                  <p>{card.title[language]}</p>
-                </div>
-              ))}
-            </div>
-
-            {selectedTargetCard && (
-              <>
-                <h3>{t('select_connection')}</h3>
-                <div className="connection-types">
-                  {['actor', 'director', 'producer', 'year', 'oscar'].map(type => (
-                    <button
-                      key={type}
-                      className={`connection-type ${selectedConnectionType === type ? 'selected' : ''}`}
-                      onClick={() => setSelectedConnectionType(type)}
-                    >
-                      {t(type)}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-
-            <div className="modal-actions">
-              <button
-                className="confirm-button"
-                onClick={() => handleConnectionAttempt(selectedTargetCard, selectedConnectionType)}
-                disabled={!selectedTargetCard || !selectedConnectionType}
-              >
-                {t('connect')}
-              </button>
-              <button
-                className="cancel-button"
-                onClick={() => {
-                  setShowConnectionModal(false);
-                  setSelectedTargetCard(null);
-                  setSelectedConnectionType(null);
-                }}
-              >
-                {language === 'he' ? 'ביטול' : 'Cancel'}
-              </button>
-            </div>
-
-            {connectionResult && (
-              <div className={`connection-result ${connectionResult.success ? 'success' : 'failure'}`}>
-                <p>{connectionResult.message}</p>
-                {connectionResult.hint && <p className="hint">💡 {connectionResult.hint}</p>}
-              </div>
-            )}
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎫</div>
+            <div className="team-stat-value">{teamAData.tokens}</div>
+            <div className="team-stat-label">{t('tokens')}</div>
           </div>
+
+          {gameState.currentTurn === 'A' && (
+            <div className="turn-indicator">
+              {currentTeam === 'A' ? t('your_turn') : t('waiting')}
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Center Content Area */}
+        <div className="game-content">
+          {phase === 'playing' && currentMovie && (
+            <div className="answering-phase">
+              {/* Trailer */}
+              <TrailerPlayer
+                movieId={currentMovie.id}
+                onTrailerEnd={() => setTrailerEnded(true)}
+                autoPlay={true}
+              />
+
+              {/* Answer Options */}
+              {trailerEnded && (
+                <>
+                  <h2>{t('choose_answer')}</h2>
+                  <div className="answer-options">
+                    {answerOptions.filter(opt => !removedAnswers.includes(opt)).map((option, index) => (
+                      <button
+                        key={index}
+                        className={`answer-option ${selectedAnswer === option ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
+                        onClick={() => handleAnswerSelect(option)}
+                        disabled={!isMyTurn || selectedAnswer || botIsThinking}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* Result Message */}
+              {showResult && (
+                <div style={{
+                  marginTop: '20px',
+                  padding: '15px',
+                  borderRadius: '12px',
+                  textAlign: 'center',
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  background: isCorrect ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)',
+                  border: `2px solid ${isCorrect ? '#4caf50' : '#f44336'}`,
+                  color: isCorrect ? '#4caf50' : '#f44336'
+                }}>
+                  {resultMessage}
+                </div>
+              )}
+            </div>
+          )}
+
+          {phase === 'decision' && gameState.wonCard && (
+            <DecisionPhase
+              wonCard={allMovies.find(m => m.id === gameState.wonCard.movieId)}
+              teamCards={(currentTeam === 'A' ? teamAData : teamBData).cards}
+              onConnect={handleConnectionAttempt}
+              onSaveToken={handleSaveToken}
+              language={language}
+              connectionResult={connectionResult}
+            />
+          )}
+        </div>
+
+        {/* Right Sidebar - Team B */}
+        <div className="team-sidebar right">
+          <div className="team-sidebar-label">{t('team_b')}</div>
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎬</div>
+            <div className="team-stat-value">{teamBData.cards.length}/10</div>
+            <div className="team-stat-label">{t('cards')}</div>
+          </div>
+          
+          <div className="team-stat">
+            <div className="team-stat-icon">🎫</div>
+            <div className="team-stat-value">{teamBData.tokens}</div>
+            <div className="team-stat-label">{t('tokens')}</div>
+          </div>
+
+          {gameState.currentTurn === 'B' && (
+            <div className="turn-indicator">
+              {currentTeam === 'B' ? t('your_turn') : t('waiting')}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
