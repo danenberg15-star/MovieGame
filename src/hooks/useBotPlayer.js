@@ -32,37 +32,36 @@ export const useBotPlayer = (
   const answeringTimeoutRef = useRef(null);
   const decisionTimeoutRef = useRef(null);
 
-  // Reset refs when movie changes
+  // Reset logic - SEPARATE useEffect
   useEffect(() => {
-    if (currentMovie?.id && currentMovie.id !== currentMovieIdRef.current) {
-      console.log('🎬 Movie changed - canceling bot actions');
-      currentMovieIdRef.current = currentMovie.id;
-      hasAnsweredRef.current = false;
+    const newMovieId = currentMovie?.id;
+    
+    if (newMovieId && newMovieId !== currentMovieIdRef.current) {
+      console.log('🎬 Movie changed - resetting bot state');
       
-      // Cancel any pending bot answer
+      // Cancel any pending operations
       if (answeringTimeoutRef.current) {
         clearTimeout(answeringTimeoutRef.current);
         answeringTimeoutRef.current = null;
       }
       
+      // Update refs
+      currentMovieIdRef.current = newMovieId;
+      hasAnsweredRef.current = false;
       setBotIsThinking(false);
     }
   }, [currentMovie?.id, setBotIsThinking]);
 
-  // Reset refs when phase changes
+  // Phase change logic - SEPARATE useEffect
   useEffect(() => {
     if (phase === 'decision') {
       hasDecidedRef.current = false;
-      
-      // Cancel any pending bot answer when moving to decision
       if (answeringTimeoutRef.current) {
         clearTimeout(answeringTimeoutRef.current);
         answeringTimeoutRef.current = null;
       }
     } else if (phase === 'playing') {
       hasAnsweredRef.current = false;
-      
-      // Cancel any pending bot decision when moving to playing
       if (decisionTimeoutRef.current) {
         clearTimeout(decisionTimeoutRef.current);
         decisionTimeoutRef.current = null;
@@ -82,17 +81,25 @@ export const useBotPlayer = (
     };
   }, []);
 
-  // Bot turn handler for answering - FAST (1 second)
+  // Bot answering logic - ONLY runs when trailer ends
   useEffect(() => {
-    if (!gameState || !currentMovie || !isQAMode) return;
+    // Guard clauses
+    if (!gameState) return;
+    if (!currentMovie) return;
+    if (!isQAMode) return;
     if (gameState.currentTurn !== 'B') return;
     if (phase !== 'playing') return;
-    if (botIsThinking) return;
-    if (!trailerEnded) return;
+    if (!trailerEnded) return; // CRITICAL: Don't run until trailer ends
     if (hasAnsweredRef.current) return;
-    if (currentMovie.id !== currentMovieIdRef.current) return;
+    if (botIsThinking) return;
 
-    console.log('🤖 Bot turn starting...');
+    // Verify movie ID matches
+    if (currentMovie.id !== currentMovieIdRef.current) {
+      console.log('🤖 Movie ID mismatch - skipping');
+      return;
+    }
+
+    console.log('🤖 Bot turn starting for:', currentMovie.title?.en);
     hasAnsweredRef.current = true;
     setBotIsThinking(true);
 
@@ -100,19 +107,19 @@ export const useBotPlayer = (
     const correctAnswer = currentMovie.title[language];
     const savedMovieId = currentMovie.id;
 
-    // FAST: 1 second delay
+    // 1 second delay
     const timeoutId = setTimeout(() => {
-      // Double-check we're still on the same movie
+      // Safety check
       if (savedMovieId !== currentMovieIdRef.current) {
-        console.log('🤖 Movie changed during bot thinking - aborting');
+        console.log('🤖 Movie changed during delay - aborting');
         setBotIsThinking(false);
         return;
       }
 
       botPlayer.chooseAnswer(correctAnswer, options, async (selectedAnswer, isCorrect) => {
-        // Triple-check we're still on the same movie
+        // Final safety check
         if (savedMovieId !== currentMovieIdRef.current) {
-          console.log('🤖 Movie changed during bot answer - aborting');
+          console.log('🤖 Movie changed during answer - aborting');
           setBotIsThinking(false);
           return;
         }
@@ -129,7 +136,7 @@ export const useBotPlayer = (
             'teamB/tokens': newTokens,
             phase: 'decision',
             wonCard: {
-              movieId: currentMovie.id,
+              movieId: savedMovieId,
               team: 'B'
             }
           });
@@ -174,35 +181,19 @@ export const useBotPlayer = (
           setShowResult(false);
         }, 2000);
       });
-    }, 1000); // CHANGED: 1 second only!
+    }, 1000);
 
     answeringTimeoutRef.current = timeoutId;
-  }, [
-    gameState,
-    currentMovie,
-    isQAMode,
-    phase,
-    botIsThinking,
-    trailerEnded,
-    answerOptions,
-    language,
-    roomCode,
-    setBotIsThinking,
-    setSelectedAnswer,
-    setIsCorrect,
-    setResultMessage,
-    setShowResult,
-    setRemovedAnswers,
-    startNextRound
-  ]);
+  }, [trailerEnded]); // ONLY trailerEnded as dependency!
 
   // Bot decision phase
   useEffect(() => {
-    if (!gameState || !isQAMode) return;
+    if (!gameState) return;
+    if (!isQAMode) return;
     if (phase !== 'decision') return;
     if (gameState.wonCard?.team !== 'B') return;
-    if (botIsThinking) return;
     if (hasDecidedRef.current) return;
+    if (botIsThinking) return;
 
     console.log('🤖 Bot making decision...');
     hasDecidedRef.current = true;
@@ -213,7 +204,6 @@ export const useBotPlayer = (
     const savedWonCardId = gameState.wonCard.movieId;
 
     const timeoutId = setTimeout(() => {
-      // Check we're still in the same decision phase
       if (gameState.wonCard?.movieId !== savedWonCardId) {
         console.log('🤖 Decision context changed - aborting');
         setBotIsThinking(false);
@@ -231,17 +221,8 @@ export const useBotPlayer = (
 
         setBotIsThinking(false);
       });
-    }, Math.floor(Math.random() * 10000) + 5000); // 5-15 seconds for decision
+    }, Math.floor(Math.random() * 10000) + 5000);
 
     decisionTimeoutRef.current = timeoutId;
-  }, [
-    gameState,
-    phase,
-    isQAMode,
-    botIsThinking,
-    allMovies,
-    handleConnectionAttempt,
-    handleSaveToken,
-    setBotIsThinking
-  ]);
+  }, [gameState?.wonCard?.movieId, phase]);
 };
