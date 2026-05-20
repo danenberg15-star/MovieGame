@@ -1,0 +1,228 @@
+// src/hooks/useGameState.js
+import { useState, useEffect, useCallback } from 'react';
+import { ref, set, onValue, off, get, update } from 'firebase/database';
+import { database } from '../firebase';
+import {
+  loadMoviesData,
+  selectAnchorCards,
+  initializeGameState
+} from '../utils/gameLogic';
+
+// Helper function to sanitize Firebase keys
+const sanitizeFirebaseKey = (key) => {
+  if (!key) return '';
+  // eslint-disable-next-line no-useless-escape
+  return key.replace(/[.#$\/\[\]]/g, '_');
+};
+
+export const useGameState = (roomCode, playerId, language) => {
+  const [gameState, setGameState] = useState(null);
+  const [allMovies, setAllMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [phase, setPhase] = useState('anchorReveal');
+  const [currentMovie, setCurrentMovie] = useState(null);
+  const [answerOptions, setAnswerOptions] = useState([]);
+  const [removedAnswers, setRemovedAnswers] = useState([]);
+
+  const isQAMode = roomCode === '99999';
+
+  // Build movies index for faster lookups
+  const buildMoviesIndex = useCallback((movies) => {
+    console.log('🔨 Building movies index...');
+    const index = {
+      actors: {},
+      directors: {},
+      years: {}
+    };
+
+    movies.forEach(movie => {
+      // Index actors (sanitize names for Firebase keys)
+      if (movie.cast && Array.isArray(movie.cast)) {
+        movie.cast.forEach(actor => {
+          if (actor?.name?.en) {
+            const sanitizedName = sanitizeFirebaseKey(actor.name.en);
+            if (!index.actors[sanitizedName]) {
+              index.actors[sanitizedName] = [];
+            }
+            index.actors[sanitizedName].push(movie.id);
+          }
+        });
+      }
+
+      // Index directors (sanitize names for Firebase keys)
+      if (movie.director?.name?.en) {
+        const sanitizedName = sanitizeFirebaseKey(movie.director.name.en);
+        if (!index.directors[sanitizedName]) {
+          index.directors[sanitizedName] = [];
+        }
+        index.directors[sanitizedName].push(movie.id);
+      }
+
+      // Index years
+      if (movie.year) {
+        const yearKey = `year_${movie.year}`;
+        if (!index.years[yearKey]) {
+          index.years[yearKey] = [];
+        }
+        index.years[yearKey].push(movie.id);
+      }
+    });
+
+    console.log(`✅ Index built: ${Object.keys(index.actors).length} actors, ${Object.keys(index.directors).length} directors, ${Object.keys(index.years).length} years`);
+    return index;
+  }, []);
+
+  // Initialize game
+  useEffect(() => {
+    let unsubscribe = null;
+
+    const initGame = async () => {
+      try {
+        console.log('🎮 Initializing game...', { roomCode, playerId, isQAMode });
+
+        // Load movies data
+        const movies = await loadMoviesData();
+        if (!movies || movies.length === 0) {
+          throw new Error('Failed to load movies data');
+        }
+        console.log(`✅ Loaded ${movies.length} movies`);
+        setAllMovies(movies);
+
+        // Reference to game in Firebase
+        const gameRef = ref(database, `games/${roomCode}`);
+
+        // Check if game exists
+        const snapshot = await get(gameRef);
+
+        if (!snapshot.exists()) {
+          console.log('🆕 Creating new game...');
+
+          // Select anchor cards
+          const anchors = selectAnchorCards(movies);
+          if (!anchors) {
+            throw new Error('Failed to select anchor cards');
+          }
+
+          // Build movies index
+          const moviesIndex = buildMoviesIndex(movies);
+
+          // Initialize game state
+          const initialState = {
+            ...initializeGameState(anchors, movies),
+            roomCode,
+            createdAt: Date.now(),
+            players: {
+              [playerId]: {
+                id: playerId,
+                name: isQAMode ? 'You' : `Player ${playerId.slice(-4)}`,
+                joinedAt: Date.now()
+              }
+            },
+            playerTeams: {
+              [playerId]: 'A'
+            },
+            isQAMode,
+            moviesIndex
+          };
+
+          // Add bot player if QA mode
+          if (isQAMode) {
+            initialState.players['bot_player'] = {
+              id: 'bot_player',
+              name: language === 'he' ? '🤖 בוט AI' : '🤖 AI Bot',
+              isBot: true,
+              joinedAt: Date.now()
+            };
+            initialState.playerTeams['bot_player'] = 'B';
+          }
+
+          // Save to Firebase
+          await set(gameRef, initialState);
+          console.log('✅ Game created successfully');
+        } else {
+          console.log('✅ Game exists, joining...');
+
+          // Add player if not exists
+          const existingGame = snapshot.val();
+          if (!existingGame.players?.[playerId]) {
+            const playerUpdate = {
+              [`players/${playerId}`]: {
+                id: playerId,
+                name: `Player ${playerId.slice(-4)}`,
+                joinedAt: Date.now()
+              }
+            };
+
+            // Assign to team with fewer players
+            const teamACount = Object.values(existingGame.playerTeams || {}).filter(t => t === 'A').length;
+            const teamBCount = Object.values(existingGame.playerTeams || {}).filter(t => t === 'B').length;
+            playerUpdate[`playerTeams/${playerId}`] = teamACount <= teamBCount ? 'A' : 'B';
+
+            await update(gameRef, playerUpdate);
+            console.log('✅ Player added to game');
+          }
+        }
+
+        // Listen to game state changes
+        unsubscribe = onValue(gameRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            console.log('📊 Game state updated:', {
+              phase: data.phase,
+              turn: data.currentTurn,
+              teamACards: data.teamA?.cards?.length,
+              teamBCards: data.teamB?.cards?.length
+            });
+            setGameState(data);
+            setPhase(data.phase);
+
+            // If there's a current movie in state, load it
+            if (data.currentMovie && data.currentMovie.id) {
+              const movie = movies.find(m => m.id === data.currentMovie.id);
+              if (movie) {
+                setCurrentMovie(movie);
+                setAnswerOptions(data.currentMovie.options || []);
+                setRemovedAnswers(data.currentMovie.removedAnswers || []);
+              }
+            }
+          }
+          setIsInitializing(false);
+        });
+
+        setLoading(false);
+      } catch (err) {
+        console.error('❌ Init error:', err);
+        setError(err.message);
+        setLoading(false);
+        setIsInitializing(false);
+      }
+    };
+
+    initGame();
+
+    // Cleanup
+    return () => {
+      if (unsubscribe) {
+        off(ref(database, `games/${roomCode}`));
+      }
+    };
+  }, [roomCode, playerId, isQAMode, language, buildMoviesIndex]);
+
+  return {
+    gameState,
+    allMovies,
+    loading,
+    error,
+    isInitializing,
+    phase,
+    setPhase,
+    currentMovie,
+    setCurrentMovie,
+    answerOptions,
+    setAnswerOptions,
+    removedAnswers,
+    setRemovedAnswers
+  };
+};
