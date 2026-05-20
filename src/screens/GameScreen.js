@@ -3,6 +3,8 @@ import { ref, set, onValue, update, off, get } from 'firebase/database';
 import { database } from '../firebase';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
+import AnchorReveal from '../components/AnchorReveal';
+import TrailerPlayer from '../components/TrailerPlayer';
 import botPlayer from '../utils/botPlayer';
 import {
   loadMoviesData,
@@ -39,7 +41,7 @@ function GameScreen() {
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState('');
   const [isCorrect, setIsCorrect] = useState(false);
-  const [phase, setPhase] = useState('playing');
+  const [phase, setPhase] = useState('anchorReveal'); // Start with anchor reveal
   const [showConnectionModal, setShowConnectionModal] = useState(false);
   const [selectedTargetCard, setSelectedTargetCard] = useState(null);
   const [selectedConnectionType, setSelectedConnectionType] = useState(null);
@@ -275,6 +277,15 @@ function GameScreen() {
     setShowConnectionModal(false);
     startNextRound();
   }, [roomCode, currentTeam, startNextRound]);
+
+  // Handle anchor reveal continue
+  const handleAnchorContinue = useCallback(async () => {
+    console.log('▶️ Continuing from anchor reveal...');
+    setPhase('playing');
+    
+    // Start first round
+    startNextRound();
+  }, [startNextRound]);
 
   // Initialize game
   useEffect(() => {
@@ -581,17 +592,6 @@ function GameScreen() {
 
   }, [gameState, phase, isQAMode, botIsThinking, allMovies, handleConnectionAttempt, handleSaveToken]);
 
-  // Auto-start first round
-  useEffect(() => {
-    if (!gameState || isInitializing || loading) return;
-    if (gameState.phase !== 'playing') return;
-    if (gameState.currentMovie) return;
-    if (gameState.roundNumber > 0) return;
-
-    console.log('🚀 Auto-starting first round...');
-    startNextRound();
-  }, [gameState, isInitializing, loading, startNextRound]);
-
   // Translations
   const t = (key) => {
     const translations = {
@@ -670,6 +670,18 @@ function GameScreen() {
     );
   }
 
+  // Anchor Reveal Screen
+  if (phase === 'anchorReveal' || gameState.roundNumber === 0) {
+    return (
+      <AnchorReveal
+        teamACard={gameState.teamA.cards[0]}
+        teamBCard={gameState.teamB.cards[0]}
+        onContinue={handleAnchorContinue}
+        language={language}
+      />
+    );
+  }
+
   // Game over screen
   if (phase === 'finished') {
     return (
@@ -735,11 +747,10 @@ function GameScreen() {
         <div className="playing-phase">
           {/* Trailer */}
           <div className="trailer-container">
-            <video
-              ref={videoRef}
-              className="trailer-video"
-              onEnded={() => setTrailerEnded(true)}
-              playsInline
+            <TrailerPlayer
+              movieId={currentMovie.id}
+              onTrailerEnd={() => setTrailerEnded(true)}
+              autoPlay={true}
             />
           </div>
 
