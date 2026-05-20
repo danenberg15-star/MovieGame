@@ -119,7 +119,24 @@ export const useBotPlayer = (
         setShowResult(false);
       }, 2000);
     });
-  }, [gameState?.currentTurn, currentMovie?.id, isQAMode, phase, botIsThinking, trailerEnded]);
+  }, [
+    gameState,
+    currentMovie,
+    isQAMode,
+    phase,
+    botIsThinking,
+    trailerEnded,
+    answerOptions,
+    language,
+    roomCode,
+    setBotIsThinking,
+    setSelectedAnswer,
+    setIsCorrect,
+    setResultMessage,
+    setShowResult,
+    setRemovedAnswers,
+    startNextRound
+  ]);
 
   // Bot decision phase
   useEffect(() => {
@@ -147,5 +164,14 @@ export const useBotPlayer = (
 
       setBotIsThinking(false);
     });
-  }, [gameState?.wonCard?.movieId, phase, isQAMode, botIsThinking]);
+  }, [
+    gameState,
+    phase,
+    isQAMode,
+    botIsThinking,
+    allMovies,
+    handleConnectionAttempt,
+    handleSaveToken,
+    setBotIsThinking
+  ]);
 };
