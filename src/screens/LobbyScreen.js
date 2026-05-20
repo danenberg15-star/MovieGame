@@ -30,11 +30,13 @@ function LobbyScreen() {
       setIsQAMode(true);
 
       try {
+        // DELETE both rooms and games for QA mode
         const roomRef = ref(database, `rooms/99999`);
+        const gameRef = ref(database, `games/99999`);
         
-        // DELETE existing QA room to start fresh every time
         await remove(roomRef);
-        console.log('🗑️ QA Room 99999 deleted (reset)');
+        await remove(gameRef);
+        console.log('🗑️ QA Room and Game 99999 deleted (reset)');
 
         // Wait a bit for deletion to complete
         await new Promise(resolve => setTimeout(resolve, 500));

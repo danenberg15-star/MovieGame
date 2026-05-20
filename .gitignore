@@ -52,3 +52,4 @@ movies_OLD_109_BACKUP/
 Thumbs.db
 .DS_Store
 serviceAccountKey.json
+.vercel
