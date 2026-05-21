@@ -11,36 +11,9 @@
   flex-direction: column;
 }
 
-/* Force landscape orientation - FIXED */
-@media (max-aspect-ratio: 1/1) {
-  .game-screen::before {
-    content: '🔄 Please rotate your device to landscape';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0f0c29;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(18px, 4vw, 24px);
-    font-weight: 700;
-    text-align: center;
-    z-index: 9999;
-    padding: 20px;
-    color: white;
-  }
-  
-  .game-screen > * {
-    display: none !important;
-  }
-}
-
-/* Loading & Error States */
 .game-screen.loading,
 .game-screen.error {
-  display: flex !important;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -58,9 +31,7 @@
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .game-screen.loading p,
@@ -88,23 +59,17 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-.game-screen.error button:active {
-  transform: scale(0.97);
-}
-
-/* Main Game Layout */
+/* Main Layout */
 .game-main-layout {
   flex: 1;
   display: flex;
   overflow: hidden;
-  position: relative;
   min-height: 0;
 }
 
-/* Team Sidebars - Fixed width */
+/* Team Sidebars */
 .team-sidebar {
   width: 90px;
   background: linear-gradient(180deg, rgba(42, 42, 42, 0.9) 0%, rgba(31, 31, 31, 0.9) 100%);
@@ -113,7 +78,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   padding: 12px 6px;
   gap: 12px;
   overflow-y: auto;
@@ -133,7 +97,6 @@
   font-weight: 700;
   color: #667eea;
   text-transform: uppercase;
-  letter-spacing: 1px;
   text-align: center;
   padding: 6px;
   background: rgba(102, 126, 234, 0.1);
@@ -191,16 +154,11 @@
   color: white;
   text-transform: uppercase;
   animation: pulse 2s ease-in-out infinite;
-  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
 }
 
 @keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 20px rgba(245, 87, 108, 0.5);
-  }
+  0%, 100% { box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(245, 87, 108, 0.5); }
 }
 
 /* Center Content - NO SCROLL */
@@ -216,13 +174,11 @@
 
 .game-content > * {
   width: 100%;
-  max-width: 100%;
   height: 100%;
-  max-height: 100%;
   overflow: hidden;
 }
 
-/* Playing Phase */
+/* Playing Phase - FIT IN VIEWPORT */
 .answering-phase {
   background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
   backdrop-filter: blur(10px);
@@ -236,14 +192,18 @@
   overflow: hidden;
 }
 
+/* Trailer takes most space */
 .trailer-container {
   flex: 1;
   min-height: 0;
   margin-bottom: 10px;
+  overflow: hidden;
 }
 
+/* Answer section compact */
 .answer-section {
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .answer-section h2 {
@@ -254,12 +214,14 @@
   color: #ffffff;
 }
 
+/* Answer grid with internal scroll ONLY */
 .answer-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
-  max-height: 30vh;
+  max-height: 28vh;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 4px;
 }
 
@@ -301,10 +263,6 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.answer-option:active {
-  transform: scale(0.98);
-}
-
 .answer-option.correct {
   background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
   border-color: #4caf50;
@@ -340,7 +298,6 @@
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .game-finished h2 {
@@ -359,43 +316,18 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-}
-
-.game-finished button:active {
-  transform: scale(0.97);
 }
 
 /* Small screens */
-@media (max-width: 700px) and (min-aspect-ratio: 1/1) {
+@media (max-width: 700px) {
   .team-sidebar {
-    width: 75px;
+    width: 70px;
     padding: 8px 4px;
     gap: 8px;
   }
   
-  .team-sidebar-label {
-    font-size: 10px;
-    padding: 4px;
-  }
-  
-  .team-stat {
-    padding: 6px 3px;
-  }
-  
-  .team-stat-icon {
-    font-size: 16px;
-  }
-  
-  .team-stat-value {
-    font-size: 12px;
-  }
-  
-  .team-stat-label {
-    font-size: 8px;
-  }
-  
   .answer-grid {
+    max-height: 25vh;
     gap: 4px;
   }
   
@@ -406,18 +338,17 @@
   }
 }
 
-/* Very small screens */
-@media (max-height: 450px) and (min-aspect-ratio: 1/1) {
+@media (max-height: 450px) {
   .team-sidebar {
-    width: 65px;
+    width: 60px;
+  }
+  
+  .answer-grid {
+    max-height: 22vh;
   }
   
   .answer-section h2 {
     font-size: 12px;
     margin-bottom: 6px;
-  }
-  
-  .answer-grid {
-    max-height: 25vh;
   }
 }

@@ -1,423 +1,147 @@
-/* src/screens/GameScreen.css */
+/* src/screens/HomeScreen.css */
 
-.game-screen {
+.home-screen {
   min-height: 100vh;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+}
+
+.home-content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
   max-height: 100vh;
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-  color: #ffffff;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
 }
 
-/* Force landscape - Only show warning when width < height */
-@media (max-aspect-ratio: 9/16) {
-  .game-screen::before {
-    content: '🔄 Please rotate your device to landscape';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0f0c29;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(18px, 4vw, 24px);
-    font-weight: 700;
-    text-align: center;
-    z-index: 9999;
-    padding: 20px;
-    color: white;
-  }
-  
-  .game-screen > * {
-    display: none !important;
-  }
+.game-logo {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Loading & Error States */
-.game-screen.loading,
-.game-screen.error {
-  display: flex !important;
+.welcome-text {
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+  opacity: 0.9;
+}
+
+.name-section {
+  margin: 1.2rem 0;
+}
+
+.name-input,
+.input {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-align: center;
+}
+
+.name-input::placeholder,
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.menu-buttons {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  gap: 12px;
+  margin-top: 1.2rem;
 }
 
-.loading-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #667eea;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+.join-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.game-screen.loading p,
-.game-screen.error p {
-  font-size: 16px;
-  color: #b0b0b0;
-  margin: 12px 0;
-  text-align: center;
-}
-
-.game-screen.error h2 {
-  font-size: 24px;
-  color: #ff416c;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-.game-screen.error button {
-  margin-top: 16px;
-  padding: 12px 24px;
+.btn {
+  padding: 12px 28px;
   font-size: 14px;
   font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.game-screen.error button:active {
-  transform: scale(0.97);
-}
-
-/* Main Game Layout */
-.game-main-layout {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  min-height: 0;
-}
-
-/* Team Sidebars - Fixed width */
-.team-sidebar {
-  width: 90px;
-  background: linear-gradient(180deg, rgba(42, 42, 42, 0.9) 0%, rgba(31, 31, 31, 0.9) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 12px 6px;
-  gap: 12px;
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-
-.team-sidebar.left {
-  border-right: 2px solid rgba(102, 126, 234, 0.3);
-}
-
-.team-sidebar.right {
-  border-left: 2px solid rgba(245, 87, 108, 0.3);
-}
-
-.team-sidebar-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #667eea;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  padding: 6px;
-  background: rgba(102, 126, 234, 0.1);
-  border-radius: 6px;
-  width: 100%;
-}
-
-.team-sidebar.right .team-sidebar-label {
-  color: #f5576c;
-  background: rgba(245, 87, 108, 0.1);
-}
-
-.team-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 8px 4px;
-  background: rgba(102, 126, 234, 0.05);
-  border-radius: 6px;
-  width: 100%;
-  border: 1px solid rgba(102, 126, 234, 0.1);
-}
-
-.team-sidebar.right .team-stat {
-  background: rgba(245, 87, 108, 0.05);
-  border-color: rgba(245, 87, 108, 0.1);
-}
-
-.team-stat-icon {
-  font-size: 20px;
-}
-
-.team-stat-value {
-  font-size: 14px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.team-stat-label {
-  font-size: 9px;
-  color: #b0b0b0;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.turn-indicator {
-  width: 100%;
-  padding: 6px 4px;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  text-align: center;
-  color: white;
-  text-transform: uppercase;
-  animation: pulse 2s ease-in-out infinite;
-  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
-}
-
-@keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 20px rgba(245, 87, 108, 0.5);
-  }
-}
-
-/* Center Content - NO SCROLL */
-.game-content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 8px;
-  min-height: 0;
-}
-
-.game-content > * {
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  max-height: 100%;
-  overflow: hidden;
-}
-
-/* Playing Phase */
-.answering-phase {
-  background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.trailer-container {
-  flex: 1;
-  min-height: 0;
-  margin-bottom: 10px;
-}
-
-.answer-section {
-  flex-shrink: 0;
-}
-
-.answer-section h2 {
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  margin: 0 0 8px 0;
-  color: #ffffff;
-}
-
-.answer-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-  max-height: 30vh;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.answer-grid::-webkit-scrollbar {
-  width: 3px;
-}
-
-.answer-grid::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.answer-grid::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.3);
-  border-radius: 2px;
-}
-
-.answer-option {
-  background: linear-gradient(145deg, #2a2a2a 0%, #1f1f1f 100%);
-  border: 2px solid #3a3a3a;
-  color: #ffffff;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
   transition: all 0.3s ease;
-  text-align: center;
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1.2;
-  word-break: break-word;
+  min-width: 220px;
 }
 
-.answer-option:hover:not(:disabled) {
-  border-color: #667eea;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.answer-option:active {
-  transform: scale(0.98);
-}
-
-.answer-option.correct {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  border-color: #4caf50;
-  box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
-}
-
-.answer-option.incorrect {
-  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-  border-color: #f44336;
-  box-shadow: 0 0 20px rgba(244, 67, 54, 0.5);
-}
-
-.answer-option:disabled {
-  opacity: 0.6;
+.btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Game Finished */
-.game-finished {
-  background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 30px 20px;
-  text-align: center;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(102, 126, 234, 0.3);
-}
-
-.game-finished h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0 0 12px 0;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.game-finished h2 {
-  font-size: 22px;
-  font-weight: 600;
-  margin: 0 0 24px 0;
-  color: #ffffff;
-}
-
-.game-finished button {
-  padding: 12px 30px;
-  font-size: 14px;
-  font-weight: 600;
+.btn-primary {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
-.game-finished button:active {
-  transform: scale(0.97);
+.btn-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
 }
 
-/* Small screens */
-@media (max-width: 700px) and (min-aspect-ratio: 16/9) {
-  .team-sidebar {
-    width: 75px;
-    padding: 8px 4px;
+.btn-qa {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  color: #333;
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #333;
+}
+
+/* Small landscape screens */
+@media (max-height: 500px) {
+  .game-logo {
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .welcome-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .name-section {
+    margin: 0.8rem 0;
+  }
+  
+  .menu-buttons {
     gap: 8px;
+    margin-top: 0.8rem;
   }
   
-  .team-sidebar-label {
-    font-size: 10px;
-    padding: 4px;
-  }
-  
-  .team-stat {
-    padding: 6px 3px;
-  }
-  
-  .team-stat-icon {
-    font-size: 16px;
-  }
-  
-  .team-stat-value {
-    font-size: 12px;
-  }
-  
-  .team-stat-label {
-    font-size: 8px;
-  }
-  
-  .answer-grid {
-    gap: 4px;
-  }
-  
-  .answer-option {
-    font-size: 10px;
-    padding: 6px;
-    min-height: 38px;
-  }
-}
-
-/* Very small screens */
-@media (max-height: 450px) and (min-aspect-ratio: 16/9) {
-  .team-sidebar {
-    width: 65px;
-  }
-  
-  .answer-section h2 {
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-  
-  .answer-grid {
-    max-height: 25vh;
+  .btn {
+    padding: 8px 20px;
+    font-size: 13px;
+    min-width: 180px;
   }
 }
