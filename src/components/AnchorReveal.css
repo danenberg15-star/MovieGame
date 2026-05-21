@@ -15,8 +15,8 @@
   overflow: hidden;
 }
 
-/* Force landscape orientation */
-@media (orientation: portrait) {
+/* Force landscape - Only show warning when width < height */
+@media (max-aspect-ratio: 9/16) {
   .anchor-reveal::before {
     content: '🔄 Please rotate your device to landscape';
     position: fixed;
@@ -179,8 +179,8 @@
   transform: scale(0.97);
 }
 
-/* Small screens */
-@media (max-height: 500px) and (orientation: landscape) {
+/* Small screens in landscape */
+@media (max-height: 500px) and (min-aspect-ratio: 16/9) {
   .anchor-title {
     font-size: 1.8rem;
     margin-bottom: 0.3rem;
