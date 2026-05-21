@@ -1,173 +1,282 @@
-/* src/screens/HomeScreen.css */
+/* src/screens/LobbyScreen.css */
 
-.home-screen {
+.lobby-screen {
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
   overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
-/* Force landscape orientation */
-@media (orientation: portrait) {
-  .home-screen::before {
-    content: '🔄 Please rotate your device to landscape';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 700;
-    text-align: center;
-    z-index: 9999;
-    padding: 20px;
-    color: white;
-  }
-  
-  .home-screen > * {
-    display: none !important;
-  }
-}
-
-.home-content {
-  text-align: center;
-  max-width: 600px;
+.container {
   width: 100%;
+  max-width: 100%;
+}
+
+.lobby-content {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.lobby-header {
+  text-align: center;
+  margin-bottom: 15px;
+  flex-shrink: 0;
 }
 
 .game-logo {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 900;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.qa-badge {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 0.6em;
+  padding: 5px 12px;
+  background: rgba(252, 182, 159, 0.3);
+  border-radius: 8px;
+  color: #fcb69f;
+}
+
+.room-code-display {
+  margin: 10px 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.room-code-display .label {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-right: 8px;
+}
+
+.room-code-display .code {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #667eea;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-share {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.teams-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 15px;
+  margin: 15px 0;
+  align-items: start;
+  flex: 1;
+  min-height: 0;
+}
+
+.team-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  min-height: 180px;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.team-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  flex-shrink: 0;
 }
 
-.welcome-text {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
+.players-list {
+  flex: 1;
+  margin-bottom: 12px;
+  overflow-y: auto;
+  min-height: 0;
 }
 
-.name-section {
-  margin: 1.5rem 0;
-}
-
-.name-input {
-  width: 100%;
-  max-width: 350px;
-  padding: 12px 16px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+.empty-team {
   text-align: center;
+  padding: 30px 15px;
+  opacity: 0.5;
+  font-style: italic;
+  font-size: 14px;
 }
 
-.name-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.menu-buttons {
+.player-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 6px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  margin-top: 1.5rem;
+  border: 2px solid transparent;
 }
 
-.join-section {
+.player-card.me {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+.player-card.ready {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.player-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ready-badge {
+  font-size: 20px;
+}
+
+.btn-join-team {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.vs-divider {
+  font-size: 36px;
+  font-weight: 800;
+  color: #667eea;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.no-team-section {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 152, 0, 0.1);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 152, 0, 0.3);
+}
+
+.no-team-section h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #ff9800;
+}
+
+.lobby-actions {
+  display: flex;
   gap: 12px;
-  width: 100%;
-  max-width: 350px;
+  justify-content: center;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
-.join-section .input {
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  text-align: center;
-}
-
-.btn {
-  padding: 14px 30px;
-  font-size: 16px;
+.btn-ready,
+.btn-unready,
+.btn-start {
+  padding: 10px 25px;
+  font-size: 13px;
   font-weight: 600;
   border: none;
   border-radius: 8px;
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 250px;
 }
 
-.btn:disabled {
+.btn-ready {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+}
+
+.btn-unready {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+.btn-start {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.btn-start:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.waiting-host {
+  padding: 12px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 14px;
+  font-style: italic;
+  opacity: 0.8;
 }
 
-.btn-secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-}
-
-.btn-qa {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  color: #333;
-}
-
-.btn-info {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  color: #333;
+.loading {
+  text-align: center;
+  font-size: 20px;
+  padding: 30px;
 }
 
 /* Small screens */
-@media (max-height: 500px) and (orientation: landscape) {
-  .home-content {
-    max-width: 90%;
+@media (max-height: 500px) {
+  .lobby-header {
+    margin-bottom: 10px;
   }
   
   .game-logo {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
   }
   
-  .welcome-text {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .name-section {
-    margin: 1rem 0;
-  }
-  
-  .menu-buttons {
+  .teams-container {
     gap: 10px;
-    margin-top: 1rem;
+    margin: 10px 0;
   }
   
-  .btn {
-    padding: 10px 25px;
-    font-size: 14px;
-    min-width: 200px;
+  .team-box {
+    padding: 10px;
+    min-height: 140px;
+  }
+  
+  .team-title {
+    font-size: 16px;
+    margin-bottom: 8px;
   }
 }

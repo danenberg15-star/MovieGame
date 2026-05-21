@@ -7,6 +7,11 @@
   flex-direction: column;
   overflow: hidden;
   padding: 10px;
+  background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Header */
@@ -390,7 +395,7 @@
 }
 
 /* Small screens */
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 500px) {
   .decision-phase {
     padding: 6px;
   }

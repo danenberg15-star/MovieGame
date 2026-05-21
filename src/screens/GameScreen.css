@@ -178,7 +178,50 @@
   overflow: hidden;
 }
 
-/* Playing Phase - FIT IN VIEWPORT */
+/* Success Message Screen */
+.success-message-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.success-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: bounceIn 0.5s ease-out;
+}
+
+.success-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.success-subtitle {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Playing Phase */
 .answering-phase {
   background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);
   backdrop-filter: blur(10px);
@@ -192,17 +235,19 @@
   overflow: hidden;
 }
 
-/* Trailer takes most space */
+/* Trailer takes full space when showing */
 .trailer-container {
-  flex: 1;
-  min-height: 0;
-  margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
-/* Answer section compact */
+/* Answer section takes full space when showing */
 .answer-section {
-  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -210,8 +255,9 @@
   font-size: 14px;
   font-weight: 600;
   text-align: center;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   color: #ffffff;
+  flex-shrink: 0;
 }
 
 /* Answer grid with internal scroll ONLY */
@@ -219,10 +265,11 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
-  max-height: 28vh;
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 4px;
+  align-content: start;
 }
 
 .answer-grid::-webkit-scrollbar {
@@ -326,15 +373,16 @@
     gap: 8px;
   }
   
-  .answer-grid {
-    max-height: 25vh;
-    gap: 4px;
+  .success-icon {
+    font-size: 60px;
   }
   
-  .answer-option {
-    font-size: 10px;
-    padding: 6px;
-    min-height: 38px;
+  .success-title {
+    font-size: 24px;
+  }
+  
+  .success-subtitle {
+    font-size: 14px;
   }
 }
 
@@ -343,12 +391,17 @@
     width: 60px;
   }
   
-  .answer-grid {
-    max-height: 22vh;
+  .success-icon {
+    font-size: 50px;
+    margin-bottom: 10px;
   }
   
-  .answer-section h2 {
+  .success-title {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  .success-subtitle {
     font-size: 12px;
-    margin-bottom: 6px;
   }
 }

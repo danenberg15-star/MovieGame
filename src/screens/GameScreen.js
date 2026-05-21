@@ -18,6 +18,7 @@ function GameScreen() {
   const language = 'en';
   const [trailerEnded, setTrailerEnded] = useState(false);
   const [botIsThinking, setBotIsThinking] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Custom hook for game state management
   const {
@@ -40,13 +41,23 @@ function GameScreen() {
   const isMyTurn = gameState?.currentTurn === currentTeam;
 
   // Reset trailerEnded when currentMovie changes
-// Reset trailerEnded when currentMovie changes
-useEffect(() => {
-  if (currentMovie?.id) {
-    console.log('🎬 New movie detected, resetting trailerEnded');
-    setTrailerEnded(false);
-  }
-}, [currentMovie?.id]);
+  useEffect(() => {
+    if (currentMovie?.id) {
+      console.log('🎬 New movie detected, resetting trailerEnded');
+      setTrailerEnded(false);
+    }
+  }, [currentMovie?.id]);
+
+  // Show success message when entering decision phase
+  useEffect(() => {
+    if (phase === 'decision' && gameState?.wonCard) {
+      setShowSuccessMessage(true);
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [phase, gameState?.wonCard]);
 
   // Custom hook for game actions
   const {
@@ -94,10 +105,10 @@ useEffect(() => {
     roomCode,
     allMovies,
     handleAnswerSelect,
-    (value) => {}, // setSelectedAnswer - handled in useGameActions
-    (value) => {}, // setIsCorrect - handled in useGameActions
-    (msg) => {}, // setResultMessage - handled in useGameActions
-    (show) => {}, // setShowResult - handled in useGameActions
+    (value) => {},
+    (value) => {},
+    (msg) => {},
+    (show) => {},
     setRemovedAnswers,
     startNextRound,
     handleConnectionAttempt,
@@ -117,7 +128,9 @@ useEffect(() => {
         choose_answer: 'Choose the correct movie:',
         game_over: 'Game Over!',
         winner: 'Winner',
-        back_home: 'Back to Home'
+        back_home: 'Back to Home',
+        success_message: 'Correct! +1 Token',
+        now_connect: 'Now connect this movie to your collection'
       },
       he: {
         team_a: 'קבוצה א\'',
@@ -129,7 +142,9 @@ useEffect(() => {
         choose_answer: 'בחרו את הסרט הנכון:',
         game_over: 'המשחק הסתיים!',
         winner: 'מנצח',
-        back_home: 'חזרה לדף הבית'
+        back_home: 'חזרה לדף הבית',
+        success_message: 'כל הכבוד! +1 אסימון',
+        now_connect: 'עכשיו שייכו את הסרט לאוסף שלכם'
       }
     };
     return translations[language]?.[key] || key;
@@ -217,7 +232,6 @@ useEffect(() => {
 
   return (
     <div className={`game-screen ${language === 'he' ? 'rtl' : 'ltr'}`}>
-      {/* Main Layout: Left Sidebar | Center Content | Right Sidebar */}
       <div className="game-main-layout">
         
         {/* Left Sidebar - Team A */}
@@ -245,20 +259,28 @@ useEffect(() => {
 
         {/* Center Content Area */}
         <div className="game-content">
-          {phase === 'playing' && currentMovie && (
-            <div className="answering-phase">
-              {/* Trailer */}
-              <div className="trailer-container">
-                <TrailerPlayer
-                  key={currentMovie.id}
-                  movieId={currentMovie.id}
-                  onTrailerEnd={handleTrailerEnd}
-                  autoPlay={true}
-                />
-              </div>
+          {/* Success Message Screen */}
+          {showSuccessMessage && phase === 'decision' && (
+            <div className="success-message-screen">
+              <div className="success-icon">🎉</div>
+              <h1 className="success-title">{t('success_message')}</h1>
+              <p className="success-subtitle">{t('now_connect')}</p>
+            </div>
+          )}
 
-              {/* Answer Options */}
-              {trailerEnded && (
+          {/* Playing Phase */}
+          {phase === 'playing' && currentMovie && !showSuccessMessage && (
+            <div className="answering-phase">
+              {!trailerEnded ? (
+                <div className="trailer-container">
+                  <TrailerPlayer
+                    key={currentMovie.id}
+                    movieId={currentMovie.id}
+                    onTrailerEnd={handleTrailerEnd}
+                    autoPlay={true}
+                  />
+                </div>
+              ) : (
                 <div className="answer-section">
                   <h2>{t('choose_answer')}</h2>
                   <div className="answer-grid">
@@ -273,29 +295,29 @@ useEffect(() => {
                       </button>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {/* Result Message */}
-              {showResult && (
-                <div style={{
-                  marginTop: '20px',
-                  padding: '15px',
-                  borderRadius: '12px',
-                  textAlign: 'center',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  background: isCorrect ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)',
-                  border: `2px solid ${isCorrect ? '#4caf50' : '#f44336'}`,
-                  color: isCorrect ? '#4caf50' : '#f44336'
-                }}>
-                  {resultMessage}
+                  
+                  {showResult && (
+                    <div className="result-message" style={{
+                      marginTop: '15px',
+                      padding: '12px',
+                      borderRadius: '8px',
+                      textAlign: 'center',
+                      fontSize: '16px',
+                      fontWeight: 'bold',
+                      background: isCorrect ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)',
+                      border: `2px solid ${isCorrect ? '#4caf50' : '#f44336'}`,
+                      color: isCorrect ? '#4caf50' : '#f44336'
+                    }}>
+                      {resultMessage}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           )}
 
-          {phase === 'decision' && gameState.wonCard && (
+          {/* Decision Phase */}
+          {phase === 'decision' && !showSuccessMessage && gameState.wonCard && (
             <DecisionPhase
               wonCard={allMovies.find(m => m.id === gameState.wonCard.movieId)}
               teamCards={(currentTeam === 'A' ? teamAData : teamBData).cards}
