@@ -92,11 +92,16 @@ export const useGameActions = (
 
     console.log('🔗 Attempting connection:', { targetCard: targetCard.title.en, connectionType });
 
+    // 🔥 FIX: Use wonCard.team instead of currentTeam
+    const winningTeam = gameState.wonCard?.team || currentTeam;
+    const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
+
+    console.log('🔥 FIX - Connection for team:', winningTeam, 'teamKey:', teamKey);
+
     const validation = validateConnection(currentMovie, targetCard, connectionType);
 
     if (validation.valid) {
       // Successful connection
-      const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
       const currentCards = gameState[teamKey]?.cards || [];
       const newCards = [...currentCards, currentMovie];
       const newScore = newCards.length;
@@ -115,12 +120,12 @@ export const useGameActions = (
         currentMovie: null,
         currentMovieAttempts: [],
         wonCard: null,
-        currentTurn: currentTeam === 'A' ? 'B' : 'A'
+        currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
       };
 
       if (hasWon) {
         updates.phase = 'finished';
-        updates.winner = currentTeam;
+        updates.winner = winningTeam;
       } else {
         updates.phase = 'playing';
       }
@@ -146,7 +151,7 @@ export const useGameActions = (
         wonCard: null,
         currentMovie: null,
         currentMovieAttempts: [],
-        currentTurn: currentTeam === 'A' ? 'B' : 'A'
+        currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
       });
 
       setConnectionResult({ 
@@ -167,7 +172,12 @@ export const useGameActions = (
   const handleSaveToken = useCallback(async () => {
     console.log('💾 Saving token...');
 
-    const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
+    // 🔥 FIX: Use wonCard.team instead of currentTeam
+    const winningTeam = gameState.wonCard?.team || currentTeam;
+    const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
+
+    console.log('🔥 FIX - Saving token for team:', winningTeam, 'teamKey:', teamKey);
+
     const currentCards = gameState[teamKey]?.cards || [];
     const newCards = [...currentCards, currentMovie];
     const newScore = newCards.length;
@@ -183,11 +193,11 @@ export const useGameActions = (
       wonCard: null,
       currentMovie: null,
       currentMovieAttempts: [],
-      currentTurn: currentTeam === 'A' ? 'B' : 'A'
+      currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
     };
 
     if (hasWon) {
-      updates.winner = currentTeam;
+      updates.winner = winningTeam;
     }
 
     await update(ref(database, `games/${roomCode}`), updates);
@@ -281,6 +291,10 @@ export const useGameActions = (
     showResult,
     resultMessage,
     isCorrect,
-    connectionResult
+    connectionResult,
+    setSelectedAnswer,
+    setIsCorrect,
+    setResultMessage,
+    setShowResult
   };
 };
