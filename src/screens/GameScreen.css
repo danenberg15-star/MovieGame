@@ -11,8 +11,8 @@
   flex-direction: column;
 }
 
-/* Force landscape orientation */
-@media (orientation: portrait) {
+/* Force landscape orientation - FIXED */
+@media (max-aspect-ratio: 1/1) {
   .game-screen::before {
     content: '🔄 Please rotate your device to landscape';
     position: fixed;
@@ -367,7 +367,7 @@
 }
 
 /* Small screens */
-@media (max-width: 700px) and (orientation: landscape) {
+@media (max-width: 700px) and (min-aspect-ratio: 1/1) {
   .team-sidebar {
     width: 75px;
     padding: 8px 4px;
@@ -407,7 +407,7 @@
 }
 
 /* Very small screens */
-@media (max-height: 450px) and (orientation: landscape) {
+@media (max-height: 450px) and (min-aspect-ratio: 1/1) {
   .team-sidebar {
     width: 65px;
   }
