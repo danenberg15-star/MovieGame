@@ -59,6 +59,33 @@
   z-index: 1000;
 }
 
+.language-switcher select {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
+  border-radius: clamp(8px, 2vw, 12px);
+  font-size: clamp(14px, 3.5vw, 16px);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.language-switcher select:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.language-switcher select:active {
+  transform: scale(0.97);
+}
+
 .language-button {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -87,6 +114,101 @@
 
 .language-button:active {
   transform: scale(0.97);
+}
+
+/* PWA Install Button */
+.pwa-install-btn {
+  position: fixed;
+  bottom: clamp(20px, 5vw, 30px);
+  right: clamp(20px, 5vw, 30px);
+  z-index: 999;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: clamp(50px, 12vw, 60px);
+  height: clamp(50px, 12vw, 60px);
+  font-size: clamp(24px, 6vw, 28px);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pwa-install-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+}
+
+.pwa-install-btn:active {
+  transform: scale(0.95);
+}
+
+/* Landscape Lock Message - Hidden in landscape, visible in portrait */
+.landscape-lock {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  text-align: center;
+}
+
+.rotate-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: rotatePhone 2s ease-in-out infinite;
+}
+
+@keyframes rotatePhone {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  75% {
+    transform: rotate(15deg);
+  }
+}
+
+.landscape-lock h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #ffffff;
+}
+
+.landscape-lock p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* Show landscape lock ONLY in portrait mode */
+@media (orientation: portrait) {
+  .landscape-lock {
+    display: flex;
+  }
+}
+
+/* Hide main content in portrait mode */
+@media (orientation: portrait) {
+  .App > *:not(.landscape-lock):not(.language-switcher) {
+    display: none;
+  }
 }
 
 /* Global loading state */
@@ -283,11 +405,18 @@
   flex-direction: row-reverse;
 }
 
+[dir="rtl"] .pwa-install-btn {
+  right: auto;
+  left: clamp(20px, 5vw, 30px);
+}
+
 /* Print styles */
 @media print {
   .app-header,
   .language-switcher,
-  .app-toast {
+  .app-toast,
+  .landscape-lock,
+  .pwa-install-btn {
     display: none;
   }
 }
