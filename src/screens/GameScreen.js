@@ -19,6 +19,7 @@ function GameScreen() {
   const [trailerEnded, setTrailerEnded] = useState(false);
   const [botIsThinking, setBotIsThinking] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showConnectionMessage, setShowConnectionMessage] = useState(false);
 
   // Custom hook for game state management
   const {
@@ -84,6 +85,17 @@ function GameScreen() {
     setPhase,
     setTrailerEnded
   );
+
+  // Show connection result message
+  useEffect(() => {
+    if (connectionResult) {
+      setShowConnectionMessage(true);
+      const timer = setTimeout(() => {
+        setShowConnectionMessage(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [connectionResult]);
 
   // Memoize trailer end callback
   const handleTrailerEnd = useCallback(() => {
@@ -268,8 +280,19 @@ function GameScreen() {
             </div>
           )}
 
+          {/* Connection Result Message */}
+          {showConnectionMessage && connectionResult && (
+            <div className={`connection-message-screen ${connectionResult.success ? 'success' : 'failure'}`}>
+              <div className="connection-icon">{connectionResult.success ? '✅' : '❌'}</div>
+              <h1 className="connection-title">{connectionResult.message}</h1>
+              {connectionResult.hint && (
+                <p className="connection-hint">{connectionResult.hint}</p>
+              )}
+            </div>
+          )}
+
           {/* Playing Phase */}
-          {phase === 'playing' && currentMovie && !showSuccessMessage && (
+          {phase === 'playing' && currentMovie && !showSuccessMessage && !showConnectionMessage && (
             <div className="answering-phase">
               {!trailerEnded ? (
                 <div className="trailer-container">
@@ -317,7 +340,7 @@ function GameScreen() {
           )}
 
           {/* Decision Phase */}
-          {phase === 'decision' && !showSuccessMessage && gameState.wonCard && (
+          {phase === 'decision' && !showSuccessMessage && !showConnectionMessage && gameState.wonCard && (
             <DecisionPhase
               wonCard={allMovies.find(m => m.id === gameState.wonCard.movieId)}
               teamCards={(currentTeam === 'A' ? teamAData : teamBData).cards}

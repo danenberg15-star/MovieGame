@@ -96,7 +96,7 @@ export const useGameActions = (
     const winningTeam = gameState.wonCard?.team || currentTeam;
     const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
 
-    console.log('🔥 FIX - Connection for team:', winningTeam, 'teamKey:', teamKey);
+    console.log('🔥 Connection for team:', winningTeam, 'teamKey:', teamKey);
 
     const validation = validateConnection(currentMovie, targetCard, connectionType);
 
@@ -139,7 +139,7 @@ export const useGameActions = (
         setTimeout(() => {
           setConnectionResult(null);
           startNextRound();
-        }, 2000);
+        }, 3000);
       }
 
     } else {
@@ -176,7 +176,7 @@ export const useGameActions = (
     const winningTeam = gameState.wonCard?.team || currentTeam;
     const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
 
-    console.log('🔥 FIX - Saving token for team:', winningTeam, 'teamKey:', teamKey);
+    console.log('🔥 Saving token for team:', winningTeam, 'teamKey:', teamKey);
 
     const currentCards = gameState[teamKey]?.cards || [];
     const newCards = [...currentCards, currentMovie];
@@ -228,12 +228,11 @@ export const useGameActions = (
       // Correct answer - award token
       const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
       const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
-      const currentScore = gameState[teamKey]?.score || 0;
-      const newScore = currentScore + 1;
+
+      console.log(`🎫 Awarding token to Team ${currentTeam}: ${newTokens}`);
 
       await update(ref(database, `games/${roomCode}`), {
         [`${teamKey}/tokens`]: newTokens,
-        [`${teamKey}/score`]: newScore,
         phase: 'decision',
         wonCard: {
           movieId: currentMovie.id,
@@ -241,7 +240,7 @@ export const useGameActions = (
         }
       });
 
-      setResultMessage(language === 'he' ? 'צדקתם! +1 אסימון' : 'Correct! +1 Token');
+      setResultMessage(language === 'he' ? 'נכון! +1 אסימון' : 'Correct! +1 Token');
       setShowResult(true);
       setPhase('decision');
 

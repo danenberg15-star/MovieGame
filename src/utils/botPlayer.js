@@ -4,7 +4,7 @@
  * Bot Player Logic for QA Mode (Room 99999)
  * - 80% success rate in identifying movies
  * - 50% success rate in connecting cards
- * - Waits random time (3-8 seconds) before answering to appear human
+ * - Waits 1 second before answering
  */
 
 import { findConnection } from './gameLogic';
@@ -13,21 +13,13 @@ class BotPlayer {
   constructor() {
     this.successRateIdentify = 0.8;  // 80% success in identification
     this.successRateConnect = 0.5;   // 50% success in connection
-    this.thinkingTimeMin = 3000;     // Minimum 3 seconds
-    this.thinkingTimeMax = 8000;     // Maximum 8 seconds
-    this.connectionTimeMin = 5000;   // Minimum 5 seconds for connection decision
-    this.connectionTimeMax = 15000;  // Maximum 15 seconds for connection decision
+    this.answerDelay = 1000;         // 1 second for answering
+    this.decisionDelay = 1000;       // 1 second for connection decision
   }
 
   // Sleep function to simulate human delay
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  // Random delay between min and max
-  randomDelay(min, max) {
-    const delay = Math.floor(Math.random() * (max - min + 1)) + min;
-    return this.sleep(delay);
   }
 
   /**
@@ -41,8 +33,8 @@ class BotPlayer {
     console.log('🤖 Correct answer:', correctAnswer);
     console.log('🤖 Options:', options);
 
-    // Wait random time (appears human)
-    await this.randomDelay(this.thinkingTimeMin, this.thinkingTimeMax);
+    // Wait 1 second
+    await this.sleep(this.answerDelay);
 
     // 80% chance to choose correct answer
     let selectedAnswer;
@@ -71,8 +63,8 @@ class BotPlayer {
     console.log('🤖 Won card:', wonCard?.title?.en);
     console.log('🤖 Team cards:', teamCards?.length);
 
-    // Wait random time (thinking...)
-    await this.randomDelay(this.connectionTimeMin, this.connectionTimeMax);
+    // Wait 1 second
+    await this.sleep(this.decisionDelay);
 
     // Check if we have cards to connect with
     if (!teamCards || teamCards.length === 0) {
@@ -116,60 +108,6 @@ class BotPlayer {
     callback({
       action: 'save_token'
     });
-  }
-
-  /**
-   * Bot decides whether to connect a card or save token (old method)
-   * @param {Object} wonCard - The card the bot just won
-   * @param {Array} teamCards - Bot's current team cards
-   * @returns {Promise<Object>} - Decision object {action: 'connect'|'save_token', targetCard, connectionType}
-   */
-  async tryConnect(wonCard, teamCards) {
-    console.log('🤖 Bot tryConnect - wonCard:', wonCard);
-    console.log('🤖 Bot tryConnect - teamCards:', teamCards);
-
-    // Wait random time (thinking...)
-    await this.randomDelay(this.connectionTimeMin, this.connectionTimeMax);
-
-    // Check if we have cards to connect with
-    if (!teamCards || teamCards.length === 0) {
-      console.log('🤖 No cards to connect - saving token');
-      return {
-        action: 'save_token'
-      };
-    }
-
-    // Validate wonCard
-    if (!wonCard || !wonCard.id) {
-      console.log('🤖 Invalid wonCard - saving token');
-      return {
-        action: 'save_token'
-      };
-    }
-
-    // 50% chance to attempt connection
-    if (Math.random() < this.successRateConnect) {
-      // Try to find a real connection
-      const connection = this.findBestConnection(wonCard, teamCards);
-      
-      if (connection) {
-        console.log('🤖 Bot found connection:', connection);
-        return {
-          action: 'connect',
-          targetCard: connection.targetCard,
-          connectionType: connection.type
-        };
-      } else {
-        console.log('🤖 No valid connection found - saving token');
-      }
-    } else {
-      console.log('🤖 Bot decided not to connect (50% chance) - saving token');
-    }
-
-    // No connection found or decided not to connect
-    return {
-      action: 'save_token'
-    };
   }
 
   /**

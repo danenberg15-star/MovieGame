@@ -412,26 +412,26 @@ export function initializeGameState(anchorCards, allMovies, moviesIndex) {
   };
 }
 
-// Get success message for connection
+// Get success message for connection - IMPROVED
 export function getSuccessMessage(connectionType, connectionData, language = 'en') {
   switch (connectionType) {
     case 'actor':
       return language === 'he'
-        ? `צדקתם! ${connectionData.value.he} שיחק/ה בשני הסרטים`
-        : `Correct! ${connectionData.value.en} played in both movies`;
+        ? `נכון! השחקן/ית ${connectionData.value.he} משחק/ת ב-2 הסרטים`
+        : `Correct! The actor ${connectionData.value.en} played in both movies`;
     
     case 'director':
       return language === 'he'
-        ? `צדקתם! שניהם בוימו על ידי ${connectionData.value.he}`
+        ? `נכון! שניהם בוימו על ידי ${connectionData.value.he}`
         : `Correct! Both directed by ${connectionData.value.en}`;
     
     case 'year':
       return language === 'he'
-        ? `צדקתם! שניהם יצאו ב-${connectionData.value}`
+        ? `נכון! שניהם יצאו ב-${connectionData.value}`
         : `Correct! Both released in ${connectionData.value}`;
     
     default:
-      return language === 'he' ? 'צדקתם!' : 'Correct!';
+      return language === 'he' ? 'נכון!' : 'Correct!';
   }
 }
 
