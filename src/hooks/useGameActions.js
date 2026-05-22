@@ -53,6 +53,16 @@ export const useGameActions = (
     }
   }, [gameState?.currentMovieAttempts, gameState?.currentMovie?.id]);
 
+  // Reset answer UI when steal turn switches (same movie, new guessing team)
+  useEffect(() => {
+    const attempts = gameState?.currentMovieAttempts || [];
+    if (!currentMovie?.id || attempts.length === 0) return;
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setResultMessage('');
+    setIsCorrect(false);
+  }, [gameState?.currentTurn, currentMovie?.id, gameState?.currentMovieAttempts]);
+
   // Start next round (turnOverride avoids stale currentTurn after Firebase updates)
   const startNextRound = useCallback(async (turnOverride) => {
     if (!gameState || !allMovies.length) return;

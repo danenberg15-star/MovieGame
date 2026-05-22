@@ -56,8 +56,9 @@ export const useBotPlayer = (
     }
   }, [currentMovie?.id, setBotIsThinking]);
 
-  // 🔥 NEW: Track when it becomes bot's turn for the FIRST time for this movie
+  // Track when it becomes bot's turn for the FIRST time for this movie (QA only)
   useEffect(() => {
+    if (!isQAMode) return;
     if (isBotTurn && currentMovie?.id === currentMovieIdRef.current && phase === 'playing') {
       const attempts = gameState?.currentMovieAttempts || [];
       
@@ -67,7 +68,7 @@ export const useBotPlayer = (
         botTurnStartedRef.current = true;
       }
     }
-  }, [isBotTurn, currentMovie?.id, phase, gameState?.currentMovieAttempts]);
+  }, [isQAMode, isBotTurn, currentMovie?.id, phase, gameState?.currentMovieAttempts]);
 
   // Reset decision flag when phase changes to decision
   useEffect(() => {
@@ -162,15 +163,6 @@ export const useBotPlayer = (
 
   // Bot decision making (connect or save token)
   useEffect(() => {
-    console.log('🤖 Decision effect triggered:', {
-      isQAMode,
-      isBotTurn,
-      phase,
-      botIsThinking,
-      wonCard: gameState?.wonCard,
-      hasDecided: hasDecidedRef.current
-    });
-
     if (!isQAMode || !isBotTurn) {
       return;
     }

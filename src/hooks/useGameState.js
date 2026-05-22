@@ -8,6 +8,25 @@ import {
   initializeGameState
 } from '../utils/gameLogic';
 
+// Read team chosen in lobby (rooms/{code}/players/{id}.team)
+const getLobbyTeam = async (roomCode, playerId) => {
+  if (!roomCode || roomCode === '99999' || !playerId) return null;
+  try {
+    const snap = await get(ref(database, `rooms/${roomCode}/players/${playerId}/team`));
+    const team = snap.val();
+    return team === 'A' || team === 'B' ? team : null;
+  } catch {
+    return null;
+  }
+};
+
+const assignTeam = (lobbyTeam, playerTeams) => {
+  if (lobbyTeam) return lobbyTeam;
+  const teamACount = Object.values(playerTeams || {}).filter((t) => t === 'A').length;
+  const teamBCount = Object.values(playerTeams || {}).filter((t) => t === 'B').length;
+  return teamACount <= teamBCount ? 'A' : 'B';
+};
+
 // Helper function to sanitize Firebase keys
 const sanitizeFirebaseKey = (key) => {
   if (!key) return '';
@@ -108,6 +127,8 @@ export const useGameState = (roomCode, playerId, language) => {
 
           // Build movies index
           const moviesIndex = buildMoviesIndex(movies);
+          const lobbyTeam = await getLobbyTeam(roomCode, playerId);
+          const creatorTeam = assignTeam(lobbyTeam, {});
 
           // Initialize game state
           const initialState = {
@@ -122,7 +143,7 @@ export const useGameState = (roomCode, playerId, language) => {
               }
             },
             playerTeams: {
-              [playerId]: 'A'
+              [playerId]: creatorTeam
             },
             isQAMode,
             moviesIndex
@@ -145,24 +166,24 @@ export const useGameState = (roomCode, playerId, language) => {
         } else {
           console.log('✅ Game exists, joining...');
 
-          // Add player if not exists
           const existingGame = snapshot.val();
+          const lobbyTeam = await getLobbyTeam(roomCode, playerId);
+          const resolvedTeam = assignTeam(lobbyTeam, existingGame.playerTeams);
+
           if (!existingGame.players?.[playerId]) {
             const playerUpdate = {
               [`players/${playerId}`]: {
                 id: playerId,
                 name: `Player ${playerId.slice(-4)}`,
                 joinedAt: Date.now()
-              }
+              },
+              [`playerTeams/${playerId}`]: resolvedTeam
             };
-
-            // Assign to team with fewer players
-            const teamACount = Object.values(existingGame.playerTeams || {}).filter(t => t === 'A').length;
-            const teamBCount = Object.values(existingGame.playerTeams || {}).filter(t => t === 'B').length;
-            playerUpdate[`playerTeams/${playerId}`] = teamACount <= teamBCount ? 'A' : 'B';
-
             await update(gameRef, playerUpdate);
-            console.log('✅ Player added to game');
+            console.log('✅ Player added to game', { team: resolvedTeam, lobbyTeam });
+          } else if (lobbyTeam && existingGame.playerTeams?.[playerId] !== lobbyTeam) {
+            await update(gameRef, { [`playerTeams/${playerId}`]: lobbyTeam });
+            console.log('✅ Synced player team from lobby:', lobbyTeam);
           }
         }
 

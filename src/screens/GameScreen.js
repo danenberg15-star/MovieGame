@@ -18,6 +18,7 @@ function GameScreen() {
   const language = 'en';
   const [trailerEnded, setTrailerEnded] = useState(false);
   const trailerMovieIdRef = useRef(null);
+  const lastSyncedTurnRef = useRef(null);
   const [botIsThinking, setBotIsThinking] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showConnectionMessage, setShowConnectionMessage] = useState(false);
@@ -54,6 +55,25 @@ function GameScreen() {
     console.log('🎬 New movie in playing phase, resetting trailerEnded');
     setTrailerEnded(false);
   }, [currentMovie?.id, phase]);
+
+  // Re-sync trailer when turn switches on same movie (steal after wrong answer)
+  useEffect(() => {
+    if (phase !== 'playing' || !currentMovie?.id || !gameState?.currentTurn) return;
+
+    const turn = gameState.currentTurn;
+    const attempts = gameState?.currentMovieAttempts || [];
+
+    if (attempts.length === 0) {
+      lastSyncedTurnRef.current = turn;
+      return;
+    }
+
+    if (lastSyncedTurnRef.current !== turn) {
+      console.log('🔄 Turn switched to', turn, '- resetting trailer for all clients');
+      lastSyncedTurnRef.current = turn;
+      setTrailerEnded(false);
+    }
+  }, [gameState?.currentTurn, gameState?.currentMovieAttempts, currentMovie?.id, phase]);
 
   // Show success message when entering decision phase
   useEffect(() => {
