@@ -40,6 +40,17 @@ export const useGameActions = (
     setIsCorrect(false);
   }, [currentMovie?.id]);
 
+  // Reset local answer UI when round clears in Firebase (e.g. both teams failed on other client)
+  useEffect(() => {
+    const attempts = gameState?.currentMovieAttempts || [];
+    if (attempts.length === 0 && !gameState?.currentMovie?.id) {
+      setSelectedAnswer(null);
+      setShowResult(false);
+      setResultMessage('');
+      setIsCorrect(false);
+    }
+  }, [gameState?.currentMovieAttempts, gameState?.currentMovie?.id]);
+
   // Start next round
   const startNextRound = useCallback(async () => {
     if (!gameState || !allMovies.length) return;
@@ -265,15 +276,16 @@ export const useGameActions = (
       const newAttempts = [...attempts, answeringTeam];
 
       if (newAttempts.length >= 2) {
-        // Both teams failed - card returns to pool
+        // Both teams failed - card returns to pool; next turn stays with the team who just guessed (had the steal attempt)
         setResultMessage(language === 'he' ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!' : 'Both teams failed - card will return!');
         setShowResult(true);
 
+        const nextTurn = answeringTeam;
         setTimeout(async () => {
           await update(ref(database, `games/${roomCode}`), {
             currentMovie: null,
             currentMovieAttempts: [],
-            currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
+            currentTurn: nextTurn
           });
           startNextRound();
         }, 2000);
