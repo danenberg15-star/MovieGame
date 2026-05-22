@@ -151,14 +151,15 @@ export const useBotPlayer = (
       return;
     }
 
-    // 🔥 FIX: Don't check botIsThinking here - it causes infinite loop
-    // if (botIsThinking) {
-    //   console.log('🤖 Bot already thinking...');
-    //   return;
-    // }
-
+    // 🔥 CRITICAL: Check if already decided first, BEFORE botIsThinking check
     if (hasDecidedRef.current) {
       console.log('🤖 Already made decision for this round');
+      return;
+    }
+
+    // 🔥 Now check if bot is already processing a decision
+    if (botIsThinking) {
+      console.log('🤖 Bot already thinking, skipping...');
       return;
     }
 
@@ -189,14 +190,14 @@ export const useBotPlayer = (
 
     console.log('🤖 Won movie:', wonMovie.title.en);
 
-    // Mark as decided IMMEDIATELY to prevent re-runs
+    // 🔥 Mark as decided IMMEDIATELY to prevent re-runs
     hasDecidedRef.current = true;
 
-    // 🔥 FIX: Set thinking state INSIDE the timeout, not before
+    // 🔥 Set thinking state IMMEDIATELY (not in timeout) to block re-entry
+    setBotIsThinking(true);
+
     // Bot decides after 1.5 seconds (longer delay for decision phase)
     const timeoutId = setTimeout(() => {
-      setBotIsThinking(true);
-      
       botPlayer.makeDecision(wonMovie, botCards, async (decision) => {
         console.log('🤖 Bot decision:', decision);
 
@@ -223,6 +224,7 @@ export const useBotPlayer = (
     isQAMode,
     isBotTurn,
     phase,
+    botIsThinking,
     allMovies,
     handleConnectionAttempt,
     handleSaveToken,
