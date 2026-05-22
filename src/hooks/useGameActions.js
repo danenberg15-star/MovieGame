@@ -141,7 +141,7 @@ export const useGameActions = (
         currentMovie: null,
         currentMovieAttempts: [],
         wonCard: null,
-        currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
+        currentTurn: winningTeam
       };
 
       if (hasWon) {
@@ -214,7 +214,7 @@ export const useGameActions = (
       wonCard: null,
       currentMovie: null,
       currentMovieAttempts: [],
-      currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
+      currentTurn: winningTeam
     };
 
     if (hasWon) {

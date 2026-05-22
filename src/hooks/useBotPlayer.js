@@ -98,11 +98,9 @@ export const useBotPlayer = (
       return;
     }
 
-    // 🔥 CRITICAL: Check if this is a SECOND ATTEMPT (user already tried)
     const attempts = gameState?.currentMovieAttempts || [];
-    if (attempts.length > 0 && !botTurnStartedRef.current) {
-      console.log('🤖 This is a second attempt - user already tried, bot should NOT answer from old trailer');
-      console.log('🤖 Attempts:', attempts);
+    if (attempts.includes('B')) {
+      console.log('🤖 Bot already attempted this movie');
       return;
     }
 
