@@ -28,6 +28,7 @@ export const useBotPlayer = (
   const answerTimeoutRef = useRef(null);
   const decisionTimeoutRef = useRef(null);
   const currentMovieIdRef = useRef(null);
+  const hasDecidedRef = useRef(false);
 
   const isBotTurn = gameState?.currentTurn === 'B';
 
@@ -37,6 +38,7 @@ export const useBotPlayer = (
       console.log('🎬 Movie changed - resetting bot state');
       currentMovieIdRef.current = currentMovie.id;
       hasAnsweredRef.current = false;
+      hasDecidedRef.current = false;
       
       // Clear any existing timeouts
       if (answerTimeoutRef.current) {
@@ -49,6 +51,13 @@ export const useBotPlayer = (
       }
     }
   }, [currentMovie?.id]);
+
+  // Reset decision flag when phase changes
+  useEffect(() => {
+    if (phase === 'decision') {
+      hasDecidedRef.current = false;
+    }
+  }, [phase]);
 
   // Bot answering (when trailer ends)
   useEffect(() => {
@@ -105,7 +114,7 @@ export const useBotPlayer = (
       }
     };
   }, [
-    trailerEnded,  // First dependency - most important!
+    trailerEnded,
     isQAMode,
     isBotTurn,
     phase,
@@ -118,6 +127,15 @@ export const useBotPlayer = (
 
   // Bot decision making (connect or save token)
   useEffect(() => {
+    console.log('🤖 Decision effect triggered:', {
+      isQAMode,
+      isBotTurn,
+      phase,
+      botIsThinking,
+      wonCard: gameState?.wonCard,
+      hasDecided: hasDecidedRef.current
+    });
+
     if (!isQAMode || !isBotTurn) {
       return;
     }
@@ -131,6 +149,11 @@ export const useBotPlayer = (
       return;
     }
 
+    if (hasDecidedRef.current) {
+      console.log('🤖 Already made decision for this round');
+      return;
+    }
+
     if (!gameState?.wonCard) {
       console.log('🤖 No wonCard in gameState');
       return;
@@ -138,7 +161,7 @@ export const useBotPlayer = (
 
     // Check if this card was won by bot (Team B)
     if (gameState.wonCard.team !== 'B') {
-      console.log('🤖 Card was not won by bot team');
+      console.log('🤖 Card was not won by bot team:', gameState.wonCard.team);
       return;
     }
 
@@ -147,6 +170,7 @@ export const useBotPlayer = (
 
     console.log('🤖 Bot making connection decision...');
     console.log('🤖 Bot cards:', botCards.length);
+    console.log('🤖 Won card:', gameState.wonCard);
 
     const wonMovie = allMovies.find(m => m.id === gameState.wonCard.movieId);
     
@@ -157,6 +181,8 @@ export const useBotPlayer = (
 
     console.log('🤖 Won movie:', wonMovie.title.en);
 
+    // Mark as decided BEFORE starting timeout
+    hasDecidedRef.current = true;
     setBotIsThinking(true);
 
     // Bot decides after 1 second
@@ -182,7 +208,7 @@ export const useBotPlayer = (
       }
     };
   }, [
-    gameState,
+    gameState?.wonCard,  // 🔥 FIX: Add wonCard explicitly
     isQAMode,
     isBotTurn,
     phase,
