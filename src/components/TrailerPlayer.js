@@ -44,6 +44,12 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       setIsPlaying(false);
     };
 
+    const handleEnded = () => {
+      console.log('🎬 Video ended naturally');
+      setIsPlaying(false);
+      handleTrailerEndCallback();
+    };
+
     const handleError = (e) => {
       console.error('❌ Video error:', e);
       console.error('Video error details:', video.error);
@@ -74,14 +80,8 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
     };
 
     const handleTimeUpdate = () => {
-      const remaining = Math.ceil(15 - video.currentTime);
+      const remaining = Math.ceil(video.duration - video.currentTime);
       setTimeLeft(Math.max(0, remaining));
-      
-      // Auto-stop at 15 seconds - FIXED: Call callback BEFORE pausing
-      if (video.currentTime >= 15) {
-        handleTrailerEndCallback();  // ✅ קורא קודם ל-callback
-        video.pause();                // ✅ ואז עוצר
-      }
     };
 
     const handleCanPlay = () => {
@@ -126,6 +126,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
 
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
     video.addEventListener('error', handleError);
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('canplay', handleCanPlay);
@@ -136,6 +137,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
     return () => {
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
       video.removeEventListener('error', handleError);
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('canplay', handleCanPlay);
@@ -281,7 +283,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
         <span className="info-text">
           {isLoading 
             ? (t('loading_trailer') || 'Loading trailer...') 
-            : (t('watch_trailer') || 'Watch the 15-second trailer')
+            : (t('watch_trailer') || 'Watch the trailer')
           }
         </span>
       </div>
