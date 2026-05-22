@@ -29,7 +29,6 @@ export const useBotPlayer = (
   const decisionTimeoutRef = useRef(null);
 
   const isBotTurn = gameState?.currentTurn === 'B';
-  const botCards = gameState?.teamB?.cards || [];
 
   // Reset when movie changes
   useEffect(() => {
@@ -134,6 +133,9 @@ export const useBotPlayer = (
       return;
     }
 
+    // Get bot cards inside useEffect
+    const botCards = gameState?.teamB?.cards || [];
+
     console.log('🤖 Bot making connection decision...');
     console.log('🤖 Bot cards:', botCards.length);
 
@@ -170,7 +172,6 @@ export const useBotPlayer = (
     isBotTurn,
     phase,
     botIsThinking,
-    botCards,
     allMovies,
     handleConnectionAttempt,
     handleSaveToken,

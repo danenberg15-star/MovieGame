@@ -103,19 +103,6 @@ export function buildMoviesIndex(allMovies) {
   };
 }
 
-// Helper function to pick from top scored movies
-function pickFromTopScored(moviesWithScores, description) {
-  // Sort by score (highest first)
-  moviesWithScores.sort((a, b) => b.score - a.score);
-
-  // Pick from top 3 to add some variety
-  const topMovies = moviesWithScores.slice(0, Math.min(3, moviesWithScores.length));
-  const randomIndex = Math.floor(Math.random() * topMovies.length);
-
-  console.log(`🎯 Smart selection: Picked movie connecting to ${description} with score ${topMovies[randomIndex].score}`);
-  return topMovies[randomIndex].movie;
-}
-
 // Select next movie with NEW LOGIC: Random connection type selection (33% each)
 export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn) {
   console.log('🎬 ========== SELECT NEXT MOVIE - NEW LOGIC ==========');
