@@ -19,6 +19,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
   const handleTrailerEndCallback = useCallback(() => {
     if (hasCalledOnTrailerEnd.current) return;
     hasCalledOnTrailerEnd.current = true;
+    console.log('🎬 Trailer ended');
     if (onTrailerEnd) {
       onTrailerEnd();
     }
@@ -76,10 +77,10 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       const remaining = Math.ceil(15 - video.currentTime);
       setTimeLeft(Math.max(0, remaining));
       
-      // Auto-stop at 15 seconds
+      // Auto-stop at 15 seconds - FIXED: Call callback BEFORE pausing
       if (video.currentTime >= 15) {
-        video.pause();
-        handleTrailerEndCallback();
+        handleTrailerEndCallback();  // ✅ קורא קודם ל-callback
+        video.pause();                // ✅ ואז עוצר
       }
     };
 
