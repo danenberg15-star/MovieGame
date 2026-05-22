@@ -225,18 +225,19 @@ export const useGameActions = (
     setIsCorrect(correct);
 
     if (correct) {
-      // Correct answer - award token
-      const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
+      // 🔥 FIX: Use gameState.currentTurn (who's turn it is) instead of currentTeam (the UI player)
+      const answeringTeam = gameState.currentTurn;
+      const teamKey = answeringTeam === 'A' ? 'teamA' : 'teamB';
       const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
 
-      console.log(`🎫 Awarding token to Team ${currentTeam}: ${newTokens}`);
+      console.log(`🎫 Awarding token to Team ${answeringTeam}: ${newTokens}`);
 
       await update(ref(database, `games/${roomCode}`), {
         [`${teamKey}/tokens`]: newTokens,
         phase: 'decision',
         wonCard: {
           movieId: currentMovie.id,
-          team: currentTeam
+          team: answeringTeam
         }
       });
 
@@ -248,9 +249,10 @@ export const useGameActions = (
       // Wrong answer - remove it and switch turn
       const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), answer];
 
-      // Check if this is the second team's attempt
+      // 🔥 FIX: Use gameState.currentTurn instead of currentTeam
+      const answeringTeam = gameState.currentTurn;
       const attempts = gameState.currentMovieAttempts || [];
-      const newAttempts = [...attempts, currentTeam];
+      const newAttempts = [...attempts, answeringTeam];
 
       if (newAttempts.length >= 2) {
         // Both teams failed - card returns to pool
@@ -268,7 +270,7 @@ export const useGameActions = (
 
       } else {
         // Switch turn to other team
-        const nextTurn = currentTeam === 'A' ? 'B' : 'A';
+        const nextTurn = answeringTeam === 'A' ? 'B' : 'A';
         
         await update(ref(database, `games/${roomCode}`), {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
