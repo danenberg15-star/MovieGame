@@ -27,13 +27,15 @@ export const useBotPlayer = (
   const hasAnsweredRef = useRef(false);
   const answerTimeoutRef = useRef(null);
   const decisionTimeoutRef = useRef(null);
+  const currentMovieIdRef = useRef(null);
 
   const isBotTurn = gameState?.currentTurn === 'B';
 
   // Reset when movie changes
   useEffect(() => {
-    if (currentMovie?.id) {
+    if (currentMovie?.id && currentMovie.id !== currentMovieIdRef.current) {
       console.log('🎬 Movie changed - resetting bot state');
+      currentMovieIdRef.current = currentMovie.id;
       hasAnsweredRef.current = false;
       
       // Clear any existing timeouts
@@ -50,8 +52,13 @@ export const useBotPlayer = (
 
   // Bot answering (when trailer ends)
   useEffect(() => {
+    // CRITICAL: Only run when trailer has ACTUALLY ended
+    if (!trailerEnded) {
+      return;
+    }
+
     // Early exit conditions
-    if (!isQAMode || !isBotTurn || !trailerEnded || !currentMovie || hasAnsweredRef.current) {
+    if (!isQAMode || !isBotTurn || !currentMovie || hasAnsweredRef.current) {
       return;
     }
 
@@ -64,7 +71,14 @@ export const useBotPlayer = (
       return;
     }
 
+    // Double-check we haven't answered this movie already
+    if (currentMovieIdRef.current !== currentMovie.id) {
+      console.log('🤖 Movie mismatch - skipping');
+      return;
+    }
+
     console.log('🤖 Bot preparing to answer...');
+    console.log('🤖 Trailer ended:', trailerEnded);
     console.log('🤖 Answer options available:', answerOptions.length);
     
     // Mark as answered BEFORE starting timeout
@@ -91,9 +105,9 @@ export const useBotPlayer = (
       }
     };
   }, [
+    trailerEnded,  // First dependency - most important!
     isQAMode,
     isBotTurn,
-    trailerEnded,
     phase,
     currentMovie,
     answerOptions,
