@@ -9,7 +9,6 @@ export const useBotPlayer = (
   phase,
   botIsThinking,
   setBotIsThinking,
-  trailerEnded,
   answerOptions,
   language,
   roomCode,
@@ -105,9 +104,9 @@ export const useBotPlayer = (
       return;
     }
 
-    // CRITICAL: Only proceed when trailer has ACTUALLY ended
-    if (!trailerEnded) {
-      console.log('🤖 Waiting for trailer to end...');
+    const trailerReady = gameState?.currentMovie?.trailerWatchedForTurn === 'B';
+    if (!trailerReady) {
+      console.log('🤖 Waiting for trailer to be watched...');
       return;
     }
 
@@ -121,7 +120,7 @@ export const useBotPlayer = (
     }
 
     console.log('🤖 Bot preparing to answer...');
-    console.log('🤖 Trailer ended:', trailerEnded);
+    console.log('🤖 Trailer watched for turn B');
     console.log('🤖 Answer options available:', answerOptions.length);
     console.log('🤖 Attempts:', attempts.length);
     
@@ -136,7 +135,7 @@ export const useBotPlayer = (
 
       botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
         console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
-        handleAnswerSelect(selectedAnswer, true, true, false, 'B');
+        handleAnswerSelect(selectedAnswer, true, false, 'B');
         setBotIsThinking(false);
       });
     }, 1000);
@@ -150,7 +149,7 @@ export const useBotPlayer = (
     };
   }, [
     answerOptions,
-    trailerEnded,
+    gameState?.currentMovie?.trailerWatchedForTurn,
     isQAMode,
     isBotTurn,
     phase,

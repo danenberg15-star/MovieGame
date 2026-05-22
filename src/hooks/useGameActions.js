@@ -24,8 +24,7 @@ export const useGameActions = (
   setCurrentMovie,
   setAnswerOptions,
   setRemovedAnswers,
-  setPhase,
-  setTrailerEnded
+  setPhase
 ) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
@@ -103,7 +102,8 @@ export const useGameActions = (
         currentMovie: {
           id: nextMovie.id,
           options,
-          removedAnswers: []
+          removedAnswers: [],
+          trailerWatchedForTurn: null
         },
         currentMovieAttempts: [],
         roundNumber: (gameState.roundNumber || 0) + 1,
@@ -242,6 +242,16 @@ export const useGameActions = (
     }
   }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
 
+  // Mark trailer watched for the active guessing team (syncs all clients)
+  const markTrailerWatched = useCallback(async () => {
+    if (!gameState?.currentMovie?.id || !gameState?.currentTurn) return;
+    if (gameState.currentMovie.trailerWatchedForTurn === gameState.currentTurn) return;
+
+    await update(ref(database, `games/${roomCode}`), {
+      'currentMovie/trailerWatchedForTurn': gameState.currentTurn
+    });
+  }, [gameState?.currentMovie, gameState?.currentTurn, roomCode]);
+
   // Handle anchor reveal continue
   const handleAnchorContinue = useCallback(async () => {
     console.log('▶️ Continuing from anchor reveal...');
@@ -250,9 +260,16 @@ export const useGameActions = (
   }, [startNextRound, setPhase]);
 
   // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
-  const handleAnswerSelect = useCallback(async (answer, isMyTurn, trailerEnded, botIsThinking, answeringTeamOverride) => {
-    if (!currentMovie || !trailerEnded) {
-      console.warn('⚠️ Answer blocked: missing movie or trailer not ended', { hasMovie: !!currentMovie, trailerEnded });
+  const handleAnswerSelect = useCallback(async (answer, isMyTurn, botIsThinking, answeringTeamOverride) => {
+    const answeringTeam = answeringTeamOverride ?? gameState.currentTurn;
+    const trailerReady = gameState?.currentMovie?.trailerWatchedForTurn === answeringTeam;
+
+    if (!currentMovie || !trailerReady) {
+      console.warn('⚠️ Answer blocked: missing movie or trailer not watched', {
+        hasMovie: !!currentMovie,
+        trailerWatchedForTurn: gameState?.currentMovie?.trailerWatchedForTurn,
+        answeringTeam
+      });
       return;
     }
     if (!isMyTurn && !answeringTeamOverride) {
@@ -269,7 +286,6 @@ export const useGameActions = (
 
     const correct = checkAnswer(answer, currentMovie, language);
     setIsCorrect(correct);
-    const answeringTeam = answeringTeamOverride ?? gameState.currentTurn;
 
     if (correct) {
       const teamKey = answeringTeam === 'A' ? 'teamA' : 'teamB';
@@ -319,6 +335,7 @@ export const useGameActions = (
         
         await update(ref(database, `games/${roomCode}`), {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
+          'currentMovie/trailerWatchedForTurn': null,
           currentMovieAttempts: newAttempts,
           currentTurn: nextTurn
         });
@@ -334,6 +351,7 @@ export const useGameActions = (
     handleConnectionAttempt,
     handleSaveToken,
     handleAnchorContinue,
+    markTrailerWatched,
     handleAnswerSelect,
     selectedAnswer,
     showResult,
