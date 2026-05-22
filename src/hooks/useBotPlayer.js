@@ -59,71 +59,78 @@ export const useBotPlayer = (
     }
   }, [phase]);
 
-  // Bot answering (when trailer ends)
-  useEffect(() => {
-    // CRITICAL: Only run when trailer has ACTUALLY ended
-    if (!trailerEnded) {
-      return;
+// Bot answering (when trailer ends)
+useEffect(() => {
+  // Early exit conditions - check these FIRST
+  if (!isQAMode || !isBotTurn || !currentMovie) {
+    return;
+  }
+
+  if (phase !== 'playing') {
+    return;
+  }
+
+  if (hasAnsweredRef.current) {
+    return;
+  }
+
+  // Check if options are ready
+  if (!answerOptions || answerOptions.length === 0) {
+    console.log('🤖 No answer options available yet');
+    return;
+  }
+
+  // CRITICAL: Only proceed when trailer has ACTUALLY ended
+  if (!trailerEnded) {
+    console.log('🤖 Waiting for trailer to end...');
+    return;
+  }
+
+  // Double-check we haven't answered this movie already
+  if (currentMovieIdRef.current !== currentMovie.id) {
+    console.log('🤖 Movie mismatch - skipping');
+    return;
+  }
+
+  console.log('🤖 Bot preparing to answer...');
+  console.log('🤖 Trailer ended:', trailerEnded);
+  console.log('🤖 Answer options available:', answerOptions.length);
+  console.log('🤖 Options:', answerOptions);
+  
+  // Mark as answered BEFORE starting timeout
+  hasAnsweredRef.current = true;
+  setBotIsThinking(true);
+
+  // Bot answers after 1 second
+  const timeoutId = setTimeout(() => {
+    const correctAnswer = currentMovie.title[language];
+    console.log('🤖 Correct answer:', correctAnswer);
+
+    botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
+      console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
+      handleAnswerSelect(selectedAnswer, true, true, false);
+      setBotIsThinking(false);
+    });
+  }, 1000);
+
+  answerTimeoutRef.current = timeoutId;
+
+  return () => {
+    if (answerTimeoutRef.current) {
+      clearTimeout(answerTimeoutRef.current);
     }
-
-    // Early exit conditions
-    if (!isQAMode || !isBotTurn || !currentMovie || hasAnsweredRef.current) {
-      return;
-    }
-
-    if (phase !== 'playing') {
-      return;
-    }
-
-    if (!answerOptions || answerOptions.length === 0) {
-      console.log('🤖 No answer options available yet');
-      return;
-    }
-
-    // Double-check we haven't answered this movie already
-    if (currentMovieIdRef.current !== currentMovie.id) {
-      console.log('🤖 Movie mismatch - skipping');
-      return;
-    }
-
-    console.log('🤖 Bot preparing to answer...');
-    console.log('🤖 Trailer ended:', trailerEnded);
-    console.log('🤖 Answer options available:', answerOptions.length);
-    
-    // Mark as answered BEFORE starting timeout
-    hasAnsweredRef.current = true;
-    setBotIsThinking(true);
-
-    // Bot answers after 1 second
-    const timeoutId = setTimeout(() => {
-      const correctAnswer = currentMovie.title[language];
-      console.log('🤖 Correct answer:', correctAnswer);
-
-      botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
-        console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
-        handleAnswerSelect(selectedAnswer, true, true, false);
-        setBotIsThinking(false);
-      });
-    }, 1000);
-
-    answerTimeoutRef.current = timeoutId;
-
-    return () => {
-      if (answerTimeoutRef.current) {
-        clearTimeout(answerTimeoutRef.current);
-      }
-    };
-  }, [
-    trailerEnded,
-    isQAMode,
-    isBotTurn,
-    phase,
-    currentMovie,
-    answerOptions,
-    language,
-    handleAnswerSelect,
-    setBotIsThinking
-  ]);
+  };
+}, [
+  answerOptions,     // 🔥 CRITICAL: Must be first to catch updates!
+  trailerEnded,
+  isQAMode,
+  isBotTurn,
+  phase,
+  currentMovie,
+  language,
+  handleAnswerSelect,
+  setBotIsThinking
+]);
 
   // Bot decision making (connect or save token)
   useEffect(() => {
@@ -218,7 +225,7 @@ export const useBotPlayer = (
     handleSaveToken,
     setBotIsThinking
   ]);
-  
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
