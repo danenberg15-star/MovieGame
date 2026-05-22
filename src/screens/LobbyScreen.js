@@ -129,6 +129,13 @@ function LobbyScreen() {
     return () => unsubscribe();
   }, [roomCode, playerId, navigate]);
 
+  // Navigate all players when host starts the game
+  useEffect(() => {
+    if (room?.status === 'playing' && roomCode && playerId) {
+      navigate(`/game/${roomCode}?playerId=${playerId}`);
+    }
+  }, [room?.status, roomCode, playerId, navigate]);
+
   // Join team
   const handleJoinTeam = async (team) => {
     if (myReady) return; // Can't change team after ready
@@ -163,9 +170,7 @@ function LobbyScreen() {
     try {
       const roomRef = ref(database, `rooms/${roomCode}`);
       await update(roomRef, { status: 'playing' });
-      
-      // Navigate to game screen
-      navigate(`/game/${roomCode}?playerId=${playerId}`);
+      // Navigation is handled by the status listener above (all players)
     } catch (error) {
       console.error('Error starting game:', error);
     }
