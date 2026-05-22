@@ -29,6 +29,7 @@ export const useBotPlayer = (
   const decisionTimeoutRef = useRef(null);
   const currentMovieIdRef = useRef(null);
   const hasDecidedRef = useRef(false);
+  const botTurnStartedRef = useRef(false); // 🔥 NEW: Track if bot's turn just started
 
   const isBotTurn = gameState?.currentTurn === 'B';
 
@@ -39,6 +40,7 @@ export const useBotPlayer = (
       currentMovieIdRef.current = currentMovie.id;
       hasAnsweredRef.current = false;
       hasDecidedRef.current = false;
+      botTurnStartedRef.current = false; // 🔥 Reset bot turn tracker
       
       // Clear any existing timeouts
       if (answerTimeoutRef.current) {
@@ -49,14 +51,29 @@ export const useBotPlayer = (
         clearTimeout(decisionTimeoutRef.current);
         decisionTimeoutRef.current = null;
       }
+      
+      setBotIsThinking(false);
     }
-  }, [currentMovie?.id]);
+  }, [currentMovie?.id, setBotIsThinking]);
+
+  // 🔥 NEW: Track when it becomes bot's turn for the FIRST time for this movie
+  useEffect(() => {
+    if (isBotTurn && currentMovie?.id === currentMovieIdRef.current && phase === 'playing') {
+      const attempts = gameState?.currentMovieAttempts || [];
+      
+      // If this is bot's FIRST turn for this movie (no attempts yet from user)
+      if (attempts.length === 0 && !botTurnStartedRef.current) {
+        console.log('🤖 Bot\'s FIRST turn for this movie - ready to watch trailer');
+        botTurnStartedRef.current = true;
+      }
+    }
+  }, [isBotTurn, currentMovie?.id, phase, gameState?.currentMovieAttempts]);
 
   // Reset decision flag when phase changes to decision
   useEffect(() => {
     if (phase === 'decision') {
       hasDecidedRef.current = false;
-      setBotIsThinking(false); // Reset thinking state when entering decision phase
+      setBotIsThinking(false);
     }
   }, [phase, setBotIsThinking]);
 
@@ -81,21 +98,33 @@ export const useBotPlayer = (
       return;
     }
 
+    // 🔥 CRITICAL: Check if this is a SECOND ATTEMPT (user already tried)
+    const attempts = gameState?.currentMovieAttempts || [];
+    if (attempts.length > 0 && !botTurnStartedRef.current) {
+      console.log('🤖 This is a second attempt - user already tried, bot should NOT answer from old trailer');
+      console.log('🤖 Attempts:', attempts);
+      return;
+    }
+
     // CRITICAL: Only proceed when trailer has ACTUALLY ended
     if (!trailerEnded) {
       console.log('🤖 Waiting for trailer to end...');
       return;
     }
 
-    // Double-check we haven't answered this movie already
+    // Verify this movie ID matches current movie
     if (currentMovieIdRef.current !== currentMovie.id) {
-      console.log('🤖 Movie mismatch - skipping');
+      console.log('🤖 Movie ID mismatch - skipping answer', {
+        current: currentMovieIdRef.current,
+        movie: currentMovie.id
+      });
       return;
     }
 
     console.log('🤖 Bot preparing to answer...');
     console.log('🤖 Trailer ended:', trailerEnded);
     console.log('🤖 Answer options available:', answerOptions.length);
+    console.log('🤖 Attempts:', attempts.length);
     
     // Mark as answered BEFORE starting timeout
     hasAnsweredRef.current = true;
@@ -128,6 +157,7 @@ export const useBotPlayer = (
     phase,
     currentMovie,
     language,
+    gameState?.currentMovieAttempts,
     handleAnswerSelect,
     setBotIsThinking
   ]);
@@ -151,13 +181,13 @@ export const useBotPlayer = (
       return;
     }
 
-    // 🔥 CRITICAL: Check if already decided first, BEFORE botIsThinking check
+    // Check if already decided first
     if (hasDecidedRef.current) {
       console.log('🤖 Already made decision for this round');
       return;
     }
 
-    // 🔥 Now check if bot is already processing a decision
+    // Then check if bot is thinking
     if (botIsThinking) {
       console.log('🤖 Bot already thinking, skipping...');
       return;
@@ -190,10 +220,10 @@ export const useBotPlayer = (
 
     console.log('🤖 Won movie:', wonMovie.title.en);
 
-    // 🔥 Mark as decided IMMEDIATELY to prevent re-runs
+    // Mark as decided IMMEDIATELY to prevent re-runs
     hasDecidedRef.current = true;
-
-    // 🔥 Set thinking state IMMEDIATELY (not in timeout) to block re-entry
+    
+    // Set thinking state IMMEDIATELY to block re-entry
     setBotIsThinking(true);
 
     // Bot decides after 1.5 seconds (longer delay for decision phase)
