@@ -283,8 +283,7 @@ export const useGameActions = (
         setRemovedAnswers(newRemovedAnswers);
       }
     }
-  }, [selectedAnswer, currentMovie, currentTeam, gameState, roomCode, language, setPhase, setRemovedAnswers, startNextRound]);
-
+  }, [selectedAnswer, currentMovie, gameState, roomCode, language, setPhase, setRemovedAnswers, startNextRound]);
   return {
     startNextRound,
     handleConnectionAttempt,
