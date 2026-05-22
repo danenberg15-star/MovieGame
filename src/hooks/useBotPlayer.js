@@ -208,7 +208,7 @@ export const useBotPlayer = (
       }
     };
   }, [
-    gameState?.wonCard,  // 🔥 FIX: Add wonCard explicitly
+    gameState,  // Include full gameState to capture all changes
     isQAMode,
     isBotTurn,
     phase,
@@ -218,7 +218,7 @@ export const useBotPlayer = (
     handleSaveToken,
     setBotIsThinking
   ]);
-
+  
   // Cleanup on unmount
   useEffect(() => {
     return () => {
