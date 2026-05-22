@@ -50,6 +50,7 @@ export const useBotPlayer = (
 
   // Bot answering (when trailer ends)
   useEffect(() => {
+    // Early exit conditions
     if (!isQAMode || !isBotTurn || !trailerEnded || !currentMovie || hasAnsweredRef.current) {
       return;
     }
@@ -58,33 +59,29 @@ export const useBotPlayer = (
       return;
     }
 
-    // Prevent multiple answers
-    if (hasAnsweredRef.current) {
-      console.log('🤖 Bot already answered for this movie');
+    if (!answerOptions || answerOptions.length === 0) {
+      console.log('🤖 No answer options available yet');
       return;
     }
 
     console.log('🤖 Bot preparing to answer...');
+    console.log('🤖 Answer options available:', answerOptions.length);
+    
+    // Mark as answered BEFORE starting timeout
     hasAnsweredRef.current = true;
     setBotIsThinking(true);
 
     // Bot answers after 1 second
     const timeoutId = setTimeout(() => {
-      if (!answerOptions || answerOptions.length === 0) {
-        console.log('🤖 No answer options available');
-        setBotIsThinking(false);
-        return;
-      }
-
       const correctAnswer = currentMovie.title[language];
+      console.log('🤖 Correct answer:', correctAnswer);
 
       botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
         console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
-
         handleAnswerSelect(selectedAnswer, true, true, false);
         setBotIsThinking(false);
       });
-    }, 1000); // 1 second delay
+    }, 1000);
 
     answerTimeoutRef.current = timeoutId;
 
@@ -94,13 +91,11 @@ export const useBotPlayer = (
       }
     };
   }, [
-    gameState,
-    currentMovie,
     isQAMode,
     isBotTurn,
     trailerEnded,
     phase,
-    botIsThinking,
+    currentMovie,
     answerOptions,
     language,
     handleAnswerSelect,
@@ -133,7 +128,7 @@ export const useBotPlayer = (
       return;
     }
 
-    // Get bot cards inside useEffect
+    // Get bot cards
     const botCards = gameState?.teamB?.cards || [];
 
     console.log('🤖 Bot making connection decision...');
@@ -163,9 +158,15 @@ export const useBotPlayer = (
 
         setBotIsThinking(false);
       });
-    }, 1000); // 1 second delay
+    }, 1000);
 
     decisionTimeoutRef.current = timeoutId;
+
+    return () => {
+      if (decisionTimeoutRef.current) {
+        clearTimeout(decisionTimeoutRef.current);
+      }
+    };
   }, [
     gameState,
     isQAMode,
