@@ -1,7 +1,5 @@
 // src/hooks/useBotPlayer.js
 import { useEffect, useRef } from 'react';
-import { ref, update } from 'firebase/database';
-import { database } from '../firebase';
 import botPlayer from '../utils/botPlayer';
 
 export const useBotPlayer = (
@@ -27,214 +25,131 @@ export const useBotPlayer = (
   handleSaveToken
 ) => {
   const hasAnsweredRef = useRef(false);
-  const hasDecidedRef = useRef(false);
-  const currentMovieIdRef = useRef(null);
-  const answeringTimeoutRef = useRef(null);
+  const answerTimeoutRef = useRef(null);
   const decisionTimeoutRef = useRef(null);
 
-  // Reset logic - SEPARATE useEffect
-  useEffect(() => {
-    const newMovieId = currentMovie?.id;
-    
-    if (newMovieId && newMovieId !== currentMovieIdRef.current) {
-      console.log('🎬 Movie changed - resetting bot state');
-      
-      // Cancel any pending operations
-      if (answeringTimeoutRef.current) {
-        clearTimeout(answeringTimeoutRef.current);
-        answeringTimeoutRef.current = null;
-      }
-      
-      // Update refs
-      currentMovieIdRef.current = newMovieId;
-      hasAnsweredRef.current = false;
-      setBotIsThinking(false);
-    }
-  }, [currentMovie?.id, setBotIsThinking]);
+  const isBotTurn = gameState?.currentTurn === 'B';
+  const botCards = gameState?.teamB?.cards || [];
 
-  // Phase change logic - SEPARATE useEffect
+  // Reset when movie changes
   useEffect(() => {
-    if (phase === 'decision') {
-      hasDecidedRef.current = false;
-      if (answeringTimeoutRef.current) {
-        clearTimeout(answeringTimeoutRef.current);
-        answeringTimeoutRef.current = null;
-      }
-    } else if (phase === 'playing') {
+    if (currentMovie?.id) {
+      console.log('🎬 Movie changed - resetting bot state');
       hasAnsweredRef.current = false;
+      
+      // Clear any existing timeouts
+      if (answerTimeoutRef.current) {
+        clearTimeout(answerTimeoutRef.current);
+        answerTimeoutRef.current = null;
+      }
       if (decisionTimeoutRef.current) {
         clearTimeout(decisionTimeoutRef.current);
         decisionTimeoutRef.current = null;
       }
     }
-  }, [phase]);
+  }, [currentMovie?.id]);
 
-  // Cleanup on unmount
+  // Bot answering (when trailer ends)
   useEffect(() => {
-    return () => {
-      if (answeringTimeoutRef.current) {
-        clearTimeout(answeringTimeoutRef.current);
-      }
-      if (decisionTimeoutRef.current) {
-        clearTimeout(decisionTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Bot answering logic - ONLY runs when trailer ends
-  useEffect(() => {
-    // Guard clauses
-    if (!gameState) return;
-    if (!currentMovie) return;
-    if (!isQAMode) return;
-    if (gameState.currentTurn !== 'B') return;
-    if (phase !== 'playing') return;
-    if (!trailerEnded) return; // CRITICAL: Don't run until trailer ends
-    if (hasAnsweredRef.current) return;
-    if (botIsThinking) return;
-
-    // Verify movie ID matches
-    if (currentMovie.id !== currentMovieIdRef.current) {
-      console.log('🤖 Movie ID mismatch - skipping');
+    if (!isQAMode || !isBotTurn || !trailerEnded || !currentMovie || hasAnsweredRef.current) {
       return;
     }
 
-    console.log('🤖 Bot turn starting for:', currentMovie.title?.en);
+    if (phase !== 'playing') {
+      return;
+    }
+
+    // Prevent multiple answers
+    if (hasAnsweredRef.current) {
+      console.log('🤖 Bot already answered for this movie');
+      return;
+    }
+
+    console.log('🤖 Bot preparing to answer...');
     hasAnsweredRef.current = true;
     setBotIsThinking(true);
 
-    const options = gameState.currentMovie?.options || answerOptions;
-    const correctAnswer = currentMovie.title[language];
-    const savedMovieId = currentMovie.id;
-
-    // 1 second delay
+    // Bot answers after 1 second
     const timeoutId = setTimeout(() => {
-      // Safety check
-      if (savedMovieId !== currentMovieIdRef.current) {
-        console.log('🤖 Movie changed during delay - aborting');
+      if (!answerOptions || answerOptions.length === 0) {
+        console.log('🤖 No answer options available');
         setBotIsThinking(false);
         return;
       }
 
-      botPlayer.chooseAnswer(correctAnswer, options, async (selectedAnswer, isCorrect) => {
-        // Final safety check
-        if (savedMovieId !== currentMovieIdRef.current) {
-          console.log('🤖 Movie changed during answer - aborting');
-          setBotIsThinking(false);
-          return;
-        }
+      const correctAnswer = currentMovie.title[language];
 
+      botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
         console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
-        
-        setSelectedAnswer(selectedAnswer);
-        setIsCorrect(isCorrect);
 
-        if (isCorrect) {
-          const newTokens = (gameState.teamB?.tokens || 0) + 1;
-
-          await update(ref(database, `games/${roomCode}`), {
-            'teamB/tokens': newTokens,
-            phase: 'decision',
-            wonCard: {
-              movieId: savedMovieId,
-              team: 'B'
-            }
-          });
-
-          setResultMessage(language === 'he' ? 'הבוט ענה נכון! +1 אסימון' : 'Bot answered correctly! +1 Token');
-          setShowResult(true);
-
-          // 🔥 FIX: Wait 3 seconds before hiding result
-          setTimeout(() => {
-            setShowResult(false);
-          }, 3000);
-
-        } else {
-          const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), selectedAnswer];
-          const attempts = gameState.currentMovieAttempts || [];
-          const newAttempts = [...attempts, 'B'];
-
-          if (newAttempts.length >= 2) {
-            setResultMessage(language === 'he' ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!' : 'Both teams failed - card will return!');
-            setShowResult(true);
-
-            // 🔥 FIX: Wait 3 seconds before starting next round
-            setTimeout(async () => {
-              await update(ref(database, `games/${roomCode}`), {
-                currentMovie: null,
-                currentMovieAttempts: [],
-                currentTurn: 'A'
-              });
-              setBotIsThinking(false);
-              setShowResult(false);
-              startNextRound();
-            }, 3000);
-
-          } else {
-            await update(ref(database, `games/${roomCode}`), {
-              [`currentMovie/removedAnswers`]: newRemovedAnswers,
-              currentMovieAttempts: newAttempts,
-              currentTurn: 'A'
-            });
-
-            setResultMessage(language === 'he' ? 'הבוט טעה - התור שלך!' : 'Bot was wrong - your turn!');
-            setShowResult(true);
-            setRemovedAnswers(newRemovedAnswers);
-            setBotIsThinking(false);
-
-            // 🔥 FIX: Wait 3 seconds before hiding result
-            setTimeout(() => {
-              setShowResult(false);
-            }, 3000);
-          }
-        }
+        handleAnswerSelect(selectedAnswer, true, true, false);
+        setBotIsThinking(false);
       });
-    }, 1000);
+    }, 1000); // 1 second delay
 
-    answeringTimeoutRef.current = timeoutId;
+    answerTimeoutRef.current = timeoutId;
+
+    return () => {
+      if (answerTimeoutRef.current) {
+        clearTimeout(answerTimeoutRef.current);
+      }
+    };
   }, [
     gameState,
     currentMovie,
     isQAMode,
-    phase,
+    isBotTurn,
     trailerEnded,
+    phase,
     botIsThinking,
     answerOptions,
     language,
-    roomCode,
-    setBotIsThinking,
-    setSelectedAnswer,
-    setIsCorrect,
-    setResultMessage,
-    setShowResult,
-    setRemovedAnswers,
-    startNextRound
+    handleAnswerSelect,
+    setBotIsThinking
   ]);
 
-  // Bot decision phase
+  // Bot decision making (connect or save token)
   useEffect(() => {
-    if (!gameState) return;
-    if (!isQAMode) return;
-    if (phase !== 'decision') return;
-    if (gameState.wonCard?.team !== 'B') return;
-    if (hasDecidedRef.current) return;
-    if (botIsThinking) return;
+    if (!isQAMode || !isBotTurn) {
+      return;
+    }
 
-    console.log('🤖 Bot making decision...');
-    hasDecidedRef.current = true;
-    setBotIsThinking(true);
+    if (phase !== 'decision') {
+      return;
+    }
+
+    if (botIsThinking) {
+      console.log('🤖 Bot already thinking...');
+      return;
+    }
+
+    if (!gameState?.wonCard) {
+      console.log('🤖 No wonCard in gameState');
+      return;
+    }
+
+    // Check if this card was won by bot (Team B)
+    if (gameState.wonCard.team !== 'B') {
+      console.log('🤖 Card was not won by bot team');
+      return;
+    }
+
+    console.log('🤖 Bot making connection decision...');
+    console.log('🤖 Bot cards:', botCards.length);
 
     const wonMovie = allMovies.find(m => m.id === gameState.wonCard.movieId);
-    const botCards = gameState.teamB?.cards || [];
-    const savedWonCardId = gameState.wonCard.movieId;
+    
+    if (!wonMovie) {
+      console.log('🤖 Could not find wonMovie');
+      return;
+    }
 
+    console.log('🤖 Won movie:', wonMovie.title.en);
+
+    setBotIsThinking(true);
+
+    // Bot decides after 1 second
     const timeoutId = setTimeout(() => {
-      if (gameState.wonCard?.movieId !== savedWonCardId) {
-        console.log('🤖 Decision context changed - aborting');
-        setBotIsThinking(false);
-        return;
-      }
-
       botPlayer.makeDecision(wonMovie, botCards, async (decision) => {
         console.log('🤖 Bot decision:', decision);
 
@@ -246,7 +161,7 @@ export const useBotPlayer = (
 
         setBotIsThinking(false);
       });
-    }, Math.floor(Math.random() * 10000) + 5000);
+    }, 1000); // 1 second delay
 
     decisionTimeoutRef.current = timeoutId;
   }, [
@@ -259,4 +174,16 @@ export const useBotPlayer = (
     handleSaveToken,
     setBotIsThinking
   ]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (answerTimeoutRef.current) {
+        clearTimeout(answerTimeoutRef.current);
+      }
+      if (decisionTimeoutRef.current) {
+        clearTimeout(decisionTimeoutRef.current);
+      }
+    };
+  }, []);
 };

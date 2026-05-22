@@ -40,13 +40,13 @@ function GameScreen() {
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
   const isMyTurn = gameState?.currentTurn === currentTeam;
 
-  // Reset trailerEnded when currentMovie changes
+  // Reset trailerEnded when currentMovie changes - ONLY in playing phase
   useEffect(() => {
-    if (currentMovie?.id) {
-      console.log('🎬 New movie detected, resetting trailerEnded');
+    if (currentMovie?.id && phase === 'playing') {
+      console.log('🎬 New movie in playing phase, resetting trailerEnded');
       setTrailerEnded(false);
     }
-  }, [currentMovie?.id]);
+  }, [currentMovie?.id, phase]);
 
   // Show success message when entering decision phase
   useEffect(() => {

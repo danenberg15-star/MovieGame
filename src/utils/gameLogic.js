@@ -116,9 +116,11 @@ function pickFromTopScored(moviesWithScores, description) {
   return topMovies[randomIndex].movie;
 }
 
-// Select next movie with smart algorithm - FIXED TO USE CURRENT TEAM ONLY
-export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn, requiredConnectionType = null, moviesIndex = null) {
-  // Filter out already used movies
+// Select next movie with NEW LOGIC: Random connection type selection (33% each)
+export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn) {
+  console.log('🎬 ========== SELECT NEXT MOVIE - NEW LOGIC ==========');
+  
+  // 1. Filter available movies
   const availableMovies = allMovies.filter(
     movie => !usedMovieIds.includes(movie.id)
   );
@@ -128,109 +130,71 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
     return null;
   }
   
-  // 🔥 FIX: Get ONLY current team cards (not both teams!)
+  console.log(`📊 Available movies: ${availableMovies.length}`);
+  
+  // 2. Get current team cards
   const currentTeamCards = currentTurn === 'A' ? teamACards : teamBCards;
+  console.log(`🎯 Selecting for Team ${currentTurn} - they have ${currentTeamCards.length} cards`);
   
-  console.log(`🎯 Selecting movie for Team ${currentTurn} - they have ${currentTeamCards.length} cards`);
-  
-  if (requiredConnectionType) {
-    console.log(`🎨 Required connection type: ${requiredConnectionType}`);
+  if (currentTeamCards.length === 0) {
+    console.log('⚠️ Team has no cards yet - returning random movie');
+    const randomIndex = Math.floor(Math.random() * availableMovies.length);
+    return availableMovies[randomIndex];
   }
   
-  // If we have an index, use the optimized path
-  if (moviesIndex) {
-    return selectNextMovieOptimized(availableMovies, currentTeamCards, requiredConnectionType, moviesIndex);
-  }
+  // 3. Randomize connection types priority (33% each)
+  const connectionTypes = ['actor', 'director', 'year'];
+  const shuffledTypes = [...connectionTypes].sort(() => Math.random() - 0.5);
   
-  // Fallback to full scan (original algorithm)
-  const moviesWithConnections = [];
+  console.log(`🎲 Randomized connection types order: ${shuffledTypes.join(' → ')}`);
   
-  for (const movie of availableMovies) {
-    let connectionScore = 0;
-    let hasConnection = false;
-    let hasRequiredConnectionType = false;
+  // 4. Try each connection type in random order
+  for (const requiredType of shuffledTypes) {
+    console.log(`\n🔍 Searching for movies with '${requiredType}' connection...`);
     
-    // Check connections with current team cards ONLY
-    for (const teamCard of currentTeamCards) {
-      const connections = findConnection(movie, teamCard);
-      
-      if (connections.length > 0) {
-        hasConnection = true;
-        
-        // Check if required connection type exists
-        if (requiredConnectionType) {
-          const hasRequiredType = connections.some(conn => conn.type === requiredConnectionType);
-          if (hasRequiredType) {
-            hasRequiredConnectionType = true;
-          }
-        }
-        
-        // Score based on connection type priority
-        for (const conn of connections) {
-          const points = getConnectionPoints(conn.type);
-          connectionScore += points;
-        }
-      }
-    }
+    const moviesWithType = [];
     
-    // If required connection type specified, ONLY accept movies with that type
-    if (requiredConnectionType) {
-      if (hasRequiredConnectionType) {
-        moviesWithConnections.push({
-          movie,
-          score: connectionScore
-        });
-      }
-    } else {
-      // No required type - accept any connection to current team
-      if (hasConnection) {
-        moviesWithConnections.push({
-          movie,
-          score: connectionScore
-        });
-      }
-    }
-  }
-  
-  console.log(`📊 Movies with connections to Team ${currentTurn}: ${moviesWithConnections.length}`);
-  
-  if (moviesWithConnections.length > 0) {
-    return pickFromTopScored(moviesWithConnections, `Team ${currentTurn}`);
-  }
-  
-  // If we're filtering by required type and found nothing, try WITHOUT the filter
-  if (requiredConnectionType) {
-    console.log(`⚠️ No movies found with required type '${requiredConnectionType}' - trying any connection...`);
-    
-    const moviesWithAnyConnection = [];
-    
+    // Check each available movie
     for (const movie of availableMovies) {
-      let hasConnection = false;
-      let score = 0;
+      let hasRequiredConnection = false;
       
+      // Check against each team card
       for (const teamCard of currentTeamCards) {
         const connections = findConnection(movie, teamCard);
-        if (connections.length > 0) {
-          hasConnection = true;
-          for (const conn of connections) {
-            score += getConnectionPoints(conn.type);
-          }
+        
+        // Does this movie have the required connection type?
+        const hasType = connections.some(conn => conn.type === requiredType);
+        
+        if (hasType) {
+          hasRequiredConnection = true;
+          break; // Found connection, no need to check other team cards
         }
       }
       
-      if (hasConnection) {
-        moviesWithAnyConnection.push({ movie, score });
+      if (hasRequiredConnection) {
+        moviesWithType.push(movie);
       }
     }
     
-    if (moviesWithAnyConnection.length > 0) {
-      console.log(`✅ Found ${moviesWithAnyConnection.length} movies with ANY connection type`);
-      return pickFromTopScored(moviesWithAnyConnection, `Team ${currentTurn} (any type)`);
+    console.log(`📊 Found ${moviesWithType.length} movies with '${requiredType}' connection`);
+    
+    // If we found movies with this connection type - pick one randomly
+    if (moviesWithType.length > 0) {
+      const randomIndex = Math.floor(Math.random() * moviesWithType.length);
+      const selectedMovie = moviesWithType[randomIndex];
+      
+      console.log(`✅ SELECTED: "${selectedMovie.title.en}" (${selectedMovie.year})`);
+      console.log(`   Connection type: ${requiredType}`);
+      console.log(`   Chosen from ${moviesWithType.length} options`);
+      console.log('🎬 ================================================\n');
+      
+      return selectedMovie;
     }
   }
   
-  // If absolutely NO connections found - game should end
-  console.log('❌ No movies with connections found - game cannot continue');
+  // If no movies found with ANY connection type - game should end
+  console.log('❌ No movies with any connection type found');
+  console.log('🎬 ================================================\n');
   return null;
 }
 

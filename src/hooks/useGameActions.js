@@ -228,9 +228,12 @@ export const useGameActions = (
       // Correct answer - award token
       const teamKey = currentTeam === 'A' ? 'teamA' : 'teamB';
       const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
+      const currentScore = gameState[teamKey]?.score || 0;
+      const newScore = currentScore + 1;
 
       await update(ref(database, `games/${roomCode}`), {
         [`${teamKey}/tokens`]: newTokens,
+        [`${teamKey}/score`]: newScore,
         phase: 'decision',
         wonCard: {
           movieId: currentMovie.id,

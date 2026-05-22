@@ -178,14 +178,25 @@ export const useGameState = (roomCode, playerId, language) => {
             setGameState(data);
             setPhase(data.phase);
 
-            // If there's a current movie in state, load it
+            // Update current movie ONLY if it's a NEW movie (prevents double trailer)
             if (data.currentMovie && data.currentMovie.id) {
               const movie = movies.find(m => m.id === data.currentMovie.id);
               if (movie) {
-                setCurrentMovie(movie);
+                // Check if this is a different movie than what we currently have
+                if (!currentMovie || currentMovie.id !== movie.id) {
+                  console.log('🎬 New movie detected, updating currentMovie');
+                  setCurrentMovie(movie);
+                } else {
+                  console.log('🎬 Same movie, skipping currentMovie update');
+                }
+                // Always update options and removed answers
                 setAnswerOptions(data.currentMovie.options || []);
                 setRemovedAnswers(data.currentMovie.removedAnswers || []);
               }
+            } else if (currentMovie !== null) {
+              // Clear movie if it was removed from Firebase
+              console.log('🎬 Movie cleared from Firebase');
+              setCurrentMovie(null);
             }
           }
           setIsInitializing(false);
