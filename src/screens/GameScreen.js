@@ -340,10 +340,10 @@ function GameScreen() {
           )}
 
           {/* Decision Phase */}
-          {phase === 'decision' && !showSuccessMessage && !showConnectionMessage && gameState.wonCard && (
+          {phase === 'decision' && !showSuccessMessage && !showConnectionMessage && gameState.wonCard && gameState.wonCard.team === currentTeam && (
             <DecisionPhase
               wonCard={allMovies.find(m => m.id === gameState.wonCard.movieId)}
-              teamCards={(currentTeam === 'A' ? teamAData : teamBData).cards}
+              teamCards={(gameState.wonCard.team === 'A' ? teamAData : teamBData).cards}
               onConnect={handleConnectionAttempt}
               onSaveToken={handleSaveToken}
               language={language}

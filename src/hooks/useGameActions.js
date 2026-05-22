@@ -51,11 +51,12 @@ export const useGameActions = (
     }
   }, [gameState?.currentMovieAttempts, gameState?.currentMovie?.id]);
 
-  // Start next round
-  const startNextRound = useCallback(async () => {
+  // Start next round (turnOverride avoids stale currentTurn after Firebase updates)
+  const startNextRound = useCallback(async (turnOverride) => {
     if (!gameState || !allMovies.length) return;
 
-    console.log('🎬 Starting next round...');
+    const activeTurn = turnOverride ?? gameState.currentTurn;
+    console.log('🎬 Starting next round...', { activeTurn });
 
     try {
       const teamACards = gameState.teamA?.cards || [];
@@ -68,7 +69,7 @@ export const useGameActions = (
         usedIds,
         teamACards,
         teamBCards,
-        gameState.currentTurn
+        activeTurn
       );
 
       if (!nextMovie) {
@@ -159,12 +160,12 @@ export const useGameActions = (
       if (!hasWon) {
         setTimeout(() => {
           setConnectionResult(null);
-          startNextRound();
+          startNextRound(winningTeam);
         }, 3000);
       }
 
     } else {
-      // Failed connection - show hint
+      // Failed connection - show hint; winning team keeps the turn
       const hintData = getConnectionHint(currentMovie, targetCard, language);
       
       await update(ref(database, `games/${roomCode}`), {
@@ -172,7 +173,7 @@ export const useGameActions = (
         wonCard: null,
         currentMovie: null,
         currentMovieAttempts: [],
-        currentTurn: gameState.currentTurn === 'A' ? 'B' : 'A'
+        currentTurn: winningTeam
       });
 
       setConnectionResult({ 
@@ -184,16 +185,15 @@ export const useGameActions = (
 
       setTimeout(() => {
         setConnectionResult(null);
-        startNextRound();
+        startNextRound(winningTeam);
       }, 3000);
     }
   }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
 
-  // Handle save token
+  // Handle save token — bank the token (+ add card); connect spends a token instead
   const handleSaveToken = useCallback(async () => {
     console.log('💾 Saving token...');
 
-    // 🔥 FIX: Use wonCard.team instead of currentTeam
     const winningTeam = gameState.wonCard?.team || currentTeam;
     const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
 
@@ -202,10 +202,9 @@ export const useGameActions = (
     const currentCards = gameState[teamKey]?.cards || [];
     const newCards = [...currentCards, currentMovie];
     const newScore = newCards.length;
-
-    // Check win condition
     const hasWon = checkWinCondition(newCards);
 
+    // Do not write tokens here — stale local state can overwrite the +1 from correct guess
     const updates = {
       [`${teamKey}/cards`]: newCards,
       [`${teamKey}/score`]: newScore,
@@ -224,7 +223,7 @@ export const useGameActions = (
     await update(ref(database, `games/${roomCode}`), updates);
 
     if (!hasWon) {
-      startNextRound();
+      startNextRound(winningTeam);
     }
   }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
 
@@ -235,8 +234,8 @@ export const useGameActions = (
     startNextRound();
   }, [startNextRound, setPhase]);
 
-  // Handle answer selection
-  const handleAnswerSelect = useCallback(async (answer, isMyTurn, trailerEnded, botIsThinking) => {
+  // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
+  const handleAnswerSelect = useCallback(async (answer, isMyTurn, trailerEnded, botIsThinking, answeringTeamOverride) => {
     if (!isMyTurn || selectedAnswer || !currentMovie || !trailerEnded) return;
 
     console.log('✅ Answer selected:', answer);
@@ -244,11 +243,11 @@ export const useGameActions = (
 
     const correct = checkAnswer(answer, currentMovie, language);
     setIsCorrect(correct);
+    const answeringTeam = answeringTeamOverride ?? gameState.currentTurn;
 
     if (correct) {
-      // 🔥 FIX: Use gameState.currentTurn (who's turn it is) instead of currentTeam (the UI player)
-      const answeringTeam = gameState.currentTurn;
       const teamKey = answeringTeam === 'A' ? 'teamA' : 'teamB';
+
       const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
 
       console.log(`🎫 Awarding token to Team ${answeringTeam}: ${newTokens}`);
@@ -270,8 +269,6 @@ export const useGameActions = (
       // Wrong answer - remove it and switch turn
       const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), answer];
 
-      // 🔥 FIX: Use gameState.currentTurn instead of currentTeam
-      const answeringTeam = gameState.currentTurn;
       const attempts = gameState.currentMovieAttempts || [];
       const newAttempts = [...attempts, answeringTeam];
 
@@ -287,7 +284,7 @@ export const useGameActions = (
             currentMovieAttempts: [],
             currentTurn: nextTurn
           });
-          startNextRound();
+          startNextRound(nextTurn);
         }, 2000);
 
       } else {

@@ -135,7 +135,7 @@ export const useBotPlayer = (
 
       botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
         console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
-        handleAnswerSelect(selectedAnswer, true, true, false);
+        handleAnswerSelect(selectedAnswer, true, true, false, 'B');
         setBotIsThinking(false);
       });
     }, 1000);
