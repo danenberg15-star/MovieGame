@@ -1,5 +1,5 @@
 // src/screens/GameScreen.js
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
@@ -17,6 +17,7 @@ function GameScreen() {
 
   const language = 'en';
   const [trailerEnded, setTrailerEnded] = useState(false);
+  const trailerMovieIdRef = useRef(null);
   const [botIsThinking, setBotIsThinking] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showConnectionMessage, setShowConnectionMessage] = useState(false);
@@ -41,12 +42,17 @@ function GameScreen() {
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
   const isMyTurn = gameState?.currentTurn === currentTeam;
 
-  // Reset trailerEnded when currentMovie changes - ONLY in playing phase
+  // Reset trailerEnded only when a genuinely new movie round starts
   useEffect(() => {
-    if (currentMovie?.id && phase === 'playing') {
-      console.log('🎬 New movie in playing phase, resetting trailerEnded');
-      setTrailerEnded(false);
+    if (!currentMovie?.id) {
+      trailerMovieIdRef.current = null;
+      return;
     }
+    if (phase !== 'playing') return;
+    if (trailerMovieIdRef.current === currentMovie.id) return;
+    trailerMovieIdRef.current = currentMovie.id;
+    console.log('🎬 New movie in playing phase, resetting trailerEnded');
+    setTrailerEnded(false);
   }, [currentMovie?.id, phase]);
 
   // Show success message when entering decision phase

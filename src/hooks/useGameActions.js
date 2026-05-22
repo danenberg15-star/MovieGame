@@ -12,6 +12,8 @@ import {
   getSuccessMessage
 } from '../utils/gameLogic';
 
+const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
+
 export const useGameActions = (
   roomCode,
   gameState,
@@ -95,6 +97,7 @@ export const useGameActions = (
         },
         currentMovieAttempts: [],
         roundNumber: (gameState.roundNumber || 0) + 1,
+        currentTurn: activeTurn,
         phase: 'playing'
       });
 
@@ -142,7 +145,7 @@ export const useGameActions = (
         currentMovie: null,
         currentMovieAttempts: [],
         wonCard: null,
-        currentTurn: winningTeam
+        currentTurn: otherTeam(winningTeam)
       };
 
       if (hasWon) {
@@ -158,9 +161,10 @@ export const useGameActions = (
       setConnectionResult({ success: true, message: successMsg });
 
       if (!hasWon) {
+        const nextTurn = otherTeam(winningTeam);
         setTimeout(() => {
           setConnectionResult(null);
-          startNextRound(winningTeam);
+          startNextRound(nextTurn);
         }, 3000);
       }
 
@@ -168,12 +172,13 @@ export const useGameActions = (
       // Failed connection - show hint; winning team keeps the turn
       const hintData = getConnectionHint(currentMovie, targetCard, language);
       
+      const nextTurn = otherTeam(winningTeam);
       await update(ref(database, `games/${roomCode}`), {
         phase: 'playing',
         wonCard: null,
         currentMovie: null,
         currentMovieAttempts: [],
-        currentTurn: winningTeam
+        currentTurn: nextTurn
       });
 
       setConnectionResult({ 
@@ -185,7 +190,7 @@ export const useGameActions = (
 
       setTimeout(() => {
         setConnectionResult(null);
-        startNextRound(winningTeam);
+        startNextRound(nextTurn);
       }, 3000);
     }
   }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
@@ -213,7 +218,7 @@ export const useGameActions = (
       wonCard: null,
       currentMovie: null,
       currentMovieAttempts: [],
-      currentTurn: winningTeam
+      currentTurn: otherTeam(winningTeam)
     };
 
     if (hasWon) {
@@ -223,7 +228,7 @@ export const useGameActions = (
     await update(ref(database, `games/${roomCode}`), updates);
 
     if (!hasWon) {
-      startNextRound(winningTeam);
+      startNextRound(otherTeam(winningTeam));
     }
   }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
 
@@ -236,7 +241,18 @@ export const useGameActions = (
 
   // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
   const handleAnswerSelect = useCallback(async (answer, isMyTurn, trailerEnded, botIsThinking, answeringTeamOverride) => {
-    if (!isMyTurn || selectedAnswer || !currentMovie || !trailerEnded) return;
+    if (!currentMovie || !trailerEnded) {
+      console.warn('⚠️ Answer blocked: missing movie or trailer not ended', { hasMovie: !!currentMovie, trailerEnded });
+      return;
+    }
+    if (!isMyTurn && !answeringTeamOverride) {
+      console.warn('⚠️ Answer blocked: not your turn', { currentTurn: gameState?.currentTurn });
+      return;
+    }
+    if (selectedAnswer) {
+      console.warn('⚠️ Answer blocked: already selected');
+      return;
+    }
 
     console.log('✅ Answer selected:', answer);
     setSelectedAnswer(answer);
@@ -277,7 +293,7 @@ export const useGameActions = (
         setResultMessage(language === 'he' ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!' : 'Both teams failed - card will return!');
         setShowResult(true);
 
-        const nextTurn = answeringTeam;
+        const nextTurn = otherTeam(answeringTeam);
         setTimeout(async () => {
           await update(ref(database, `games/${roomCode}`), {
             currentMovie: null,

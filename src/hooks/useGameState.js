@@ -1,6 +1,6 @@
 // src/hooks/useGameState.js
-import { useState, useEffect, useCallback } from 'react';
-import { ref, set, onValue, off, get, update } from 'firebase/database';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { ref, set, onValue, get, update } from 'firebase/database';
 import { database } from '../firebase';
 import {
   loadMoviesData,
@@ -25,6 +25,7 @@ export const useGameState = (roomCode, playerId, language) => {
   const [currentMovie, setCurrentMovie] = useState(null);
   const [answerOptions, setAnswerOptions] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
+  const currentMovieIdRef = useRef(null);
 
   const isQAMode = roomCode === '99999';
 
@@ -182,20 +183,19 @@ export const useGameState = (roomCode, playerId, language) => {
             if (data.currentMovie && data.currentMovie.id) {
               const movie = movies.find(m => m.id === data.currentMovie.id);
               if (movie) {
-                // Check if this is a different movie than what we currently have
-                if (!currentMovie || currentMovie.id !== movie.id) {
+                if (currentMovieIdRef.current !== movie.id) {
                   console.log('🎬 New movie detected, updating currentMovie');
+                  currentMovieIdRef.current = movie.id;
                   setCurrentMovie(movie);
                 } else {
                   console.log('🎬 Same movie, skipping currentMovie update');
                 }
-                // Always update options and removed answers
                 setAnswerOptions(data.currentMovie.options || []);
                 setRemovedAnswers(data.currentMovie.removedAnswers || []);
               }
-            } else if (currentMovie !== null) {
-              // Clear movie if it was removed from Firebase
+            } else if (currentMovieIdRef.current !== null) {
               console.log('🎬 Movie cleared from Firebase');
+              currentMovieIdRef.current = null;
               setCurrentMovie(null);
             }
           }
@@ -216,10 +216,10 @@ export const useGameState = (roomCode, playerId, language) => {
     // Cleanup
     return () => {
       if (unsubscribe) {
-        off(ref(database, `games/${roomCode}`));
+        unsubscribe();
       }
     };
-  }, [roomCode, playerId, isQAMode, language, buildMoviesIndex, currentMovie]);
+  }, [roomCode, playerId, isQAMode, language, buildMoviesIndex]);
 
   return {
     gameState,
