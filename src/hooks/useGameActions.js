@@ -1,5 +1,5 @@
 // src/hooks/useGameActions.js
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
 import {
@@ -30,6 +30,15 @@ export const useGameActions = (
   const [resultMessage, setResultMessage] = useState('');
   const [isCorrect, setIsCorrect] = useState(false);
   const [connectionResult, setConnectionResult] = useState(null);
+
+  // Reset local answer UI when a new trailer/round starts (syncs all clients in multiplayer)
+  useEffect(() => {
+    if (!currentMovie?.id) return;
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setResultMessage('');
+    setIsCorrect(false);
+  }, [currentMovie?.id]);
 
   // Start next round
   const startNextRound = useCallback(async () => {
@@ -72,6 +81,7 @@ export const useGameActions = (
           options,
           removedAnswers: []
         },
+        currentMovieAttempts: [],
         roundNumber: (gameState.roundNumber || 0) + 1,
         phase: 'playing'
       });
