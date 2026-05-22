@@ -167,8 +167,10 @@ export const useBotPlayer = (
   }, [
     gameState,
     isQAMode,
+    isBotTurn,
     phase,
     botIsThinking,
+    botCards,
     allMovies,
     handleConnectionAttempt,
     handleSaveToken,

@@ -219,7 +219,7 @@ export const useGameState = (roomCode, playerId, language) => {
         off(ref(database, `games/${roomCode}`));
       }
     };
-  }, [roomCode, playerId, isQAMode, language, buildMoviesIndex]);
+  }, [roomCode, playerId, isQAMode, language, buildMoviesIndex, currentMovie]);
 
   return {
     gameState,
