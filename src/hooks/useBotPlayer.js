@@ -28,7 +28,7 @@ export const useBotPlayer = (
   const decisionTimeoutRef = useRef(null);
   const currentMovieIdRef = useRef(null);
   const hasDecidedRef = useRef(false);
-  const botTurnStartedRef = useRef(false); // 🔥 NEW: Track if bot's turn just started
+  const botTurnStartedRef = useRef(false);
 
   const isBotTurn = gameState?.currentTurn === 'B';
 
@@ -39,7 +39,7 @@ export const useBotPlayer = (
       currentMovieIdRef.current = currentMovie.id;
       hasAnsweredRef.current = false;
       hasDecidedRef.current = false;
-      botTurnStartedRef.current = false; // 🔥 Reset bot turn tracker
+      botTurnStartedRef.current = false;
       
       // Clear any existing timeouts
       if (answerTimeoutRef.current) {
@@ -162,7 +162,7 @@ export const useBotPlayer = (
 
   // Bot decision making (connect or save token)
   useEffect(() => {
-    if (!isQAMode || !isBotTurn) {
+    if (!isQAMode) {
       return;
     }
 
@@ -187,7 +187,8 @@ export const useBotPlayer = (
       return;
     }
 
-    // Check if this card was won by bot (Team B)
+    // 🔥 FIXED: Check if this card was won by bot (Team B)
+    // In QA mode, bot is always Team B
     if (gameState.wonCard.team !== 'B') {
       console.log('🤖 Card was not won by bot team:', gameState.wonCard.team);
       return;
@@ -241,7 +242,6 @@ export const useBotPlayer = (
     gameState?.wonCard,
     gameState?.teamB?.cards,
     isQAMode,
-    isBotTurn,
     phase,
     botIsThinking,
     allMovies,
