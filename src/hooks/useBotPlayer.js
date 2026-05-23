@@ -168,14 +168,13 @@ export const useBotPlayer = (
     };
   }, [
     answerOptions,
-    gameState?.currentMovie?.trailerWatchedForTurn,
-    gameState?.currentTurn,
+    attempts,
+    gameState,
     isQAMode,
     botShouldAnswer,
     phase,
     currentMovie,
     language,
-    gameState?.currentMovieAttempts,
     handleAnswerSelect,
     setBotIsThinking
   ]);
