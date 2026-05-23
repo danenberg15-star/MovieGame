@@ -177,7 +177,6 @@ function HomeScreen() {
             <h1 className="game-logo marquee-title">{t('app_title')}</h1>
             <span className="marquee-bulbs marquee-bulbs--bottom" aria-hidden="true" />
           </div>
-          <p className="welcome-text">{t('welcome')}</p>
 
           <div className="name-section">
             <input
@@ -241,19 +240,24 @@ function HomeScreen() {
               <div className="join-section">
                 <input
                   type="text"
-                  className="input"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className="input join-input"
                   placeholder={t('enter_room_code') || 'Enter Room Code'}
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && roomCode.length === 6 && nameValid && !isLoading) {
+                      e.preventDefault();
+                      handleJoinGame();
+                    }
+                  }}
                   maxLength="6"
+                  aria-label={t('enter_room_code')}
                 />
-                <button
-                  className="btn btn-secondary"
-                  onClick={handleJoinGame}
-                  disabled={isLoading || !nameValid || roomCode.length !== 6}
-                >
-                  {isLoading ? <span className="loading"></span> : '🚪 ' + t('join_game')}
-                </button>
+                <span className="join-hint" aria-live="polite">
+                  {roomCode.length === 6 ? '↵ ' + t('join_game') : ''}
+                </span>
               </div>
             </div>
           )}
