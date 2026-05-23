@@ -147,6 +147,9 @@ export const useGameActions = (
       // Check win condition
       const hasWon = checkWinCondition(newCards);
 
+      // 🔥 FIXED: After DecisionPhase, switch turn to the OTHER team
+      const nextTurn = otherTeam(winningTeam);
+
       const updates = {
         [`${teamKey}/cards`]: newCards,
         [`${teamKey}/score`]: newScore,
@@ -155,7 +158,7 @@ export const useGameActions = (
         currentMovie: null,
         currentMovieAttempts: [],
         wonCard: null,
-        currentTurn: otherTeam(winningTeam)
+        currentTurn: nextTurn
       };
 
       if (hasWon) {
@@ -171,7 +174,6 @@ export const useGameActions = (
       setConnectionResult({ success: true, message: successMsg });
 
       if (!hasWon) {
-        const nextTurn = otherTeam(winningTeam);
         setTimeout(() => {
           setConnectionResult(null);
           startNextRound(nextTurn);
@@ -179,10 +181,12 @@ export const useGameActions = (
       }
 
     } else {
-      // Failed connection - show hint; winning team keeps the turn
+      // Failed connection - show hint
       const hintData = getConnectionHint(currentMovie, targetCard, language);
       
+      // 🔥 FIXED: After failed connection, switch turn to the OTHER team
       const nextTurn = otherTeam(winningTeam);
+      
       await update(ref(database, `games/${roomCode}`), {
         phase: 'playing',
         wonCard: null,
@@ -219,6 +223,9 @@ export const useGameActions = (
     const newScore = newCards.length;
     const hasWon = checkWinCondition(newCards);
 
+    // 🔥 FIXED: After saving token, switch turn to the OTHER team
+    const nextTurn = otherTeam(winningTeam);
+
     // Do not write tokens here — stale local state can overwrite the +1 from correct guess
     const updates = {
       [`${teamKey}/cards`]: newCards,
@@ -228,7 +235,7 @@ export const useGameActions = (
       wonCard: null,
       currentMovie: null,
       currentMovieAttempts: [],
-      currentTurn: otherTeam(winningTeam)
+      currentTurn: nextTurn
     };
 
     if (hasWon) {
@@ -238,7 +245,7 @@ export const useGameActions = (
     await update(ref(database, `games/${roomCode}`), updates);
 
     if (!hasWon) {
-      startNextRound(otherTeam(winningTeam));
+      startNextRound(nextTurn);
     }
   }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
 
@@ -294,6 +301,8 @@ export const useGameActions = (
 
       console.log(`🎫 Awarding token to Team ${answeringTeam}: ${newTokens}`);
 
+      // 🔥 IMPORTANT: Don't change currentTurn here! 
+      // The turn stays the same until after DecisionPhase
       await update(ref(database, `games/${roomCode}`), {
         [`${teamKey}/tokens`]: newTokens,
         phase: 'decision',
@@ -301,6 +310,7 @@ export const useGameActions = (
           movieId: currentMovie.id,
           team: answeringTeam
         }
+        // currentTurn stays the same!
       });
 
       setResultMessage(language === 'he' ? 'נכון! +1 אסימון' : 'Correct! +1 Token');
@@ -308,18 +318,23 @@ export const useGameActions = (
       setPhase('decision');
 
     } else {
-      // Wrong answer - remove it and switch turn
+      // Wrong answer - remove it and give other team a chance
       const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), answer];
 
       const attempts = gameState.currentMovieAttempts || [];
       const newAttempts = [...attempts, answeringTeam];
 
+      // 🔥 CRITICAL: Find who is the ORIGINAL turn holder (first attempt)
+      const originalTurnHolder = attempts.length > 0 ? attempts[0] : answeringTeam;
+
       if (newAttempts.length >= 2) {
-        // Both teams failed - card returns to pool; next turn stays with the team who just guessed (had the steal attempt)
+        // Both teams failed - card returns to pool
+        // 🔥 FIXED: Switch turn to the OTHER team (not the one who had the original turn)
+        const nextTurn = otherTeam(originalTurnHolder);
+        
         setResultMessage(language === 'he' ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!' : 'Both teams failed - card will return!');
         setShowResult(true);
 
-        const nextTurn = otherTeam(answeringTeam);
         setTimeout(async () => {
           await update(ref(database, `games/${roomCode}`), {
             currentMovie: null,
@@ -330,14 +345,16 @@ export const useGameActions = (
         }, 2000);
 
       } else {
-        // Switch turn to other team
-        const nextTurn = answeringTeam === 'A' ? 'B' : 'A';
+        // First team failed - give other team a chance to steal
+        // 🔥 CRITICAL: currentTurn stays the SAME (the original turn holder)
+        // We DON'T change currentTurn here!
+        const stealingTeam = otherTeam(answeringTeam);
         
         await update(ref(database, `games/${roomCode}`), {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
           'currentMovie/trailerWatchedForTurn': null,
-          currentMovieAttempts: newAttempts,
-          currentTurn: nextTurn
+          currentMovieAttempts: newAttempts
+          // currentTurn stays the same! (originalTurnHolder)
         });
 
         setResultMessage(language === 'he' ? 'לא נכון - תור הקבוצה השנייה' : 'Incorrect - other team\'s turn');
@@ -346,6 +363,7 @@ export const useGameActions = (
       }
     }
   }, [selectedAnswer, currentMovie, gameState, roomCode, language, setPhase, setRemovedAnswers, startNextRound]);
+
   return {
     startNextRound,
     handleConnectionAttempt,

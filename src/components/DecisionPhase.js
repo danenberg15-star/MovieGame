@@ -10,7 +10,8 @@ function DecisionPhase({
   onConnect, 
   onSaveToken,
   language = 'en',
-  connectionResult = null
+  connectionResult = null,
+  disabled = false
 }) {
   const { t } = useTranslation();
   const [selectedCard, setSelectedCard] = useState(null);
@@ -24,6 +25,7 @@ function DecisionPhase({
   ];
 
   const handleConnectClick = () => {
+    if (disabled) return;
     if (teamCards.length === 0) {
       alert(t('no_cards_to_connect') || 'No cards available to connect');
       return;
@@ -32,14 +34,17 @@ function DecisionPhase({
   };
 
   const handleCardSelect = (card) => {
+    if (disabled) return;
     setSelectedCard(card);
   };
 
   const handleConnectionTypeSelect = (type) => {
+    if (disabled) return;
     setSelectedConnectionType(type);
   };
 
   const handleConfirmConnection = () => {
+    if (disabled) return;
     if (!selectedCard || !selectedConnectionType) {
       alert(t('select_card_and_type') || 'Please select both a card and connection type');
       return;
@@ -51,12 +56,14 @@ function DecisionPhase({
   };
 
   const handleSaveToken = () => {
+    if (disabled) return;
     if (onSaveToken) {
       onSaveToken();
     }
   };
 
   const handleCancel = () => {
+    if (disabled) return;
     setShowCardSelection(false);
     setSelectedCard(null);
     setSelectedConnectionType(null);
@@ -212,7 +219,7 @@ function DecisionPhase({
             <button 
               className="btn btn-connect"
               onClick={handleConnectClick}
-              disabled={teamCards.length === 0}
+              disabled={disabled || teamCards.length === 0}
             >
               <span className="btn-icon">🔗</span>
               <span className="btn-text">{t('connect')}</span>
@@ -221,6 +228,7 @@ function DecisionPhase({
             <button 
               className="btn btn-save-token"
               onClick={handleSaveToken}
+              disabled={disabled}
             >
               <span className="btn-icon">🎫</span>
               <span className="btn-text">{t('save_token')}</span>
@@ -241,7 +249,7 @@ function DecisionPhase({
                   {teamCards.map((card) => (
                     <div
                       key={card.id}
-                      className={`movie-card selectable ${selectedCard?.id === card.id ? 'selected' : ''}`}
+                      className={`movie-card selectable ${selectedCard?.id === card.id ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
                       onClick={() => handleCardSelect(card)}
                     >
                       <img 
@@ -275,6 +283,7 @@ function DecisionPhase({
                         key={type.id}
                         className={`connection-type-btn ${selectedConnectionType === type.id ? 'selected' : ''}`}
                         onClick={() => handleConnectionTypeSelect(type.id)}
+                        disabled={disabled}
                       >
                         <span className="type-icon">{type.icon}</span>
                         <span className="type-label">{type.label}</span>
@@ -294,13 +303,14 @@ function DecisionPhase({
             <button 
               className="btn btn-cancel"
               onClick={handleCancel}
+              disabled={disabled}
             >
               {t('cancel') || '← Back'}
             </button>
             <button 
               className="btn btn-confirm"
               onClick={handleConfirmConnection}
-              disabled={!selectedCard || !selectedConnectionType}
+              disabled={disabled || !selectedCard || !selectedConnectionType}
             >
               {t('confirm_connection') || '✓ Confirm Connection'}
             </button>
