@@ -251,9 +251,8 @@ export const useBotPlayer = (
   }, [
     isQAMode,
     phase,
-    gameState?.wonCard?.movieId,
-    gameState?.wonCard?.team,
-    gameState?.teamB?.cards?.length,
+    gameState?.wonCard,
+    gameState?.teamB?.cards,
     allMovies,
     handleConnectionAttempt,
     handleSaveToken,
