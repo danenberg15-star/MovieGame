@@ -233,8 +233,15 @@ function LobbyScreen() {
           {/* Teams */}
           <div className="teams-container">
             {/* Team A */}
-            <div className="team-box">
-              <h2 className="team-title">{t('team_a')}</h2>
+            <div className="team-box team-box--a">
+              <div className="team-plate">
+                <span className="team-plate__star" aria-hidden="true">★</span>
+                <h2 className="team-title">{t('team_a')}</h2>
+                <span className="team-plate__screw team-plate__screw--tl" aria-hidden="true" />
+                <span className="team-plate__screw team-plate__screw--tr" aria-hidden="true" />
+                <span className="team-plate__screw team-plate__screw--bl" aria-hidden="true" />
+                <span className="team-plate__screw team-plate__screw--br" aria-hidden="true" />
+              </div>
               <div className="players-list">
                 {teamAPlayers.length === 0 && (
                   <div className="empty-team">{t('waiting_for_players')}</div>
@@ -249,7 +256,7 @@ function LobbyScreen() {
                       {player.isHost && ' 👑'}
                       {player.isBot && ' 🤖'}
                     </span>
-                    {player.ready && <span className="ready-badge">✅</span>}
+                    <ClapperIcon ready={!!player.ready} />
                   </div>
                 ))}
               </div>
@@ -267,8 +274,15 @@ function LobbyScreen() {
             <div className="vs-divider">VS</div>
 
             {/* Team B */}
-            <div className="team-box">
-              <h2 className="team-title">{t('team_b')}</h2>
+            <div className="team-box team-box--b">
+              <div className="team-plate">
+                <span className="team-plate__star" aria-hidden="true">★</span>
+                <h2 className="team-title">{t('team_b')}</h2>
+                <span className="team-plate__screw team-plate__screw--tl" aria-hidden="true" />
+                <span className="team-plate__screw team-plate__screw--tr" aria-hidden="true" />
+                <span className="team-plate__screw team-plate__screw--bl" aria-hidden="true" />
+                <span className="team-plate__screw team-plate__screw--br" aria-hidden="true" />
+              </div>
               <div className="players-list">
                 {teamBPlayers.length === 0 && (
                   <div className="empty-team">{t('waiting_for_players')}</div>
@@ -283,7 +297,7 @@ function LobbyScreen() {
                       {player.isHost && ' 👑'}
                       {player.isBot && ' 🤖'}
                     </span>
-                    {player.ready && <span className="ready-badge">✅</span>}
+                    <ClapperIcon ready={!!player.ready} />
                   </div>
                 ))}
               </div>
@@ -340,6 +354,26 @@ function LobbyScreen() {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Director's clapperboard — open ("ACTION") when not ready, snapped shut when ready.
+ */
+function ClapperIcon({ ready }) {
+  return (
+    <span
+      className={`clapper ${ready ? 'clapper--ready' : ''}`}
+      role="img"
+      aria-label={ready ? 'Ready' : 'Not ready'}
+    >
+      <span className="clapper__board">
+        <span className="clapper__stripes" />
+      </span>
+      <span className="clapper__stick">
+        <span className="clapper__stick-stripes" />
+      </span>
+    </span>
   );
 }
 
