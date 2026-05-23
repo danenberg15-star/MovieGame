@@ -71,11 +71,12 @@ export const useBotPlayer = (
 
   // Reset decision flag when phase changes to decision
   useEffect(() => {
-    if (phase === 'decision') {
+    if (phase === 'decision' && gameState?.wonCard) {
+      console.log('🔄 Resetting decision flag - new decision phase');
       hasDecidedRef.current = false;
       setBotIsThinking(false);
     }
-  }, [phase, setBotIsThinking]);
+  }, [phase, gameState?.wonCard, setBotIsThinking]);
 
   // Bot answering (when trailer ends)
   useEffect(() => {
