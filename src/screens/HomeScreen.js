@@ -12,8 +12,28 @@ function HomeScreen() {
   const [playerName, setPlayerName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [gameMode, setGameMode] = useState(null); // 'bot' | 'teams'
+  const [showHelp, setShowHelp] = useState(false);
 
-  // Load saved player name from localStorage
+  // Cinema curtain intro — show once per browser session
+  const [curtainState, setCurtainState] = useState(() => {
+    if (typeof window === 'undefined') return 'done';
+    return sessionStorage.getItem('curtainShown') === '1' ? 'done' : 'closed';
+  });
+
+  useEffect(() => {
+    if (curtainState !== 'closed') return;
+    const openTimer = setTimeout(() => setCurtainState('opening'), 350);
+    const doneTimer = setTimeout(() => {
+      setCurtainState('done');
+      sessionStorage.setItem('curtainShown', '1');
+    }, 2400);
+    return () => {
+      clearTimeout(openTimer);
+      clearTimeout(doneTimer);
+    };
+  }, [curtainState]);
+
   useEffect(() => {
     const savedName = localStorage.getItem('playerName');
     if (savedName) {
@@ -21,12 +41,10 @@ function HomeScreen() {
     }
   }, []);
 
-  // Generate random 6-digit room code
   const generateRoomCode = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
   };
 
-  // Validate player name
   const validatePlayerName = () => {
     if (!playerName || playerName.trim().length < 2) {
       alert(t('enter_your_name') || 'Please enter your name (at least 2 characters)');
@@ -35,21 +53,17 @@ function HomeScreen() {
     return true;
   };
 
-  // Create new game room
   const handleCreateGame = async () => {
     if (!validatePlayerName()) return;
 
     setIsLoading(true);
     const newRoomCode = generateRoomCode();
-    
-    // Save player name
     localStorage.setItem('playerName', playerName.trim());
-    
+
     try {
-      // Create room in Firebase
       const roomRef = ref(database, `rooms/${newRoomCode}`);
       const playerId = 'player_' + Date.now();
-      
+
       await set(roomRef, {
         code: newRoomCode,
         host: playerId,
@@ -70,7 +84,6 @@ function HomeScreen() {
         }
       });
 
-      // Navigate to lobby
       navigate(`/lobby/${newRoomCode}?playerId=${playerId}`);
     } catch (error) {
       console.error('Error creating room:', error);
@@ -80,29 +93,23 @@ function HomeScreen() {
     }
   };
 
-  // Join existing game room
   const handleJoinGame = async () => {
     if (!validatePlayerName()) return;
-    
+
     if (!roomCode || roomCode.length !== 6) {
       alert(t('enter_room_code') || 'Please enter a valid 6-digit room code');
       return;
     }
 
     setIsLoading(true);
-    
-    // Save player name
     localStorage.setItem('playerName', playerName.trim());
-    
+
     try {
-      // Check if room exists
       const roomRef = ref(database, `rooms/${roomCode}`);
       const snapshot = await get(roomRef);
-      
+
       if (snapshot.exists()) {
         const playerId = 'player_' + Date.now();
-        
-        // Add player to room
         const playerRef = ref(database, `rooms/${roomCode}/players/${playerId}`);
         await set(playerRef, {
           id: playerId,
@@ -111,7 +118,7 @@ function HomeScreen() {
           ready: false,
           isHost: false
         });
-        
+
         navigate(`/lobby/${roomCode}?playerId=${playerId}`);
       } else {
         alert('Room not found. Please check the code.');
@@ -124,28 +131,54 @@ function HomeScreen() {
     }
   };
 
-  // Join QA Mode (Room 99999)
-  const handleQAMode = () => {
+  const handleBotMode = () => {
     if (!validatePlayerName()) return;
-    
-    // Save player name
     localStorage.setItem('playerName', playerName.trim());
-    
     const playerId = 'player_' + Date.now();
     navigate(`/lobby/99999?playerId=${playerId}`);
   };
 
+  const nameValid = playerName.trim().length >= 2;
+
   return (
     <div className="home-screen">
+      {curtainState !== 'done' && (
+        <div
+          className={`cinema-curtain ${curtainState === 'opening' ? 'is-open' : ''}`}
+          aria-hidden="true"
+        >
+          <div className="cinema-curtain__panel cinema-curtain__panel--left">
+            <div className="cinema-curtain__valance" />
+            <div className="cinema-curtain__rope" />
+          </div>
+          <div className="cinema-curtain__panel cinema-curtain__panel--right">
+            <div className="cinema-curtain__valance" />
+            <div className="cinema-curtain__rope" />
+          </div>
+        </div>
+      )}
+
+      <button
+        type="button"
+        className="help-btn"
+        onClick={() => setShowHelp(true)}
+        aria-label={t('help')}
+        title={t('how_to_play')}
+      >
+        ❓
+      </button>
+
       <div className="container">
         <div className="home-content">
-          {/* Game Logo */}
-          <h1 className="game-logo">🎬 {t('app_title')}</h1>
-          
-          {/* Welcome Text */}
+          <div className="marquee-frame">
+            <span className="marquee-bulbs marquee-bulbs--top" aria-hidden="true" />
+            <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--left" aria-hidden="true" />
+            <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--right" aria-hidden="true" />
+            <h1 className="game-logo marquee-title">{t('app_title')}</h1>
+            <span className="marquee-bulbs marquee-bulbs--bottom" aria-hidden="true" />
+          </div>
           <p className="welcome-text">{t('welcome')}</p>
 
-          {/* Player Name Input */}
           <div className="name-section">
             <input
               type="text"
@@ -157,51 +190,93 @@ function HomeScreen() {
             />
           </div>
 
-          {/* Main Menu Buttons */}
-          <div className="menu-buttons">
-            <button 
-              className="btn btn-primary"
-              onClick={handleCreateGame}
-              disabled={isLoading || !playerName.trim()}
-            >
-              {isLoading ? <span className="loading"></span> : '🎮 ' + t('create_game')}
-            </button>
-
-            {/* Join Game Section */}
-            <div className="join-section">
-              <input
-                type="text"
-                className="input"
-                placeholder={t('enter_room_code') || 'Enter Room Code'}
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                maxLength="6"
-              />
-              <button 
-                className="btn btn-secondary"
-                onClick={handleJoinGame}
-                disabled={isLoading || !playerName.trim() || roomCode.length !== 6}
+          <div className="mode-section">
+            <p className="mode-label">{t('choose_mode')}</p>
+            <div className="mode-toggle" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={gameMode === 'bot'}
+                className={`mode-tab ${gameMode === 'bot' ? 'active' : ''}`}
+                onClick={() => setGameMode('bot')}
+                disabled={!nameValid}
               >
-                {isLoading ? <span className="loading"></span> : '🚪 ' + t('join_game')}
+                🤖 {t('play_vs_bot')}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={gameMode === 'teams'}
+                className={`mode-tab ${gameMode === 'teams' ? 'active' : ''}`}
+                onClick={() => setGameMode('teams')}
+                disabled={!nameValid}
+              >
+                👥 {t('play_vs_teams')}
               </button>
             </div>
-
-            {/* QA Mode Button */}
-            <button 
-              className="btn btn-qa"
-              onClick={handleQAMode}
-              disabled={!playerName.trim()}
-            >
-              🧪 {t('qa_mode')}
-            </button>
-
-            {/* How to Play Button */}
-            <button className="btn btn-info">
-              ❓ {t('how_to_play')}
-            </button>
           </div>
+
+          {gameMode === 'bot' && (
+            <div className="menu-buttons mode-options">
+              <p className="mode-hint">{t('vs_bot_hint')}</p>
+              <button
+                className="btn btn-primary"
+                onClick={handleBotMode}
+                disabled={!nameValid}
+              >
+                ▶️ {t('start_game')}
+              </button>
+            </div>
+          )}
+
+          {gameMode === 'teams' && (
+            <div className="menu-buttons mode-options">
+              <p className="mode-hint">{t('vs_teams_hint')}</p>
+              <button
+                className="btn btn-primary"
+                onClick={handleCreateGame}
+                disabled={isLoading || !nameValid}
+              >
+                {isLoading ? <span className="loading"></span> : '🎮 ' + t('create_game')}
+              </button>
+
+              <div className="join-section">
+                <input
+                  type="text"
+                  className="input"
+                  placeholder={t('enter_room_code') || 'Enter Room Code'}
+                  value={roomCode}
+                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  maxLength="6"
+                />
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleJoinGame}
+                  disabled={isLoading || !nameValid || roomCode.length !== 6}
+                >
+                  {isLoading ? <span className="loading"></span> : '🚪 ' + t('join_game')}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {showHelp && (
+        <div className="help-modal-backdrop" onClick={() => setShowHelp(false)}>
+          <div className="help-modal" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="help-close"
+              onClick={() => setShowHelp(false)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <h2>❓ {t('how_to_play')}</h2>
+            <p>{t('welcome')}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
