@@ -57,26 +57,41 @@
   text-align: center;
   max-width: 640px;
   width: 100%;
-  max-height: 100vh;
+  height: 100%;
   /* Don't clip — bulbs of the marquee sit on its border edge */
   overflow: visible;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   margin: 0 auto;
-  padding-top: 2vh;
   position: relative;
 }
 
-/* ===== MARQUEE TITLE ===== */
+/* Marquee anchored at the top, aligned with help/language buttons */
+.home-content .marquee-frame {
+  flex-shrink: 0;
+}
+
+/* Centered controls fill the remaining space */
+.home-controls {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* ===== MARQUEE TITLE (2× size, top-aligned with side buttons) ===== */
 .marquee-frame {
   position: relative;
   display: inline-block;
-  /* Extra inner space so the bulbs sit safely inside the frame */
-  padding: 22px 44px;
-  margin-bottom: 0.6rem;
-  border-radius: 10px;
+  padding: 32px 64px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border-radius: 14px;
   background:
     radial-gradient(ellipse at center, rgba(255, 216, 107, 0.06) 0%, transparent 70%),
     linear-gradient(180deg, rgba(10, 8, 7, 0.6), rgba(28, 24, 22, 0.6));
@@ -127,13 +142,13 @@
   50%      { opacity: 0.55; }
 }
 
-/* Gold 3D marquee letters */
+/* Gold 3D marquee letters — twice as big */
 .game-logo,
 .marquee-title {
   margin: 0;
   font-family: var(--font-marquee);
   font-weight: 400;
-  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-size: clamp(2.4rem, 8vw, 5rem);
   letter-spacing: 0.08em;
   color: #ffe8a3;
   text-transform: uppercase;
@@ -171,14 +186,16 @@
 }
 
 .name-section {
-  margin: 0.5rem 0 0.4rem;
+  margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 /* Inputs — small velvet ticket-stub feel */
 .name-input,
 .input {
   width: 100%;
-  max-width: 320px;
+  max-width: 360px;
   padding: 10px 14px;
   font-size: 14px;
   font-family: var(--font-body);
@@ -211,18 +228,18 @@
 .menu-buttons {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-top: 0.4rem;
+  align-items: stretch;
+  gap: 10px;
+  margin: 0;
+  width: 100%;
 }
 
 .join-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 4px;
   width: 100%;
-  max-width: 320px;
   position: relative;
 }
 
@@ -258,7 +275,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 240px;
+  width: 100%;
+  min-width: 0;
   padding: 14px 32px;
   font-family: var(--font-deco);
   font-size: 14px;
@@ -594,34 +612,34 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-height: 500px) {
-  .home-screen { padding: 6px; }
-  .home-content { padding-top: 0.2vh; }
+  .home-screen { padding: 6px 64px; }
   .home-screen::before { height: 4vh; }
   .home-screen::after  { height: 3vh; }
-  .game-logo, .marquee-title { font-size: 1.4rem; }
-  .marquee-frame { padding: 16px 30px; margin-bottom: 0.2rem; }
-  .name-section { margin: 0.25rem 0 0.2rem; }
+  .game-logo, .marquee-title { font-size: 2rem; }
+  .marquee-frame { padding: 18px 36px; margin-top: 0; margin-bottom: 6px; }
+  .home-controls { gap: 8px; max-width: 320px; }
   .name-input, .input { padding: 6px 10px; font-size: 13px; }
-  .mode-section { margin: 0.2rem 0 0.1rem; }
+  .mode-section { margin: 0; }
   .mode-label { font-size: 0.7rem; margin: 0 0 0.2rem; }
   .mode-tab { padding: 5px 12px; font-size: 11.5px; }
-  .menu-buttons { gap: 6px; margin-top: 0.25rem; }
+  .menu-buttons { gap: 6px; }
   .mode-hint { font-size: 0.7rem; margin: 0 0 0.15rem; }
-  .home-screen .btn { padding: 7px 20px; font-size: 11.5px; min-width: 180px; }
+  .home-screen .btn { padding: 7px 20px; font-size: 11.5px; }
   .help-btn { width: 36px; height: 36px; font-size: 18px; }
   .join-input { font-size: 15px; letter-spacing: 4px; }
   .join-hint { font-size: 10px; min-height: 12px; }
 }
 
 @media (min-height: 501px) and (max-height: 700px) {
-  .game-logo, .marquee-title { font-size: 2rem; }
+  .game-logo, .marquee-title { font-size: 3rem; }
+  .marquee-frame { padding: 26px 50px; }
   .home-screen .btn { padding: 12px 28px; font-size: 13.5px; }
 }
 
 @media (min-height: 701px) {
-  .game-logo, .marquee-title { font-size: 2.6rem; }
-  .welcome-text { font-size: 1.05rem; }
-  .home-screen .btn { padding: 16px 36px; font-size: 15px; min-width: 260px; }
+  .game-logo, .marquee-title { font-size: 4rem; }
+  .marquee-frame { padding: 36px 72px; }
+  .home-screen .btn { padding: 16px 36px; font-size: 15px; }
 }
 
 @media (min-width: 1400px) {

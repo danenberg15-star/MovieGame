@@ -178,6 +178,7 @@ function HomeScreen() {
             <span className="marquee-bulbs marquee-bulbs--bottom" aria-hidden="true" />
           </div>
 
+          <div className="home-controls">
           <div className="name-section">
             <input
               type="text"
@@ -261,6 +262,7 @@ function HomeScreen() {
               </div>
             </div>
           )}
+          </div>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
-      app_title: "MOVIE CHAIN",
+      app_title: "CINEMASTER",
       create_game: "Create New Game",
       join_game: "Join Game",
       qa_mode: "QA Mode (Room 99999)",
@@ -61,7 +61,7 @@ const resources = {
   },
   he: {
     translation: {
-      app_title: "שרשרת הסרטים",
+      app_title: "CINEMASTER",
       create_game: "צור משחק חדש",
       join_game: "הצטרף למשחק",
       qa_mode: "מצב בדיקה (חדר 99999)",
