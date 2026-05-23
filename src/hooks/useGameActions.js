@@ -348,7 +348,6 @@ export const useGameActions = (
         // First team failed - give other team a chance to steal
         // 🔥 CRITICAL: currentTurn stays the SAME (the original turn holder)
         // We DON'T change currentTurn here!
-        const stealingTeam = otherTeam(answeringTeam);
         
         await update(ref(database, `games/${roomCode}`), {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
