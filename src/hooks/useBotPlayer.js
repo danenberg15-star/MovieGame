@@ -1,6 +1,6 @@
 // src/hooks/useBotPlayer.js
 import { useEffect, useMemo, useRef } from 'react';
-import { getStealingTeam, isBotTurnForQA, isTrailerReadyForAnswer } from './useGameActions';
+import { getStealingTeam, isBotTurnForQA } from './useGameActions';
 
 export const useBotPlayer = (
   gameState,
