@@ -1,5 +1,5 @@
 // src/hooks/useBotPlayer.js
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { getStealingTeam, isBotTurnForQA, isTrailerReadyForAnswer } from './useGameActions';
 
 export const useBotPlayer = (
@@ -33,7 +33,10 @@ export const useBotPlayer = (
   const gameStateRef = useRef(gameState);
   gameStateRef.current = gameState;
 
-  const attempts = gameState?.currentMovieAttempts || [];
+  const attempts = useMemo(
+    () => gameState?.currentMovieAttempts ?? [],
+    [gameState?.currentMovieAttempts]
+  );
   const botShouldAnswer = isQAMode
     ? isBotTurnForQA(gameState)
     : gameState?.currentTurn === 'B';
