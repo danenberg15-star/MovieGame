@@ -1,31 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/assets/logo192.webp" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#667eea" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#d4a047" />
     <meta
       name="description"
-      content="Movie Chain - משחק טריוויה תחרותי בין קבוצות בנושא סרטים וקשרים"
+      content="CINEMASTER - משחק לזיהוי סרטים: טריוויה תחרותית בין קבוצות בנושא קולנוע וחיבורים בין סרטים"
     />
-    
+
+    <!-- Open Graph / Facebook / WhatsApp preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CINEMASTER - משחק לזיהוי סרטים" />
+    <meta
+      property="og:description"
+      content="טריוויה תחרותית בין קבוצות בנושא קולנוע וחיבורים בין סרטים"
+    />
+    <meta property="og:image" content="%PUBLIC_URL%/assets/logo512.webp" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CINEMASTER - משחק לזיהוי סרטים" />
+    <meta
+      name="twitter:description"
+      content="טריוויה תחרותית בין קבוצות בנושא קולנוע וחיבורים בין סרטים"
+    />
+    <meta name="twitter:image" content="%PUBLIC_URL%/assets/logo512.webp" />
+
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/logo192.webp" />
-    
+
     <!-- Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    
+
     <!-- Apple Mobile Web App -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Movie Chain" />
-    
+    <meta name="apple-mobile-web-app-title" content="CINEMASTER" />
+
     <!-- Microsoft Tile -->
-    <meta name="msapplication-TileColor" content="#667eea" />
+    <meta name="msapplication-TileColor" content="#0a0807" />
     <meta name="msapplication-TileImage" content="%PUBLIC_URL%/assets/logo192.webp" />
-    
-    <title>Movie Chain - משחק שרשרת הסרטים</title>
+
+    <title>CINEMASTER - משחק לזיהוי סרטים</title>
 
     <!-- Cinematic typography: Limelight (marquee) + Cinzel (Art Deco) + Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,7 +57,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    
+
     <!-- Register Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {

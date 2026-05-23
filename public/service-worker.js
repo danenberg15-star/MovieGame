@@ -1,5 +1,5 @@
-// Service Worker for Movie Chain PWA
-const CACHE_NAME = 'moviechain-v1.3.0';
+// Service Worker for CINEMASTER PWA
+const CACHE_NAME = 'cinemaster-v1.4.0';
 
 // Only cache essential files that we know exist
 const ESSENTIAL_CACHE = [
@@ -10,7 +10,7 @@ const ESSENTIAL_CACHE = [
 
 // Install event - cache only essential files
 self.addEventListener('install', (event) => {
-  console.log('✅ [Service Worker] Installing v1.3.0...');
+  console.log('✅ [Service Worker] Installing v1.4.0...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -25,7 +25,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean old caches and take control immediately
 self.addEventListener('activate', (event) => {
-  console.log('✅ [Service Worker] Activating v1.3.0...');
+  console.log('✅ [Service Worker] Activating v1.4.0...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
