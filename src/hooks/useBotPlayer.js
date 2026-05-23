@@ -26,9 +26,11 @@ export const useBotPlayer = (
   const answerTimeoutRef = useRef(null);
   const decisionTimeoutRef = useRef(null);
   const currentMovieIdRef = useRef(null);
-  const hasDecidedRef = useRef(false);
   const botTurnStartedRef = useRef(false);
-  const prevPhaseRef = useRef(phase);
+  const scheduledDecisionKeyRef = useRef(null);
+  const executedDecisionKeyRef = useRef(null);
+  const gameStateRef = useRef(gameState);
+  gameStateRef.current = gameState;
 
   const isBotTurn = gameState?.currentTurn === 'B';
 
@@ -38,7 +40,8 @@ export const useBotPlayer = (
       console.log('🎬 Movie changed - resetting bot state');
       currentMovieIdRef.current = currentMovie.id;
       hasAnsweredRef.current = false;
-      hasDecidedRef.current = false;
+      scheduledDecisionKeyRef.current = null;
+      executedDecisionKeyRef.current = null;
       botTurnStartedRef.current = false;
       
       // Clear any existing timeouts
@@ -68,23 +71,6 @@ export const useBotPlayer = (
       }
     }
   }, [isQAMode, isBotTurn, currentMovie?.id, phase, gameState?.currentMovieAttempts]);
-
-  // Reset decision flag only when entering decision phase (not on every wonCard update)
-  useEffect(() => {
-    const enteredDecision = phase === 'decision' && prevPhaseRef.current !== 'decision';
-    prevPhaseRef.current = phase;
-
-    if (enteredDecision && gameState?.wonCard) {
-      console.log('🔄 Resetting decision flag - new decision phase');
-      hasDecidedRef.current = false;
-      setBotIsThinking(false);
-    }
-
-    if (phase !== 'decision' && decisionTimeoutRef.current) {
-      clearTimeout(decisionTimeoutRef.current);
-      decisionTimeoutRef.current = null;
-    }
-  }, [phase, gameState?.wonCard, setBotIsThinking]);
 
   // Bot answering (when trailer ends)
   useEffect(() => {
@@ -181,94 +167,93 @@ export const useBotPlayer = (
     setBotIsThinking
   ]);
 
-  // 🔥 FIXED: Bot decision making - 80% success rate, NEVER saves token
+  // Bot decision (Strict Mode safe: cleanup + reschedule on remount)
   useEffect(() => {
-    if (!isQAMode) {
-      return;
-    }
+    if (!isQAMode) return;
 
     if (phase !== 'decision') {
+      scheduledDecisionKeyRef.current = null;
+      executedDecisionKeyRef.current = null;
       return;
     }
 
-    // 🔥 FIXED: Check wonCard BEFORE checking hasDecidedRef
-    if (!gameState?.wonCard) {
+    const wonCard = gameState?.wonCard;
+    if (!wonCard) {
       console.log('🤖 No wonCard in gameState');
       return;
     }
 
-    // 🔥 FIXED: Check if this card was won by bot (Team B) BEFORE checking hasDecidedRef
-    if (gameState.wonCard.team !== 'B') {
-      console.log('🤖 Card was not won by bot team:', gameState.wonCard.team);
+    if (wonCard.team !== 'B') {
+      console.log('🤖 Card was not won by bot team:', wonCard.team);
       return;
     }
 
-    if (hasDecidedRef.current) {
-      console.log('🤖 Already made decision for this round');
+    const decisionKey = `${wonCard.movieId}:${wonCard.team}`;
+    if (scheduledDecisionKeyRef.current === decisionKey) {
       return;
     }
 
-    // Get bot cards
-    const botCards = gameState?.teamB?.cards || [];
-
-    console.log('🤖 Bot making connection decision...');
-    console.log('🤖 Bot cards:', botCards.length);
-    console.log('🤖 Won card:', gameState.wonCard);
-
-    const wonMovie = allMovies.find(m => m.id === gameState.wonCard.movieId);
-    
+    const wonMovie = allMovies.find((m) => m.id === wonCard.movieId);
     if (!wonMovie) {
       console.log('🤖 Could not find wonMovie');
       return;
     }
 
+    const botCards = gameState?.teamB?.cards || [];
+    scheduledDecisionKeyRef.current = decisionKey;
+
+    console.log('🤖 Bot making connection decision...');
+    console.log('🤖 Bot cards:', botCards.length);
     console.log('🤖 Won movie:', wonMovie.title.en);
 
-    hasDecidedRef.current = true;
-
-    // Bot decides after 1.5 seconds (longer delay for decision phase)
     const timeoutId = setTimeout(() => {
+      if (executedDecisionKeyRef.current === decisionKey) {
+        return;
+      }
+      executedDecisionKeyRef.current = decisionKey;
+      scheduledDecisionKeyRef.current = null;
+
+      const latestCards = gameStateRef.current?.teamB?.cards || [];
       setBotIsThinking(true);
-      // 🔥 FIXED: 80% success rate, NEVER save token
-      const shouldSucceed = Math.random() < 0.80;
-      
-      if (shouldSucceed && botCards.length >= 2) {
-        // 80% of the time - try to connect with a random card
-        const randomCardIndex = Math.floor(Math.random() * botCards.length);
-        const targetCard = botCards[randomCardIndex];
-        
-        // Try to find a connection
+
+      const shouldSucceed = Math.random() < 0.8;
+
+      const finish = () => setBotIsThinking(false);
+
+      if (shouldSucceed && latestCards.length >= 2) {
+        const targetCard = latestCards[Math.floor(Math.random() * latestCards.length)];
         const connectionTypes = ['actor', 'director', 'year'];
-        const randomConnectionType = connectionTypes[Math.floor(Math.random() * connectionTypes.length)];
-        
+        const randomConnectionType =
+          connectionTypes[Math.floor(Math.random() * connectionTypes.length)];
+
         console.log('🤖 Bot attempting connection (80% success)');
-        console.log('🤖 Target card:', targetCard.title.en);
+        console.log('🤖 Target card:', targetCard.title?.en);
         console.log('🤖 Connection type:', randomConnectionType);
-        
-        handleConnectionAttempt(targetCard, randomConnectionType).then(() => {
-          setBotIsThinking(false);
-        });
-      } else if (botCards.length < 2) {
-        // Can't connect with only 1 card - start new sequence
-        console.log('🤖 Bot has only 1 card - starting new sequence');
-        handleSaveToken().then(() => {
-          setBotIsThinking(false);
-        });
+
+        Promise.resolve(handleConnectionAttempt(targetCard, randomConnectionType)).finally(finish);
+      } else if (latestCards.length < 2) {
+        console.log('🤖 Bot has only 1 card - saving token and starting new sequence');
+        Promise.resolve(handleSaveToken()).finally(finish);
       } else {
-        // 20% of the time - fail to connect, start new sequence
         console.log('🤖 Bot failed to find connection (20%) - starting new sequence');
-        handleSaveToken().then(() => {
-          setBotIsThinking(false);
-        });
+        Promise.resolve(handleSaveToken()).finally(finish);
       }
     }, 1500);
 
     decisionTimeoutRef.current = timeoutId;
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (scheduledDecisionKeyRef.current === decisionKey) {
+        scheduledDecisionKeyRef.current = null;
+      }
+    };
   }, [
-    gameState?.wonCard,
-    gameState?.teamB?.cards,
     isQAMode,
     phase,
+    gameState?.wonCard?.movieId,
+    gameState?.wonCard?.team,
+    gameState?.teamB?.cards?.length,
     allMovies,
     handleConnectionAttempt,
     handleSaveToken,
@@ -280,9 +265,6 @@ export const useBotPlayer = (
     return () => {
       if (answerTimeoutRef.current) {
         clearTimeout(answerTimeoutRef.current);
-      }
-      if (decisionTimeoutRef.current) {
-        clearTimeout(decisionTimeoutRef.current);
       }
     };
   }, []);
