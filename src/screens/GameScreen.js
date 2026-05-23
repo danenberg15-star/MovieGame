@@ -20,6 +20,9 @@ function GameScreen() {
   const [botIsThinking, setBotIsThinking] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showConnectionMessage, setShowConnectionMessage] = useState(false);
+  
+  // 🔥 NEW: Local state to track if trailer was watched for current movie
+  const [localTrailerWatched, setLocalTrailerWatched] = useState(false);
 
   // Custom hook for game state management
   const {
@@ -50,12 +53,19 @@ function GameScreen() {
     ? (currentTeam === 'A' && !myTeamAlreadyTried) || (currentTeam === 'B' && !botAlreadyTried)
     : gameState?.currentTurn === currentTeam;
 
-  // 🔥 FIXED: Check if trailer was watched
-  // Use the existing field: trailerWatchedForTurn
+  // 🔥 FIXED: Check if trailer was watched (Firebase state)
   const trailerWatched = gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn;
   
-  // 🔥 FIXED: Show trailer only if not watched yet for current turn
-  const shouldShowTrailer = phase === 'playing' && currentMovie && !trailerWatched;
+  // 🔥 FIXED: Show trailer only if not watched (local OR Firebase)
+  const shouldShowTrailer = phase === 'playing' && currentMovie && !localTrailerWatched && !trailerWatched;
+
+  // 🔥 NEW: Reset local trailer state when movie changes
+  useEffect(() => {
+    if (currentMovie?.id) {
+      console.log('🎬 Movie changed, resetting localTrailerWatched');
+      setLocalTrailerWatched(false);
+    }
+  }, [currentMovie?.id]);
 
   // Custom hook for game actions
   const {
@@ -105,7 +115,7 @@ function GameScreen() {
     }
   }, [connectionResult]);
 
-  // When active team finishes trailer locally, sync to Firebase for all clients
+  // 🔥 FIXED: When trailer ends, mark as watched locally AND in Firebase
   const handleTrailerEnd = useCallback(() => {
     if (phase !== 'playing' || !gameState?.currentMovie?.id) return;
 
@@ -114,7 +124,9 @@ function GameScreen() {
 
     if (!canMarkWatched) return;
 
-    markTrailerWatched();
+    console.log('🎬 Trailer ended - marking as watched locally and in Firebase');
+    setLocalTrailerWatched(true); // 🔥 Mark locally IMMEDIATELY
+    markTrailerWatched(); // Also update Firebase
   }, [phase, gameState?.currentMovie?.id, isMyTurn, isQAMode, gameState?.currentTurn, markTrailerWatched]);
 
   // Bot player hook - handles bot behavior in QA mode
@@ -304,7 +316,7 @@ function GameScreen() {
             />
           ) : (
             <div className="playing-phase">
-              {/* 🔥 FIXED: Show trailer only if not watched yet */}
+              {/* 🔥 FIXED: Show trailer only if not watched (local OR Firebase) */}
               {shouldShowTrailer ? (
                 <div className="trailer-container">
                   <TrailerPlayer
