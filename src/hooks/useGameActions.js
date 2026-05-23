@@ -14,14 +14,14 @@ import {
 
 const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
 
-const getStealingTeam = (attempts) => {
+export const getStealingTeam = (attempts) => {
   if (!attempts?.length) return null;
   if (!attempts.includes('A')) return 'A';
   if (!attempts.includes('B')) return 'B';
   return null;
 };
 
-const isTrailerReadyForAnswer = (gameState, answeringTeam, isQAMode) => {
+export const isTrailerReadyForAnswer = (gameState, answeringTeam, isQAMode) => {
   const trailerFor = gameState?.currentMovie?.trailerWatchedForTurn;
   const attempts = gameState?.currentMovieAttempts || [];
   if (trailerFor === answeringTeam) return true;
@@ -29,6 +29,14 @@ const isTrailerReadyForAnswer = (gameState, answeringTeam, isQAMode) => {
   if (isQAMode && answeringTeam === 'A' && attempts.includes('B')) return true;
   if (isQAMode && answeringTeam === 'B' && attempts.includes('A')) return true;
   return false;
+};
+
+export const isBotTurnForQA = (gameState) => {
+  const attempts = gameState?.currentMovieAttempts || [];
+  const stealingTeam = getStealingTeam(attempts);
+  if (stealingTeam === 'B') return true;
+  if (stealingTeam === 'A') return false;
+  return gameState?.currentTurn === 'B';
 };
 
 export const useGameActions = (

@@ -1,5 +1,6 @@
 // src/hooks/useBotPlayer.js
 import { useEffect, useRef } from 'react';
+import { getStealingTeam, isBotTurnForQA, isTrailerReadyForAnswer } from './useGameActions';
 
 export const useBotPlayer = (
   gameState,
@@ -32,7 +33,18 @@ export const useBotPlayer = (
   const gameStateRef = useRef(gameState);
   gameStateRef.current = gameState;
 
-  const isBotTurn = gameState?.currentTurn === 'B';
+  const attempts = gameState?.currentMovieAttempts || [];
+  const botShouldAnswer = isQAMode
+    ? isBotTurnForQA(gameState)
+    : gameState?.currentTurn === 'B';
+  const isBotStealTurn = isQAMode && getStealingTeam(attempts) === 'B';
+
+  // Allow bot to answer on steal turn after player missed
+  useEffect(() => {
+    if (isBotStealTurn) {
+      hasAnsweredRef.current = false;
+    }
+  }, [isBotStealTurn]);
 
   // Reset when movie changes
   useEffect(() => {
@@ -61,21 +73,19 @@ export const useBotPlayer = (
   // Track when it becomes bot's turn for the FIRST time for this movie (QA only)
   useEffect(() => {
     if (!isQAMode) return;
-    if (isBotTurn && currentMovie?.id === currentMovieIdRef.current && phase === 'playing') {
-      const attempts = gameState?.currentMovieAttempts || [];
-      
-      // If this is bot's FIRST turn for this movie (no attempts yet from user)
+    if (botShouldAnswer && currentMovie?.id === currentMovieIdRef.current && phase === 'playing') {
       if (attempts.length === 0 && !botTurnStartedRef.current) {
         console.log('🤖 Bot\'s FIRST turn for this movie - ready to watch trailer');
         botTurnStartedRef.current = true;
+      } else if (isBotStealTurn) {
+        console.log('🤖 Bot steal turn — player missed, bot will guess');
       }
     }
-  }, [isQAMode, isBotTurn, currentMovie?.id, phase, gameState?.currentMovieAttempts]);
+  }, [isQAMode, botShouldAnswer, isBotStealTurn, currentMovie?.id, phase, attempts.length]);
 
   // Bot answering (when trailer ends)
   useEffect(() => {
-    // Early exit conditions - check these FIRST
-    if (!isQAMode || !isBotTurn || !currentMovie) {
+    if (!isQAMode || !botShouldAnswer || !currentMovie) {
       return;
     }
 
@@ -93,15 +103,17 @@ export const useBotPlayer = (
       return;
     }
 
-    const attempts = gameState?.currentMovieAttempts || [];
     if (attempts.includes('B')) {
       console.log('🤖 Bot already attempted this movie');
       return;
     }
 
-    const trailerReady = gameState?.currentMovie?.trailerWatchedForTurn === 'B';
+    const trailerReady = isTrailerReadyForAnswer(gameState, 'B', isQAMode);
     if (!trailerReady) {
-      console.log('🤖 Waiting for trailer to be watched...');
+      console.log('🤖 Waiting for trailer to be watched...', {
+        trailerWatchedForTurn: gameState?.currentMovie?.trailerWatchedForTurn,
+        attempts
+      });
       return;
     }
 
@@ -157,8 +169,9 @@ export const useBotPlayer = (
   }, [
     answerOptions,
     gameState?.currentMovie?.trailerWatchedForTurn,
+    gameState?.currentTurn,
     isQAMode,
-    isBotTurn,
+    botShouldAnswer,
     phase,
     currentMovie,
     language,
