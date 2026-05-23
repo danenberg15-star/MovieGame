@@ -28,6 +28,7 @@ export const useBotPlayer = (
   const currentMovieIdRef = useRef(null);
   const hasDecidedRef = useRef(false);
   const botTurnStartedRef = useRef(false);
+  const prevPhaseRef = useRef(phase);
 
   const isBotTurn = gameState?.currentTurn === 'B';
 
@@ -68,12 +69,20 @@ export const useBotPlayer = (
     }
   }, [isQAMode, isBotTurn, currentMovie?.id, phase, gameState?.currentMovieAttempts]);
 
-  // Reset decision flag when phase changes to decision
+  // Reset decision flag only when entering decision phase (not on every wonCard update)
   useEffect(() => {
-    if (phase === 'decision' && gameState?.wonCard) {
+    const enteredDecision = phase === 'decision' && prevPhaseRef.current !== 'decision';
+    prevPhaseRef.current = phase;
+
+    if (enteredDecision && gameState?.wonCard) {
       console.log('🔄 Resetting decision flag - new decision phase');
       hasDecidedRef.current = false;
       setBotIsThinking(false);
+    }
+
+    if (phase !== 'decision' && decisionTimeoutRef.current) {
+      clearTimeout(decisionTimeoutRef.current);
+      decisionTimeoutRef.current = null;
     }
   }, [phase, gameState?.wonCard, setBotIsThinking]);
 
@@ -194,15 +203,8 @@ export const useBotPlayer = (
       return;
     }
 
-    // 🔥 NOW check if already decided (AFTER confirming it's bot's card)
     if (hasDecidedRef.current) {
       console.log('🤖 Already made decision for this round');
-      return;
-    }
-
-    // Then check if bot is thinking
-    if (botIsThinking) {
-      console.log('🤖 Bot already thinking, skipping...');
       return;
     }
 
@@ -222,14 +224,11 @@ export const useBotPlayer = (
 
     console.log('🤖 Won movie:', wonMovie.title.en);
 
-    // Mark as decided IMMEDIATELY to prevent re-runs
     hasDecidedRef.current = true;
-    
-    // Set thinking state IMMEDIATELY to block re-entry
-    setBotIsThinking(true);
 
     // Bot decides after 1.5 seconds (longer delay for decision phase)
     const timeoutId = setTimeout(() => {
+      setBotIsThinking(true);
       // 🔥 FIXED: 80% success rate, NEVER save token
       const shouldSucceed = Math.random() < 0.80;
       
@@ -265,18 +264,11 @@ export const useBotPlayer = (
     }, 1500);
 
     decisionTimeoutRef.current = timeoutId;
-
-    return () => {
-      if (decisionTimeoutRef.current) {
-        clearTimeout(decisionTimeoutRef.current);
-      }
-    };
   }, [
     gameState?.wonCard,
     gameState?.teamB?.cards,
     isQAMode,
     phase,
-    botIsThinking,
     allMovies,
     handleConnectionAttempt,
     handleSaveToken,
