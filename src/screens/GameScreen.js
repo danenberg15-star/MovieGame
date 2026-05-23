@@ -1,5 +1,4 @@
 // src/screens/GameScreen.js
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
@@ -9,7 +8,6 @@ import DecisionPhase from '../components/DecisionPhase';
 import { useGameState } from '../hooks/useGameState';
 import { useGameActions } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
-
 
 function GameScreen() {
   const navigate = useNavigate();
@@ -41,7 +39,17 @@ function GameScreen() {
   } = useGameState(roomCode, playerId, language);
 
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
-  const isMyTurn = gameState?.currentTurn === currentTeam;
+  
+  // 🔥 FIXED: Check if it's my turn to answer
+  // In QA mode: Team A can answer if currentTurn is A OR if bot already tried
+  const attempts = gameState?.currentMovieAttempts || [];
+  const botAlreadyTried = attempts.includes('B');
+  const myTeamAlreadyTried = attempts.includes(currentTeam);
+  
+  const isMyTurn = isQAMode 
+    ? (currentTeam === 'A' && !myTeamAlreadyTried) || (currentTeam === 'B' && !botAlreadyTried)
+    : gameState?.currentTurn === currentTeam;
+    
   const trailerReady =
     gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn;
 
@@ -100,16 +108,12 @@ function GameScreen() {
     const canMarkWatched =
       isMyTurn || (isQAMode && gameState.currentTurn === 'B');
 
-    if (!canMarkWatched) {
-      console.log('🎬 Trailer ended locally (observer) — waiting for active team');
-      return;
-    }
+    if (!canMarkWatched) return;
 
-    console.log('🎬 Trailer ended — marking watched for team', gameState.currentTurn);
     markTrailerWatched();
-  }, [phase, gameState?.currentMovie?.id, gameState?.currentTurn, isMyTurn, isQAMode, markTrailerWatched]);
+  }, [phase, gameState?.currentMovie?.id, isMyTurn, isQAMode, gameState?.currentTurn, markTrailerWatched]);
 
-  // Custom hook for bot player
+  // Bot player hook - handles bot behavior in QA mode
   useBotPlayer(
     gameState,
     currentMovie,
@@ -122,80 +126,73 @@ function GameScreen() {
     roomCode,
     allMovies,
     handleAnswerSelect,
-    (value) => {},
-    (value) => {},
-    (msg) => {},
-    (show) => {},
+    null,
+    null,
+    null,
+    null,
     setRemovedAnswers,
     startNextRound,
     handleConnectionAttempt,
     handleSaveToken
   );
 
-  // Translations
-  const t = (key) => {
-    const translations = {
-      en: {
-        team_a: 'Team A',
-        team_b: 'Team B',
-        cards: 'Cards',
-        tokens: 'Tokens',
-        your_turn: 'Your Turn',
-        waiting: 'Waiting...',
-        watching_trailer: 'Watch the trailer...',
-        opponent_guessing: 'Opponent is choosing...',
-        choose_answer: 'Choose the correct movie:',
-        game_over: 'Game Over!',
-        winner: 'Winner',
-        back_home: 'Back to Home',
-        success_message: 'Correct! +1 Token',
-        now_connect: 'Now connect this movie to your collection'
-      },
-      he: {
-        team_a: 'קבוצה א\'',
-        team_b: 'קבוצה ב\'',
-        cards: 'כרטיסים',
-        tokens: 'אסימונים',
-        your_turn: 'התור שלך',
-        waiting: 'ממתין...',
-        watching_trailer: 'צפו בטריילר...',
-        opponent_guessing: 'היריב בוחר...',
-        choose_answer: 'בחרו את הסרט הנכון:',
-        game_over: 'המשחק הסתיים!',
-        winner: 'מנצח',
-        back_home: 'חזרה לדף הבית',
-        success_message: 'כל הכבוד! +1 אסימון',
-        now_connect: 'עכשיו שייכו את הסרט לאוסף שלכם'
-      }
-    };
-    return translations[language]?.[key] || key;
+  // Translation helper
+  const translations = {
+    en: {
+      loading: 'Loading...',
+      error: 'Error',
+      game_over: 'Game Over',
+      winner: 'Winner',
+      team_a: 'Team A',
+      team_b: 'Team B',
+      cards: 'cards',
+      tokens: 'tokens',
+      back_home: 'Back to Home',
+      choose_answer: 'Choose the correct movie:',
+      watching_trailer: 'Watching trailer...',
+      waiting_for_decision: 'WAITING...',
+      connect_or_save: 'Connect or Save Token'
+    },
+    he: {
+      loading: 'טוען...',
+      error: 'שגיאה',
+      game_over: 'המשחק הסתיים',
+      winner: 'המנצח',
+      team_a: 'קבוצה A',
+      team_b: 'קבוצה B',
+      cards: 'קלפים',
+      tokens: 'אסימונים',
+      back_home: 'חזרה לדף הבית',
+      choose_answer: 'בחר את הסרט הנכון:',
+      watching_trailer: 'צופה בטריילר...',
+      waiting_for_decision: 'ממתין...',
+      connect_or_save: 'חבר או שמור אסימון'
+    }
   };
 
+  const t = (key) => translations[language][key] || key;
+
+  // Loading state
   if (loading || isInitializing) {
     return (
-      <div className="game-screen loading">
-        <div className="loading-spinner">🎬</div>
-        <p>{language === 'he' ? 'טוען משחק...' : 'Loading game...'}</p>
+      <div className="game-screen">
+        <div className="loading-screen">
+          <div className="spinner"></div>
+          <p>{t('loading')}</p>
+        </div>
       </div>
     );
   }
 
+  // Error state
   if (error) {
     return (
-      <div className="game-screen error">
-        <h2>{language === 'he' ? 'שגיאה' : 'Error'}</h2>
-        <p>{error}</p>
-        <button onClick={() => navigate('/')}>
-          {language === 'he' ? 'חזרה לדף הבית' : 'Back to Home'}
-        </button>
-      </div>
-    );
-  }
-
-  if (!gameState) {
-    return (
-      <div className="game-screen loading">
-        <p>{language === 'he' ? 'ממתין למשחק...' : 'Waiting for game...'}</p>
+      <div className="game-screen">
+        <div className="error-screen">
+          <h2>{t('error')}</h2>
+          <p>{error}</p>
+          <button onClick={() => navigate('/')}>{t('back_home')}</button>
+        </div>
       </div>
     );
   }
@@ -252,63 +249,63 @@ function GameScreen() {
   const teamBData = gameState.teamB || { cards: [], tokens: 0 };
 
   return (
-    <div className={`game-screen ${language === 'he' ? 'rtl' : 'ltr'}`}>
+    <div className="game-screen">
       <div className="game-main-layout">
-        
         {/* Left Sidebar - Team A */}
-        <div className="team-sidebar left">
-          <div className="team-sidebar-label">{t('team_a')}</div>
-          
-          <div className="team-stat">
-            <div className="team-stat-icon">🎬</div>
-            <div className="team-stat-value">{teamAData.cards.length}/10</div>
-            <div className="team-stat-label">{t('cards')}</div>
+        <div className={`team-sidebar team-a ${currentTeam === 'A' ? 'active' : ''}`}>
+          <div className="team-header">
+            <h2>TEAM A</h2>
+            {currentTeam === 'A' && <span className="you-badge">YOU</span>}
           </div>
           
-          <div className="team-stat">
-            <div className="team-stat-icon">🎫</div>
-            <div className="team-stat-value">{teamAData.tokens}</div>
-            <div className="team-stat-label">{t('tokens')}</div>
+          <div className="team-stats">
+            <div className="stat">
+              <span className="stat-icon">🎬</span>
+              <div className="stat-info">
+                <span className="stat-value">{teamAData.cards?.length || 0}/10</span>
+                <span className="stat-label">CARDS</span>
+              </div>
+            </div>
+            
+            <div className="stat">
+              <span className="stat-icon">🎫</span>
+              <div className="stat-info">
+                <span className="stat-value">{teamAData.tokens || 0}</span>
+                <span className="stat-label">TOKENS</span>
+              </div>
+            </div>
           </div>
 
-          {gameState.currentTurn === 'A' && (
-            <div className="turn-indicator">
-              {currentTeam === 'A' ? t('your_turn') : t('waiting')}
-            </div>
-          )}
+          <div className="team-cards">
+            {teamAData.cards?.map((card, index) => (
+              <div key={index} className="card-item">
+                <span className="card-number">{index + 1}</span>
+                <span className="card-title">{card.title?.en || 'Unknown'}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Center Content Area */}
+        {/* Main Game Content */}
         <div className="game-content">
-          {/* Success Message Screen */}
-          {showSuccessMessage && phase === 'decision' && (
-            <div className="success-message-screen">
-              <div className="success-icon">🎉</div>
-              <h1 className="success-title">{t('success_message')}</h1>
-              <p className="success-subtitle">{t('now_connect')}</p>
-            </div>
-          )}
-
-          {/* Connection Result Message */}
-          {showConnectionMessage && connectionResult && (
-            <div className={`connection-message-screen ${connectionResult.success ? 'success' : 'failure'}`}>
-              <div className="connection-icon">{connectionResult.success ? '✅' : '❌'}</div>
-              <h1 className="connection-title">{connectionResult.message}</h1>
-              {connectionResult.hint && (
-                <p className="connection-hint">{connectionResult.hint}</p>
-              )}
-            </div>
-          )}
-
-          {/* Playing Phase */}
-          {phase === 'playing' && currentMovie && !showSuccessMessage && !showConnectionMessage && (
-            <div className="answering-phase">
+          {phase === 'decision' ? (
+            <DecisionPhase
+              wonCard={currentMovie}
+              teamCards={currentTeam === 'A' ? teamAData.cards : teamBData.cards}
+              allMovies={allMovies}
+              onConnect={handleConnectionAttempt}
+              onSaveToken={handleSaveToken}
+              language={language}
+              disabled={gameState.wonCard?.team !== currentTeam}
+            />
+          ) : (
+            <div className="playing-phase">
               {!trailerReady ? (
                 <div className="trailer-container">
                   <TrailerPlayer
-                    key={`${currentMovie.id}-${gameState.currentTurn}`}
-                    movieId={currentMovie.id}
+                    movieId={currentMovie?.id}
                     onTrailerEnd={handleTrailerEnd}
+                    language={language}
                     autoPlay={true}
                   />
                   {!isMyTurn && (
@@ -353,41 +350,58 @@ function GameScreen() {
             </div>
           )}
 
-          {/* Decision Phase */}
-          {phase === 'decision' && !showSuccessMessage && !showConnectionMessage && gameState.wonCard && (
-            <DecisionPhase
-              wonCard={allMovies.find(m => m.id === gameState.wonCard.movieId)}
-              teamCards={(gameState.wonCard.team === 'A' ? teamAData : teamBData).cards}
-              onConnect={handleConnectionAttempt}
-              onSaveToken={handleSaveToken}
-              language={language}
-              connectionResult={connectionResult}
-              disabled={gameState.wonCard.team !== currentTeam}
-            />
+          {showSuccessMessage && (
+            <div className="success-overlay">
+              <div className="success-message">
+                <h2>🎉 Correct!</h2>
+                <p>+1 Token</p>
+              </div>
+            </div>
+          )}
+
+          {showConnectionMessage && connectionResult && (
+            <div className="connection-overlay">
+              <div className={`connection-message ${connectionResult.success ? 'success' : 'failure'}`}>
+                <h2>{connectionResult.success ? '✅' : '❌'} {connectionResult.message}</h2>
+                {connectionResult.hint && <p>{connectionResult.hint}</p>}
+              </div>
+            </div>
           )}
         </div>
 
         {/* Right Sidebar - Team B */}
-        <div className="team-sidebar right">
-          <div className="team-sidebar-label">{t('team_b')}</div>
-          
-          <div className="team-stat">
-            <div className="team-stat-icon">🎬</div>
-            <div className="team-stat-value">{teamBData.cards.length}/10</div>
-            <div className="team-stat-label">{t('cards')}</div>
+        <div className={`team-sidebar team-b ${currentTeam === 'B' ? 'active' : ''}`}>
+          <div className="team-header">
+            <h2>TEAM B</h2>
+            {currentTeam === 'B' && <span className="you-badge">YOU</span>}
           </div>
           
-          <div className="team-stat">
-            <div className="team-stat-icon">🎫</div>
-            <div className="team-stat-value">{teamBData.tokens}</div>
-            <div className="team-stat-label">{t('tokens')}</div>
+          <div className="team-stats">
+            <div className="stat">
+              <span className="stat-icon">🎬</span>
+              <div className="stat-info">
+                <span className="stat-value">{teamBData.cards?.length || 0}/10</span>
+                <span className="stat-label">CARDS</span>
+              </div>
+            </div>
+            
+            <div className="stat">
+              <span className="stat-icon">🎫</span>
+              <div className="stat-info">
+                <span className="stat-value">{teamBData.tokens || 0}</span>
+                <span className="stat-label">TOKENS</span>
+              </div>
+            </div>
           </div>
 
-          {gameState.currentTurn === 'B' && (
-            <div className="turn-indicator">
-              {currentTeam === 'B' ? t('your_turn') : t('waiting')}
-            </div>
-          )}
+          <div className="team-cards">
+            {teamBData.cards?.map((card, index) => (
+              <div key={index} className="card-item">
+                <span className="card-number">{index + 1}</span>
+                <span className="card-title">{card.title?.en || 'Unknown'}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
