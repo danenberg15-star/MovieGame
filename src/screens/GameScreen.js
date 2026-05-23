@@ -49,11 +49,6 @@ function GameScreen() {
   const isMyTurn = isQAMode 
     ? (currentTeam === 'A' && !myTeamAlreadyTried) || (currentTeam === 'B' && !botAlreadyTried)
     : gameState?.currentTurn === currentTeam;
-    
-  // 🔥 FIXED: Trailer is ready when watched for CURRENT turn
-  // But should NOT show again if team already watched it
-  const trailerReady =
-    gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn;
 
   // 🔥 NEW: Check if MY team already watched this movie's trailer
   const myTeamWatchedTrailer = gameState?.currentMovie?.teamsWatchedTrailer?.[currentTeam] === currentMovie?.id;
