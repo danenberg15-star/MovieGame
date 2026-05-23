@@ -199,7 +199,6 @@ function HomeScreen() {
                 aria-selected={gameMode === 'bot'}
                 className={`mode-tab ${gameMode === 'bot' ? 'active' : ''}`}
                 onClick={() => setGameMode('bot')}
-                disabled={!nameValid}
               >
                 🤖 {t('play_vs_bot')}
               </button>
@@ -209,7 +208,6 @@ function HomeScreen() {
                 aria-selected={gameMode === 'teams'}
                 className={`mode-tab ${gameMode === 'teams' ? 'active' : ''}`}
                 onClick={() => setGameMode('teams')}
-                disabled={!nameValid}
               >
                 👥 {t('play_vs_teams')}
               </button>

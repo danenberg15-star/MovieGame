@@ -475,7 +475,7 @@
   position: fixed;
   inset: 0;
   z-index: 3000;
-  pointer-events: auto;
+  pointer-events: none; /* never block taps; panels are decorative */
   display: flex;
   overflow: hidden;
 }
