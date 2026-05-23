@@ -100,7 +100,8 @@ function GameScreen() {
     setCurrentMovie,
     setAnswerOptions,
     setRemovedAnswers,
-    setPhase
+    setPhase,
+    localTrailerWatched
   );
 
   // Show success message when entering decision phase
@@ -126,7 +127,7 @@ function GameScreen() {
   }, [connectionResult]);
 
   // 🔥 FIXED: When trailer ends, mark as watched locally AND in Firebase
-  const handleTrailerEnd = useCallback(() => {
+  const handleTrailerEnd = useCallback(async () => {
     if (phase !== 'playing' || !gameState?.currentMovie?.id) return;
 
     const canMarkWatched =
@@ -135,8 +136,8 @@ function GameScreen() {
     if (!canMarkWatched) return;
 
     console.log('🎬 Trailer ended - marking as watched locally and in Firebase');
-    setLocalTrailerWatched(true); // 🔥 Mark locally IMMEDIATELY
-    markTrailerWatched(); // Also update Firebase
+    setLocalTrailerWatched(true);
+    await markTrailerWatched();
   }, [phase, gameState?.currentMovie?.id, isMyTurn, isQAMode, gameState?.currentTurn, markTrailerWatched]);
 
   // Bot player hook - handles bot behavior in QA mode
@@ -159,7 +160,8 @@ function GameScreen() {
     setRemovedAnswers,
     startNextRound,
     handleConnectionAttempt,
-    handleSaveToken
+    handleSaveToken,
+    localTrailerWatched
   );
 
   // Translation helper

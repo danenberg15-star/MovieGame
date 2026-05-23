@@ -21,10 +21,17 @@ export const getStealingTeam = (attempts) => {
   return null;
 };
 
-export const isTrailerReadyForAnswer = (gameState, answeringTeam, isQAMode) => {
+export const isTrailerReadyForAnswer = (
+  gameState,
+  answeringTeam,
+  isQAMode,
+  localTrailerWatched = false
+) => {
   const trailerFor = gameState?.currentMovie?.trailerWatchedForTurn;
   const attempts = gameState?.currentMovieAttempts || [];
+  const currentTurn = gameState?.currentTurn;
   if (trailerFor === answeringTeam) return true;
+  if (isQAMode && localTrailerWatched && currentTurn === answeringTeam) return true;
   // QA steal: same trailer already played (often cleared to null after bot's attempt)
   if (isQAMode && answeringTeam === 'A' && attempts.includes('B')) return true;
   if (isQAMode && answeringTeam === 'B' && attempts.includes('A')) return true;
@@ -49,7 +56,8 @@ export const useGameActions = (
   setCurrentMovie,
   setAnswerOptions,
   setRemovedAnswers,
-  setPhase
+  setPhase,
+  localTrailerWatched = false
 ) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
@@ -301,7 +309,12 @@ export const useGameActions = (
       if (stealingTeam) answeringTeam = stealingTeam;
     }
 
-    const trailerReady = isTrailerReadyForAnswer(gameState, answeringTeam, isQAMode);
+    const trailerReady = isTrailerReadyForAnswer(
+      gameState,
+      answeringTeam,
+      isQAMode,
+      localTrailerWatched
+    );
 
     if (!currentMovie || !trailerReady) {
       console.warn('⚠️ Answer blocked: missing movie or trailer not watched', {
@@ -401,7 +414,17 @@ export const useGameActions = (
         }
       }
     }
-  }, [selectedAnswer, currentMovie, gameState, roomCode, language, setPhase, setRemovedAnswers, startNextRound]);
+  }, [
+    selectedAnswer,
+    currentMovie,
+    gameState,
+    roomCode,
+    language,
+    localTrailerWatched,
+    setPhase,
+    setRemovedAnswers,
+    startNextRound
+  ]);
 
   return {
     startNextRound,
