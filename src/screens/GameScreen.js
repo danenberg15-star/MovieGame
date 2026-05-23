@@ -50,8 +50,19 @@ function GameScreen() {
     ? (currentTeam === 'A' && !myTeamAlreadyTried) || (currentTeam === 'B' && !botAlreadyTried)
     : gameState?.currentTurn === currentTeam;
     
+  // 🔥 FIXED: Trailer is ready when watched for CURRENT turn
+  // But should NOT show again if team already watched it
   const trailerReady =
     gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn;
+
+  // 🔥 NEW: Check if MY team already watched this movie's trailer
+  const myTeamWatchedTrailer = gameState?.currentMovie?.teamsWatchedTrailer?.[currentTeam] === currentMovie?.id;
+  
+  // 🔥 FIXED: Show trailer only if:
+  // 1. It's playing phase
+  // 2. My team hasn't watched it yet for THIS movie
+  // 3. Current movie exists
+  const shouldShowTrailer = phase === 'playing' && currentMovie && !myTeamWatchedTrailer;
 
   // Custom hook for game actions
   const {
@@ -300,7 +311,8 @@ function GameScreen() {
             />
           ) : (
             <div className="playing-phase">
-              {!trailerReady ? (
+              {/* 🔥 FIXED: Show trailer only if team hasn't watched it yet */}
+              {shouldShowTrailer ? (
                 <div className="trailer-container">
                   <TrailerPlayer
                     movieId={currentMovie?.id}

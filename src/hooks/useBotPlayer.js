@@ -1,6 +1,5 @@
 // src/hooks/useBotPlayer.js
 import { useEffect, useRef } from 'react';
-import botPlayer from '../utils/botPlayer';
 
 export const useBotPlayer = (
   gameState,
@@ -134,11 +133,23 @@ export const useBotPlayer = (
       const correctAnswer = currentMovie.title[language];
       console.log('🤖 Correct answer:', correctAnswer);
 
-      botPlayer.chooseAnswer(correctAnswer, answerOptions, (selectedAnswer, isCorrect) => {
-        console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', isCorrect);
-        handleAnswerSelect(selectedAnswer, true, false, 'B');
-        setBotIsThinking(false);
-      });
+      // 85% chance to answer correctly
+      const shouldAnswerCorrectly = Math.random() < 0.85;
+      let selectedAnswer;
+
+      if (shouldAnswerCorrectly) {
+        selectedAnswer = correctAnswer;
+        console.log('🤖 Bot chose CORRECT answer:', selectedAnswer);
+      } else {
+        // Choose a random wrong answer
+        const wrongAnswers = answerOptions.filter(opt => opt !== correctAnswer);
+        selectedAnswer = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+        console.log('🤖 Bot chose WRONG answer:', selectedAnswer);
+      }
+
+      console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', selectedAnswer === correctAnswer);
+      handleAnswerSelect(selectedAnswer, true, false, 'B');
+      setBotIsThinking(false);
     }, 1000);
 
     answerTimeoutRef.current = timeoutId;
@@ -161,7 +172,7 @@ export const useBotPlayer = (
     setBotIsThinking
   ]);
 
-  // Bot decision making (connect or save token)
+  // 🔥 FIXED: Bot decision making - 80% success rate, NEVER saves token
   useEffect(() => {
     if (!isQAMode) {
       return;
@@ -219,17 +230,38 @@ export const useBotPlayer = (
 
     // Bot decides after 1.5 seconds (longer delay for decision phase)
     const timeoutId = setTimeout(() => {
-      botPlayer.makeDecision(wonMovie, botCards, async (decision) => {
-        console.log('🤖 Bot decision:', decision);
-
-        if (decision.action === 'connect' && decision.targetCard && decision.connectionType) {
-          await handleConnectionAttempt(decision.targetCard, decision.connectionType);
-        } else {
-          await handleSaveToken();
-        }
-
-        setBotIsThinking(false);
-      });
+      // 🔥 FIXED: 80% success rate, NEVER save token
+      const shouldSucceed = Math.random() < 0.80;
+      
+      if (shouldSucceed && botCards.length >= 2) {
+        // 80% of the time - try to connect with a random card
+        const randomCardIndex = Math.floor(Math.random() * botCards.length);
+        const targetCard = botCards[randomCardIndex];
+        
+        // Try to find a connection
+        const connectionTypes = ['actor', 'director', 'year'];
+        const randomConnectionType = connectionTypes[Math.floor(Math.random() * connectionTypes.length)];
+        
+        console.log('🤖 Bot attempting connection (80% success)');
+        console.log('🤖 Target card:', targetCard.title.en);
+        console.log('🤖 Connection type:', randomConnectionType);
+        
+        handleConnectionAttempt(targetCard, randomConnectionType).then(() => {
+          setBotIsThinking(false);
+        });
+      } else if (botCards.length < 2) {
+        // Can't connect with only 1 card - start new sequence
+        console.log('🤖 Bot has only 1 card - starting new sequence');
+        handleSaveToken().then(() => {
+          setBotIsThinking(false);
+        });
+      } else {
+        // 20% of the time - fail to connect, start new sequence
+        console.log('🤖 Bot failed to find connection (20%) - starting new sequence');
+        handleSaveToken().then(() => {
+          setBotIsThinking(false);
+        });
+      }
     }, 1500);
 
     decisionTimeoutRef.current = timeoutId;
