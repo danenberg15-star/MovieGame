@@ -53,11 +53,21 @@ function GameScreen() {
     ? (currentTeam === 'A' && !myTeamAlreadyTried) || (currentTeam === 'B' && !botAlreadyTried)
     : gameState?.currentTurn === currentTeam;
 
-  // 🔥 FIXED: Check if trailer was watched (Firebase state)
-  const trailerWatched = gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn;
-  
-  // 🔥 FIXED: Show trailer only if not watched (local OR Firebase)
-  const shouldShowTrailer = phase === 'playing' && currentMovie && !localTrailerWatched && !trailerWatched;
+  // QA steal: after bot fails, player may guess without re-watching the trailer
+  const canStealAfterBotTrailer =
+    isQAMode && currentTeam === 'A' && botAlreadyTried;
+
+  const trailerWatched =
+    gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn ||
+    (canStealAfterBotTrailer &&
+      (localTrailerWatched || gameState?.currentMovie?.trailerWatchedForTurn === 'B'));
+
+  const shouldShowTrailer =
+    phase === 'playing' &&
+    currentMovie &&
+    !canStealAfterBotTrailer &&
+    !localTrailerWatched &&
+    !trailerWatched;
 
   // 🔥 NEW: Reset local trailer state when movie changes
   useEffect(() => {

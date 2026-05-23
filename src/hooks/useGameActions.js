@@ -14,6 +14,23 @@ import {
 
 const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
 
+const getStealingTeam = (attempts) => {
+  if (!attempts?.length) return null;
+  if (!attempts.includes('A')) return 'A';
+  if (!attempts.includes('B')) return 'B';
+  return null;
+};
+
+const isTrailerReadyForAnswer = (gameState, answeringTeam, isQAMode) => {
+  const trailerFor = gameState?.currentMovie?.trailerWatchedForTurn;
+  const attempts = gameState?.currentMovieAttempts || [];
+  if (trailerFor === answeringTeam) return true;
+  // QA steal: same trailer already played (often cleared to null after bot's attempt)
+  if (isQAMode && answeringTeam === 'A' && attempts.includes('B')) return true;
+  if (isQAMode && answeringTeam === 'B' && attempts.includes('A')) return true;
+  return false;
+};
+
 export const useGameActions = (
   roomCode,
   gameState,
@@ -268,8 +285,15 @@ export const useGameActions = (
 
   // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
   const handleAnswerSelect = useCallback(async (answer, isMyTurn, botIsThinking, answeringTeamOverride) => {
-    const answeringTeam = answeringTeamOverride ?? gameState.currentTurn;
-    const trailerReady = gameState?.currentMovie?.trailerWatchedForTurn === answeringTeam;
+    const isQAMode = roomCode === '99999';
+    const attempts = gameState?.currentMovieAttempts || [];
+    let answeringTeam = answeringTeamOverride ?? gameState.currentTurn;
+    if (!answeringTeamOverride) {
+      const stealingTeam = getStealingTeam(attempts);
+      if (stealingTeam) answeringTeam = stealingTeam;
+    }
+
+    const trailerReady = isTrailerReadyForAnswer(gameState, answeringTeam, isQAMode);
 
     if (!currentMovie || !trailerReady) {
       console.warn('⚠️ Answer blocked: missing movie or trailer not watched', {
@@ -321,11 +345,11 @@ export const useGameActions = (
       // Wrong answer - remove it and give other team a chance
       const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), answer];
 
-      const attempts = gameState.currentMovieAttempts || [];
-      const newAttempts = [...attempts, answeringTeam];
+      const priorAttempts = gameState.currentMovieAttempts || [];
+      const newAttempts = [...priorAttempts, answeringTeam];
 
       // 🔥 CRITICAL: Find who is the ORIGINAL turn holder (first attempt)
-      const originalTurnHolder = attempts.length > 0 ? attempts[0] : answeringTeam;
+      const originalTurnHolder = priorAttempts.length > 0 ? priorAttempts[0] : answeringTeam;
 
       if (newAttempts.length >= 2) {
         // Both teams failed - card returns to pool
@@ -349,12 +373,16 @@ export const useGameActions = (
         // 🔥 CRITICAL: currentTurn stays the SAME (the original turn holder)
         // We DON'T change currentTurn here!
         
-        await update(ref(database, `games/${roomCode}`), {
+        const stealUpdates = {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
-          'currentMovie/trailerWatchedForTurn': null,
           currentMovieAttempts: newAttempts
-          // currentTurn stays the same! (originalTurnHolder)
-        });
+        };
+        // Multiplayer: other team must watch trailer. QA: human already saw bot's trailer.
+        if (!isQAMode) {
+          stealUpdates['currentMovie/trailerWatchedForTurn'] = null;
+        }
+
+        await update(ref(database, `games/${roomCode}`), stealUpdates);
 
         setResultMessage(language === 'he' ? 'לא נכון - תור הקבוצה השנייה' : 'Incorrect - other team\'s turn');
         setShowResult(true);
