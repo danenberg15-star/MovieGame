@@ -315,7 +315,7 @@ export const useGameActions = (
       console.warn('⚠️ Answer blocked: not your turn', { currentTurn: gameState?.currentTurn });
       return;
     }
-    if (selectedAnswer) {
+    if (selectedAnswer && !answeringTeamOverride) {
       console.warn('⚠️ Answer blocked: already selected');
       return;
     }
@@ -395,6 +395,10 @@ export const useGameActions = (
         setResultMessage(language === 'he' ? 'לא נכון - תור הקבוצה השנייה' : 'Incorrect - other team\'s turn');
         setShowResult(true);
         setRemovedAnswers(newRemovedAnswers);
+        // QA: clear selection so bot can answer on steal turn
+        if (isQAMode) {
+          setSelectedAnswer(null);
+        }
       }
     }
   }, [selectedAnswer, currentMovie, gameState, roomCode, language, setPhase, setRemovedAnswers, startNextRound]);

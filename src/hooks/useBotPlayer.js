@@ -23,11 +23,12 @@ export const useBotPlayer = (
   handleConnectionAttempt,
   handleSaveToken
 ) => {
-  const hasAnsweredRef = useRef(false);
   const answerTimeoutRef = useRef(null);
   const decisionTimeoutRef = useRef(null);
   const currentMovieIdRef = useRef(null);
   const botTurnStartedRef = useRef(false);
+  const scheduledAnswerKeyRef = useRef(null);
+  const executedAnswerKeyRef = useRef(null);
   const scheduledDecisionKeyRef = useRef(null);
   const executedDecisionKeyRef = useRef(null);
   const gameStateRef = useRef(gameState);
@@ -42,19 +43,34 @@ export const useBotPlayer = (
     : gameState?.currentTurn === 'B';
   const isBotStealTurn = isQAMode && getStealingTeam(attempts) === 'B';
 
-  // Allow bot to answer on steal turn after player missed
-  useEffect(() => {
-    if (isBotStealTurn) {
-      hasAnsweredRef.current = false;
+  const trailerWatchedForTurn = gameState?.currentMovie?.trailerWatchedForTurn;
+
+  const botAnswerKey = useMemo(() => {
+    if (!isQAMode || !currentMovie?.id || !botShouldAnswer || phase !== 'playing') {
+      return null;
     }
-  }, [isBotStealTurn]);
+    if (attempts.includes('B')) return null;
+    const trailerReady =
+      trailerWatchedForTurn === 'B' ||
+      (isQAMode && attempts.includes('A') && !attempts.includes('B'));
+    if (!trailerReady) return null;
+    return `${currentMovie.id}:${attempts.join(',')}`;
+  }, [
+    isQAMode,
+    currentMovie?.id,
+    botShouldAnswer,
+    phase,
+    attempts,
+    trailerWatchedForTurn
+  ]);
 
   // Reset when movie changes
   useEffect(() => {
     if (currentMovie?.id && currentMovie.id !== currentMovieIdRef.current) {
       console.log('🎬 Movie changed - resetting bot state');
       currentMovieIdRef.current = currentMovie.id;
-      hasAnsweredRef.current = false;
+      scheduledAnswerKeyRef.current = null;
+      executedAnswerKeyRef.current = null;
       scheduledDecisionKeyRef.current = null;
       executedDecisionKeyRef.current = null;
       botTurnStartedRef.current = false;
@@ -86,97 +102,80 @@ export const useBotPlayer = (
     }
   }, [isQAMode, botShouldAnswer, isBotStealTurn, currentMovie?.id, phase, attempts.length]);
 
-  // Bot answering (when trailer ends)
+  // Bot answering (Strict Mode safe — keyed by movie + attempts)
   useEffect(() => {
-    if (!isQAMode || !botShouldAnswer || !currentMovie) {
+    if (!botAnswerKey || !currentMovie) {
+      scheduledAnswerKeyRef.current = null;
       return;
     }
 
-    if (phase !== 'playing') {
-      return;
-    }
-
-    if (hasAnsweredRef.current) {
-      return;
-    }
-
-    // Check if options are ready
-    if (!answerOptions || answerOptions.length === 0) {
+    if (!answerOptions?.length) {
       console.log('🤖 No answer options available yet');
       return;
     }
 
-    if (attempts.includes('B')) {
-      console.log('🤖 Bot already attempted this movie');
+    if (scheduledAnswerKeyRef.current === botAnswerKey) {
       return;
     }
 
-    const trailerReady = isTrailerReadyForAnswer(gameState, 'B', isQAMode);
-    if (!trailerReady) {
-      console.log('🤖 Waiting for trailer to be watched...', {
-        trailerWatchedForTurn: gameState?.currentMovie?.trailerWatchedForTurn,
-        attempts
-      });
-      return;
+    scheduledAnswerKeyRef.current = botAnswerKey;
+
+    if (isBotStealTurn) {
+      console.log('🤖 Bot steal turn — player missed, bot will guess');
+    } else {
+      console.log('🤖 Bot preparing to answer...');
     }
 
-    // Verify this movie ID matches current movie
-    if (currentMovieIdRef.current !== currentMovie.id) {
-      console.log('🤖 Movie ID mismatch - skipping answer', {
-        current: currentMovieIdRef.current,
-        movie: currentMovie.id
-      });
-      return;
-    }
-
-    console.log('🤖 Bot preparing to answer...');
-    console.log('🤖 Trailer watched for turn B');
-    console.log('🤖 Answer options available:', answerOptions.length);
-    console.log('🤖 Attempts:', attempts.length);
-    
-    // Mark as answered BEFORE starting timeout
-    hasAnsweredRef.current = true;
     setBotIsThinking(true);
 
-    // Bot answers after 1 second
     const timeoutId = setTimeout(() => {
-      const correctAnswer = currentMovie.title[language];
-      console.log('🤖 Correct answer:', correctAnswer);
+      if (executedAnswerKeyRef.current === botAnswerKey) {
+        return;
+      }
+      executedAnswerKeyRef.current = botAnswerKey;
+      scheduledAnswerKeyRef.current = null;
 
-      // 85% chance to answer correctly
-      const shouldAnswerCorrectly = Math.random() < 0.85;
-      let selectedAnswer;
-
-      if (shouldAnswerCorrectly) {
-        selectedAnswer = correctAnswer;
-        console.log('🤖 Bot chose CORRECT answer:', selectedAnswer);
-      } else {
-        // Choose a random wrong answer
-        const wrongAnswers = answerOptions.filter(opt => opt !== correctAnswer);
-        selectedAnswer = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
-        console.log('🤖 Bot chose WRONG answer:', selectedAnswer);
+      const movie = currentMovie;
+      const options = answerOptions;
+      if (!movie || !options?.length) {
+        setBotIsThinking(false);
+        return;
       }
 
-      console.log('🤖 Bot selected:', selectedAnswer, 'Correct?', selectedAnswer === correctAnswer);
-      handleAnswerSelect(selectedAnswer, true, false, 'B');
-      setBotIsThinking(false);
+      const correctAnswer = movie.title[language];
+      console.log('🤖 Correct answer:', correctAnswer);
+
+      const shouldAnswerCorrectly = Math.random() < 0.85;
+      let pick;
+
+      if (shouldAnswerCorrectly) {
+        pick = correctAnswer;
+        console.log('🤖 Bot chose CORRECT answer:', pick);
+      } else {
+        const wrongAnswers = options.filter((opt) => opt !== correctAnswer);
+        pick = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+        console.log('🤖 Bot chose WRONG answer:', pick);
+      }
+
+      console.log('🤖 Bot selected:', pick, 'Correct?', pick === correctAnswer);
+      Promise.resolve(handleAnswerSelect(pick, true, false, 'B')).finally(() => {
+        setBotIsThinking(false);
+      });
     }, 1000);
 
     answerTimeoutRef.current = timeoutId;
 
     return () => {
-      if (answerTimeoutRef.current) {
-        clearTimeout(answerTimeoutRef.current);
+      clearTimeout(timeoutId);
+      if (scheduledAnswerKeyRef.current === botAnswerKey) {
+        scheduledAnswerKeyRef.current = null;
       }
     };
   }, [
-    answerOptions,
-    attempts,
-    gameState,
-    isQAMode,
-    botShouldAnswer,
-    phase,
+    botAnswerKey,
     currentMovie,
+    answerOptions,
+    isBotStealTurn,
     language,
     handleAnswerSelect,
     setBotIsThinking
