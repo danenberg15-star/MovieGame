@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './App.css';
 import './i18n';
@@ -73,14 +73,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* Language Switcher */}
-      <div className="language-switcher">
-        <select value={currentLang} onChange={handleLanguageChange}>
-          <option value="en">🌐 EN</option>
-          <option value="he">🌐 עב</option>
-        </select>
-      </div>
-
       {/* PWA Install Button (optional - shows only if installable) */}
       {showInstallButton && (
         <button 
@@ -105,6 +97,10 @@ function App() {
 
       {/* Main Content */}
       <Router>
+        <HomeOnlyLanguageSwitcher
+          currentLang={currentLang}
+          onChange={handleLanguageChange}
+        />
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/lobby/:roomCode" element={<LobbyScreen />} />
@@ -112,6 +108,20 @@ function App() {
           <Route path="/room/:roomCode" element={<HomeScreen />} />
         </Routes>
       </Router>
+    </div>
+  );
+}
+
+function HomeOnlyLanguageSwitcher({ currentLang, onChange }) {
+  const location = useLocation();
+  if (location.pathname !== '/') return null;
+
+  return (
+    <div className="language-switcher">
+      <select value={currentLang} onChange={onChange}>
+        <option value="en">🌐 EN</option>
+        <option value="he">🌐 עב</option>
+      </select>
     </div>
   );
 }
