@@ -182,7 +182,19 @@ export const useBotPlayer = (
       return;
     }
 
-    // Check if already decided first
+    // 🔥 FIXED: Check wonCard BEFORE checking hasDecidedRef
+    if (!gameState?.wonCard) {
+      console.log('🤖 No wonCard in gameState');
+      return;
+    }
+
+    // 🔥 FIXED: Check if this card was won by bot (Team B) BEFORE checking hasDecidedRef
+    if (gameState.wonCard.team !== 'B') {
+      console.log('🤖 Card was not won by bot team:', gameState.wonCard.team);
+      return;
+    }
+
+    // 🔥 NOW check if already decided (AFTER confirming it's bot's card)
     if (hasDecidedRef.current) {
       console.log('🤖 Already made decision for this round');
       return;
@@ -191,18 +203,6 @@ export const useBotPlayer = (
     // Then check if bot is thinking
     if (botIsThinking) {
       console.log('🤖 Bot already thinking, skipping...');
-      return;
-    }
-
-    if (!gameState?.wonCard) {
-      console.log('🤖 No wonCard in gameState');
-      return;
-    }
-
-    // 🔥 FIXED: Check if this card was won by bot (Team B)
-    // In QA mode, bot is always Team B
-    if (gameState.wonCard.team !== 'B') {
-      console.log('🤖 Card was not won by bot team:', gameState.wonCard.team);
       return;
     }
 
