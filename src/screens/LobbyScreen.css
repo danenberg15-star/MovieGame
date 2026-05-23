@@ -8,12 +8,51 @@
   align-items: center;
   padding: 15px;
   overflow: hidden;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  position: relative;
+  /* Cinema hall ambiance - darker with warm undertones */
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1520 50%, #120b18 100%);
+}
+
+/* Cinema screen frame effect - top */
+.lobby-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8vh;
+  background: linear-gradient(180deg, 
+    rgba(139, 0, 0, 0.5) 0%, 
+    rgba(100, 0, 0, 0.3) 50%, 
+    transparent 100%
+  );
+  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Theater floor lighting */
+.lobby-screen::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6vh;
+  background: linear-gradient(0deg, 
+    rgba(139, 0, 0, 0.25) 0%, 
+    rgba(80, 0, 0, 0.12) 40%, 
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .container {
   width: 100%;
   max-width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .lobby-content {
@@ -29,12 +68,29 @@
   text-align: center;
   margin-bottom: 15px;
   flex-shrink: 0;
+  position: relative;
 }
 
+/* Cinema marquee lights effect */
 .game-logo {
   font-size: 1.8rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+  animation: marqueePulse 2s ease-in-out infinite;
+}
+
+@keyframes marqueePulse {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 2px 12px rgba(255, 215, 0, 0.7));
+  }
 }
 
 .qa-badge {
@@ -42,30 +98,76 @@
   margin-left: 10px;
   font-size: 0.6em;
   padding: 5px 12px;
-  background: rgba(252, 182, 159, 0.3);
+  background: linear-gradient(135deg, rgba(47, 79, 79, 0.6), rgba(74, 95, 95, 0.4));
   border-radius: 8px;
-  color: #fcb69f;
+  color: #FFD700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Cinema screen displaying room code */
 .room-code-display {
-  margin: 10px 0;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.1);
+  margin: 10px auto;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, 
+    rgba(20, 20, 30, 0.9), 
+    rgba(30, 25, 25, 0.85)
+  );
   border-radius: 12px;
   display: inline-block;
+  border: 2px solid rgba(139, 0, 0, 0.4);
+  box-shadow: 
+    0 4px 20px rgba(139, 0, 0, 0.3),
+    inset 0 1px 3px rgba(255, 215, 0, 0.1);
+  position: relative;
+}
+
+/* Screen shine effect */
+.room-code-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.05) 0%, 
+    transparent 100%
+  );
+  border-radius: 12px 12px 0 0;
+  pointer-events: none;
 }
 
 .room-code-display .label {
   font-size: 14px;
   opacity: 0.8;
   margin-right: 8px;
+  color: #f0e6d2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .room-code-display .code {
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 4px;
-  color: #667eea;
+  color: #FFD700;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  animation: codeGlow 2s ease-in-out infinite;
+}
+
+@keyframes codeGlow {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    text-shadow: 
+      0 0 15px rgba(255, 215, 0, 0.7),
+      0 2px 4px rgba(0, 0, 0, 0.8);
+  }
 }
 
 .share-buttons {
@@ -73,17 +175,32 @@
   gap: 10px;
   justify-content: center;
   margin-top: 10px;
+  flex-wrap: wrap;
 }
 
+/* Ticket-style share buttons */
 .btn-share {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(139, 0, 0, 0.4), 
+    rgba(100, 0, 0, 0.3)
+  );
+  border: 1px solid rgba(255, 215, 0, 0.3);
   color: white;
   padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 12px;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-share:hover {
+  background: linear-gradient(135deg, 
+    rgba(139, 0, 0, 0.6), 
+    rgba(100, 0, 0, 0.5)
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .teams-container {
@@ -96,16 +213,43 @@
   min-height: 0;
 }
 
+/* Cinema seating rows style */
 .team-box {
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, 
+    rgba(20, 20, 30, 0.7), 
+    rgba(30, 25, 25, 0.6)
+  );
   border-radius: 14px;
   padding: 15px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(139, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 215, 0, 0.1);
   min-height: 180px;
   max-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+}
+
+/* Subtle velvet texture */
+.team-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 4px
+  );
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .team-title {
@@ -113,11 +257,14 @@
   font-weight: 700;
   margin-bottom: 12px;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   flex-shrink: 0;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  position: relative;
+  z-index: 1;
 }
 
 .players-list {
@@ -125,6 +272,8 @@
   margin-bottom: 12px;
   overflow-y: auto;
   min-height: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .empty-team {
@@ -133,74 +282,144 @@
   opacity: 0.5;
   font-style: italic;
   font-size: 14px;
+  color: #f0e6d2;
 }
 
+/* Cinema ticket-style player cards */
 .player-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, 
+    rgba(139, 0, 0, 0.3), 
+    rgba(100, 0, 0, 0.2)
+  );
   padding: 10px 14px;
   border-radius: 8px;
   margin-bottom: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid transparent;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Ticket perforation on player cards */
+.player-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -1px;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: rgba(10, 10, 15, 0.8);
+  border-radius: 50%;
+  box-shadow: 
+    0 -12px 0 rgba(10, 10, 15, 0.8),
+    0 12px 0 rgba(10, 10, 15, 0.8);
 }
 
 .player-card.me {
-  background: rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.25), 
+    rgba(255, 165, 0, 0.2)
+  );
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 
+    0 2px 12px rgba(255, 215, 0, 0.3),
+    0 0 20px rgba(255, 215, 0, 0.1);
 }
 
 .player-card.ready {
-  background: rgba(76, 175, 80, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(76, 175, 80, 0.3), 
+    rgba(69, 160, 73, 0.25)
+  );
   border-color: rgba(76, 175, 80, 0.5);
+  box-shadow: 
+    0 2px 12px rgba(76, 175, 80, 0.3),
+    0 0 20px rgba(76, 175, 80, 0.1);
 }
 
 .player-name {
   font-size: 14px;
   font-weight: 500;
+  color: #f0e6d2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .ready-badge {
   font-size: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 .btn-join-team {
   width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
   color: white;
-  border: none;
+  border: 1px solid rgba(255, 215, 0, 0.3);
   padding: 10px;
   font-size: 14px;
   font-weight: 600;
   border-radius: 8px;
   cursor: pointer;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-join-team:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 .vs-divider {
   font-size: 36px;
   font-weight: 800;
-  color: #667eea;
+  color: #FFD700;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
+  text-shadow: 
+    0 0 15px rgba(255, 215, 0, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  animation: vsGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes vsGlow {
+  0%, 100% {
+    text-shadow: 
+      0 0 15px rgba(255, 215, 0, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    text-shadow: 
+      0 0 25px rgba(255, 215, 0, 0.9),
+      0 2px 4px rgba(0, 0, 0, 0.8);
+  }
 }
 
 .no-team-section {
   text-align: center;
   margin: 20px 0;
   padding: 15px;
-  background: rgba(255, 152, 0, 0.1);
+  background: linear-gradient(135deg, 
+    rgba(255, 152, 0, 0.2), 
+    rgba(255, 120, 0, 0.15)
+  );
   border-radius: 12px;
-  border: 2px solid rgba(255, 152, 0, 0.3);
+  border: 2px solid rgba(255, 152, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .no-team-section h3 {
   font-size: 16px;
   margin-bottom: 10px;
-  color: #ff9800;
+  color: #FFA500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .lobby-actions {
@@ -212,6 +431,7 @@
   flex-shrink: 0;
 }
 
+/* Cinema ticket-style action buttons */
 .btn-ready,
 .btn-unready,
 .btn-start {
@@ -222,18 +442,35 @@
   border-radius: 8px;
   color: white;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.btn-ready,
+.btn-unready,
+.btn-start {
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.btn-ready:hover,
+.btn-unready:hover,
+.btn-start:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 .btn-ready {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  background: linear-gradient(135deg, #2d5016 0%, #3d7018 50%, #2d5016 100%);
 }
 
 .btn-unready {
-  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  background: linear-gradient(135deg, #7d1d1d 0%, #a52020 50%, #7d1d1d 100%);
 }
 
 .btn-start {
-  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #B22222 100%);
+  border: 1px solid rgba(255, 215, 0, 0.4);
 }
 
 .btn-start:disabled {
@@ -243,27 +480,51 @@
 
 .waiting-host {
   padding: 12px 30px;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, 
+    rgba(20, 20, 30, 0.8), 
+    rgba(30, 25, 25, 0.7)
+  );
   border-radius: 10px;
   font-size: 14px;
   font-style: italic;
-  opacity: 0.8;
+  opacity: 0.9;
+  color: #f0e6d2;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .loading {
   text-align: center;
   font-size: 20px;
   padding: 30px;
+  color: #f0e6d2;
 }
 
-/* Small screens */
+/* Responsive - Small screens (iPhone 13 Pro landscape, etc.) */
 @media (max-height: 500px) {
+  .lobby-screen::before {
+    height: 6vh;
+  }
+  
+  .lobby-screen::after {
+    height: 4vh;
+  }
+  
   .lobby-header {
     margin-bottom: 10px;
   }
   
   .game-logo {
     font-size: 1.4rem;
+  }
+  
+  .room-code-display {
+    padding: 8px 16px;
+  }
+  
+  .room-code-display .code {
+    font-size: 20px;
+    letter-spacing: 3px;
   }
   
   .teams-container {
@@ -279,5 +540,67 @@
   .team-title {
     font-size: 16px;
     margin-bottom: 8px;
+  }
+  
+  .vs-divider {
+    font-size: 28px;
+  }
+}
+
+/* Responsive - Medium screens */
+@media (min-height: 501px) and (max-height: 700px) {
+  .game-logo {
+    font-size: 1.6rem;
+  }
+  
+  .room-code-display .code {
+    font-size: 22px;
+  }
+  
+  .vs-divider {
+    font-size: 32px;
+  }
+}
+
+/* Responsive - Large screens */
+@media (min-height: 701px) {
+  .game-logo {
+    font-size: 2rem;
+  }
+  
+  .room-code-display {
+    padding: 14px 24px;
+  }
+  
+  .room-code-display .code {
+    font-size: 28px;
+  }
+  
+  .team-box {
+    padding: 18px;
+    min-height: 220px;
+  }
+  
+  .vs-divider {
+    font-size: 40px;
+  }
+}
+
+/* Responsive - Very wide screens */
+@media (min-width: 1400px) {
+  .teams-container {
+    gap: 20px;
+  }
+  
+  .team-title {
+    font-size: 22px;
+  }
+  
+  .player-card {
+    padding: 12px 16px;
+  }
+  
+  .player-name {
+    font-size: 15px;
   }
 }

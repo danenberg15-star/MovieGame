@@ -8,12 +8,51 @@
   align-items: center;
   padding: 15px;
   overflow: hidden;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  position: relative;
+  /* Cinema-inspired dark gradient background */
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1520 50%, #120b18 100%);
+}
+
+/* Cinema curtain effect - top */
+.home-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8vh;
+  background: linear-gradient(180deg, 
+    rgba(139, 0, 0, 0.6) 0%, 
+    rgba(139, 0, 0, 0.4) 50%, 
+    transparent 100%
+  );
+  box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cinema floor lighting - bottom */
+.home-screen::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6vh;
+  background: linear-gradient(0deg, 
+    rgba(139, 0, 0, 0.3) 0%, 
+    rgba(100, 0, 0, 0.15) 40%, 
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .container {
   width: 100%;
   max-width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .home-content {
@@ -26,28 +65,46 @@
   flex-direction: column;
   justify-content: center;
   margin: 0 auto;
+  position: relative;
 }
 
+/* Spotlight effect behind logo */
 .game-logo {
   font-size: 2.2rem;
   font-weight: 900;
   margin-bottom: 0.8rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+  position: relative;
+  filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+  animation: gentleGlow 3s ease-in-out infinite;
+}
+
+@keyframes gentleGlow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 2px 12px rgba(255, 215, 0, 0.6));
+  }
 }
 
 .welcome-text {
   font-size: 1rem;
   margin-bottom: 1.2rem;
   opacity: 0.9;
+  color: #f0e6d2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .name-section {
   margin: 1.2rem 0;
 }
 
+/* Cinema ticket-style input */
 .name-input,
 .input {
   width: 100%;
@@ -55,10 +112,23 @@
   padding: 10px 14px;
   font-size: 14px;
   border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(139, 0, 0, 0.4);
+  background: linear-gradient(135deg, rgba(20, 20, 30, 0.8), rgba(30, 20, 25, 0.8));
   color: white;
   text-align: center;
+  box-shadow: 
+    0 4px 15px rgba(139, 0, 0, 0.2),
+    inset 0 1px 3px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.name-input:focus,
+.input:focus {
+  outline: none;
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 
+    0 4px 20px rgba(255, 215, 0, 0.3),
+    inset 0 1px 3px rgba(255, 255, 255, 0.1);
 }
 
 .name-input::placeholder,
@@ -83,6 +153,7 @@
   max-width: 320px;
 }
 
+/* Cinema ticket-style buttons */
 .btn {
   padding: 12px 28px;
   font-size: 14px;
@@ -92,6 +163,49 @@
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 220px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Ticket perforation effect */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  box-shadow: 
+    0 -16px 0 rgba(0, 0, 0, 0.2),
+    0 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -2px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  box-shadow: 
+    0 -16px 0 rgba(0, 0, 0, 0.2),
+    0 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn:disabled {
@@ -100,27 +214,39 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #B22222 100%);
   color: white;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #4B0000 0%, #8B0000 50%, #6B0000 100%);
   color: white;
+  border: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .btn-qa {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  color: #333;
+  background: linear-gradient(135deg, #2F4F4F 0%, #4A5F5F 50%, #3A4F4F 100%);
+  color: #FFD700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .btn-info {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  color: #333;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 50%, #1f1f3e 100%);
+  color: #a8edea;
+  border: 1px solid rgba(168, 237, 234, 0.3);
 }
 
-/* Small landscape screens */
+/* Responsive - Small landscape screens (iPhone 13 Pro, etc.) */
 @media (max-height: 500px) {
+  .home-screen::before {
+    height: 6vh;
+  }
+  
+  .home-screen::after {
+    height: 4vh;
+  }
+  
   .game-logo {
     font-size: 1.6rem;
     margin-bottom: 0.4rem;
@@ -144,5 +270,50 @@
     padding: 8px 20px;
     font-size: 13px;
     min-width: 180px;
+  }
+}
+
+/* Responsive - Medium screens */
+@media (min-height: 501px) and (max-height: 700px) {
+  .game-logo {
+    font-size: 2rem;
+  }
+  
+  .btn {
+    padding: 11px 24px;
+    font-size: 13.5px;
+  }
+}
+
+/* Responsive - Large screens */
+@media (min-height: 701px) {
+  .game-logo {
+    font-size: 2.5rem;
+  }
+  
+  .welcome-text {
+    font-size: 1.1rem;
+  }
+  
+  .btn {
+    padding: 14px 32px;
+    font-size: 15px;
+    min-width: 240px;
+  }
+}
+
+/* Responsive - Very wide screens */
+@media (min-width: 1400px) {
+  .home-content {
+    max-width: 700px;
+  }
+  
+  .name-input,
+  .input {
+    max-width: 380px;
+  }
+  
+  .join-section {
+    max-width: 380px;
   }
 }
