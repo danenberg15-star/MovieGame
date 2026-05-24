@@ -6,7 +6,7 @@ import AnchorReveal from '../components/AnchorReveal';
 import TrailerPlayer from '../components/TrailerPlayer';
 import DecisionPhase from '../components/DecisionPhase';
 import { useGameState } from '../hooks/useGameState';
-import { useGameActions } from '../hooks/useGameActions';
+import { useGameActions, getStealingTeam } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
 
 function GameScreen() {
@@ -43,31 +43,31 @@ function GameScreen() {
 
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
   
-  // 🔥 FIXED: Check if it's my turn to answer
-  // In QA mode: Team A can answer if currentTurn is A OR if bot already tried
   const attempts = gameState?.currentMovieAttempts || [];
+  const stealingTeam = getStealingTeam(attempts);
   const botAlreadyTried = attempts.includes('B');
   const myTeamAlreadyTried = attempts.includes(currentTeam);
-  
-  const isMyTurn = isQAMode 
-    ? (currentTeam === 'A' && !myTeamAlreadyTried) || (currentTeam === 'B' && !botAlreadyTried)
-    : gameState?.currentTurn === currentTeam;
+
+  // Who may answer: original turn holder, or steal team after the other failed
+  const isMyTurn = isQAMode
+    ? (currentTeam === 'A' && !attempts.includes('A')) ||
+      (currentTeam === 'B' && !botAlreadyTried)
+    : !myTeamAlreadyTried &&
+      (gameState?.currentTurn === currentTeam || stealingTeam === currentTeam);
+
+  // Trailer already played this round (Firebase — keeps all clients on the same screen)
+  const trailerPlayedThisRound = !!gameState?.currentMovie?.trailerWatchedForTurn;
 
   // QA steal: after bot fails, player may guess without re-watching the trailer
   const canStealAfterBotTrailer =
     isQAMode && currentTeam === 'A' && botAlreadyTried;
 
-  const trailerWatched =
-    gameState?.currentMovie?.trailerWatchedForTurn === gameState?.currentTurn ||
-    (canStealAfterBotTrailer &&
-      (localTrailerWatched || gameState?.currentMovie?.trailerWatchedForTurn === 'B'));
-
   const shouldShowTrailer =
     phase === 'playing' &&
     currentMovie &&
+    !trailerPlayedThisRound &&
     !canStealAfterBotTrailer &&
-    !localTrailerWatched &&
-    !trailerWatched;
+    !localTrailerWatched;
 
   // 🔥 NEW: Reset local trailer state when movie changes
   useEffect(() => {

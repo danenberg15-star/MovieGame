@@ -35,6 +35,10 @@ export const isTrailerReadyForAnswer = (
   // QA steal: same trailer already played (often cleared to null after bot's attempt)
   if (isQAMode && answeringTeam === 'A' && attempts.includes('B')) return true;
   if (isQAMode && answeringTeam === 'B' && attempts.includes('A')) return true;
+  // Multiplayer steal: trailer already played — other team answers without re-watch
+  if (!isQAMode && trailerFor && getStealingTeam(attempts) === answeringTeam) {
+    return true;
+  }
   return false;
 };
 
@@ -394,24 +398,17 @@ export const useGameActions = (
         // 🔥 CRITICAL: currentTurn stays the SAME (the original turn holder)
         // We DON'T change currentTurn here!
         
-        const stealUpdates = {
+        // Keep trailerWatchedForTurn — everyone already saw the trailer; steal team picks from remaining options
+        await update(ref(database, `games/${roomCode}`), {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
           currentMovieAttempts: newAttempts
-        };
-        // Multiplayer: other team must watch trailer. QA: human already saw bot's trailer.
-        if (!isQAMode) {
-          stealUpdates['currentMovie/trailerWatchedForTurn'] = null;
-        }
-
-        await update(ref(database, `games/${roomCode}`), stealUpdates);
+        });
 
         setResultMessage(language === 'he' ? 'לא נכון - תור הקבוצה השנייה' : 'Incorrect - other team\'s turn');
         setShowResult(true);
         setRemovedAnswers(newRemovedAnswers);
-        // QA: clear selection so bot can answer on steal turn
-        if (isQAMode) {
-          setSelectedAnswer(null);
-        }
+        // Clear selection so steal team (or bot) can answer; wrong team sees grid via Firebase sync
+        setSelectedAnswer(null);
       }
     }
   }, [
