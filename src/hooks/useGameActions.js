@@ -47,6 +47,10 @@ export const isTrailerReadyForAnswer = (
   if (!isQAMode && trailerFor && getStealingTeam(attempts) === answeringTeam) {
     return true;
   }
+  // Multiplayer: trailer ended locally before Firebase sync (active team's client)
+  if (!isQAMode && localTrailerWatched && currentTurn === answeringTeam) {
+    return true;
+  }
   return false;
 };
 
@@ -85,6 +89,15 @@ export const useGameActions = (
     setResultMessage('');
     setIsCorrect(false);
   }, [currentMovie?.id]);
+
+  // Reset answer UI when round number advances (covers clients that skip movie-id updates)
+  useEffect(() => {
+    if (gameState?.roundNumber == null || gameState.roundNumber < 1) return;
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setResultMessage('');
+    setIsCorrect(false);
+  }, [gameState?.roundNumber]);
 
   // Reset local answer UI when round clears in Firebase (e.g. both teams failed on other client)
   useEffect(() => {

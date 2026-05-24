@@ -12,8 +12,40 @@ import { useBotPlayer } from '../hooks/useBotPlayer';
 function GameScreen() {
   const navigate = useNavigate();
   const { roomCode } = useParams();
-  const searchParams = new URLSearchParams(window.location.search);
-  const playerId = searchParams.get('playerId') || `player_${Date.now()}`;
+  const [playerId] = useState(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get('playerId');
+    if (fromUrl) {
+      try {
+        localStorage.setItem(`cinemaster_player_${roomCode}`, fromUrl);
+      } catch {
+        /* ignore */
+      }
+      return fromUrl;
+    }
+    try {
+      const stored = localStorage.getItem(`cinemaster_player_${roomCode}`);
+      if (stored) return stored;
+    } catch {
+      /* ignore */
+    }
+    const id = `player_${Date.now()}`;
+    try {
+      localStorage.setItem(`cinemaster_player_${roomCode}`, id);
+    } catch {
+      /* ignore */
+    }
+    return id;
+  });
+
+  // Restore playerId in URL after refresh / service-worker navigation (keeps team assignment)
+  useEffect(() => {
+    if (!roomCode) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('playerId') === playerId) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('playerId', playerId);
+    window.history.replaceState({}, '', url.toString());
+  }, [roomCode, playerId]);
 
   const language = 'en';
   const isQAMode = roomCode === '99999';
@@ -42,17 +74,12 @@ function GameScreen() {
     setRemovedAnswers
   } = useGameState(roomCode, playerId, language);
 
-  const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
+  const currentTeam = gameState?.playerTeams?.[playerId] ?? null;
+  const teamKnown = currentTeam === 'A' || currentTeam === 'B';
   
   const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
   const botAlreadyTried = attempts.includes('B');
-  const myTeamAlreadyTried = attempts.includes(currentTeam);
-
-  // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess
-  const isMyTurn = isQAMode
-    ? (currentTeam === 'A' && !attempts.includes('A')) ||
-      (currentTeam === 'B' && !botAlreadyTried)
-    : !myTeamAlreadyTried && gameState?.currentTurn === currentTeam;
+  const myTeamAlreadyTried = teamKnown && attempts.includes(currentTeam);
 
   // Trailer already played this round (Firebase — keeps all clients on the same screen)
   const trailerPlayedThisRound = !!gameState?.currentMovie?.trailerWatchedForTurn;
@@ -110,6 +137,15 @@ function GameScreen() {
     setPhase,
     localTrailerWatched
   );
+
+  // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess
+  const isMyTurn = teamKnown && (isQAMode
+    ? (currentTeam === 'A' && !attempts.includes('A')) ||
+      (currentTeam === 'B' && !botAlreadyTried)
+    : !myTeamAlreadyTried && gameState?.currentTurn === currentTeam);
+
+  const canAnswer =
+    isMyTurn && trailerReadyForAnswers && !selectedAnswer && !botIsThinking;
 
   // Show success message when entering decision phase
   useEffect(() => {
@@ -379,7 +415,14 @@ function GameScreen() {
               ) : (
                 <div className="answer-section">
                   <h2>{t('choose_answer')}</h2>
-                  {gameState?.currentTurn && (
+                  {!teamKnown && (
+                    <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '12px', color: '#ff9800' }}>
+                      {language === 'he'
+                        ? 'מזהה שחקן לא נמצא — רענן מהלובי עם אותו קישור'
+                        : 'Player identity missing — rejoin from lobby with the same link'}
+                    </p>
+                  )}
+                  {gameState?.currentTurn && teamKnown && (
                     <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '12px', opacity: 0.9 }}>
                       {isMyTurn
                         ? `▶ ${t('your_turn_to_guess')}`
@@ -392,7 +435,7 @@ function GameScreen() {
                         key={index}
                         className={`answer-option ${selectedAnswer === option ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
                         onClick={() => handleAnswerSelect(option, isMyTurn, botIsThinking)}
-                        disabled={!isMyTurn || selectedAnswer || botIsThinking}
+                        disabled={!canAnswer}
                       >
                         {option}
                       </button>

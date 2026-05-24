@@ -181,6 +181,9 @@ export const useGameState = (roomCode, playerId, language) => {
             };
             await update(gameRef, playerUpdate);
             console.log('✅ Player added to game', { team: resolvedTeam, lobbyTeam });
+          } else if (!existingGame.playerTeams?.[playerId]) {
+            await update(gameRef, { [`playerTeams/${playerId}`]: resolvedTeam });
+            console.log('✅ Backfilled missing player team:', resolvedTeam);
           } else if (lobbyTeam && existingGame.playerTeams?.[playerId] !== lobbyTeam) {
             await update(gameRef, { [`playerTeams/${playerId}`]: lobbyTeam });
             console.log('✅ Synced player team from lobby:', lobbyTeam);
