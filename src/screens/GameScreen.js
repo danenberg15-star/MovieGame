@@ -6,7 +6,7 @@ import AnchorReveal from '../components/AnchorReveal';
 import TrailerPlayer from '../components/TrailerPlayer';
 import DecisionPhase from '../components/DecisionPhase';
 import { useGameState } from '../hooks/useGameState';
-import { useGameActions, getStealingTeam, normalizeAttempts } from '../hooks/useGameActions';
+import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
 
 function GameScreen() {
@@ -44,7 +44,6 @@ function GameScreen() {
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
   
   const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
-  const stealingTeam = getStealingTeam(attempts);
   const botAlreadyTried = attempts.includes('B');
   const myTeamAlreadyTried = attempts.includes(currentTeam);
 
