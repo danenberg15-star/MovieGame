@@ -180,6 +180,12 @@ export const useGameActions = (
 
     const validation = validateConnection(currentMovie, targetCard, connectionType);
 
+    // Next regular turn always belongs to the team OPPOSITE the original turn holder.
+    // (Original holder used their chance — either won outright or failed and let the other team steal.)
+    const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
+    const originalTurnHolder = priorAttempts[0] ?? winningTeam;
+    const nextTurn = otherTeam(originalTurnHolder);
+
     if (validation.valid) {
       // Successful connection
       const currentCards = gameState[teamKey]?.cards || [];
@@ -191,9 +197,6 @@ export const useGameActions = (
 
       // Check win condition
       const hasWon = checkWinCondition(newCards);
-
-      // 🔥 FIXED: After DecisionPhase, switch turn to the OTHER team
-      const nextTurn = otherTeam(winningTeam);
 
       const updates = {
         [`${teamKey}/cards`]: newCards,
@@ -228,10 +231,7 @@ export const useGameActions = (
     } else {
       // Failed connection - show hint
       const hintData = getConnectionHint(currentMovie, targetCard, language);
-      
-      // 🔥 FIXED: After failed connection, switch turn to the OTHER team
-      const nextTurn = otherTeam(winningTeam);
-      
+
       await update(ref(database, `games/${roomCode}`), {
         phase: 'playing',
         wonCard: null,
@@ -268,8 +268,10 @@ export const useGameActions = (
     const newScore = newCards.length;
     const hasWon = checkWinCondition(newCards);
 
-    // 🔥 FIXED: After saving token, switch turn to the OTHER team
-    const nextTurn = otherTeam(winningTeam);
+    // Next regular turn = opposite of the team that originally had the turn this round.
+    const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
+    const originalTurnHolder = priorAttempts[0] ?? winningTeam;
+    const nextTurn = otherTeam(originalTurnHolder);
 
     // Do not write tokens here — stale local state can overwrite the +1 from correct guess
     const updates = {
