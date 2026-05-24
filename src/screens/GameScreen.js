@@ -120,6 +120,10 @@ function GameScreen() {
     markTrailerWatched,
     handleAnswerSelect,
     selectedAnswer,
+    setSelectedAnswer,
+    setShowResult,
+    setResultMessage,
+    setIsCorrect,
     showResult,
     resultMessage,
     isCorrect,
@@ -181,6 +185,13 @@ function GameScreen() {
     setLocalTrailerWatched(true);
 
     const activeTurn = gameState.currentTurn;
+    if (teamKnown && currentTeam === activeTurn) {
+      setSelectedAnswer(null);
+      setShowResult(false);
+      setResultMessage('');
+      setIsCorrect(false);
+    }
+
     const canWriteToFirebase =
       currentTeam === activeTurn || (isQAMode && activeTurn === 'B');
 
@@ -196,8 +207,13 @@ function GameScreen() {
     gameState?.currentMovie?.id,
     gameState?.currentTurn,
     currentTeam,
+    teamKnown,
     isQAMode,
-    markTrailerWatched
+    markTrailerWatched,
+    setSelectedAnswer,
+    setShowResult,
+    setResultMessage,
+    setIsCorrect
   ]);
 
   // Bot player hook - handles bot behavior in QA mode

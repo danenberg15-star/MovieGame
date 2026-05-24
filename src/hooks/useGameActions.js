@@ -1,5 +1,5 @@
 // src/hooks/useGameActions.js
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { ref, update } from 'firebase/database';
 import { database } from '../firebase';
 import {
@@ -80,6 +80,24 @@ export const useGameActions = (
   const [resultMessage, setResultMessage] = useState('');
   const [isCorrect, setIsCorrect] = useState(false);
   const [connectionResult, setConnectionResult] = useState(null);
+  const lastAnswerSessionRef = useRef(null);
+
+  // Fresh answer UI per (movie + turn + round) — avoids needing hard refresh when state sticks
+  useEffect(() => {
+    if (gameState?.phase !== 'playing' || !currentMovie?.id) return;
+    const sessionKey = `${currentMovie.id}:${gameState.currentTurn}:${gameState.roundNumber ?? 0}`;
+    if (lastAnswerSessionRef.current === sessionKey) return;
+    lastAnswerSessionRef.current = sessionKey;
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setResultMessage('');
+    setIsCorrect(false);
+  }, [
+    currentMovie?.id,
+    gameState?.currentTurn,
+    gameState?.roundNumber,
+    gameState?.phase
+  ]);
 
   // Reset local answer UI when a new trailer/round starts (syncs all clients in multiplayer)
   useEffect(() => {
