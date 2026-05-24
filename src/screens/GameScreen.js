@@ -80,6 +80,7 @@ function GameScreen() {
     startNextRound,
     handleConnectionAttempt,
     handleSaveToken,
+    handleBuyConnection,
     handleAnchorContinue,
     markTrailerWatched,
     handleAnswerSelect,
@@ -159,6 +160,7 @@ function GameScreen() {
     startNextRound,
     handleConnectionAttempt,
     handleSaveToken,
+    handleBuyConnection,
     localTrailerWatched
   );
 
@@ -322,9 +324,13 @@ function GameScreen() {
             <DecisionPhase
               wonCard={currentMovie}
               teamCards={currentTeam === 'A' ? teamAData.cards : teamBData.cards}
+              teamTokens={
+                (gameState.wonCard?.team === 'A' ? teamAData.tokens : teamBData.tokens) || 0
+              }
               allMovies={allMovies}
               onConnect={handleConnectionAttempt}
               onSaveToken={handleSaveToken}
+              onBuyConnection={handleBuyConnection}
               language={language}
               disabled={gameState.wonCard?.team !== currentTeam}
             />

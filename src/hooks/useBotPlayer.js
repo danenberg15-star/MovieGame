@@ -46,6 +46,8 @@ export const useBotPlayer = (
 
   handleSaveToken,
 
+  handleBuyConnection,
+
   localTrailerWatched = false
 
 ) => {
@@ -479,6 +481,8 @@ export const useBotPlayer = (
 
 
 
+      const botTokens = gameStateRef.current?.teamB?.tokens || 0;
+
       if (shouldSucceed && latestCards.length >= 2) {
 
         const targetCard = latestCards[Math.floor(Math.random() * latestCards.length)];
@@ -500,6 +504,14 @@ export const useBotPlayer = (
 
 
         Promise.resolve(handleConnectionAttempt(targetCard, randomConnectionType)).finally(finish);
+
+      } else if (botTokens >= 3 && latestCards.length >= 3 && handleBuyConnection) {
+
+        // Bot already has tokens — spend them to lock in a card
+
+        console.log('🤖 Bot buying connection (3 tokens)');
+
+        Promise.resolve(handleBuyConnection()).finally(finish);
 
       } else if (latestCards.length < 2) {
 
@@ -550,6 +562,8 @@ export const useBotPlayer = (
     handleConnectionAttempt,
 
     handleSaveToken,
+
+    handleBuyConnection,
 
     setBotIsThinking
 

@@ -187,21 +187,16 @@ export const useGameActions = (
     const nextTurn = otherTeam(originalTurnHolder);
 
     if (validation.valid) {
-      // Successful connection
+      // Successful connection — add movie to the chain. NO token change.
       const currentCards = gameState[teamKey]?.cards || [];
       const newCards = [...currentCards, currentMovie];
       const newScore = newCards.length;
 
-      // Use one token
-      const newTokens = Math.max(0, (gameState[teamKey]?.tokens || 0) - 1);
-
-      // Check win condition
       const hasWon = checkWinCondition(newCards);
 
       const updates = {
         [`${teamKey}/cards`]: newCards,
         [`${teamKey}/score`]: newScore,
-        [`${teamKey}/tokens`]: newTokens,
         usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
         currentMovie: null,
         currentMovieAttempts: [],
@@ -254,7 +249,7 @@ export const useGameActions = (
     }
   }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
 
-  // Handle save token — bank the token (+ add card); connect spends a token instead
+  // Save Token — gain +1 extra token, DROP the won card (returns to pool).
   const handleSaveToken = useCallback(async () => {
     console.log('💾 Saving token...');
 
@@ -263,20 +258,52 @@ export const useGameActions = (
 
     console.log('🔥 Saving token for team:', winningTeam, 'teamKey:', teamKey);
 
-    const currentCards = gameState[teamKey]?.cards || [];
-    const newCards = [...currentCards, currentMovie];
-    const newScore = newCards.length;
-    const hasWon = checkWinCondition(newCards);
-
     // Next regular turn = opposite of the team that originally had the turn this round.
     const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
     const originalTurnHolder = priorAttempts[0] ?? winningTeam;
     const nextTurn = otherTeam(originalTurnHolder);
 
-    // Do not write tokens here — stale local state can overwrite the +1 from correct guess
+    const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
+
+    await update(ref(database, `games/${roomCode}`), {
+      [`${teamKey}/tokens`]: newTokens,
+      usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
+      phase: 'playing',
+      wonCard: null,
+      currentMovie: null,
+      currentMovieAttempts: [],
+      currentTurn: nextTurn
+    });
+
+    startNextRound(nextTurn);
+  }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
+
+  // Buy Connection — spend 3 tokens to add the won card directly to the chain.
+  const handleBuyConnection = useCallback(async () => {
+    console.log('💰 Buying connection (3 tokens)...');
+
+    const winningTeam = gameState.wonCard?.team || currentTeam;
+    const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
+
+    const currentTokens = gameState[teamKey]?.tokens || 0;
+    if (currentTokens < 3) {
+      console.warn('⚠️ Buy blocked: not enough tokens', { currentTokens });
+      return;
+    }
+
+    const currentCards = gameState[teamKey]?.cards || [];
+    const newCards = [...currentCards, currentMovie];
+    const newScore = newCards.length;
+    const hasWon = checkWinCondition(newCards);
+
+    const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
+    const originalTurnHolder = priorAttempts[0] ?? winningTeam;
+    const nextTurn = otherTeam(originalTurnHolder);
+
     const updates = {
       [`${teamKey}/cards`]: newCards,
       [`${teamKey}/score`]: newScore,
+      [`${teamKey}/tokens`]: currentTokens - 3,
       usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
       phase: hasWon ? 'finished' : 'playing',
       wonCard: null,
@@ -291,10 +318,18 @@ export const useGameActions = (
 
     await update(ref(database, `games/${roomCode}`), updates);
 
+    setConnectionResult({
+      success: true,
+      message: language === 'he' ? '💰 קנית את הקלף תמורת 3 אסימונים!' : '💰 Card purchased for 3 tokens!'
+    });
+
     if (!hasWon) {
-      startNextRound(nextTurn);
+      setTimeout(() => {
+        setConnectionResult(null);
+        startNextRound(nextTurn);
+      }, 2500);
     }
-  }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
+  }, [roomCode, currentTeam, gameState, currentMovie, language, startNextRound]);
 
   // Mark trailer watched for the active guessing team (syncs all clients)
   const markTrailerWatched = useCallback(async () => {
@@ -441,6 +476,7 @@ export const useGameActions = (
     startNextRound,
     handleConnectionAttempt,
     handleSaveToken,
+    handleBuyConnection,
     handleAnchorContinue,
     markTrailerWatched,
     handleAnswerSelect,

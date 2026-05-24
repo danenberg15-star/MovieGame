@@ -232,9 +232,41 @@
   cursor: not-allowed;
 }
 
+.btn-buy-connection {
+  background: linear-gradient(135deg, #d4a047 0%, #b8862d 100%);
+  color: #2a1a08;
+  font-weight: 700;
+}
+
+.btn-buy-connection:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
 .btn-save-token {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
+}
+
+.btn-save-token:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-hint {
+  display: block;
+  width: 100%;
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.85;
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+
+.btn {
+  flex-direction: column;
+  gap: 2px;
 }
 
 /* Connection Selection */

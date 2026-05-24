@@ -4,11 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { findAllPossibleConnections } from '../utils/gameLogic';
 import './DecisionPhase.css';
 
-function DecisionPhase({ 
-  wonCard, 
-  teamCards, 
-  onConnect, 
+const BUY_CONNECTION_COST = 3;
+
+function DecisionPhase({
+  wonCard,
+  teamCards,
+  teamTokens = 0,
+  onConnect,
   onSaveToken,
+  onBuyConnection,
   language = 'en',
   connectionResult = null,
   disabled = false
@@ -61,6 +65,16 @@ function DecisionPhase({
       onSaveToken();
     }
   };
+
+  const handleBuyConnection = () => {
+    if (disabled) return;
+    if (teamTokens < BUY_CONNECTION_COST) return;
+    if (onBuyConnection) {
+      onBuyConnection();
+    }
+  };
+
+  const canBuyConnection = teamTokens >= BUY_CONNECTION_COST;
 
   const handleCancel = () => {
     if (disabled) return;
@@ -216,22 +230,47 @@ function DecisionPhase({
 
           {/* Main Decision Buttons - Fixed at bottom */}
           <div className="decision-actions">
-            <button 
+            <button
               className="btn btn-connect"
               onClick={handleConnectClick}
               disabled={disabled || teamCards.length === 0}
             >
               <span className="btn-icon">🔗</span>
               <span className="btn-text">{t('connect')}</span>
+              <span className="btn-hint">{language === 'he' ? '+ קלף לשרשרת' : '+ Card to chain'}</span>
             </button>
 
-            <button 
+            <button
+              className="btn btn-buy-connection"
+              onClick={handleBuyConnection}
+              disabled={disabled || !canBuyConnection}
+              title={
+                canBuyConnection
+                  ? ''
+                  : language === 'he'
+                    ? `דרושים ${BUY_CONNECTION_COST} אסימונים (יש לך ${teamTokens})`
+                    : `Requires ${BUY_CONNECTION_COST} tokens (you have ${teamTokens})`
+              }
+            >
+              <span className="btn-icon">💰</span>
+              <span className="btn-text">
+                {language === 'he' ? 'קנה שיוך' : 'Buy Connection'}
+              </span>
+              <span className="btn-hint">
+                {language === 'he'
+                  ? `${BUY_CONNECTION_COST} אסימונים → קלף`
+                  : `${BUY_CONNECTION_COST} tokens → card`}
+              </span>
+            </button>
+
+            <button
               className="btn btn-save-token"
               onClick={handleSaveToken}
               disabled={disabled}
             >
               <span className="btn-icon">🎫</span>
               <span className="btn-text">{t('save_token')}</span>
+              <span className="btn-hint">{language === 'he' ? '+1 אסימון (ללא קלף)' : '+1 token (no card)'}</span>
             </button>
           </div>
         </>
