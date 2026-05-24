@@ -168,16 +168,18 @@ function HomeScreen() {
         ❓
       </button>
 
+      <div className="home-marquee-wrap">
+        <div className="marquee-frame">
+          <span className="marquee-bulbs marquee-bulbs--top" aria-hidden="true" />
+          <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--left" aria-hidden="true" />
+          <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--right" aria-hidden="true" />
+          <h1 className="game-logo marquee-title">{t('app_title')}</h1>
+          <span className="marquee-bulbs marquee-bulbs--bottom" aria-hidden="true" />
+        </div>
+      </div>
+
       <div className="container">
         <div className="home-content">
-          <div className="marquee-frame">
-            <span className="marquee-bulbs marquee-bulbs--top" aria-hidden="true" />
-            <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--left" aria-hidden="true" />
-            <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--right" aria-hidden="true" />
-            <h1 className="game-logo marquee-title">{t('app_title')}</h1>
-            <span className="marquee-bulbs marquee-bulbs--bottom" aria-hidden="true" />
-          </div>
-
           <div className="home-controls">
           <div className="name-section">
             <input

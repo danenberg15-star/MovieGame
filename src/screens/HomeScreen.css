@@ -4,9 +4,9 @@
   min-height: 100vh;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 15px;
+  padding: clamp(14px, 3vh, 26px) 15px 15px;
   overflow: hidden;
   position: relative;
   /* Background handled globally by .App (cinematic gradient + grain + vignette) */
@@ -51,46 +51,60 @@
   max-width: 100%;
   position: relative;
   z-index: 2;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* Top row that holds the marquee, sitting at the same height as the help & language buttons */
+.home-marquee-wrap {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  /* Leave room for the side buttons (help left, language right) */
+  padding: 0 clamp(56px, 12vw, 90px);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
 }
 
 .home-content {
   text-align: center;
   max-width: 640px;
   width: 100%;
-  height: 100%;
   /* Don't clip — bulbs of the marquee sit on its border edge */
   overflow: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin: 0 auto;
   position: relative;
 }
 
-/* Marquee anchored at the top, aligned with help/language buttons */
-.home-content .marquee-frame {
-  flex-shrink: 0;
-}
-
-/* Centered controls fill the remaining space */
+/* Centered controls — all share width and rhythm */
 .home-controls {
-  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 14px;
+  gap: clamp(10px, 2vh, 18px);
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
 }
 
-/* ===== MARQUEE TITLE (2× size, top-aligned with side buttons) ===== */
+/* ===== MARQUEE TITLE (huge, top-aligned with side buttons) ===== */
 .marquee-frame {
   position: relative;
   display: inline-block;
-  padding: 32px 64px;
-  margin-top: 8px;
-  margin-bottom: 12px;
+  padding: clamp(16px, 3vh, 34px) clamp(28px, 5vw, 70px);
+  margin: 0;
+  max-width: 100%;
   border-radius: 14px;
   background:
     radial-gradient(ellipse at center, rgba(255, 216, 107, 0.06) 0%, transparent 70%),
@@ -142,14 +156,15 @@
   50%      { opacity: 0.55; }
 }
 
-/* Gold 3D marquee letters — twice as big */
+/* Gold 3D marquee letters — large headline */
 .game-logo,
 .marquee-title {
   margin: 0;
   font-family: var(--font-marquee);
   font-weight: 400;
-  font-size: clamp(2.4rem, 8vw, 5rem);
-  letter-spacing: 0.08em;
+  font-size: clamp(3rem, 9vw, 7rem);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
   color: #ffe8a3;
   text-transform: uppercase;
   background: none;
@@ -191,24 +206,25 @@
   justify-content: center;
 }
 
-/* Inputs — small velvet ticket-stub feel */
+/* Inputs — share the controls width so the column is perfectly aligned */
 .name-input,
 .input {
   width: 100%;
-  max-width: 360px;
-  padding: 10px 14px;
+  max-width: 380px;
+  padding: 12px 16px;
   font-size: 14px;
-  font-family: var(--font-body);
+  font-family: var(--font-deco);
+  letter-spacing: 0.06em;
   border-radius: 8px;
   border: 1px solid rgba(212, 160, 71, 0.35);
   background: linear-gradient(135deg, rgba(20, 18, 16, 0.85), rgba(30, 22, 22, 0.85));
   color: var(--color-ivory);
   text-align: center;
-  letter-spacing: 0.02em;
   box-shadow:
     0 4px 15px rgba(0, 0, 0, 0.3),
     inset 0 1px 3px rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .name-input:focus,
@@ -229,7 +245,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: clamp(10px, 2vh, 16px);
   margin: 0;
   width: 100%;
 }
@@ -244,10 +260,11 @@
 }
 
 .join-input {
-  font-family: var(--font-marquee);
-  font-size: 18px;
-  letter-spacing: 6px;
+  font-family: var(--font-deco);
+  font-size: 16px;
+  letter-spacing: 0.4em;
   text-align: center;
+  font-weight: 600;
 }
 
 .join-hint {
@@ -283,6 +300,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  box-sizing: border-box;
   border: none;
   color: #2a1a08;
   cursor: pointer;
@@ -379,35 +397,44 @@
 
 /* ===== GAME MODE TOGGLE ===== */
 .mode-section {
-  margin: 0.3rem 0 0.15rem;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .mode-label {
   font-family: var(--font-deco);
   font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  margin: 0 0 0.3rem;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.4rem;
   color: var(--color-brass-500);
   opacity: 0.95;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .mode-toggle {
-  display: inline-flex;
-  gap: 8px;
+  display: flex;
+  gap: 6px;
   padding: 6px;
+  width: 100%;
   border-radius: 12px;
   background: rgba(10, 8, 7, 0.6);
   border: 1px solid rgba(212, 160, 71, 0.25);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
 }
 
 .mode-tab {
-  padding: 8px 18px;
+  flex: 1 1 50%;
+  padding: 10px 14px;
   font-family: var(--font-deco);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   border: none;
   border-radius: 8px;
   background: transparent;
@@ -415,6 +442,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   white-space: nowrap;
+  text-align: center;
 }
 
 .mode-tab:hover:not(:disabled) {
@@ -611,39 +639,45 @@
 }
 
 /* ===== RESPONSIVE ===== */
+/* Short landscape phones (e.g. iPhone 13 landscape: 844×390) */
 @media (max-height: 500px) {
-  .home-screen { padding: 6px 64px; }
-  .home-screen::before { height: 4vh; }
-  .home-screen::after  { height: 3vh; }
-  .game-logo, .marquee-title { font-size: 2rem; }
-  .marquee-frame { padding: 18px 36px; margin-top: 0; margin-bottom: 6px; }
-  .home-controls { gap: 8px; max-width: 320px; }
-  .name-input, .input { padding: 6px 10px; font-size: 13px; }
-  .mode-section { margin: 0; }
+  .home-screen { padding: 8px 60px 8px; }
+  .home-screen::before { height: 3.5vh; }
+  .home-screen::after  { height: 2.5vh; }
+  .game-logo, .marquee-title { font-size: clamp(2.4rem, 7.5vw, 4rem); }
+  .marquee-frame { padding: 10px 22px; }
+  .home-marquee-wrap { padding: 0 clamp(50px, 9vw, 70px); }
+  .home-controls { gap: 6px; max-width: 320px; }
+  .name-input, .input { padding: 7px 12px; font-size: 12.5px; }
   .mode-label { font-size: 0.7rem; margin: 0 0 0.2rem; }
-  .mode-tab { padding: 5px 12px; font-size: 11.5px; }
+  .mode-toggle { padding: 4px; gap: 4px; }
+  .mode-tab { padding: 6px 10px; font-size: 12px; }
   .menu-buttons { gap: 6px; }
   .mode-hint { font-size: 0.7rem; margin: 0 0 0.15rem; }
-  .home-screen .btn { padding: 7px 20px; font-size: 11.5px; }
+  .home-screen .btn { padding: 8px 18px; font-size: 12px; }
   .help-btn { width: 36px; height: 36px; font-size: 18px; }
-  .join-input { font-size: 15px; letter-spacing: 4px; }
+  .join-input { font-size: 14px; letter-spacing: 0.3em; }
   .join-hint { font-size: 10px; min-height: 12px; }
 }
 
+/* Mid-height screens (tablets / smaller laptops in landscape ~600px height) */
 @media (min-height: 501px) and (max-height: 700px) {
-  .game-logo, .marquee-title { font-size: 3rem; }
-  .marquee-frame { padding: 26px 50px; }
+  .game-logo, .marquee-title { font-size: clamp(3rem, 9vw, 5.5rem); }
+  .marquee-frame { padding: 18px 44px; }
   .home-screen .btn { padding: 12px 28px; font-size: 13.5px; }
+  .mode-tab { padding: 9px 14px; font-size: 13.5px; }
 }
 
+/* Tall desktops */
 @media (min-height: 701px) {
-  .game-logo, .marquee-title { font-size: 4rem; }
-  .marquee-frame { padding: 36px 72px; }
+  .game-logo, .marquee-title { font-size: clamp(4rem, 10vw, 7rem); }
+  .marquee-frame { padding: 28px 60px; }
   .home-screen .btn { padding: 16px 36px; font-size: 15px; }
+  .mode-tab { padding: 12px 18px; font-size: 14.5px; }
 }
 
 @media (min-width: 1400px) {
   .home-content { max-width: 720px; }
-  .name-input, .input { max-width: 380px; }
-  .join-section { max-width: 380px; }
+  .home-controls { max-width: 420px; }
+  .name-input, .input { max-width: 420px; }
 }
