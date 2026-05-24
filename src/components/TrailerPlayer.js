@@ -14,11 +14,16 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
   const [isMuted, setIsMuted] = useState(true);
   const hasCalledOnTrailerEnd = useRef(false);
   const hasInitialized = useRef(false);
+  const safetyTimeoutRef = useRef(null);
 
   // Memoize callback to prevent re-renders
   const handleTrailerEndCallback = useCallback(() => {
     if (hasCalledOnTrailerEnd.current) return;
     hasCalledOnTrailerEnd.current = true;
+    if (safetyTimeoutRef.current) {
+      clearTimeout(safetyTimeoutRef.current);
+      safetyTimeoutRef.current = null;
+    }
     console.log('🎬 Trailer ended');
     if (onTrailerEnd) {
       onTrailerEnd();
@@ -155,7 +160,32 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
     setIsPlaying(false);
     setError(false);
     setIsLoading(true);
-  }, [movieId]);
+
+    if (safetyTimeoutRef.current) {
+      clearTimeout(safetyTimeoutRef.current);
+    }
+    // Fallback if 'ended' never fires (mobile pause, tab switch, etc.)
+    safetyTimeoutRef.current = setTimeout(() => {
+      if (!hasCalledOnTrailerEnd.current) {
+        console.warn('🎬 Trailer safety timeout — forcing end');
+        handleTrailerEndCallback();
+      }
+    }, 17000);
+
+    return () => {
+      if (safetyTimeoutRef.current) {
+        clearTimeout(safetyTimeoutRef.current);
+      }
+    };
+  }, [movieId, handleTrailerEndCallback]);
+
+  // Clear safety timer once trailer ends normally
+  useEffect(() => {
+    if (hasCalledOnTrailerEnd.current && safetyTimeoutRef.current) {
+      clearTimeout(safetyTimeoutRef.current);
+      safetyTimeoutRef.current = null;
+    }
+  });
 
   const handlePlayPause = () => {
     const video = videoRef.current;

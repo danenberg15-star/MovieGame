@@ -1,5 +1,5 @@
 // src/screens/GameScreen.js
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
@@ -21,8 +21,9 @@ function GameScreen() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showConnectionMessage, setShowConnectionMessage] = useState(false);
   
-  // 🔥 NEW: Local state to track if trailer was watched for current movie
+  // Local state to track if trailer was watched for current movie
   const [localTrailerWatched, setLocalTrailerWatched] = useState(false);
+  const trailerEndedForMovieRef = useRef(null);
 
   // Custom hook for game state management
   const {
@@ -60,20 +61,27 @@ function GameScreen() {
   const canStealAfterBotTrailer =
     isQAMode && currentTeam === 'A' && botAlreadyTried;
 
-  const shouldShowTrailer =
-    phase === 'playing' &&
-    currentMovie &&
-    !trailerPlayedThisRound &&
-    !canStealAfterBotTrailer &&
-    !localTrailerWatched;
+  const trailerReadyForAnswers =
+    trailerPlayedThisRound || localTrailerWatched || canStealAfterBotTrailer;
 
-  // 🔥 NEW: Reset local trailer state when movie changes
+  const shouldShowTrailer =
+    phase === 'playing' && currentMovie && !trailerReadyForAnswers;
+
+  // Reset trailer flags when a new movie round starts
   useEffect(() => {
-    if (currentMovie?.id) {
-      console.log('🎬 Movie changed, resetting localTrailerWatched');
+    if (!currentMovie?.id) return;
+    if (trailerEndedForMovieRef.current !== currentMovie.id) {
+      trailerEndedForMovieRef.current = null;
       setLocalTrailerWatched(false);
     }
   }, [currentMovie?.id]);
+
+  // Sync from Firebase — when any client marks trailer watched, all clients show answers
+  useEffect(() => {
+    if (gameState?.currentMovie?.trailerWatchedForTurn) {
+      setLocalTrailerWatched(true);
+    }
+  }, [gameState?.currentMovie?.trailerWatchedForTurn]);
 
   // Custom hook for game actions
   const {
@@ -125,19 +133,36 @@ function GameScreen() {
     }
   }, [connectionResult]);
 
-  // 🔥 FIXED: When trailer ends, mark as watched locally AND in Firebase
+  // When trailer ends: always transition locally; active team writes to Firebase
   const handleTrailerEnd = useCallback(async () => {
-    if (phase !== 'playing' || !gameState?.currentMovie?.id) return;
+    const movieId = gameState?.currentMovie?.id;
+    if (phase !== 'playing' || !movieId) return;
 
-    const canMarkWatched =
-      isMyTurn || (isQAMode && gameState.currentTurn === 'B');
+    if (trailerEndedForMovieRef.current === movieId) return;
+    trailerEndedForMovieRef.current = movieId;
 
-    if (!canMarkWatched) return;
-
-    console.log('🎬 Trailer ended - marking as watched locally and in Firebase');
+    console.log('🎬 Trailer ended — showing answer options');
     setLocalTrailerWatched(true);
-    await markTrailerWatched();
-  }, [phase, gameState?.currentMovie?.id, isMyTurn, isQAMode, gameState?.currentTurn, markTrailerWatched]);
+
+    const activeTurn = gameState.currentTurn;
+    const canWriteToFirebase =
+      currentTeam === activeTurn || (isQAMode && activeTurn === 'B');
+
+    if (canWriteToFirebase) {
+      try {
+        await markTrailerWatched();
+      } catch (err) {
+        console.error('❌ Failed to sync trailer watched to Firebase:', err);
+      }
+    }
+  }, [
+    phase,
+    gameState?.currentMovie?.id,
+    gameState?.currentTurn,
+    currentTeam,
+    isQAMode,
+    markTrailerWatched
+  ]);
 
   // Bot player hook - handles bot behavior in QA mode
   useBotPlayer(
