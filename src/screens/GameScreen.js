@@ -6,7 +6,7 @@ import AnchorReveal from '../components/AnchorReveal';
 import TrailerPlayer from '../components/TrailerPlayer';
 import DecisionPhase from '../components/DecisionPhase';
 import { useGameState } from '../hooks/useGameState';
-import { useGameActions, getStealingTeam } from '../hooks/useGameActions';
+import { useGameActions, getStealingTeam, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
 
 function GameScreen() {
@@ -43,17 +43,16 @@ function GameScreen() {
 
   const currentTeam = gameState?.playerTeams?.[playerId] || 'A';
   
-  const attempts = gameState?.currentMovieAttempts || [];
+  const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
   const stealingTeam = getStealingTeam(attempts);
   const botAlreadyTried = attempts.includes('B');
   const myTeamAlreadyTried = attempts.includes(currentTeam);
 
-  // Who may answer: original turn holder, or steal team after the other failed
+  // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess
   const isMyTurn = isQAMode
     ? (currentTeam === 'A' && !attempts.includes('A')) ||
       (currentTeam === 'B' && !botAlreadyTried)
-    : !myTeamAlreadyTried &&
-      (gameState?.currentTurn === currentTeam || stealingTeam === currentTeam);
+    : !myTeamAlreadyTried && gameState?.currentTurn === currentTeam;
 
   // Trailer already played this round (Firebase — keeps all clients on the same screen)
   const trailerPlayedThisRound = !!gameState?.currentMovie?.trailerWatchedForTurn;
@@ -177,6 +176,8 @@ function GameScreen() {
       tokens: 'tokens',
       back_home: 'Back to Home',
       choose_answer: 'Choose the correct movie:',
+      your_turn_to_guess: 'Your turn to guess!',
+      waiting_for_guess: 'turn to guess',
       watching_trailer: 'Watching trailer...',
       waiting_for_decision: 'WAITING...',
       connect_or_save: 'Connect or Save Token'
@@ -192,6 +193,8 @@ function GameScreen() {
       tokens: 'אסימונים',
       back_home: 'חזרה לדף הבית',
       choose_answer: 'בחר את הסרט הנכון:',
+      your_turn_to_guess: 'תורך לנחש!',
+      waiting_for_guess: 'תור לנחש',
       watching_trailer: 'צופה בטריילר...',
       waiting_for_decision: 'ממתין...',
       connect_or_save: 'חבר או שמור אסימון'
@@ -346,6 +349,13 @@ function GameScreen() {
               ) : (
                 <div className="answer-section">
                   <h2>{t('choose_answer')}</h2>
+                  {gameState?.currentTurn && (
+                    <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '12px', opacity: 0.9 }}>
+                      {isMyTurn
+                        ? `▶ ${t('your_turn_to_guess')}`
+                        : `${t(`team_${gameState.currentTurn.toLowerCase()}`)} — ${t('waiting_for_guess')}`}
+                    </p>
+                  )}
                   <div className="answer-grid">
                     {answerOptions.filter(opt => !removedAnswers.includes(opt)).map((option, index) => (
                       <button

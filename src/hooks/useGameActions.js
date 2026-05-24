@@ -14,10 +14,18 @@ import {
 
 const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
 
+/** Firebase may return arrays as objects — normalize for .includes() */
+export const normalizeAttempts = (attempts) => {
+  if (!attempts) return [];
+  if (Array.isArray(attempts)) return attempts;
+  return Object.values(attempts);
+};
+
 export const getStealingTeam = (attempts) => {
-  if (!attempts?.length) return null;
-  if (!attempts.includes('A')) return 'A';
-  if (!attempts.includes('B')) return 'B';
+  const list = normalizeAttempts(attempts);
+  if (!list.length) return null;
+  if (!list.includes('A')) return 'A';
+  if (!list.includes('B')) return 'B';
   return null;
 };
 
@@ -43,7 +51,7 @@ export const isTrailerReadyForAnswer = (
 };
 
 export const isBotTurnForQA = (gameState) => {
-  const attempts = gameState?.currentMovieAttempts || [];
+  const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
   const stealingTeam = getStealingTeam(attempts);
   if (stealingTeam === 'B') return true;
   if (stealingTeam === 'A') return false;
@@ -80,7 +88,7 @@ export const useGameActions = (
 
   // Reset local answer UI when round clears in Firebase (e.g. both teams failed on other client)
   useEffect(() => {
-    const attempts = gameState?.currentMovieAttempts || [];
+    const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
     if (attempts.length === 0 && !gameState?.currentMovie?.id) {
       setSelectedAnswer(null);
       setShowResult(false);
@@ -91,7 +99,7 @@ export const useGameActions = (
 
   // Reset answer UI when steal turn switches (same movie, new guessing team)
   useEffect(() => {
-    const attempts = gameState?.currentMovieAttempts || [];
+    const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
     if (!currentMovie?.id || attempts.length === 0) return;
     setSelectedAnswer(null);
     setShowResult(false);
@@ -306,12 +314,9 @@ export const useGameActions = (
   // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
   const handleAnswerSelect = useCallback(async (answer, isMyTurn, botIsThinking, answeringTeamOverride) => {
     const isQAMode = roomCode === '99999';
-    const attempts = gameState?.currentMovieAttempts || [];
-    let answeringTeam = answeringTeamOverride ?? gameState.currentTurn;
-    if (!answeringTeamOverride) {
-      const stealingTeam = getStealingTeam(attempts);
-      if (stealingTeam) answeringTeam = stealingTeam;
-    }
+    const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
+    const answeringTeam =
+      answeringTeamOverride ?? getStealingTeam(attempts) ?? gameState.currentTurn;
 
     const trailerReady = isTrailerReadyForAnswer(
       gameState,
@@ -370,7 +375,7 @@ export const useGameActions = (
       // Wrong answer - remove it and give other team a chance
       const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), answer];
 
-      const priorAttempts = gameState.currentMovieAttempts || [];
+      const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
       const newAttempts = [...priorAttempts, answeringTeam];
 
       // 🔥 CRITICAL: Find who is the ORIGINAL turn holder (first attempt)
@@ -399,10 +404,17 @@ export const useGameActions = (
         // We DON'T change currentTurn here!
         
         // Keep trailerWatchedForTurn — everyone already saw the trailer; steal team picks from remaining options
-        await update(ref(database, `games/${roomCode}`), {
+        const stealTurn = otherTeam(answeringTeam);
+        const stealUpdates = {
           [`currentMovie/removedAnswers`]: newRemovedAnswers,
           currentMovieAttempts: newAttempts
-        });
+        };
+        // Multiplayer: sync turn in Firebase so both clients enable the right team
+        if (!isQAMode) {
+          stealUpdates.currentTurn = stealTurn;
+        }
+
+        await update(ref(database, `games/${roomCode}`), stealUpdates);
 
         setResultMessage(language === 'he' ? 'לא נכון - תור הקבוצה השנייה' : 'Incorrect - other team\'s turn');
         setShowResult(true);
