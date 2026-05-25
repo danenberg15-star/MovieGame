@@ -245,17 +245,17 @@
 .theater__seats {
   flex: 1 1 auto;
   display: grid;
-  gap: 6px 8px;
+  gap: 8px 10px;
   align-content: center;
   justify-items: stretch;
   padding: 6px 2%;
   min-height: 0;
 }
 
-/* Single seat — top-down view of a cinema chair (facing the screen above) */
+/* Single seat — top-down view of a cinema chair (wider, to fit player names) */
 .seat {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1.3 / 1; /* wider than tall, room for the name */
   border: none;
   background: transparent;
   padding: 0;
@@ -264,24 +264,25 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.15s ease, filter 0.15s ease;
+  overflow: hidden;
 }
 
 .seat:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.15); }
 .seat:disabled            { cursor: not-allowed; }
 
 /* CUSHION — front of the seat (closer to the screen, i.e. UP in top-down view).
-   This is what you'd see most of from directly above. */
+   Tall enough to host the player name on it. */
 .seat__cushion {
   position: absolute;
   top: 4%;
-  left: 6%;
-  right: 6%;
-  height: 58%;
+  left: 4%;
+  right: 4%;
+  height: 68%;
   background:
     radial-gradient(ellipse at 50% 30%, #c92434 0%, #8c0e1c 60%, #5a0510 100%);
   border: 1px solid #7a0a17;
   /* Top corners rounded sharply (facing the screen), bottom corners gentler */
-  border-radius: 12px 12px 8px 8px;
+  border-radius: 10px 10px 6px 6px;
   box-shadow:
     inset 0 2px 4px rgba(255, 200, 200, 0.18),
     inset 0 -3px 6px rgba(0, 0, 0, 0.5),
@@ -289,13 +290,13 @@
 }
 
 /* HEADREST / BACK — behind the chair (away from the screen, i.e. DOWN in top-down view).
-   Looks like a small rounded bump poking out below the cushion. */
+   A small rounded bump poking out below the cushion. */
 .seat__back {
   position: absolute;
-  bottom: 6%;
-  left: 18%;
-  right: 18%;
-  height: 36%;
+  bottom: 4%;
+  left: 22%;
+  right: 22%;
+  height: 26%;
   background: linear-gradient(180deg, #7a0a17 0%, #4a0510 60%, #2a020a 100%);
   border: 1px solid #6a0814;
   /* Round bottom (the "back" of the chair seen from above) */
@@ -305,38 +306,54 @@
     0 2px 3px rgba(0, 0, 0, 0.55);
 }
 
-/* Occupant label (initial / emoji) — sits on the cushion */
+/* Occupant — emoji + name stacked on the cushion */
 .seat__occupant {
-  position: relative;
+  position: absolute;
   z-index: 2;
-  margin-top: -18%; /* nudges the label up onto the cushion */
-  font-family: var(--font-deco);
-  font-weight: 700;
-  font-size: clamp(11px, 2vw, 16px);
-  line-height: 1;
-  color: #fff5d8;
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.85),
-    0 0 6px rgba(0, 0, 0, 0.6);
+  top: 6%;
+  left: 6%;
+  right: 6%;
+  height: 64%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   pointer-events: none;
+  text-align: center;
 }
 
-/* Small BOTn label beneath the emoji (only on bot seats) */
-.seat__botlabel {
-  position: absolute;
-  z-index: 3;
-  bottom: 10%;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+.seat__emoji {
+  font-size: clamp(12px, 2vw, 18px);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.seat__name {
+  max-width: 100%;
+  font-family: var(--font-deco);
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(7px, 1.1vw, 9px);
-  letter-spacing: 0.04em;
-  color: #ffe8a3;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
-  pointer-events: none;
+  font-size: clamp(8px, 1.3vw, 12px);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #fff5d8;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.95),
+    0 0 6px rgba(0, 0, 0, 0.6);
+  /* Truncate long names with ellipsis instead of overflowing the seat */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  padding: 0 2px;
+}
+
+/* Human player names use a cleaner sans-serif so Hebrew + English read well */
+.seat__name--player {
+  font-family: Arial, Helvetica, "Segoe UI", sans-serif;
 }
 
 /* Taken by another player — brighter cinema red */
@@ -360,7 +377,10 @@
   border-color: #e6b455;
 }
 .seat--mine                 { filter: drop-shadow(0 0 8px rgba(255, 216, 107, 0.7)); }
-.seat--mine .seat__occupant { color: #2a1c08; text-shadow: 0 1px 0 rgba(255, 240, 200, 0.7); }
+.seat--mine .seat__name {
+  color: #2a1c08;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.7);
+}
 
 /* Bot seat — steel tones, easy to tell apart from humans */
 .seat--bot .seat__cushion {
@@ -524,9 +544,9 @@
   .theater { padding: 8px 8px 6px; gap: 6px; border-radius: 10px; }
   .theater__screen { height: 28px; border-radius: 60% 60% 8px 8px / 80% 80% 8px 8px; }
   .theater__screen-label { font-size: 12px; letter-spacing: 0.12em; }
-  .theater__seats { gap: 4px 5px; padding: 2px 1%; }
-  .seat__occupant { font-size: 10px; margin-top: -14%; }
-  .seat__botlabel { font-size: 6px; bottom: 8%; }
+  .theater__seats { gap: 5px 6px; padding: 2px 1%; }
+  .seat__emoji { font-size: 12px; }
+  .seat__name { font-size: 9px; line-height: 1.0; }
   .vs-divider { font-size: 1.4rem; padding: 0 4px; }
   .seat-hint { padding: 5px 10px; font-size: 11px; }
   .lobby-actions { gap: 8px; padding-bottom: 2px; }

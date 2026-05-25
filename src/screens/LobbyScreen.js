@@ -7,13 +7,13 @@ import { database } from '../firebase';
 import './LobbyScreen.css';
 
 const ROWS = 3;
-const COLS = 5;
+const COLS = 4;
 const SEATS_PER_TEAM = ROWS * COLS;
 
-// 15 different "robot" avatars for decorative bots in vs-Bot / QA mode
+// Distinct "robot" avatars for decorative bots in vs-Bot / QA mode
 const BOT_EMOJIS = [
-  '🤖', '👾', '🛸', '🦾', '🦿', '⚙️', '🪐', '🛰️',
-  '🎬', '🎯', '🎮', '🕹️', '💿', '⚡', '🎭',
+  '🤖', '👾', '🛸', '🦾', '🦿', '⚙️',
+  '🪐', '🛰️', '🎬', '🎯', '🎮', '🕹️',
 ];
 
 const buildBotRoster = (lang) => {
@@ -232,7 +232,6 @@ function LobbyScreen() {
             const occupant = seatMap.get(idx);
             const isMine = occupant?.id === playerId;
             const isOther = !!occupant && !isMine;
-            const initial = occupant?.name?.trim()?.charAt(0)?.toUpperCase() || '?';
             const disabled = isTeamLocked || isOther;
             const label = occupant ? occupant.name : `Seat ${idx + 1}`;
 
@@ -258,15 +257,17 @@ function LobbyScreen() {
               >
                 <span className="seat__back" aria-hidden="true" />
                 <span className="seat__cushion" aria-hidden="true" />
-                <span className="seat__occupant">
-                  {occupant
-                    ? occupant.isBot
-                      ? (occupant.botEmoji || '🤖')
-                      : initial
-                    : ''}
-                </span>
-                {occupant?.isBot && occupant?.botLabel && (
-                  <span className="seat__botlabel">{occupant.botLabel}</span>
+                {occupant && (
+                  <span className="seat__occupant">
+                    {occupant.isBot ? (
+                      <>
+                        <span className="seat__emoji">{occupant.botEmoji || '🤖'}</span>
+                        <span className="seat__name">{occupant.botLabel || occupant.name}</span>
+                      </>
+                    ) : (
+                      <span className="seat__name seat__name--player">{occupant.name}</span>
+                    )}
+                  </span>
                 )}
               </button>
             );
