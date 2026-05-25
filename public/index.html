@@ -58,16 +58,54 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <!-- Register Service Worker -->
+    <!-- Register Service Worker with auto-update on every load -->
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
+        var refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (refreshing) return;
+          refreshing = true;
+          console.log('🔄 New service worker took control - reloading');
+          window.location.reload();
+        });
+
+        window.addEventListener('load', function () {
           navigator.serviceWorker
-            .register('/service-worker.js')
-            .then((registration) => {
+            .register('/service-worker.js', { updateViaCache: 'none' })
+            .then(function (registration) {
               console.log('✅ Service Worker registered:', registration.scope);
+
+              // Force an update check on every load (bypasses HTTP cache)
+              registration.update().catch(function () {});
+
+              function trackInstalling(worker) {
+                worker.addEventListener('statechange', function () {
+                  if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('⏭️ New SW installed — activating immediately');
+                    worker.postMessage({ type: 'SKIP_WAITING' });
+                  }
+                });
+              }
+
+              if (registration.waiting) {
+                console.log('⏭️ SW already waiting — activating');
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+              }
+              if (registration.installing) {
+                trackInstalling(registration.installing);
+              }
+              registration.addEventListener('updatefound', function () {
+                if (registration.installing) trackInstalling(registration.installing);
+              });
+
+              // Re-check on visibility (e.g. user returns to tab/PWA)
+              document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'visible') {
+                  registration.update().catch(function () {});
+                }
+              });
             })
-            .catch((error) => {
+            .catch(function (error) {
               console.log('❌ Service Worker registration failed:', error);
             });
         });
