@@ -306,17 +306,15 @@ function LobbyScreen() {
               <span className="code">{roomCode}</span>
             </div>
 
-            {!isQAMode && (
-              <button
-                type="button"
-                className="btn-whatsapp"
-                onClick={handleShareWhatsApp}
-                aria-label={t('share_whatsapp') || 'Share on WhatsApp'}
-                title={t('share_whatsapp') || 'Share on WhatsApp'}
-              >
-                <WhatsAppIcon />
-              </button>
-            )}
+            <button
+              type="button"
+              className="btn-whatsapp"
+              onClick={handleShareWhatsApp}
+              aria-label={t('share_whatsapp') || 'Share on WhatsApp'}
+              title={t('share_whatsapp') || 'Share on WhatsApp'}
+            >
+              <WhatsAppIcon />
+            </button>
           </div>
 
           {/* Teams (cinema halls from above) */}

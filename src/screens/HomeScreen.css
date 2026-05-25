@@ -560,6 +560,9 @@
   pointer-events: none; /* never block taps; panels are decorative */
   display: flex;
   overflow: hidden;
+  /* Always LTR — Hebrew page dir=rtl would swap flex order and reverse
+     the slide transforms, so the panels meet in the centre instead of opening. */
+  direction: ltr;
 }
 
 .cinema-curtain__panel {

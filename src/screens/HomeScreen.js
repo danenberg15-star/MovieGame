@@ -22,8 +22,13 @@ function HomeScreen() {
     return sessionStorage.getItem('curtainShown') === '1' ? 'done' : 'closed';
   });
 
+  // Run the intro once on mount — do NOT depend on curtainState here.
+  // When curtainState flips to 'opening', a [curtainState] effect would
+  // cleanup and cancel the done-timer, leaving the curtain stuck forever.
   useEffect(() => {
-    if (curtainState !== 'closed') return;
+    if (typeof window === 'undefined') return;
+    if (sessionStorage.getItem('curtainShown') === '1') return;
+
     const openTimer = setTimeout(() => setCurtainState('opening'), 350);
     const doneTimer = setTimeout(() => {
       setCurtainState('done');
@@ -33,7 +38,7 @@ function HomeScreen() {
       clearTimeout(openTimer);
       clearTimeout(doneTimer);
     };
-  }, [curtainState]);
+  }, []);
 
   useEffect(() => {
     const savedName = localStorage.getItem('playerName');
