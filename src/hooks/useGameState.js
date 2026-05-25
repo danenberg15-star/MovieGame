@@ -217,6 +217,17 @@ export const useGameState = (roomCode, playerId, language) => {
                 setAnswerOptions(data.currentMovie.options || []);
                 setRemovedAnswers(data.currentMovie.removedAnswers || []);
               }
+            } else if (data.phase === 'decision' && data.wonCard?.movieId) {
+              // Decision phase: won movie may only live on wonCard.movieId
+              const wonMovie = movies.find(
+                (m) => String(m.id) === String(data.wonCard.movieId)
+              );
+              if (wonMovie) {
+                if (currentMovieIdRef.current !== wonMovie.id) {
+                  currentMovieIdRef.current = wonMovie.id;
+                  setCurrentMovie(wonMovie);
+                }
+              }
             } else if (currentMovieIdRef.current !== null) {
               console.log('🎬 Movie cleared from Firebase');
               currentMovieIdRef.current = null;

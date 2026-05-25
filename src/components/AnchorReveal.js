@@ -14,14 +14,6 @@ function AnchorReveal({ teamACard, teamBCard, onContinue, language = 'en' }) {
     return () => clearTimeout(t1);
   }, []);
 
-  // Auto-continue after 7 seconds — leave more time to soak in the reveal.
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onContinue();
-    }, 7000);
-    return () => clearTimeout(timer);
-  }, [onContinue]);
-
   const renderCard = (card, team) => (
     <div className={`anchor-card-section anchor-card-section--${team}`}>
       <div className="anchor-screen">

@@ -1,5 +1,5 @@
 // src/screens/GameScreen.js
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
@@ -163,6 +163,20 @@ function GameScreen() {
 
   const canAnswer =
     isMyTurn && trailerReadyForAnswers && !selectedAnswer && !botIsThinking;
+
+  // During decision, keep the won movie even if Firebase drops currentMovie
+  const wonCardForDecision = useMemo(() => {
+    if (currentMovie) return currentMovie;
+    const movieId = gameState?.wonCard?.movieId;
+    if (!movieId || !allMovies?.length) return null;
+    return allMovies.find((m) => String(m.id) === String(movieId)) ?? null;
+  }, [currentMovie, gameState?.wonCard?.movieId, allMovies]);
+
+  const decisionTeam = gameState?.wonCard?.team ?? currentTeam;
+  const decisionTeamCards =
+    decisionTeam === 'A'
+      ? gameState?.teamA?.cards || []
+      : gameState?.teamB?.cards || [];
 
   // Show an Oscar popup right after a correct trailer guess.
   // This fires when the round transitions to the decision phase.
@@ -423,12 +437,11 @@ function GameScreen() {
         <div className="game-content">
           {phase === 'decision' ? (
             <DecisionPhase
-              wonCard={currentMovie}
-              teamCards={currentTeam === 'A' ? teamAData.cards : teamBData.cards}
+              wonCard={wonCardForDecision}
+              teamCards={decisionTeamCards}
               teamTokens={
-                (gameState.wonCard?.team === 'A' ? teamAData.tokens : teamBData.tokens) || 0
+                (decisionTeam === 'A' ? teamAData.tokens : teamBData.tokens) || 0
               }
-              allMovies={allMovies}
               onConnect={handleConnectionAttempt}
               onSaveToken={handleSaveToken}
               onBuyConnection={handleBuyConnection}

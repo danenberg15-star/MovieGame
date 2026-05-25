@@ -7,13 +7,12 @@ const BUY_CONNECTION_COST = 3;
 
 function DecisionPhase({
   wonCard,
-  teamCards,
+  teamCards = [],
   teamTokens = 0,
   onConnect,
   onSaveToken,
   onBuyConnection,
   language = 'en',
-  connectionResult = null,
   disabled = false,
 }) {
   const { t } = useTranslation();
@@ -75,54 +74,121 @@ function DecisionPhase({
     setSelectedConnectionType(null);
   };
 
-  // Possible-connections hint shown after a failed attempt is now driven by
-  // the Oscar popup, so we no longer render the in-panel feedback box here.
+  const titleOf = (card) =>
+    card?.title?.[language] || card?.title?.en || '';
+
+  const renderWonPoster = (sizeClass = 'poster-frame--won') => {
+    if (!wonCard) return null;
+    return (
+      <div className={`poster-frame ${sizeClass}`}>
+        <span className="poster-frame__bulbs poster-frame__bulbs--top" aria-hidden="true" />
+        <span className="poster-frame__bulbs poster-frame__bulbs--bottom" aria-hidden="true" />
+        <span className="poster-frame__bulbs poster-frame__bulbs--left" aria-hidden="true" />
+        <span className="poster-frame__bulbs poster-frame__bulbs--right" aria-hidden="true" />
+        <div className="poster-frame__inner">
+          <img
+            src={wonCard.poster}
+            alt={titleOf(wonCard)}
+            className="poster-frame__img"
+            onError={(e) => {
+              e.target.src = '/assets/placeholder-poster.png';
+            }}
+          />
+          <div className="poster-frame__caption">
+            <span className="poster-frame__title">{titleOf(wonCard)}</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderChainCard = (card, { selectable = false, isSelected = false } = {}) => {
+    const inner = (
+      <>
+        <div className="poster-frame__inner">
+          <img
+            src={card.poster}
+            alt={titleOf(card)}
+            className="poster-frame__img"
+            onError={(e) => {
+              e.target.src = '/assets/placeholder-poster.png';
+            }}
+          />
+          <div className="poster-frame__caption">
+            <span className="poster-frame__title">{titleOf(card)}</span>
+          </div>
+        </div>
+        {isSelected && <span className="poster-frame__check">✓</span>}
+      </>
+    );
+
+    const className = `poster-frame poster-frame--small${
+      isSelected ? ' poster-frame--selected' : ''
+    }`;
+
+    if (selectable) {
+      return (
+        <button
+          key={card.id}
+          type="button"
+          className={className}
+          onClick={() => handleCardSelect(card)}
+          disabled={disabled}
+        >
+          {inner}
+        </button>
+      );
+    }
+
+    return (
+      <div key={card.id} className={className}>
+        {inner}
+      </div>
+    );
+  };
+
+  if (!wonCard) {
+    return (
+      <div className="decision-phase">
+        <p className="decision-subtitle" style={{ textAlign: 'center', padding: '2rem' }}>
+          {language === 'he' ? 'טוען קלף…' : 'Loading card…'}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="decision-phase">
       {!showCardSelection ? (
         <>
-          {/* Compact cinema-style header */}
           <div className="decision-header">
             <h2 className="decision-title">🎯 {t('decision_time')}</h2>
             <p className="decision-subtitle">{t('connect_or_save')}</p>
           </div>
 
-          {/* HUGE won-card poster with brass marquee frame */}
           <div className="dp-card-stage">
             <div className="dp-card-badge">🏆 {t('new_card')}</div>
-
-            <div className="poster-frame poster-frame--won">
-              <span className="poster-frame__bulbs poster-frame__bulbs--top" aria-hidden="true" />
-              <span className="poster-frame__bulbs poster-frame__bulbs--bottom" aria-hidden="true" />
-              <span className="poster-frame__bulbs poster-frame__bulbs--left" aria-hidden="true" />
-              <span className="poster-frame__bulbs poster-frame__bulbs--right" aria-hidden="true" />
-
-              <div className="poster-frame__inner">
-                <img
-                  src={wonCard.poster}
-                  alt={wonCard.title?.[language] || ''}
-                  className="poster-frame__img"
-                  onError={(e) => {
-                    e.target.src = '/assets/placeholder-poster.png';
-                  }}
-                />
-                <div className="poster-frame__caption">
-                  <span className="poster-frame__title">
-                    {wonCard.title?.[language] || wonCard.title?.en || ''}
-                  </span>
-                </div>
-              </div>
-            </div>
+            {renderWonPoster('poster-frame--won')}
           </div>
 
-          {/* Compact action ROW (smaller than the poster) */}
+          {/* Show existing chain so the player sees what they can link to */}
+          {teamCards.length > 0 && (
+            <div className="dp-chain-preview">
+              <p className="dp-chain-preview__label">
+                {language === 'he' ? 'השרשרת שלך' : 'Your chain'}
+              </p>
+              <div className="dp-chain-preview__row">
+                {teamCards.map((card) => renderChainCard(card))}
+              </div>
+            </div>
+          )}
+
           <div className="dp-actions-row">
             <button
               type="button"
               className="dp-btn dp-btn--connect"
               onClick={handleConnectClick}
-              disabled={disabled || !teamCards || teamCards.length === 0}
+              disabled={disabled || teamCards.length === 0}
             >
               <span className="dp-btn__icon">🔗</span>
               <span className="dp-btn__text">{t('connect')}</span>
@@ -166,47 +232,25 @@ function DecisionPhase({
         </>
       ) : (
         <>
-          {/* Compact selection header */}
           <div className="decision-header">
             <h3 className="decision-step">1 — {t('step_1_select_card')}</h3>
           </div>
 
-          {/* Large team-card grid */}
-          <div className="dp-team-grid">
-            {teamCards.map((card) => {
-              const isSel = selectedCard?.id === card.id;
-              return (
-                <button
-                  key={card.id}
-                  type="button"
-                  className={`poster-frame poster-frame--small ${
-                    isSel ? 'poster-frame--selected' : ''
-                  }`}
-                  onClick={() => handleCardSelect(card)}
-                  disabled={disabled}
-                >
-                  <div className="poster-frame__inner">
-                    <img
-                      src={card.poster}
-                      alt={card.title?.[language] || ''}
-                      className="poster-frame__img"
-                      onError={(e) => {
-                        e.target.src = '/assets/placeholder-poster.png';
-                      }}
-                    />
-                    <div className="poster-frame__caption">
-                      <span className="poster-frame__title">
-                        {card.title?.[language] || card.title?.en || ''}
-                      </span>
-                    </div>
-                  </div>
-                  {isSel && <span className="poster-frame__check">✓</span>}
-                </button>
-              );
-            })}
+          {/* Keep the newly won card visible while picking a chain card */}
+          <div className="dp-won-strip">
+            <div className="dp-card-badge">🏆 {t('new_card')}</div>
+            {renderWonPoster('poster-frame--won')}
           </div>
 
-          {/* Connection-type selector (only after a card is picked) */}
+          <div className="dp-team-grid">
+            {teamCards.map((card) =>
+              renderChainCard(card, {
+                selectable: true,
+                isSelected: selectedCard?.id === card.id,
+              })
+            )}
+          </div>
+
           {selectedCard && (
             <div className="dp-types-row">
               <span className="dp-types-row__label">2 — {t('step_2_select_type')}:</span>
@@ -229,7 +273,6 @@ function DecisionPhase({
             </div>
           )}
 
-          {/* Confirm/Cancel */}
           <div className="dp-confirm-row">
             <button
               type="button"
