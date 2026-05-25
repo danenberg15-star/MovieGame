@@ -68,7 +68,7 @@
   flex-shrink: 0;
 }
 
-.game-logo {
+.lobby-screen .game-logo {
   font-family: var(--font-marquee);
   font-size: clamp(1.2rem, 3.6vw, 1.8rem);
   font-weight: 400;
@@ -565,7 +565,7 @@
   .lobby-screen { padding: 6px; }
   .lobby-content { gap: 6px; }
   .lobby-header { gap: 8px; }
-  .game-logo { font-size: 1.1rem; }
+  .lobby-screen .game-logo { font-size: 1.1rem; }
   .qa-badge { font-size: 9px; padding: 3px 7px; }
   .room-code-display { padding: 4px 10px; }
   .room-code-display .label { font-size: 10px; }
@@ -593,14 +593,14 @@
 
 /* Medium phones / small tablets */
 @media (min-height: 431px) and (max-height: 700px) {
-  .game-logo { font-size: 1.5rem; }
+  .lobby-screen .game-logo { font-size: 1.5rem; }
   .vs-divider { font-size: 2rem; }
 }
 
 /* Large screens */
 @media (min-height: 701px) {
   .lobby-screen { padding: 20px; }
-  .game-logo { font-size: 2rem; }
+  .lobby-screen .game-logo { font-size: 2rem; }
   .team-box { padding: 18px 16px 14px; }
   .player-card { padding: 8px 14px; font-size: 13.5px; }
   .vs-divider { font-size: 2.8rem; }
