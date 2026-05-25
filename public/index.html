@@ -46,6 +46,43 @@
 
     <title>CINEMASTER - משחק לזיהוי סרטים</title>
 
+    <!-- App version (bump on every release to force PWA self-update) -->
+    <meta name="app-version" content="1.8.0" />
+
+    <!-- Force-update gate: must run BEFORE service worker registration -->
+    <script>
+      (function () {
+        var APP_VERSION = '1.8.0';
+        try {
+          var stored = localStorage.getItem('cinemaster_version');
+          if (stored && stored !== APP_VERSION) {
+            console.log('🆕 New app version detected (' + stored + ' → ' + APP_VERSION + ') — purging caches');
+            var done = function () {
+              try { localStorage.setItem('cinemaster_version', APP_VERSION); } catch (e) {}
+              window.location.reload();
+            };
+            var clearAll = Promise.resolve();
+            if (window.caches && caches.keys) {
+              clearAll = caches.keys()
+                .then(function (keys) { return Promise.all(keys.map(function (k) { return caches.delete(k); })); })
+                .catch(function () {});
+            }
+            clearAll
+              .then(function () {
+                if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+                  return navigator.serviceWorker.getRegistrations()
+                    .then(function (regs) { return Promise.all(regs.map(function (r) { return r.unregister(); })); })
+                    .catch(function () {});
+                }
+              })
+              .then(done, done);
+            return;
+          }
+          if (!stored) localStorage.setItem('cinemaster_version', APP_VERSION);
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Cinematic typography: Limelight (marquee) + Cinzel (Art Deco) + Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
