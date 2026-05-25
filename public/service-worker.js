@@ -1,5 +1,5 @@
 // Service Worker for CINEMASTER PWA
-const CACHE_NAME = 'cinemaster-v1.6.0';
+const CACHE_NAME = 'cinemaster-v1.7.0';
 
 // Only cache essential files that we know exist
 const ESSENTIAL_CACHE = [
@@ -80,45 +80,37 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache First with Network Fallback for static assets
+  // Network First with Cache Fallback for static assets (so fresh CSS/JS always wins)
   event.respondWith(
-    caches.match(request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          console.log('📦 [Service Worker] Serving from cache:', url.pathname);
-          return cachedResponse;
+    fetch(request)
+      .then((response) => {
+        if (!response || response.status !== 200 || response.type === 'error') {
+          return response;
         }
 
-        // Not in cache - fetch from network
-        return fetch(request).then((response) => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type === 'error') {
-            return response;
-          }
-
-          // Don't cache video files (too large)
-          if (url.pathname.includes('.mp4') || url.pathname.includes('.webm')) {
-            console.log('🎥 [Service Worker] Not caching video:', url.pathname);
-            return response;
-          }
-
-          // Cache static assets (JS, CSS, images, fonts)
-          if (
-            url.pathname.startsWith('/static/') ||
-            url.pathname.startsWith('/assets/') ||
-            url.pathname.match(/\.(js|css|png|jpg|jpeg|webp|svg|woff|woff2|ico)$/)
-          ) {
-            console.log('💾 [Service Worker] Caching asset:', url.pathname);
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseToCache);
-            });
-          }
-
+        // Don't cache video files (too large)
+        if (url.pathname.includes('.mp4') || url.pathname.includes('.webm')) {
           return response;
-        }).catch((error) => {
-          console.error('❌ [Service Worker] Fetch failed:', url.pathname, error);
-          // Fallback for offline
+        }
+
+        // Cache static assets (JS, CSS, images, fonts)
+        if (
+          url.pathname.startsWith('/static/') ||
+          url.pathname.startsWith('/assets/') ||
+          url.pathname.match(/\.(js|css|png|jpg|jpeg|webp|svg|woff|woff2|ico)$/)
+        ) {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseToCache);
+          });
+        }
+
+        return response;
+      })
+      .catch((error) => {
+        console.error('❌ [Service Worker] Fetch failed, trying cache:', url.pathname, error);
+        return caches.match(request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
           if (request.destination === 'document') {
             return caches.match('/index.html');
           }
