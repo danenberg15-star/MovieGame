@@ -328,6 +328,22 @@
   cursor: not-allowed;
 }
 
+/* Compact inline "wrong answer" feedback. Correct answers are now
+   celebrated via the OscarPopup overlay (see OscarPopup.css). */
+.result-message--wrong {
+  margin-top: 12px;
+  padding: 8px 14px;
+  text-align: center;
+  font-family: var(--font-deco), Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(140, 30, 40, 0.35) 0%, rgba(60, 10, 18, 0.55) 100%);
+  border: 1px solid rgba(255, 90, 95, 0.45);
+  color: #ffd0d0;
+}
+
 /* Game Finished */
 .game-finished {
   background: linear-gradient(145deg, rgba(42, 42, 42, 0.95) 0%, rgba(31, 31, 31, 0.95) 100%);

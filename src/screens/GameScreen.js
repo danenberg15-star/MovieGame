@@ -9,6 +9,8 @@ import { useGameState } from '../hooks/useGameState';
 import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
 import { setActiveSession, clearActiveSession } from '../utils/activeSession';
+import { pickOscarQuip } from '../utils/oscarQuips';
+import OscarPopup from '../components/OscarPopup';
 
 function GameScreen() {
   const navigate = useNavigate();
@@ -58,8 +60,11 @@ function GameScreen() {
   const language = 'en';
   const isQAMode = roomCode === '99999';
   const [botIsThinking, setBotIsThinking] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showConnectionMessage, setShowConnectionMessage] = useState(false);
+
+  // Oscar-style feedback popup. We funnel both "you guessed the movie" and
+  // "you connected/failed a card" through the same award-ceremony popup.
+  const [oscarPopup, setOscarPopup] = useState(null);
+  // { variant: 'success'|'failure', quip: string, subText?: string }
   
   // Local state to track if trailer was watched for current movie
   const [localTrailerWatched, setLocalTrailerWatched] = useState(false);
@@ -159,27 +164,38 @@ function GameScreen() {
   const canAnswer =
     isMyTurn && trailerReadyForAnswers && !selectedAnswer && !botIsThinking;
 
-  // Show success message when entering decision phase
+  // Show an Oscar popup right after a correct trailer guess.
+  // This fires when the round transitions to the decision phase.
   useEffect(() => {
     if (phase === 'decision' && gameState?.wonCard) {
-      setShowSuccessMessage(true);
-      const timer = setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 2000);
-      return () => clearTimeout(timer);
+      const quip = pickOscarQuip({ success: true, language });
+      setOscarPopup({
+        variant: 'success',
+        quip,
+        subText: language === 'he' ? '+1 אסימון' : '+1 Token',
+        duration: 2200,
+      });
     }
-  }, [phase, gameState?.wonCard]);
+  }, [phase, gameState?.wonCard, language]);
 
-  // Show connection result message
+  // Show an Oscar popup for connection results (connect / buy / fail).
   useEffect(() => {
-    if (connectionResult) {
-      setShowConnectionMessage(true);
-      const timer = setTimeout(() => {
-        setShowConnectionMessage(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [connectionResult]);
+    if (!connectionResult) return;
+    const quip = pickOscarQuip({
+      success: connectionResult.success,
+      language,
+      value: connectionResult.value,
+    });
+    const subText = connectionResult.success
+      ? (language === 'he' ? 'הקלף שלך' : 'Card won')
+      : (language === 'he' ? 'הקלף חוזר' : 'Card returns');
+    setOscarPopup({
+      variant: connectionResult.success ? 'success' : 'failure',
+      quip,
+      subText,
+      duration: 3000,
+    });
+  }, [connectionResult, language]);
 
   // When trailer ends: always transition locally; active team writes to Firebase
   const handleTrailerEnd = useCallback(async () => {
@@ -466,41 +482,15 @@ function GameScreen() {
                     ))}
                   </div>
                   
-                  {showResult && (
-                    <div className="result-message" style={{
-                      marginTop: '15px',
-                      padding: '12px',
-                      borderRadius: '8px',
-                      textAlign: 'center',
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                      background: isCorrect ? 'rgba(76, 175, 80, 0.2)' : 'rgba(244, 67, 54, 0.2)',
-                      border: `2px solid ${isCorrect ? '#4caf50' : '#f44336'}`,
-                      color: isCorrect ? '#4caf50' : '#f44336'
-                    }}>
+                  {/* For "wrong answer" we still show a small inline message;
+                      correct answers are celebrated via the Oscar popup. */}
+                  {showResult && !isCorrect && (
+                    <div className="result-message result-message--wrong">
                       {resultMessage}
                     </div>
                   )}
                 </div>
               )}
-            </div>
-          )}
-
-          {showSuccessMessage && (
-            <div className="success-overlay">
-              <div className="success-message">
-                <h2>🎉 Correct!</h2>
-                <p>+1 Token</p>
-              </div>
-            </div>
-          )}
-
-          {showConnectionMessage && connectionResult && (
-            <div className="connection-overlay">
-              <div className={`connection-message ${connectionResult.success ? 'success' : 'failure'}`}>
-                <h2>{connectionResult.success ? '✅' : '❌'} {connectionResult.message}</h2>
-                {connectionResult.hint && <p>{connectionResult.hint}</p>}
-              </div>
             </div>
           )}
         </div>
@@ -540,6 +530,15 @@ function GameScreen() {
           </div>
         </div>
       </div>
+
+      <OscarPopup
+        open={!!oscarPopup}
+        variant={oscarPopup?.variant}
+        quip={oscarPopup?.quip}
+        subText={oscarPopup?.subText}
+        duration={oscarPopup?.duration || 3000}
+        onClose={() => setOscarPopup(null)}
+      />
     </div>
   );
 }

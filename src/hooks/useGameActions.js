@@ -9,7 +9,8 @@ import {
   validateConnection,
   getConnectionHint,
   checkWinCondition,
-  getSuccessMessage
+  getSuccessMessage,
+  findConnection
 } from '../utils/gameLogic';
 
 const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
@@ -245,7 +246,26 @@ export const useGameActions = (
       await update(ref(database, `games/${roomCode}`), updates);
 
       const successMsg = getSuccessMessage(connectionType, validation.connection, language);
-      setConnectionResult({ success: true, message: successMsg });
+
+      // Extract the human-readable value for the Oscar quip:
+      //   - actor/director → localized name
+      //   - year           → the year as a string
+      const connValue = validation.connection?.value;
+      const valueText =
+        typeof connValue === 'object'
+          ? connValue?.[language] || connValue?.en || ''
+          : connValue != null
+            ? String(connValue)
+            : '';
+
+      setConnectionResult({
+        success: true,
+        message: successMsg,
+        type: connectionType,
+        value: valueText,
+        targetCardTitle:
+          (targetCard?.title?.[language] || targetCard?.title?.en) || '',
+      });
 
       if (!hasWon) {
         setTimeout(() => {
@@ -258,6 +278,19 @@ export const useGameActions = (
       // Failed connection - show hint
       const hintData = getConnectionHint(currentMovie, targetCard, language);
 
+      // Try to find an *actually existing* connection between the picked
+      // card and the won card so the Oscar quip can roast the player with
+      // the right name/year.
+      const possibleConnections = findConnection(currentMovie, targetCard) || [];
+      const suggested = possibleConnections[0];
+      const suggestedValue = suggested?.value;
+      const suggestedValueText =
+        typeof suggestedValue === 'object'
+          ? suggestedValue?.[language] || suggestedValue?.en || ''
+          : suggestedValue != null
+            ? String(suggestedValue)
+            : '';
+
       await update(ref(database, `games/${roomCode}`), {
         phase: 'playing',
         wonCard: null,
@@ -266,11 +299,13 @@ export const useGameActions = (
         currentTurn: nextTurn
       });
 
-      setConnectionResult({ 
-        success: false, 
+      setConnectionResult({
+        success: false,
         message: language === 'he' ? 'לא נכון' : 'Incorrect',
         hint: hintData.message,
-        attemptedType: connectionType
+        attemptedType: connectionType,
+        suggestedType: suggested?.type || null,
+        value: suggestedValueText,
       });
 
       setTimeout(() => {
