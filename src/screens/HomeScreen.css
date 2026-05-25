@@ -692,7 +692,7 @@
 
 /* Mobile portrait — two-line stacked layout */
 @media (max-width: 759px) {
-  .game-logo, .marquee-title { font-size: 30vw; line-height: 0.88; }
+  .game-logo, .marquee-title { font-size: 21vw; line-height: 0.88; }
   .marquee-word { display: block; }
   .marquee-frame { padding: 24px 14px; border-radius: 16px; }
   .home-marquee-wrap { padding: 0 6px; }
