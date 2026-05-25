@@ -690,18 +690,13 @@
   .mode-tab { padding: 12px 18px; font-size: 14.5px; }
 }
 
-/* Mobile portrait — two-line stacked layout */
+/* Mobile portrait — two-line stacked layout (high-specificity to beat any override) */
 @media (max-width: 759px) {
-  .game-logo, .marquee-title { font-size: 21vw; line-height: 0.88; }
+  .home-marquee-wrap .marquee-title.game-logo {
+    font-size: 14.7vw;
+    line-height: 0.88;
+  }
   .marquee-word { display: block; }
-  .marquee-frame { padding: 24px 14px; border-radius: 16px; }
-  .home-marquee-wrap { padding: 0 6px; }
-  .marquee-bulbs--top, .marquee-bulbs--bottom { left: 12px; right: 12px; height: 12px; background-size: 14px 12px; }
-  .marquee-bulbs--side { top: 12px; bottom: 12px; width: 12px; background-size: 12px 14px; }
-  .marquee-bulbs--top { top: 5px; }
-  .marquee-bulbs--bottom { bottom: 5px; }
-  .marquee-bulbs--left { left: 5px; }
-  .marquee-bulbs--right { right: 5px; }
 }
 
 @media (min-width: 1400px) {
