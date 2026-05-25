@@ -102,10 +102,10 @@
 .marquee-frame {
   position: relative;
   display: inline-block;
-  padding: clamp(28px, 7vw, 110px) clamp(36px, 10vw, 200px);
+  padding: clamp(14px, 3.5vw, 55px) clamp(18px, 5vw, 100px);
   margin: 0;
   max-width: 100%;
-  border-radius: clamp(16px, 2.4vw, 32px);
+  border-radius: clamp(14px, 2vw, 26px);
   background:
     radial-gradient(ellipse at center, rgba(255, 216, 107, 0.06) 0%, transparent 70%),
     linear-gradient(180deg, rgba(10, 8, 7, 0.6), rgba(28, 24, 22, 0.6));
@@ -162,7 +162,7 @@
   margin: 0;
   font-family: var(--font-marquee);
   font-weight: 400;
-  font-size: clamp(8rem, 24vw, 28rem);
+  font-size: clamp(4rem, 12vw, 14rem);
   line-height: 0.9;
   letter-spacing: 0.04em;
   display: block;
@@ -676,32 +676,32 @@
 
 /* Mid-height screens (tablets / smaller laptops in landscape ~600px height) */
 @media (min-height: 501px) and (max-height: 700px) and (min-width: 760px) {
-  .game-logo, .marquee-title { font-size: clamp(9rem, 24vw, 26rem); }
-  .marquee-frame { padding: 80px 150px; }
+  .game-logo, .marquee-title { font-size: clamp(4.5rem, 12vw, 13rem); }
+  .marquee-frame { padding: 40px 75px; }
   .home-screen .btn { padding: 12px 28px; font-size: 13.5px; }
   .mode-tab { padding: 9px 14px; font-size: 13.5px; }
 }
 
 /* Tall desktops — single line, very large */
 @media (min-width: 900px) and (min-height: 701px) {
-  .game-logo, .marquee-title { font-size: clamp(12rem, 28vw, 32rem); }
-  .marquee-frame { padding: 120px 220px; }
+  .game-logo, .marquee-title { font-size: clamp(6rem, 14vw, 16rem); }
+  .marquee-frame { padding: 60px 110px; }
   .home-screen .btn { padding: 16px 36px; font-size: 15px; }
   .mode-tab { padding: 12px 18px; font-size: 14.5px; }
 }
 
-/* Mobile portrait — two-line stacked layout, huge font that fills the screen */
+/* Mobile portrait — two-line stacked layout */
 @media (max-width: 759px) {
-  .game-logo, .marquee-title { font-size: 42vw; line-height: 0.86; }
+  .game-logo, .marquee-title { font-size: 30vw; line-height: 0.88; }
   .marquee-word { display: block; }
-  .marquee-frame { padding: 34px 18px; border-radius: 20px; }
-  .home-marquee-wrap { padding: 0 4px; }
-  .marquee-bulbs--top, .marquee-bulbs--bottom { left: 16px; right: 16px; height: 14px; background-size: 16px 14px; }
-  .marquee-bulbs--side { top: 16px; bottom: 16px; width: 14px; background-size: 14px 16px; }
-  .marquee-bulbs--top { top: 6px; }
-  .marquee-bulbs--bottom { bottom: 6px; }
-  .marquee-bulbs--left { left: 6px; }
-  .marquee-bulbs--right { right: 6px; }
+  .marquee-frame { padding: 24px 14px; border-radius: 16px; }
+  .home-marquee-wrap { padding: 0 6px; }
+  .marquee-bulbs--top, .marquee-bulbs--bottom { left: 12px; right: 12px; height: 12px; background-size: 14px 12px; }
+  .marquee-bulbs--side { top: 12px; bottom: 12px; width: 12px; background-size: 12px 14px; }
+  .marquee-bulbs--top { top: 5px; }
+  .marquee-bulbs--bottom { bottom: 5px; }
+  .marquee-bulbs--left { left: 5px; }
+  .marquee-bulbs--right { right: 5px; }
 }
 
 @media (min-width: 1400px) {
