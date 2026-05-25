@@ -4,6 +4,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ref, onValue, update, set, remove } from 'firebase/database';
 import { database } from '../firebase';
+import { setActiveSession, clearActiveSession } from '../utils/activeSession';
 import './LobbyScreen.css';
 
 const ROWS = 3;
@@ -144,6 +145,13 @@ function LobbyScreen() {
     }
   }, [room?.status, roomCode, playerId, navigate]);
 
+  // Remember this lobby as the active session so the player can resume
+  // it after a crash, incoming call, or accidental tab/app close.
+  useEffect(() => {
+    if (!roomCode || !playerId) return;
+    setActiveSession({ roomCode, playerId, screen: 'lobby' });
+  }, [roomCode, playerId]);
+
   // Pick a seat (team + seat index) — replaces join-team + ready toggle
   const handlePickSeat = async (team, seatIdx) => {
     if (isQAMode && team === 'B') return; // bot owns Team B in QA
@@ -185,6 +193,7 @@ function LobbyScreen() {
   };
 
   const handleExitToHome = () => {
+    clearActiveSession();
     navigate('/');
   };
 

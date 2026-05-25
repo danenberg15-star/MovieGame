@@ -8,6 +8,7 @@ import DecisionPhase from '../components/DecisionPhase';
 import { useGameState } from '../hooks/useGameState';
 import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
+import { setActiveSession, clearActiveSession } from '../utils/activeSession';
 
 function GameScreen() {
   const navigate = useNavigate();
@@ -45,6 +46,13 @@ function GameScreen() {
     const url = new URL(window.location.href);
     url.searchParams.set('playerId', playerId);
     window.history.replaceState({}, '', url.toString());
+  }, [roomCode, playerId]);
+
+  // Track this as the active session so the player can resume after a
+  // crash / incoming call / accidental swipe-away.
+  useEffect(() => {
+    if (!roomCode || !playerId) return;
+    setActiveSession({ roomCode, playerId, screen: 'game' });
   }, [roomCode, playerId]);
 
   const language = 'en';
@@ -343,7 +351,7 @@ function GameScreen() {
                 </div>
               </div>
 
-              <button onClick={() => navigate('/')}>
+              <button onClick={() => { clearActiveSession(); navigate('/'); }}>
                 {t('back_home')}
               </button>
             </div>

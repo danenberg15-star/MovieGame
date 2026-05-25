@@ -4,6 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ref, set, get } from 'firebase/database';
 import { database } from '../firebase';
+import {
+  getActiveSession,
+  clearActiveSession,
+  buildResumeUrl,
+} from '../utils/activeSession';
 import './HomeScreen.css';
 
 function HomeScreen() {
@@ -15,6 +20,7 @@ function HomeScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [gameMode, setGameMode] = useState(null); // 'bot' | 'teams'
   const [showHelp, setShowHelp] = useState(false);
+  const [resumeSession, setResumeSession] = useState(null);
 
   // Cinema curtain intro — show once per browser session
   const [curtainState, setCurtainState] = useState(() => {
@@ -46,6 +52,26 @@ function HomeScreen() {
       setPlayerName(savedName);
     }
   }, []);
+
+  // If the user had an active game/lobby when they were interrupted
+  // (incoming call, crash, accidental close), offer to resume.
+  useEffect(() => {
+    const session = getActiveSession();
+    if (session) {
+      setResumeSession(session);
+    }
+  }, []);
+
+  const handleResume = () => {
+    if (!resumeSession) return;
+    const url = buildResumeUrl(resumeSession);
+    if (url) navigate(url);
+  };
+
+  const handleDismissResume = () => {
+    clearActiveSession();
+    setResumeSession(null);
+  };
 
   // Came via a shared invite link (/room/:roomCode) — preselect "teams"
   // mode and prefill the join code so the friend just types a name.
@@ -185,6 +211,37 @@ function HomeScreen() {
       >
         ❓
       </button>
+
+      {resumeSession && (
+        <div className="resume-banner" role="dialog" aria-live="polite">
+          <div className="resume-banner__text">
+            <span className="resume-banner__title">
+              🎬 {t('resume_game_title')}
+            </span>
+            <span className="resume-banner__sub">
+              {t('resume_game_sub', { code: resumeSession.roomCode })}
+            </span>
+          </div>
+          <div className="resume-banner__actions">
+            <button
+              type="button"
+              className="btn btn-primary resume-banner__btn"
+              onClick={handleResume}
+            >
+              ▶️ {t('resume_game')}
+            </button>
+            <button
+              type="button"
+              className="resume-banner__dismiss"
+              onClick={handleDismissResume}
+              aria-label={t('dismiss')}
+              title={t('dismiss')}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="home-marquee-wrap">
         <div className="marquee-frame">
