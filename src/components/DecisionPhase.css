@@ -1,15 +1,16 @@
 /* src/components/DecisionPhase.css
-   Cinema-styled decision panel:
-   - Brass-framed poster takes the spotlight (LARGE)
-   - Tiny serif/brass action buttons sit below in a single compact row */
+   Side-by-side decision panel: won card on the left, "your chain" grid
+   on the right. Both poster groups are height-driven so they stay 2:3
+   without cropping, and nothing scrolls — everything fits the available
+   space at any landscape size. */
 
+/* ===== ROOT ===== */
 .decision-phase {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: clamp(6px, 1.2vh, 12px);
+  gap: clamp(5px, 1vh, 10px);
   padding: clamp(6px, 1.4vh, 12px);
   overflow: hidden;
   font-family: var(--font-body);
@@ -26,8 +27,8 @@
 
 /* ===== HEADER ===== */
 .decision-header {
-  text-align: center;
   flex-shrink: 0;
+  text-align: center;
   width: 100%;
 }
 
@@ -35,7 +36,7 @@
   margin: 0;
   font-family: var(--font-marquee);
   font-weight: 400;
-  font-size: clamp(0.95rem, 2.1vw, 1.4rem);
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #ffe8a3;
@@ -44,12 +45,13 @@
     0 2px 0 #b8862d,
     0 3px 6px rgba(0, 0, 0, 0.75),
     0 0 12px rgba(255, 216, 107, 0.35);
+  line-height: 1.1;
 }
 
 .decision-subtitle {
   margin: 2px 0 0;
   font-family: var(--font-deco);
-  font-size: clamp(0.65rem, 1.3vw, 0.85rem);
+  font-size: clamp(0.62rem, 1.2vw, 0.78rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(243, 234, 220, 0.7);
@@ -63,35 +65,50 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #ffe8a3;
+  line-height: 1.1;
 }
 
-/* ===== CARD STAGE (the spotlight) ===== */
-.dp-card-stage {
+/* ===== CONTENT (side-by-side) =====
+   Won card pane on the left (~38%), chain pane on the right (~62%).
+   In selection mode we shift weight to the chain (cards are interactive). */
+.dp-content {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.5fr);
+  gap: clamp(10px, 2vw, 22px);
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+.dp-content--selection {
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 2.2fr);
+}
+
+/* When the chain is empty (very first decision), center the won card. */
+.dp-content--solo {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+/* ===== WON PANE ===== */
+.dp-won-pane {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(4px, 1vh, 8px);
-}
-
-/* Won card: explicit size so flex layout never collapses to 0 */
-.poster-frame--won {
-  flex: 1 1 auto;
-  align-self: center;
-  width: min(280px, 38vw, 100%);
-  max-height: min(52vh, 100%);
-  min-height: clamp(140px, 38vh, 420px);
-  height: auto;
+  gap: clamp(3px, 0.7vh, 8px);
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
 }
 
 .dp-card-badge {
   flex-shrink: 0;
-  padding: 4px 14px;
+  padding: 3px 12px;
   font-family: var(--font-deco);
-  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+  font-size: clamp(0.58rem, 1.1vw, 0.78rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #2a1c08;
@@ -101,28 +118,104 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
 }
 
-/* ===== POSTER FRAME (shared with AnchorReveal) =====
-   Big variant (won card) keeps the 2:3 portrait aspect.
-   Small variant (in the team-cards grid) fills its grid cell. */
+/* ===== CHAIN PANE ===== */
+.dp-chain-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(3px, 0.6vh, 6px);
+  min-width: 0;
+  min-height: 0;
+}
+
+.dp-chain-label {
+  flex-shrink: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-deco);
+  font-size: clamp(0.62rem, 1.2vw, 0.82rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(243, 234, 220, 0.78);
+  line-height: 1.1;
+}
+
+.dp-chain-row {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(4px, 0.9vw, 9px);
+  align-content: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ===== POSTER FRAMES =====
+   Height-driven sizing keeps the 2:3 aspect intact in every container.
+   `height: 100%` (or a clamp), `width: auto`, capped by `max-width: 100%`
+   and `max-height: 100%`. */
 .poster-frame {
   position: relative;
   display: flex;
   flex-direction: column;
   aspect-ratio: 2 / 3;
-  max-width: 100%;
-  padding: clamp(6px, 1.2vw, 12px);
+  padding: clamp(5px, 1vw, 10px);
   border: 2px solid rgba(212, 160, 71, 0.7);
-  border-radius: 12px;
+  border-radius: 10px;
   background: linear-gradient(180deg, #1a1108 0%, #0c0704 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 216, 107, 0.25),
-    inset 0 0 16px rgba(0, 0, 0, 0.7),
-    0 0 26px rgba(255, 216, 107, 0.22),
-    0 12px 28px rgba(0, 0, 0, 0.65);
+    inset 0 0 14px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(255, 216, 107, 0.18),
+    0 8px 18px rgba(0, 0, 0, 0.55);
   overflow: hidden;
-  flex-shrink: 1;
 }
 
+/* Won card: fill the won pane vertically, derive width */
+.poster-frame--won {
+  flex: 0 1 auto;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
+}
+
+/* Chain card: height clamp so multiple cards don't blow up the layout */
+.poster-frame--small {
+  flex: 0 0 auto;
+  height: clamp(95px, 26vh, 230px);
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: default;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  appearance: none;
+  margin: 0;
+}
+
+button.poster-frame--small {
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+button.poster-frame--small:hover { transform: translateY(-2px); }
+button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.poster-frame--selected {
+  border-color: #ffd87a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 216, 107, 0.35),
+    inset 0 0 14px rgba(0, 0, 0, 0.7),
+    0 0 24px rgba(255, 216, 107, 0.65),
+    0 10px 22px rgba(0, 0, 0, 0.65);
+  transform: translateY(-2px);
+}
+
+/* ===== POSTER INTERNALS ===== */
 .poster-frame__bulbs {
   position: absolute;
   pointer-events: none;
@@ -132,8 +225,8 @@
 }
 .poster-frame__bulbs--top,
 .poster-frame__bulbs--bottom {
-  left: 6px;
-  right: 6px;
+  left: 5px;
+  right: 5px;
   height: 5px;
   background-image:
     radial-gradient(circle, #fff3b0 0 1.6px, rgba(255, 216, 107, 0.6) 2px, transparent 3px);
@@ -144,8 +237,8 @@
 .poster-frame__bulbs--bottom { bottom: -3px; }
 .poster-frame__bulbs--left,
 .poster-frame__bulbs--right {
-  top: 6px;
-  bottom: 6px;
+  top: 5px;
+  bottom: 5px;
   width: 5px;
   background-image:
     radial-gradient(circle, #fff3b0 0 1.6px, rgba(255, 216, 107, 0.6) 2px, transparent 3px);
@@ -162,29 +255,26 @@
   width: 100%;
   display: grid;
   grid-template-rows: 1fr auto;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
   background: #000;
   box-shadow:
     inset 0 0 0 1px rgba(255, 216, 107, 0.18),
-    inset 0 0 18px rgba(0, 0, 0, 0.7);
+    inset 0 0 16px rgba(0, 0, 0, 0.7);
 }
 
-/* Grid row 1 = poster art; row 2 = title bar (absolute img was collapsing
-   the inner box to caption-height only — invisible posters). */
 .poster-frame__img {
+  grid-row: 1;
   width: 100%;
   height: 100%;
   min-height: 0;
   object-fit: cover;
   display: block;
-  grid-row: 1;
 }
 
 .poster-frame__caption {
   grid-row: 2;
-  flex-shrink: 0;
-  padding: clamp(4px, 0.8vw, 8px) clamp(6px, 1.2vw, 12px);
+  padding: clamp(3px, 0.7vw, 7px) clamp(5px, 1vw, 10px);
   background: linear-gradient(180deg,
     rgba(0, 0, 0, 0.65) 0%,
     rgba(15, 9, 6, 0.9) 100%);
@@ -194,7 +284,7 @@
 
 .poster-frame__title {
   font-family: var(--font-deco);
-  font-size: clamp(0.7rem, 1.4vw, 1rem);
+  font-size: clamp(0.62rem, 1.1vw, 0.85rem);
   font-weight: 700;
   letter-spacing: 0.03em;
   color: #ffe8a3;
@@ -202,29 +292,24 @@
     0 1px 2px rgba(0, 0, 0, 0.9),
     0 0 8px rgba(255, 216, 107, 0.25);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Selected card in the team grid */
-.poster-frame--selected {
-  border-color: #ffd87a;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 216, 107, 0.35),
-    inset 0 0 16px rgba(0, 0, 0, 0.7),
-    0 0 30px rgba(255, 216, 107, 0.6),
-    0 12px 28px rgba(0, 0, 0, 0.65);
-  transform: translateY(-2px);
+.poster-frame--won .poster-frame__title {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  font-size: clamp(0.72rem, 1.3vw, 1rem);
 }
 
 .poster-frame__check {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 28px;
-  height: 28px;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: linear-gradient(135deg, #ffd766 0%, #b8862d 100%);
   color: #2a1c08;
@@ -233,219 +318,16 @@
   justify-content: center;
   font-family: var(--font-deco);
   font-weight: 800;
-  font-size: 16px;
+  font-size: 14px;
   border: 2px solid #fff5d8;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
   z-index: 2;
 }
 
-/* The small variant used in the team-card selection grid.
-   Keeps the proper 2:3 movie-poster aspect ratio so every card looks
-   like a real poster — the image always fills (no black bars). */
-.poster-frame--small {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 2 / 3;
-  border-width: 1.5px;
-  padding: 4px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-.poster-frame--small:hover { transform: translateY(-1px); }
-
-/* Tighten caption inside the small variant */
-.poster-frame--small .poster-frame__caption {
-  padding: 3px 6px;
-  min-height: 22px;
-  border-top-width: 1px;
-}
-.poster-frame--small .poster-frame__title {
-  font-size: clamp(0.6rem, 1.1vw, 0.78rem);
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-}
-
-/* ===== ACTION ROW (small, sits under the poster) ===== */
-.dp-actions-row {
-  width: 100%;
-  flex-shrink: 0;
-  display: flex;
-  gap: clamp(6px, 1vw, 10px);
-  justify-content: center;
-  align-items: stretch;
-}
-
-.dp-btn {
-  flex: 1 1 0;
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: clamp(6px, 1vh, 10px) clamp(8px, 1.6vw, 14px);
-  border: 1px solid rgba(212, 160, 71, 0.55);
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: var(--font-deco);
-  font-size: clamp(0.72rem, 1.4vw, 0.92rem);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #ffe8a3;
-  background: linear-gradient(135deg, rgba(15, 9, 6, 0.92) 0%, rgba(28, 18, 12, 0.92) 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 216, 107, 0.2),
-    0 3px 8px rgba(0, 0, 0, 0.55);
-  transition: transform 0.15s ease, filter 0.15s ease;
-}
-
-.dp-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: brightness(1.12);
-}
-.dp-btn:active:not(:disabled) { transform: translateY(0); }
-.dp-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  filter: grayscale(0.3);
-}
-
-.dp-btn__icon { font-size: 1.1em; }
-.dp-btn__text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1;
-}
-.dp-btn__hint {
-  margin-top: 3px;
-  font-size: 0.7em;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  opacity: 0.8;
-  text-transform: none;
-}
-
-/* Variant tints — keep velvet/brass palette */
-.dp-btn--connect {
-  background: linear-gradient(135deg, #6b1422 0%, #3a0a13 100%);
-  border-color: rgba(255, 216, 107, 0.6);
-}
-.dp-btn--buy {
-  background: linear-gradient(135deg, #d4a047 0%, #8c6320 100%);
-  color: #1a0e04;
-  text-shadow: 0 1px 0 rgba(255, 248, 214, 0.55);
-}
-.dp-btn--save {
-  background: linear-gradient(135deg, #2d5a16 0%, #173309 100%);
-  border-color: rgba(180, 230, 130, 0.45);
-  color: #d6f0bc;
-}
-
-.dp-btn--confirm {
-  background: linear-gradient(135deg, #1f3a0e 0%, #2d5a16 100%);
-  border-color: rgba(180, 230, 130, 0.55);
-  color: #d6f0bc;
-}
-.dp-btn--cancel {
-  background: linear-gradient(135deg, rgba(36, 22, 18, 0.9) 0%, rgba(18, 10, 8, 0.9) 100%);
-  color: rgba(243, 234, 220, 0.75);
-}
-
-/* Chain preview on the main decision screen (before tapping Connect) */
-.dp-chain-preview {
-  flex-shrink: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-height: 0;
-  max-height: 28vh;
-}
-
-.dp-chain-preview__label {
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-deco);
-  font-size: clamp(0.62rem, 1.2vw, 0.8rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(243, 234, 220, 0.65);
-}
-
-.dp-chain-preview__row {
-  display: flex;
-  gap: clamp(6px, 1vw, 10px);
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 2px 4px 6px;
-  justify-content: safe center;
-  scroll-snap-type: x proximity;
-}
-
-.dp-chain-preview__row .poster-frame--small {
-  flex: 0 0 auto;
-  width: clamp(72px, 11vw, 110px);
-  scroll-snap-align: start;
-}
-
-/* Won card strip shown while picking a chain card */
-.dp-won-strip {
-  flex-shrink: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.dp-won-strip .poster-frame--won {
-  width: clamp(100px, 16vw, 160px);
-  min-height: clamp(120px, 22vh, 200px);
-  max-height: 24vh;
-  flex: 0 0 auto;
-}
-
-/* ===== CARD-SELECTION SCREEN =====
-   Compact auto-fit grid so a typical 10-card hand fits in 2 rows even
-   on landscape phones. Cells stay 2:3 (poster shape) and the image
-   fully covers the frame. */
-.dp-team-grid {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(clamp(95px, 13vw, 140px), 1fr));
-  gap: clamp(5px, 0.9vw, 9px);
-  align-content: start;
-  justify-items: stretch;
-  overflow-y: auto;
-  padding: 2px;
-}
-
-.dp-team-grid::-webkit-scrollbar { width: 6px; }
-.dp-team-grid::-webkit-scrollbar-track {
-  background: rgba(255, 216, 107, 0.05);
-}
-.dp-team-grid::-webkit-scrollbar-thumb {
-  background: rgba(212, 160, 71, 0.45);
-  border-radius: 3px;
-}
-
-/* The grid items are <button>s — reset default styling so they look
-   like our poster frames. */
-.dp-team-grid > .poster-frame {
-  font: inherit;
-  color: inherit;
-  text-align: inherit;
-  box-sizing: border-box;
-}
-.dp-team-grid > .poster-frame:disabled { opacity: 0.55; cursor: not-allowed; }
-
+/* ===== TYPES ROW ===== */
 .dp-types-row {
-  width: 100%;
   flex-shrink: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -453,7 +335,7 @@
 
 .dp-types-row__label {
   font-family: var(--font-deco);
-  font-size: clamp(0.65rem, 1.3vw, 0.85rem);
+  font-size: clamp(0.62rem, 1.2vw, 0.82rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(243, 234, 220, 0.7);
@@ -483,12 +365,10 @@
   letter-spacing: 0.04em;
   transition: transform 0.15s ease, filter 0.15s ease, border-color 0.15s ease;
 }
-
 .dp-type-btn:hover:not(:disabled) {
   transform: translateY(-1px);
   filter: brightness(1.12);
 }
-
 .dp-type-btn--selected {
   background: linear-gradient(135deg, #6b1422 0%, #3a0a13 100%);
   border-color: rgba(255, 216, 107, 0.7);
@@ -497,36 +377,124 @@
     0 0 14px rgba(255, 216, 107, 0.35);
   color: #ffe066;
 }
-
 .dp-type-btn__icon { font-size: 1.15em; }
 
-.dp-confirm-row {
-  width: 100%;
+/* ===== ACTION / CONFIRM BUTTONS ===== */
+.dp-actions-row {
   flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  gap: clamp(6px, 1vw, 10px);
+}
+
+.dp-confirm-row {
+  flex-shrink: 0;
+  width: 100%;
   display: flex;
   gap: 8px;
 }
 
-.dp-confirm-row .dp-btn--cancel  { flex: 1 1 0; }
-.dp-confirm-row .dp-btn--confirm { flex: 2 1 0; }
+.dp-btn {
+  flex: 1 1 0;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: clamp(5px, 0.9vh, 9px) clamp(8px, 1.5vw, 14px);
+  border: 1px solid rgba(212, 160, 71, 0.55);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-deco);
+  font-size: clamp(0.72rem, 1.4vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffe8a3;
+  background: linear-gradient(135deg, rgba(15, 9, 6, 0.92) 0%, rgba(28, 18, 12, 0.92) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 216, 107, 0.2),
+    0 3px 8px rgba(0, 0, 0, 0.55);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
 
-/* ===== SMALL SCREENS (landscape phones) ===== */
-@media (max-height: 500px) {
-  .decision-phase { gap: 4px; padding: 4px; }
-  .decision-title { font-size: 0.92rem; }
-  .decision-subtitle { font-size: 0.62rem; }
-  .dp-card-badge { padding: 3px 10px; font-size: 0.58rem; }
-  .poster-frame { padding: 5px; border-radius: 8px; }
-  .poster-frame__caption { padding: 3px 6px; }
-  .poster-frame__title { font-size: 0.68rem; }
-  .dp-btn { min-height: 32px; padding: 4px 8px; font-size: 0.68rem; }
-  .dp-btn__hint { font-size: 0.55em; margin-top: 2px; }
-  .dp-type-btn { padding: 4px; font-size: 0.65rem; }
-  .dp-team-grid {
-    grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
-    gap: 4px;
-  }
-  .poster-frame--small { padding: 3px; border-radius: 6px; }
-  .poster-frame--small .poster-frame__caption { padding: 2px 4px; min-height: 18px; }
-  .poster-frame--small .poster-frame__title    { font-size: 0.62rem; }
+.dp-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+}
+.dp-btn:active:not(:disabled) { transform: translateY(0); }
+.dp-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+.dp-btn__icon { font-size: 1.1em; }
+.dp-btn__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+.dp-btn__hint {
+  margin-top: 3px;
+  font-size: 0.7em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+  text-transform: none;
+}
+
+.dp-btn--connect {
+  background: linear-gradient(135deg, #6b1422 0%, #3a0a13 100%);
+  border-color: rgba(255, 216, 107, 0.6);
+}
+.dp-btn--buy {
+  background: linear-gradient(135deg, #d4a047 0%, #8c6320 100%);
+  color: #1a0e04;
+  text-shadow: 0 1px 0 rgba(255, 248, 214, 0.55);
+}
+.dp-btn--save {
+  background: linear-gradient(135deg, #2d5a16 0%, #173309 100%);
+  border-color: rgba(180, 230, 130, 0.45);
+  color: #d6f0bc;
+}
+.dp-btn--confirm {
+  background: linear-gradient(135deg, #1f3a0e 0%, #2d5a16 100%);
+  border-color: rgba(180, 230, 130, 0.55);
+  color: #d6f0bc;
+  flex: 2 1 0;
+}
+.dp-btn--cancel {
+  background: linear-gradient(135deg, rgba(36, 22, 18, 0.9) 0%, rgba(18, 10, 8, 0.9) 100%);
+  color: rgba(243, 234, 220, 0.75);
+  flex: 1 1 0;
+}
+
+/* ===== LANDSCAPE LAPTOPS (≤700px tall) — tighten chrome ===== */
+@media (max-height: 700px) and (orientation: landscape) {
+  .decision-phase { gap: 4px; padding: 5px 8px; }
+  .decision-title { font-size: clamp(0.82rem, 1.8vw, 1.15rem); }
+  .decision-subtitle { font-size: 0.65rem; }
+  .decision-step { font-size: clamp(0.72rem, 1.4vw, 0.92rem); }
+  .dp-card-badge { font-size: 0.6rem; padding: 2px 10px; }
+  .dp-chain-label { font-size: 0.62rem; }
+  .poster-frame--small { height: clamp(80px, 22vh, 180px); }
+  .dp-btn { min-height: 30px; padding: 4px 8px; font-size: 0.72rem; }
+  .dp-btn__hint { font-size: 0.6em; margin-top: 2px; }
+  .dp-type-btn { padding: 4px; font-size: 0.7rem; }
+}
+
+/* ===== VERY SHORT LANDSCAPE (≤500px tall) ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .decision-phase { gap: 3px; padding: 4px 6px; }
+  .decision-title { font-size: 0.82rem; }
+  .decision-subtitle { font-size: 0.6rem; }
+  .dp-card-badge { font-size: 0.56rem; padding: 2px 8px; }
+  .poster-frame { padding: 4px; border-width: 1.5px; border-radius: 8px; }
+  .poster-frame--small { height: clamp(70px, 20vh, 140px); }
+  .poster-frame__caption { padding: 2px 5px; }
+  .poster-frame__title { font-size: 0.62rem; }
+  .poster-frame--won .poster-frame__title { font-size: 0.7rem; }
+  .dp-btn { min-height: 26px; padding: 3px 6px; font-size: 0.66rem; }
 }
