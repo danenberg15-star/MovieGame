@@ -652,12 +652,12 @@
 }
 
 /* ===== RESPONSIVE ===== */
-/* Short landscape phones (e.g. iPhone 13 landscape: 844×390) */
+/* Short landscape phones (e.g. iPhone 13 landscape: 844×390, Galaxy S23 Ultra landscape: 915×412) */
 @media (max-height: 500px) {
   .home-screen { padding: 8px 60px 8px; }
   .home-screen::before { height: 3.5vh; }
   .home-screen::after  { height: 2.5vh; }
-  .game-logo, .marquee-title { font-size: clamp(4rem, 14vw, 9rem); }
+  .home-marquee-wrap .marquee-title.game-logo { font-size: clamp(2.5rem, 9.5vw, 6rem); }
   .marquee-word { display: inline; }
   .marquee-frame { padding: 20px 48px; }
   .home-marquee-wrap { padding: 0 clamp(50px, 9vw, 70px); }
