@@ -68,41 +68,6 @@
   flex-shrink: 0;
 }
 
-.lobby-screen .game-logo {
-  font-family: var(--font-marquee);
-  font-size: clamp(1.2rem, 3.6vw, 1.8rem);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin: 0;
-  color: #ffe8a3;
-  background: none;
-  -webkit-background-clip: initial;
-  -webkit-text-fill-color: initial;
-  background-clip: initial;
-  text-shadow:
-    0 1px 0 #d4a047,
-    0 2px 0 #b8862d,
-    0 3px 0 #a07020,
-    0 4px 8px rgba(0, 0, 0, 0.6),
-    0 0 16px rgba(255, 216, 107, 0.35);
-}
-
-.qa-badge {
-  display: inline-block;
-  margin-inline-start: 8px;
-  font-family: var(--font-deco);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  padding: 4px 10px;
-  background: linear-gradient(135deg, rgba(47, 79, 79, 0.7), rgba(74, 95, 95, 0.5));
-  border-radius: 4px;
-  color: var(--color-brass-500);
-  border: 1px solid rgba(212, 160, 71, 0.4);
-  text-transform: uppercase;
-}
-
 /* Room code as a small theatre marquee */
 .room-code-display {
   padding: 6px 14px;
@@ -126,10 +91,12 @@
 }
 
 .room-code-display .code {
-  font-family: var(--font-marquee);
-  font-size: clamp(16px, 4vw, 22px);
-  font-weight: 400;
-  letter-spacing: 4px;
+  /* Clear numeric font (Arial-like) — better legibility for digits than the marquee face */
+  font-family: Arial, Helvetica, "Segoe UI", sans-serif;
+  font-size: clamp(18px, 4.4vw, 26px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 3px;
   color: var(--color-gold);
   text-shadow:
     0 0 6px rgba(255, 216, 107, 0.5),
@@ -161,44 +128,38 @@
   transform: translateY(-1px);
 }
 
-/* ===== TEAMS ===== */
+/* ===== TEAMS — CINEMA HALLS (top-down view) ===== */
 .teams-container {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 10px;
+  gap: 12px;
   align-items: stretch;
   flex: 1 1 auto;
   min-height: 0;
 }
 
-/* Dressing-room door — dark velvet panel framed with brass trim and rivets */
-.team-box {
+/* The hall: dark "auditorium floor" framed in brass */
+.theater {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 14px 12px 10px;
-  border-radius: 10px;
+  gap: 12px;
+  padding: 14px 14px 12px;
+  border-radius: 12px;
   min-height: 0;
   background:
-    /* velvet pleats */
-    repeating-linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.45) 0,
-      rgba(0, 0, 0, 0.05) 14px,
-      rgba(255, 255, 255, 0.04) 22px,
-      rgba(0, 0, 0, 0.05) 30px,
-      rgba(0, 0, 0, 0.45) 44px),
-    radial-gradient(ellipse at center, var(--color-velvet-700) 0%, var(--color-velvet-900) 90%);
+    radial-gradient(ellipse at center top, rgba(80, 14, 22, 0.45) 0%, transparent 60%),
+    linear-gradient(180deg, #16100c 0%, #0a0707 100%);
   border: 2px solid rgba(212, 160, 71, 0.55);
   box-shadow:
-    inset 0 0 24px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(255, 216, 107, 0.18),
-    0 8px 24px rgba(0, 0, 0, 0.6);
+    inset 0 0 30px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1px rgba(255, 216, 107, 0.15),
+    0 10px 26px rgba(0, 0, 0, 0.6);
 }
 
-/* Brass rivets at the door corners */
-.team-box::before,
-.team-box::after {
+/* Brass rivets at the auditorium corners */
+.theater::before,
+.theater::after {
   content: '';
   position: absolute;
   width: 10px;
@@ -211,225 +172,202 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   pointer-events: none;
 }
+.theater::before { top: 6px;    left: 6px; }
+.theater::after  { bottom: 6px; right: 6px; }
 
-.team-box::before { top: 6px;    left: 6px; }
-.team-box::after  { bottom: 6px; right: 6px; }
-
-/* Brushed-copper engraved nameplate at the top of the door */
-.team-plate {
+/* === CINEMA SCREEN (red, curved, top of auditorium) === */
+.theater__screen-wrap {
   position: relative;
-  padding: 8px 14px;
-  margin: -4px -2px 10px;
-  border-radius: 4px;
-  background:
-    repeating-linear-gradient(90deg,
-      rgba(255, 255, 255, 0.10) 0 1px,
-      transparent 1px 3px),
-    linear-gradient(135deg, #e0b266 0%, #b8862d 45%, #8c6320 65%, #d4a047 100%);
-  border-top: 1px solid rgba(255, 248, 214, 0.55);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 248, 214, 0.4),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.35),
-    0 3px 8px rgba(0, 0, 0, 0.55);
-}
-
-.team-plate__screw {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%,
-    #fff5d8 0 1.5px,
-    #8c6320 35%,
-    #4a2d12 100%);
-  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.4);
-}
-
-.team-plate__screw--tl { top: 3px;    left: 4px; }
-.team-plate__screw--tr { top: 3px;    right: 4px; }
-.team-plate__screw--bl { bottom: 3px; left: 4px; }
-.team-plate__screw--br { bottom: 3px; right: 4px; }
-
-.team-plate__star {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(28px, 8vw, 40px);
-  color: var(--color-gold);
-  opacity: 0.18;
-  text-shadow: 0 0 8px rgba(255, 216, 107, 0.5);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.team-title {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-marquee);
-  font-size: clamp(13px, 3.2vw, 18px);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  background: none;
-  -webkit-background-clip: initial;
-  -webkit-text-fill-color: initial;
-  background-clip: initial;
-  color: #3a2208;
-  text-shadow:
-    0 1px 0 rgba(255, 248, 214, 0.5),
-    0 -1px 0 rgba(0, 0, 0, 0.4);
-}
-
-.players-list {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 8px;
-  padding-right: 2px;
-  position: relative;
-  z-index: 1;
-}
-
-.empty-team {
-  text-align: center;
-  padding: 14px 8px;
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-style: italic;
-  color: rgba(243, 234, 220, 0.5);
-}
-
-/* Player chip — small ticket */
-.player-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-family: var(--font-body);
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--color-ivory);
-  background: linear-gradient(135deg, rgba(10, 8, 7, 0.55), rgba(28, 24, 22, 0.55));
-  border: 1px solid rgba(212, 160, 71, 0.25);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  transition: all 0.25s ease;
-}
-
-.player-card.me {
-  border-color: rgba(255, 216, 107, 0.55);
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.4),
-    0 0 12px rgba(255, 216, 107, 0.25);
-}
-
-.player-card.ready {
-  background: linear-gradient(135deg, rgba(45, 80, 22, 0.5), rgba(28, 50, 14, 0.5));
-  border-color: rgba(120, 200, 70, 0.55);
-}
-
-.player-name {
-  flex: 1 1 auto;
-  text-align: start;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* ===== CLAPPERBOARD ICON ===== */
-.clapper {
-  position: relative;
-  width: 26px;
-  height: 22px;
+  padding: 0 4%;
   flex-shrink: 0;
 }
 
-.clapper__board {
+.theater__screen {
+  position: relative;
+  height: clamp(34px, 5.5vh, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Wide, slightly bowed cinema screen */
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, #ff3a4a 0%, #c41e2a 35%, #7a0a17 80%, #4a0510 100%);
+  border: 2px solid rgba(255, 216, 107, 0.55);
+  border-radius: 60% 60% 10px 10px / 80% 80% 10px 10px;
+  box-shadow:
+    inset 0 -8px 18px rgba(0, 0, 0, 0.55),
+    inset 0 2px 6px rgba(255, 220, 220, 0.35),
+    0 0 22px rgba(255, 60, 80, 0.45),
+    0 6px 14px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+/* Soft white "projection" glow on the screen */
+.theater__screen-glow {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 14px;
-  background: linear-gradient(180deg, #2a2a2a 0%, #0d0d0d 100%);
-  border: 1px solid #444;
-  border-radius: 2px;
+  inset: 6% 12% 30% 12%;
+  background: radial-gradient(ellipse at 50% 30%,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    transparent 70%);
+  pointer-events: none;
 }
 
-.clapper__stripes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background-image: repeating-linear-gradient(135deg,
-    #f5f5f5 0 4px,
-    #111 4px 8px);
-  border-radius: 1px 1px 0 0;
-}
-
-.clapper__stick {
-  position: absolute;
-  top: -2px;
-  left: -3px;
-  right: -3px;
-  height: 9px;
-  background: linear-gradient(180deg, #2a2a2a 0%, #0d0d0d 100%);
-  border: 1px solid #444;
-  border-radius: 2px;
-  transform-origin: 4px bottom;
-  transform: rotate(-22deg);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.clapper__stick-stripes {
-  position: absolute;
-  inset: 1px;
-  background-image: repeating-linear-gradient(135deg,
-    #f5f5f5 0 4px,
-    #111 4px 8px);
-  border-radius: 1px;
-}
-
-.clapper.clapper--ready .clapper__stick {
-  transform: rotate(0deg);
-  filter: drop-shadow(0 0 4px rgba(212, 160, 71, 0.6));
-}
-
-/* "Join Team" button at the door bottom */
-.btn-join-team {
-  width: 100%;
-  margin-top: auto;
-  padding: 8px 14px;
-  font-family: var(--font-deco);
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-brass-500);
-  background: linear-gradient(135deg, rgba(10, 8, 7, 0.85), rgba(28, 24, 22, 0.85));
-  border: 1px solid rgba(212, 160, 71, 0.5);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.25s ease;
+.theater__screen-label {
   position: relative;
   z-index: 1;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 216, 107, 0.15),
-    0 3px 8px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-marquee);
+  font-size: clamp(14px, 3vw, 22px);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff5d8;
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, 0.65),
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 14px rgba(255, 240, 220, 0.45);
 }
 
-.btn-join-team:hover {
-  background: linear-gradient(135deg, var(--color-velvet-800), var(--color-velvet-900));
+/* Floor shadow under the screen (gives "wall mount" depth) */
+.theater__screen-shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -10px;
+  height: 14px;
+  background: radial-gradient(ellipse at center top,
+    rgba(0, 0, 0, 0.55) 0%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+/* === SEAT GRID === */
+.theater__seats {
+  flex: 1 1 auto;
+  display: grid;
+  gap: 6px 8px;
+  align-content: center;
+  justify-items: stretch;
+  padding: 6px 2%;
+  min-height: 0;
+}
+
+/* Single seat — top-down look: rounded "back" + cushion */
+.seat {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.seat:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.15); }
+.seat:disabled            { cursor: not-allowed; }
+
+/* Seat back (curved top, like the headrest seen from above) */
+.seat__back {
+  position: absolute;
+  top: 4%;
+  left: 8%;
+  right: 8%;
+  height: 38%;
+  background: linear-gradient(180deg, #5e2812 0%, #3a160a 100%);
+  border: 1px solid #6e2f15;
+  border-radius: 50% 50% 6px 6px / 70% 70% 6px 6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 200, 150, 0.18),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Cushion (the seat itself) */
+.seat__cushion {
+  position: absolute;
+  bottom: 6%;
+  left: 4%;
+  right: 4%;
+  height: 56%;
+  background: linear-gradient(180deg, #4a2510 0%, #2a1408 100%);
+  border: 1px solid #5a2f15;
+  border-radius: 6px 6px 10px 10px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0 rgba(255, 180, 130, 0.12);
+}
+
+/* Occupant label (initial / emoji) */
+.seat__occupant {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-deco);
+  font-weight: 700;
+  font-size: clamp(10px, 1.8vw, 14px);
+  color: #fff5d8;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.85),
+    0 0 6px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Taken by someone else — brighter velvet red */
+.seat--taken .seat__back     { background: linear-gradient(180deg, #c41e2a 0%, #7a0a17 100%); border-color: #d4313f; }
+.seat--taken .seat__cushion  { background: linear-gradient(180deg, #a01724 0%, #5e0812 100%); border-color: #b82636; }
+
+/* My seat — gold glow */
+.seat--mine .seat__back     { background: linear-gradient(180deg, #f4b03d 0%, #a8731c 100%); border-color: #ffd87a; }
+.seat--mine .seat--mine .seat__cushion,
+.seat--mine .seat__cushion  { background: linear-gradient(180deg, #c98a2a 0%, #7a4f12 100%); border-color: #e6b455; }
+.seat--mine                 { filter: drop-shadow(0 0 8px rgba(255, 216, 107, 0.65)); }
+.seat--mine .seat__occupant { color: #2a1c08; text-shadow: 0 1px 0 rgba(255, 240, 200, 0.7); }
+
+/* Bot seat — slightly muted with steel tone */
+.seat--bot .seat__back     { background: linear-gradient(180deg, #6c727a 0%, #3a3f46 100%); border-color: #8a909a; }
+.seat--bot .seat__cushion  { background: linear-gradient(180deg, #4a4f57 0%, #292d33 100%); border-color: #5e646c; }
+
+/* Disabled seat in locked team (bot side in QA / vs-bot) — faint */
+.seat--locked .seat__back,
+.seat--locked .seat__cushion { opacity: 0.55; filter: grayscale(0.4); }
+
+/* Aisle / floor strip at bottom (carpet hint) */
+.theater__aisle {
+  flex-shrink: 0;
+  height: 6px;
+  margin: 4px 6% 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(212, 160, 71, 0.25) 20%,
+    rgba(212, 160, 71, 0.45) 50%,
+    rgba(212, 160, 71, 0.25) 80%,
+    transparent 100%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== SEAT-PICK HINT ===== */
+.seat-hint {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 8px 14px;
+  font-family: var(--font-deco);
+  font-size: clamp(12px, 1.8vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-brass-400);
+  background: linear-gradient(135deg, rgba(110, 10, 23, 0.35), rgba(74, 12, 20, 0.25));
+  border: 1px solid rgba(212, 160, 71, 0.4);
+  border-radius: 8px;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.seat-hint__count {
+  margin-inline-start: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-variant-numeric: tabular-nums;
   color: var(--color-gold);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.55);
+  font-weight: 700;
 }
 
 /* ===== VS NEON SIGN ===== */
@@ -463,30 +401,7 @@
   63%      { opacity: 1; }
 }
 
-/* ===== NO TEAM / ACTIONS ===== */
-.no-team-section {
-  flex-shrink: 0;
-  text-align: center;
-  padding: 8px 12px;
-  background: linear-gradient(135deg, rgba(110, 10, 23, 0.35), rgba(74, 12, 20, 0.25));
-  border: 1px solid rgba(212, 160, 71, 0.35);
-  border-radius: 8px;
-}
-
-.no-team-section h3 {
-  font-family: var(--font-deco);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-brass-500);
-  margin: 0 0 6px;
-}
-
-.no-team-section .player-card {
-  display: inline-flex;
-  margin: 2px 4px;
-}
-
+/* ===== ACTIONS ===== */
 .lobby-actions {
   display: flex;
   gap: 10px;
@@ -525,15 +440,6 @@
   cursor: not-allowed;
 }
 
-.btn-ready {
-  background: linear-gradient(135deg, #1f3a0e 0%, #2d5a16 100%);
-  color: var(--color-brass-400);
-}
-
-.btn-unready {
-  background: linear-gradient(135deg, var(--color-velvet-800), var(--color-velvet-900));
-}
-
 .btn-start {
   background: linear-gradient(135deg, var(--color-velvet-700), var(--color-velvet-500));
   color: #ffe8a3;
@@ -565,27 +471,18 @@
   .lobby-screen { padding: 6px; }
   .lobby-content { gap: 6px; }
   .lobby-header { gap: 8px; }
-  .lobby-screen .game-logo { font-size: 1.1rem; }
-  .qa-badge { font-size: 9px; padding: 3px 7px; }
   .room-code-display { padding: 4px 10px; }
   .room-code-display .label { font-size: 10px; }
-  .room-code-display .code { font-size: 15px; letter-spacing: 3px; }
+  .room-code-display .code { font-size: 17px; letter-spacing: 2px; }
   .btn-share { padding: 4px 8px; font-size: 10px; }
-  .teams-container { gap: 6px; }
-  .team-box { padding: 10px 8px 8px; }
-  .team-plate { padding: 5px 10px; margin: -2px -2px 6px; }
-  .team-title { font-size: 12px; letter-spacing: 0.1em; }
-  .team-plate__screw { width: 6px; height: 6px; }
-  .team-plate__star { font-size: 22px; }
-  .player-card { padding: 4px 8px; font-size: 11.5px; }
-  .clapper { width: 22px; height: 18px; }
-  .clapper__board { height: 12px; }
-  .clapper__stick { height: 8px; }
-  .empty-team { padding: 8px 6px; font-size: 11px; }
-  .btn-join-team { padding: 6px 10px; font-size: 11px; }
+  .teams-container { gap: 8px; }
+  .theater { padding: 8px 8px 6px; gap: 6px; border-radius: 10px; }
+  .theater__screen { height: 28px; border-radius: 60% 60% 8px 8px / 80% 80% 8px 8px; }
+  .theater__screen-label { font-size: 12px; letter-spacing: 0.12em; }
+  .theater__seats { gap: 4px 5px; padding: 2px 1%; }
+  .seat__occupant { font-size: 9px; }
   .vs-divider { font-size: 1.4rem; padding: 0 4px; }
-  .no-team-section { padding: 5px 8px; }
-  .no-team-section h3 { font-size: 11px; }
+  .seat-hint { padding: 5px 10px; font-size: 11px; }
   .lobby-actions { gap: 8px; padding-bottom: 2px; }
   .btn { padding: 6px 16px; font-size: 11px; }
   .waiting-host { padding: 6px 12px; font-size: 11px; }
@@ -593,16 +490,16 @@
 
 /* Medium phones / small tablets */
 @media (min-height: 431px) and (max-height: 700px) {
-  .lobby-screen .game-logo { font-size: 1.5rem; }
   .vs-divider { font-size: 2rem; }
+  .theater__screen { height: 38px; }
 }
 
 /* Large screens */
 @media (min-height: 701px) {
   .lobby-screen { padding: 20px; }
-  .lobby-screen .game-logo { font-size: 2rem; }
-  .team-box { padding: 18px 16px 14px; }
-  .player-card { padding: 8px 14px; font-size: 13.5px; }
+  .theater { padding: 18px 16px 14px; gap: 14px; }
+  .theater__screen { height: 56px; }
+  .theater__seats { gap: 8px 10px; }
   .vs-divider { font-size: 2.8rem; }
   .btn { padding: 12px 28px; font-size: 13.5px; }
 }

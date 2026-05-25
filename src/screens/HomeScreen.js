@@ -78,6 +78,7 @@ function HomeScreen() {
             id: playerId,
             name: playerName.trim(),
             team: null,
+            seat: null,
             ready: false,
             isHost: true
           }
@@ -115,6 +116,7 @@ function HomeScreen() {
           id: playerId,
           name: playerName.trim(),
           team: null,
+          seat: null,
           ready: false,
           isHost: false
         });
