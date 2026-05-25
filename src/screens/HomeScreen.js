@@ -173,7 +173,10 @@ function HomeScreen() {
           <span className="marquee-bulbs marquee-bulbs--top" aria-hidden="true" />
           <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--left" aria-hidden="true" />
           <span className="marquee-bulbs marquee-bulbs--side marquee-bulbs--right" aria-hidden="true" />
-          <h1 className="game-logo marquee-title">{t('app_title')}</h1>
+          <h1 className="game-logo marquee-title">
+            <span className="marquee-word">CINEMA</span>
+            <span className="marquee-word">MASTER</span>
+          </h1>
           <span className="marquee-bulbs marquee-bulbs--bottom" aria-hidden="true" />
         </div>
       </div>
