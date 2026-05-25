@@ -50,7 +50,6 @@ function LobbyScreen() {
   const [players, setPlayers] = useState([]);
   const [isHost, setIsHost] = useState(false);
   const [allReady, setAllReady] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [isQAMode, setIsQAMode] = useState(false);
 
   // Initialize QA Mode (Room 99999)
@@ -173,18 +172,20 @@ function LobbyScreen() {
     }
   };
 
-  // Copy room code
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(roomCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  // Share the lobby link straight to WhatsApp.
+  // We point friends to /room/:code (HomeScreen) so they get to enter
+  // their own name before joining the lobby.
+  const handleShareWhatsApp = () => {
+    const link = `${window.location.origin}/room/${roomCode}`;
+    const text =
+      t('whatsapp_invite', { code: roomCode, link }) ||
+      `🎬 Join my CINEMASTER game! Room ${roomCode}\n${link}`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const handleShareLink = () => {
-    const link = `${window.location.origin}/room/${roomCode}`;
-    navigator.clipboard.writeText(link);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleExitToHome = () => {
+    navigate('/');
   };
 
   // Build a quick lookup of seat → player per team
@@ -288,21 +289,33 @@ function LobbyScreen() {
     <div className="lobby-screen">
       <div className="container">
         <div className="lobby-content">
-          {/* Header — slim: just room code + share buttons (no CINEMASTER, no QA badge) */}
+          {/* Header — exit (X), room code, and WhatsApp invite */}
           <div className="lobby-header">
+            <button
+              type="button"
+              className="exit-btn"
+              onClick={handleExitToHome}
+              aria-label={t('exit_to_home') || 'Exit to home'}
+              title={t('exit_to_home') || 'Exit to home'}
+            >
+              ✕
+            </button>
+
             <div className="room-code-display">
               <span className="label">{t('room_code')}:</span>
               <span className="code">{roomCode}</span>
             </div>
+
             {!isQAMode && (
-              <div className="share-buttons">
-                <button className="btn-share" onClick={handleCopyCode}>
-                  {copied ? '✓ ' + t('copied') : '📋 ' + t('copy_code')}
-                </button>
-                <button className="btn-share" onClick={handleShareLink}>
-                  📤 {t('share_link')}
-                </button>
-              </div>
+              <button
+                type="button"
+                className="btn-whatsapp"
+                onClick={handleShareWhatsApp}
+                aria-label={t('share_whatsapp') || 'Share on WhatsApp'}
+                title={t('share_whatsapp') || 'Share on WhatsApp'}
+              >
+                <WhatsAppIcon />
+              </button>
             )}
           </div>
 
@@ -342,6 +355,22 @@ function LobbyScreen() {
         </div>
       </div>
     </div>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M16.002 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.255.59 4.46 1.713 6.4L3.2 28.8l6.55-1.713a12.79 12.79 0 006.25 1.6h.002c7.06 0 12.8-5.74 12.8-12.8s-5.74-12.687-12.8-12.687zm0 23.36h-.002a10.58 10.58 0 01-5.397-1.477l-.387-.23-3.886 1.017 1.04-3.787-.252-.39a10.555 10.555 0 01-1.628-5.69c0-5.842 4.754-10.6 10.6-10.6 2.832 0 5.493 1.103 7.494 3.107a10.55 10.55 0 013.106 7.496c0 5.846-4.755 10.554-10.69 10.554zm5.815-7.91c-.318-.16-1.883-.93-2.175-1.037-.292-.106-.504-.16-.717.16-.213.318-.823 1.037-1.01 1.25-.186.213-.372.24-.69.08-.318-.16-1.346-.495-2.564-1.58-.947-.844-1.587-1.888-1.773-2.206-.186-.318-.02-.49.14-.65.143-.143.318-.372.477-.558.16-.186.213-.318.32-.53.106-.213.053-.398-.027-.558-.08-.16-.717-1.726-.983-2.364-.26-.62-.523-.536-.717-.546l-.61-.011a1.17 1.17 0 00-.849.398c-.292.318-1.116 1.09-1.116 2.656 0 1.566 1.143 3.08 1.302 3.293.16.213 2.249 3.43 5.45 4.81.762.328 1.357.524 1.82.67.764.243 1.46.21 2.01.127.613-.092 1.883-.77 2.15-1.514.265-.744.265-1.382.186-1.514-.08-.133-.293-.213-.61-.372z"
+        fill="#25D366"
+      />
+    </svg>
   );
 }
 

@@ -1,6 +1,6 @@
 // src/screens/HomeScreen.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ref, set, get } from 'firebase/database';
 import { database } from '../firebase';
@@ -9,6 +9,7 @@ import './HomeScreen.css';
 function HomeScreen() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { roomCode: roomCodeFromUrl } = useParams();
   const [playerName, setPlayerName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -41,8 +42,18 @@ function HomeScreen() {
     }
   }, []);
 
+  // Came via a shared invite link (/room/:roomCode) — preselect "teams"
+  // mode and prefill the join code so the friend just types a name.
+  useEffect(() => {
+    if (!roomCodeFromUrl) return;
+    const cleaned = roomCodeFromUrl.replace(/\D/g, '').slice(0, 4);
+    if (!cleaned) return;
+    setGameMode('teams');
+    setRoomCode(cleaned);
+  }, [roomCodeFromUrl]);
+
   const generateRoomCode = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    return Math.floor(1000 + Math.random() * 9000).toString();
   };
 
   const validatePlayerName = () => {
@@ -97,8 +108,8 @@ function HomeScreen() {
   const handleJoinGame = async () => {
     if (!validatePlayerName()) return;
 
-    if (!roomCode || roomCode.length !== 6) {
-      alert(t('enter_room_code') || 'Please enter a valid 6-digit room code');
+    if (!roomCode || roomCode.length !== 4) {
+      alert(t('enter_room_code') || 'Please enter a valid 4-digit room code');
       return;
     }
 
@@ -253,18 +264,18 @@ function HomeScreen() {
                   className="input join-input"
                   placeholder={t('enter_room_code') || 'Enter Room Code'}
                   value={roomCode}
-                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && roomCode.length === 6 && nameValid && !isLoading) {
+                    if (e.key === 'Enter' && roomCode.length === 4 && nameValid && !isLoading) {
                       e.preventDefault();
                       handleJoinGame();
                     }
                   }}
-                  maxLength="6"
+                  maxLength="4"
                   aria-label={t('enter_room_code')}
                 />
                 <span className="join-hint" aria-live="polite">
-                  {roomCode.length === 6 ? '↵ ' + t('join_game') : ''}
+                  {roomCode.length === 4 ? '↵ ' + t('join_game') : ''}
                 </span>
               </div>
             </div>
