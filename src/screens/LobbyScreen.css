@@ -138,7 +138,7 @@
   min-height: 0;
 }
 
-/* The hall: dark "auditorium floor" framed in brass */
+/* The hall: pure black auditorium floor framed in brass (top-down) */
 .theater {
   position: relative;
   display: flex;
@@ -148,11 +148,12 @@
   border-radius: 12px;
   min-height: 0;
   background:
-    radial-gradient(ellipse at center top, rgba(80, 14, 22, 0.45) 0%, transparent 60%),
-    linear-gradient(180deg, #16100c 0%, #0a0707 100%);
+    /* Subtle floor sheen — keeps it readable but stays clearly black */
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(40, 30, 28, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, #060606 0%, #020202 100%);
   border: 2px solid rgba(212, 160, 71, 0.55);
   box-shadow:
-    inset 0 0 30px rgba(0, 0, 0, 0.8),
+    inset 0 0 30px rgba(0, 0, 0, 0.9),
     inset 0 0 0 1px rgba(255, 216, 107, 0.15),
     0 10px 26px rgba(0, 0, 0, 0.6);
 }
@@ -251,7 +252,7 @@
   min-height: 0;
 }
 
-/* Single seat — top-down look: rounded "back" + cushion */
+/* Single seat — top-down view of a cinema chair (facing the screen above) */
 .seat {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -268,43 +269,51 @@
 .seat:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.15); }
 .seat:disabled            { cursor: not-allowed; }
 
-/* Seat back (curved top, like the headrest seen from above) */
-.seat__back {
+/* CUSHION — front of the seat (closer to the screen, i.e. UP in top-down view).
+   This is what you'd see most of from directly above. */
+.seat__cushion {
   position: absolute;
   top: 4%;
-  left: 8%;
-  right: 8%;
-  height: 38%;
-  background: linear-gradient(180deg, #5e2812 0%, #3a160a 100%);
-  border: 1px solid #6e2f15;
-  border-radius: 50% 50% 6px 6px / 70% 70% 6px 6px;
+  left: 6%;
+  right: 6%;
+  height: 58%;
+  background:
+    radial-gradient(ellipse at 50% 30%, #c92434 0%, #8c0e1c 60%, #5a0510 100%);
+  border: 1px solid #7a0a17;
+  /* Top corners rounded sharply (facing the screen), bottom corners gentler */
+  border-radius: 12px 12px 8px 8px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 200, 150, 0.18),
+    inset 0 2px 4px rgba(255, 200, 200, 0.18),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.5),
     0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Cushion (the seat itself) */
-.seat__cushion {
+/* HEADREST / BACK — behind the chair (away from the screen, i.e. DOWN in top-down view).
+   Looks like a small rounded bump poking out below the cushion. */
+.seat__back {
   position: absolute;
   bottom: 6%;
-  left: 4%;
-  right: 4%;
-  height: 56%;
-  background: linear-gradient(180deg, #4a2510 0%, #2a1408 100%);
-  border: 1px solid #5a2f15;
-  border-radius: 6px 6px 10px 10px;
+  left: 18%;
+  right: 18%;
+  height: 36%;
+  background: linear-gradient(180deg, #7a0a17 0%, #4a0510 60%, #2a020a 100%);
+  border: 1px solid #6a0814;
+  /* Round bottom (the "back" of the chair seen from above) */
+  border-radius: 4px 4px 60% 60% / 4px 4px 90% 90%;
   box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.5),
-    inset 0 -1px 0 rgba(255, 180, 130, 0.12);
+    inset 0 1px 0 rgba(255, 200, 200, 0.18),
+    0 2px 3px rgba(0, 0, 0, 0.55);
 }
 
-/* Occupant label (initial / emoji) */
+/* Occupant label (initial / emoji) — sits on the cushion */
 .seat__occupant {
   position: relative;
   z-index: 2;
+  margin-top: -18%; /* nudges the label up onto the cushion */
   font-family: var(--font-deco);
   font-weight: 700;
-  font-size: clamp(10px, 1.8vw, 14px);
+  font-size: clamp(11px, 2vw, 16px);
+  line-height: 1;
   color: #fff5d8;
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.85),
@@ -312,24 +321,60 @@
   pointer-events: none;
 }
 
-/* Taken by someone else — brighter velvet red */
-.seat--taken .seat__back     { background: linear-gradient(180deg, #c41e2a 0%, #7a0a17 100%); border-color: #d4313f; }
-.seat--taken .seat__cushion  { background: linear-gradient(180deg, #a01724 0%, #5e0812 100%); border-color: #b82636; }
+/* Small BOTn label beneath the emoji (only on bot seats) */
+.seat__botlabel {
+  position: absolute;
+  z-index: 3;
+  bottom: 10%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(7px, 1.1vw, 9px);
+  letter-spacing: 0.04em;
+  color: #ffe8a3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+  pointer-events: none;
+}
 
-/* My seat — gold glow */
-.seat--mine .seat__back     { background: linear-gradient(180deg, #f4b03d 0%, #a8731c 100%); border-color: #ffd87a; }
-.seat--mine .seat--mine .seat__cushion,
-.seat--mine .seat__cushion  { background: linear-gradient(180deg, #c98a2a 0%, #7a4f12 100%); border-color: #e6b455; }
-.seat--mine                 { filter: drop-shadow(0 0 8px rgba(255, 216, 107, 0.65)); }
+/* Taken by another player — brighter cinema red */
+.seat--taken .seat__cushion {
+  background:
+    radial-gradient(ellipse at 50% 30%, #ff3a4a 0%, #c41e2a 55%, #7a0a17 100%);
+  border-color: #d4313f;
+}
+.seat--taken .seat__back {
+  background: linear-gradient(180deg, #a8121f 0%, #6c0712 60%, #3a020a 100%);
+  border-color: #b82636;
+}
+
+/* My seat — gold (clearly mine) */
+.seat--mine .seat__cushion {
+  background: radial-gradient(ellipse at 50% 30%, #ffd87a 0%, #d4a047 55%, #8c6320 100%);
+  border-color: #ffd87a;
+}
+.seat--mine .seat__back {
+  background: linear-gradient(180deg, #d4a047 0%, #8c6320 60%, #4a2d12 100%);
+  border-color: #e6b455;
+}
+.seat--mine                 { filter: drop-shadow(0 0 8px rgba(255, 216, 107, 0.7)); }
 .seat--mine .seat__occupant { color: #2a1c08; text-shadow: 0 1px 0 rgba(255, 240, 200, 0.7); }
 
-/* Bot seat — slightly muted with steel tone */
-.seat--bot .seat__back     { background: linear-gradient(180deg, #6c727a 0%, #3a3f46 100%); border-color: #8a909a; }
-.seat--bot .seat__cushion  { background: linear-gradient(180deg, #4a4f57 0%, #292d33 100%); border-color: #5e646c; }
+/* Bot seat — steel tones, easy to tell apart from humans */
+.seat--bot .seat__cushion {
+  background: radial-gradient(ellipse at 50% 30%, #8a929c 0%, #51585f 55%, #2a2f34 100%);
+  border-color: #6e757c;
+}
+.seat--bot .seat__back {
+  background: linear-gradient(180deg, #4a4f57 0%, #292d33 60%, #15181c 100%);
+  border-color: #5e646c;
+}
 
-/* Disabled seat in locked team (bot side in QA / vs-bot) — faint */
-.seat--locked .seat__back,
-.seat--locked .seat__cushion { opacity: 0.55; filter: grayscale(0.4); }
+/* Disabled seat in locked team (bot side in QA / vs-bot) — slight fade */
+.seat--locked .seat__cushion,
+.seat--locked .seat__back { opacity: 0.85; }
 
 /* Aisle / floor strip at bottom (carpet hint) */
 .theater__aisle {
@@ -480,7 +525,8 @@
   .theater__screen { height: 28px; border-radius: 60% 60% 8px 8px / 80% 80% 8px 8px; }
   .theater__screen-label { font-size: 12px; letter-spacing: 0.12em; }
   .theater__seats { gap: 4px 5px; padding: 2px 1%; }
-  .seat__occupant { font-size: 9px; }
+  .seat__occupant { font-size: 10px; margin-top: -14%; }
+  .seat__botlabel { font-size: 6px; bottom: 8%; }
   .vs-divider { font-size: 1.4rem; padding: 0 4px; }
   .seat-hint { padding: 5px 10px; font-size: 11px; }
   .lobby-actions { gap: 8px; padding-bottom: 2px; }

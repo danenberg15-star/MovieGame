@@ -10,6 +10,35 @@ const ROWS = 3;
 const COLS = 5;
 const SEATS_PER_TEAM = ROWS * COLS;
 
+// 15 different "robot" avatars for decorative bots in vs-Bot / QA mode
+const BOT_EMOJIS = [
+  '🤖', '👾', '🛸', '🦾', '🦿', '⚙️', '🪐', '🛰️',
+  '🎬', '🎯', '🎮', '🕹️', '💿', '⚡', '🎭',
+];
+
+const buildBotRoster = (lang) => {
+  const roster = {};
+  for (let i = 0; i < SEATS_PER_TEAM; i++) {
+    // First bot keeps the legacy id `bot_player` — that's the one the
+    // game logic actually plays against (see useGameState / botPlayer.isBot).
+    const id = i === 0 ? 'bot_player' : `bot_${i + 1}`;
+    const emoji = BOT_EMOJIS[i % BOT_EMOJIS.length];
+    const label = `BOT${i + 1}`;
+    roster[id] = {
+      id,
+      name: lang === 'he' ? `${emoji} ${label}` : `${emoji} ${label}`,
+      team: 'B',
+      seat: i,
+      ready: true,
+      isHost: false,
+      isBot: true,
+      botEmoji: emoji,
+      botLabel: label,
+    };
+  }
+  return roster;
+};
+
 function LobbyScreen() {
   const { t } = useTranslation();
   const { roomCode } = useParams();
@@ -42,6 +71,7 @@ function LobbyScreen() {
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         const playerName = localStorage.getItem('playerName') || 'Player 1';
+        const lang = t('team_b') === 'Team B' ? 'en' : 'he';
 
         await set(roomRef, {
           code: '99999',
@@ -59,15 +89,8 @@ function LobbyScreen() {
               ready: false,
               isHost: true,
             },
-            bot_player: {
-              id: 'bot_player',
-              name: t('team_b') === 'Team B' ? '🤖 AI Bot' : '🤖 בוט AI',
-              team: 'B',
-              seat: 0,
-              ready: true,
-              isHost: false,
-              isBot: true,
-            },
+            // Fill the whole Team B auditorium with decorative bots
+            ...buildBotRoster(lang),
           },
         });
 
@@ -236,8 +259,15 @@ function LobbyScreen() {
                 <span className="seat__back" aria-hidden="true" />
                 <span className="seat__cushion" aria-hidden="true" />
                 <span className="seat__occupant">
-                  {occupant ? (occupant.isBot ? '🤖' : initial) : ''}
+                  {occupant
+                    ? occupant.isBot
+                      ? (occupant.botEmoji || '🤖')
+                      : initial
+                    : ''}
                 </span>
+                {occupant?.isBot && occupant?.botLabel && (
+                  <span className="seat__botlabel">{occupant.botLabel}</span>
+                )}
               </button>
             );
           })}
