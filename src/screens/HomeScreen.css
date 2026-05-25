@@ -165,10 +165,8 @@
   font-size: clamp(4rem, 11vw, 12rem);
   line-height: 0.95;
   letter-spacing: 0.04em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
+  display: block;
+  text-align: center;
   white-space: nowrap;
   color: #ffe8a3;
   text-transform: uppercase;
@@ -188,15 +186,13 @@
 }
 
 .marquee-word {
-  display: block;
+  display: inline;
   line-height: 0.95;
 }
 
-/* Wide screens — single line: CINEMASTER */
-@media (min-width: 760px) {
-  .game-logo, .marquee-title { flex-direction: row; }
-  .marquee-word { display: inline; }
-  .marquee-word + .marquee-word::before { content: ''; }
+/* Mobile portrait — stack words so font can be huge without overflowing */
+@media (max-width: 759px) {
+  .marquee-word { display: block; }
 }
 
 @keyframes marqueeGlow {
@@ -661,7 +657,7 @@
   .home-screen { padding: 8px 60px 8px; }
   .home-screen::before { height: 3.5vh; }
   .home-screen::after  { height: 2.5vh; }
-  .game-logo, .marquee-title { font-size: clamp(3rem, 10vw, 6rem); flex-direction: row; }
+  .game-logo, .marquee-title { font-size: clamp(3rem, 10vw, 6rem); }
   .marquee-word { display: inline; }
   .marquee-frame { padding: 14px 36px; }
   .home-marquee-wrap { padding: 0 clamp(50px, 9vw, 70px); }
@@ -695,9 +691,11 @@
 }
 
 /* Mobile portrait — two-line stacked layout, huge font */
-@media (max-width: 759px) {
-  .game-logo, .marquee-title { font-size: 26vw; line-height: 0.92; }
-  .marquee-frame { padding: 28px 30px; border-radius: 18px; }
+@media (max-width: 759px) and (min-height: 501px) {
+  .game-logo, .marquee-title { font-size: 30vw; line-height: 0.9; }
+  .marquee-word { display: block; }
+  .marquee-frame { padding: 28px 24px; border-radius: 18px; }
+  .home-marquee-wrap { padding: 0 8px; }
   .marquee-bulbs--top, .marquee-bulbs--bottom { left: 14px; right: 14px; height: 14px; background-size: 16px 14px; }
   .marquee-bulbs--side { top: 14px; bottom: 14px; width: 14px; background-size: 14px 16px; }
   .marquee-bulbs--top { top: 6px; }
