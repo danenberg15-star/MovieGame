@@ -65,8 +65,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  /* Leave room for the side buttons (help left, language right) */
-  padding: 0 clamp(56px, 12vw, 90px);
+  /* Smaller side padding so the marquee can fill the screen on mobile */
+  padding: 0 clamp(8px, 3vw, 60px);
   box-sizing: border-box;
   position: relative;
   z-index: 2;
@@ -102,10 +102,10 @@
 .marquee-frame {
   position: relative;
   display: inline-block;
-  padding: clamp(40px, 7vh, 88px) clamp(70px, 12vw, 170px);
+  padding: clamp(20px, 5vw, 80px) clamp(28px, 7vw, 150px);
   margin: 0;
   max-width: 100%;
-  border-radius: 26px;
+  border-radius: clamp(14px, 2vw, 26px);
   background:
     radial-gradient(ellipse at center, rgba(255, 216, 107, 0.06) 0%, transparent 70%),
     linear-gradient(180deg, rgba(10, 8, 7, 0.6), rgba(28, 24, 22, 0.6));
@@ -119,37 +119,37 @@
   position: absolute;
   pointer-events: none;
   background-image: radial-gradient(circle,
-    #fff8d6 0 3.5px,
-    #ffd86b 4px 6.5px,
-    transparent 7.5px);
-  filter: drop-shadow(0 0 5px rgba(255, 216, 107, 0.9));
+    #fff8d6 0 2.5px,
+    #ffd86b 3px 4.5px,
+    transparent 5.5px);
+  filter: drop-shadow(0 0 4px rgba(255, 216, 107, 0.85));
   animation: marqueeBlink 2.4s steps(2) infinite;
 }
 
 .marquee-bulbs--top,
 .marquee-bulbs--bottom {
-  left: 22px;
-  right: 22px;
-  height: 16px;
-  background-size: 20px 16px;
+  left: 16px;
+  right: 16px;
+  height: 12px;
+  background-size: 14px 12px;
   background-repeat: repeat-x;
   background-position: center;
 }
 
-.marquee-bulbs--top    { top: 10px; }
-.marquee-bulbs--bottom { bottom: 10px; animation-delay: 1.2s; }
+.marquee-bulbs--top    { top: 6px; }
+.marquee-bulbs--bottom { bottom: 6px; animation-delay: 1.2s; }
 
 .marquee-bulbs--side {
-  top: 22px;
-  bottom: 22px;
-  width: 16px;
-  background-size: 16px 20px;
+  top: 16px;
+  bottom: 16px;
+  width: 12px;
+  background-size: 12px 14px;
   background-repeat: repeat-y;
   background-position: center;
 }
 
-.marquee-bulbs--left  { left: 10px;  animation-delay: 0.6s; }
-.marquee-bulbs--right { right: 10px; animation-delay: 1.8s; }
+.marquee-bulbs--left  { left: 6px;  animation-delay: 0.6s; }
+.marquee-bulbs--right { right: 6px; animation-delay: 1.8s; }
 
 @keyframes marqueeBlink {
   0%, 100% { opacity: 1;   }
@@ -162,9 +162,9 @@
   margin: 0;
   font-family: var(--font-marquee);
   font-weight: 400;
-  font-size: clamp(4.5rem, 18vw, 16rem);
+  font-size: clamp(3rem, 14vw, 13rem);
   line-height: 1;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   white-space: nowrap;
   color: #ffe8a3;
   text-transform: uppercase;
@@ -645,8 +645,8 @@
   .home-screen { padding: 8px 60px 8px; }
   .home-screen::before { height: 3.5vh; }
   .home-screen::after  { height: 2.5vh; }
-  .game-logo, .marquee-title { font-size: clamp(3rem, 11vw, 6rem); }
-  .marquee-frame { padding: 18px 44px; }
+  .game-logo, .marquee-title { font-size: clamp(2.5rem, 9vw, 5rem); }
+  .marquee-frame { padding: 14px 40px; }
   .home-marquee-wrap { padding: 0 clamp(50px, 9vw, 70px); }
   .home-controls { gap: 6px; max-width: 320px; }
   .name-input, .input { padding: 7px 12px; font-size: 12.5px; }
@@ -663,18 +663,30 @@
 
 /* Mid-height screens (tablets / smaller laptops in landscape ~600px height) */
 @media (min-height: 501px) and (max-height: 700px) {
-  .game-logo, .marquee-title { font-size: clamp(5rem, 14vw, 12rem); }
-  .marquee-frame { padding: 40px 100px; }
+  .game-logo, .marquee-title { font-size: clamp(4rem, 12vw, 10rem); }
+  .marquee-frame { padding: 32px 80px; }
   .home-screen .btn { padding: 12px 28px; font-size: 13.5px; }
   .mode-tab { padding: 9px 14px; font-size: 13.5px; }
 }
 
 /* Tall desktops */
-@media (min-height: 701px) {
-  .game-logo, .marquee-title { font-size: clamp(7rem, 18vw, 16rem); }
-  .marquee-frame { padding: 72px 140px; }
+@media (min-width: 900px) and (min-height: 701px) {
+  .game-logo, .marquee-title { font-size: clamp(6rem, 14vw, 13rem); }
+  .marquee-frame { padding: 60px 120px; }
   .home-screen .btn { padding: 16px 36px; font-size: 15px; }
   .mode-tab { padding: 12px 18px; font-size: 14.5px; }
+}
+
+/* Tall narrow viewports (mobile portrait) — keep marquee within screen width */
+@media (max-width: 600px) {
+  .game-logo, .marquee-title { font-size: 13vw; }
+  .marquee-frame { padding: 18px 22px; border-radius: 14px; }
+  .marquee-bulbs--top, .marquee-bulbs--bottom { left: 10px; right: 10px; }
+  .marquee-bulbs--side { top: 10px; bottom: 10px; }
+  .marquee-bulbs--top { top: 4px; }
+  .marquee-bulbs--bottom { bottom: 4px; }
+  .marquee-bulbs--left { left: 4px; }
+  .marquee-bulbs--right { right: 4px; }
 }
 
 @media (min-width: 1400px) {
