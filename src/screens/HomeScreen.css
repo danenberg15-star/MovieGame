@@ -664,17 +664,18 @@
   .marquee-word { display: inline; }
   .marquee-frame { padding: 20px 48px; }
   .home-marquee-wrap { padding: 0 clamp(50px, 9vw, 70px); }
-  .home-controls { gap: 6px; max-width: 320px; }
-  .name-input, .input { padding: 7px 12px; font-size: 12.5px; }
-  .mode-label { font-size: 0.7rem; margin: 0 0 0.2rem; }
-  .mode-toggle { padding: 4px; gap: 4px; }
-  .mode-tab { padding: 6px 10px; font-size: 12px; }
-  .menu-buttons { gap: 6px; }
-  .mode-hint { font-size: 0.7rem; margin: 0 0 0.15rem; }
-  .home-screen .btn { padding: 8px 18px; font-size: 12px; }
-  .help-btn { width: 36px; height: 36px; font-size: 18px; }
-  .join-input { font-size: 14px; letter-spacing: 0.3em; }
-  .join-hint { font-size: 10px; min-height: 12px; }
+  /* +20% — all controls below CINEMASTER */
+  .home-controls { gap: 8px; max-width: 420px; }
+  .name-input, .input { padding: 9px 16px; font-size: 15px; }
+  .mode-label { font-size: 0.85rem; margin: 0 0 0.25rem; }
+  .mode-toggle { padding: 5px; gap: 5px; }
+  .mode-tab { padding: 8px 14px; font-size: 14.5px; }
+  .menu-buttons { gap: 8px; }
+  .mode-hint { font-size: 0.85rem; margin: 0 0 0.2rem; }
+  .home-screen .btn { padding: 10px 24px; font-size: 14.5px; }
+  .help-btn { width: 44px; height: 44px; font-size: 22px; }
+  .join-input { font-size: 17px; letter-spacing: 0.32em; }
+  .join-hint { font-size: 12px; min-height: 14px; }
 }
 
 /* Mid-height screens (tablets / smaller laptops in landscape ~600px height) */
