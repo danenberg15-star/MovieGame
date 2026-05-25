@@ -102,10 +102,10 @@
 .marquee-frame {
   position: relative;
   display: inline-block;
-  padding: clamp(20px, 5vw, 80px) clamp(28px, 7vw, 150px);
+  padding: clamp(28px, 7vw, 110px) clamp(36px, 10vw, 200px);
   margin: 0;
   max-width: 100%;
-  border-radius: clamp(14px, 2vw, 26px);
+  border-radius: clamp(16px, 2.4vw, 32px);
   background:
     radial-gradient(ellipse at center, rgba(255, 216, 107, 0.06) 0%, transparent 70%),
     linear-gradient(180deg, rgba(10, 8, 7, 0.6), rgba(28, 24, 22, 0.6));
@@ -162,8 +162,8 @@
   margin: 0;
   font-family: var(--font-marquee);
   font-weight: 400;
-  font-size: clamp(4rem, 11vw, 12rem);
-  line-height: 0.95;
+  font-size: clamp(6rem, 18vw, 22rem);
+  line-height: 0.92;
   letter-spacing: 0.04em;
   display: block;
   text-align: center;
@@ -657,9 +657,9 @@
   .home-screen { padding: 8px 60px 8px; }
   .home-screen::before { height: 3.5vh; }
   .home-screen::after  { height: 2.5vh; }
-  .game-logo, .marquee-title { font-size: clamp(3rem, 10vw, 6rem); }
+  .game-logo, .marquee-title { font-size: clamp(4rem, 14vw, 9rem); }
   .marquee-word { display: inline; }
-  .marquee-frame { padding: 14px 36px; }
+  .marquee-frame { padding: 20px 48px; }
   .home-marquee-wrap { padding: 0 clamp(50px, 9vw, 70px); }
   .home-controls { gap: 6px; max-width: 320px; }
   .name-input, .input { padding: 7px 12px; font-size: 12.5px; }
@@ -675,27 +675,27 @@
 }
 
 /* Mid-height screens (tablets / smaller laptops in landscape ~600px height) */
-@media (min-height: 501px) and (max-height: 700px) {
-  .game-logo, .marquee-title { font-size: clamp(4.5rem, 12vw, 11rem); }
-  .marquee-frame { padding: 36px 80px; }
+@media (min-height: 501px) and (max-height: 700px) and (min-width: 760px) {
+  .game-logo, .marquee-title { font-size: clamp(7rem, 18vw, 18rem); }
+  .marquee-frame { padding: 50px 110px; }
   .home-screen .btn { padding: 12px 28px; font-size: 13.5px; }
   .mode-tab { padding: 9px 14px; font-size: 13.5px; }
 }
 
 /* Tall desktops — single line, very large */
 @media (min-width: 900px) and (min-height: 701px) {
-  .game-logo, .marquee-title { font-size: clamp(7rem, 14vw, 14rem); }
-  .marquee-frame { padding: 64px 130px; }
+  .game-logo, .marquee-title { font-size: clamp(10rem, 22vw, 22rem); }
+  .marquee-frame { padding: 90px 170px; }
   .home-screen .btn { padding: 16px 36px; font-size: 15px; }
   .mode-tab { padding: 12px 18px; font-size: 14.5px; }
 }
 
-/* Mobile portrait — two-line stacked layout, huge font */
-@media (max-width: 759px) and (min-height: 501px) {
-  .game-logo, .marquee-title { font-size: 30vw; line-height: 0.9; }
+/* Mobile portrait — two-line stacked layout, huge font that fills the screen */
+@media (max-width: 759px) {
+  .game-logo, .marquee-title { font-size: 36vw; line-height: 0.88; }
   .marquee-word { display: block; }
-  .marquee-frame { padding: 28px 24px; border-radius: 18px; }
-  .home-marquee-wrap { padding: 0 8px; }
+  .marquee-frame { padding: 30px 22px; border-radius: 18px; }
+  .home-marquee-wrap { padding: 0 6px; }
   .marquee-bulbs--top, .marquee-bulbs--bottom { left: 14px; right: 14px; height: 14px; background-size: 16px 14px; }
   .marquee-bulbs--side { top: 14px; bottom: 14px; width: 14px; background-size: 14px 16px; }
   .marquee-bulbs--top { top: 6px; }
