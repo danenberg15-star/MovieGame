@@ -312,7 +312,7 @@ function GameScreen() {
       variant: connectionResult.success ? 'success' : 'failure',
       quip,
       subText,
-      duration: 3000,
+      duration: 2500,
     });
   }, [connectionResult, language]);
 
@@ -542,6 +542,18 @@ function GameScreen() {
                       {t('watching_trailer')}
                     </p>
                   )}
+                </div>
+              ) : !currentMovie ? (
+                /* Between rounds — show a cinematic "changing reels" placeholder
+                   so the previous answer grid never flashes back while the new
+                   movie + trailer are loading from Firebase. */
+                <div className="reel-changeover" aria-live="polite">
+                  <div className="reel-changeover__reel">
+                    <FilmReelIcon />
+                  </div>
+                  <p className="reel-changeover__text">
+                    {language === 'he' ? 'מחליפים סליל…' : 'Changing reels…'}
+                  </p>
                 </div>
               ) : (
                 <div className="answer-section">

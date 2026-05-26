@@ -268,12 +268,14 @@ export const useGameActions = (
       });
 
       if (!hasWon) {
-        // Wait an extra second after the Oscar popup so the feedback
-        // doesn't overlap with the next trailer firing up.
+        // Pre-load the next round slightly BEFORE the Oscar popup closes
+        // so the new trailer is ready the moment the popup vanishes.
+        // (GameScreen renders a "next reel" placeholder for any brief
+        // sync gap so the previous answer grid never flashes back.)
         setTimeout(() => {
           setConnectionResult(null);
           startNextRound(nextTurn);
-        }, 4000);
+        }, 2200);
       }
 
     } else {
@@ -313,7 +315,7 @@ export const useGameActions = (
       setTimeout(() => {
         setConnectionResult(null);
         startNextRound(nextTurn);
-      }, 4000);
+      }, 2200);
     }
   }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
 
@@ -395,7 +397,7 @@ export const useGameActions = (
       setTimeout(() => {
         setConnectionResult(null);
         startNextRound(nextTurn);
-      }, 3500);
+      }, 2000);
     }
   }, [roomCode, currentTeam, gameState, currentMovie, language, startNextRound]);
 

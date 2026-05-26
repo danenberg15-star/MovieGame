@@ -548,3 +548,61 @@
     font-size: 12px;
   }
 }
+
+/* ===== REEL CHANGEOVER (between-rounds placeholder) =====
+   Shown briefly while the next trailer is loading from Firebase,
+   so the previous answer grid doesn't flash back after the popup
+   closes. */
+.reel-changeover {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vh, 18px);
+  background:
+    radial-gradient(ellipse at center, rgba(80, 14, 22, 0.4) 0%, transparent 70%),
+    linear-gradient(180deg, #0c0606 0%, #050303 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(212, 160, 71, 0.35);
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 216, 107, 0.12);
+  animation: reelFadeIn 0.25s ease-out;
+}
+
+@keyframes reelFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reel-changeover__reel {
+  width: clamp(70px, 12vh, 110px);
+  height: clamp(70px, 12vh, 110px);
+  animation: reelChangeoverSpin 1.4s linear infinite;
+  filter:
+    drop-shadow(0 0 14px rgba(255, 216, 107, 0.45))
+    drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8));
+}
+.reel-changeover__reel svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes reelChangeoverSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.reel-changeover__text {
+  margin: 0;
+  font-family: var(--font-deco), Georgia, serif;
+  font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffe8a3;
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.85),
+    0 0 10px rgba(255, 216, 107, 0.35);
+}
