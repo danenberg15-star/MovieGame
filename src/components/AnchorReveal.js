@@ -1,52 +1,58 @@
 // src/components/AnchorReveal.js
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './AnchorReveal.css';
 
 function AnchorReveal({ teamACard, teamBCard, onContinue, language = 'en' }) {
   const { t } = useTranslation();
 
-  // Slight stagger so the cards "appear under the spotlights" instead
-  // of just popping in flat.
-  const [revealed, setRevealed] = useState(false);
-  useEffect(() => {
-    const t1 = setTimeout(() => setRevealed(true), 120);
-    return () => clearTimeout(t1);
-  }, []);
+  // The reveal animation is now driven entirely by CSS (see
+  // anchorPosterIn in AnchorReveal.css), so we don't need a JS state
+  // toggle anymore. Removing it also closes a small race where the card
+  // could remain at opacity:0 if React didn't re-render in time.
 
-  const renderCard = (card, team) => (
-    <div className={`anchor-card-section anchor-card-section--${team}`}>
-      <div className="anchor-screen">
-        <span className="anchor-screen__glow" aria-hidden="true" />
-        <span className="anchor-screen__label">
-          {team === 'a' ? t('team_a') : t('team_b')}
-        </span>
-      </div>
+  const renderCard = (card, team) => {
+    const titleLocal = card?.title?.[language] || card?.title?.en || '';
 
-      <div className={`poster-frame ${revealed ? 'poster-frame--in' : ''}`}>
-        <span className="poster-frame__bulbs poster-frame__bulbs--top" aria-hidden="true" />
-        <span className="poster-frame__bulbs poster-frame__bulbs--bottom" aria-hidden="true" />
-        <span className="poster-frame__bulbs poster-frame__bulbs--left" aria-hidden="true" />
-        <span className="poster-frame__bulbs poster-frame__bulbs--right" aria-hidden="true" />
+    return (
+      <div className={`anchor-card-section anchor-card-section--${team}`}>
+        <div className="anchor-screen">
+          <span className="anchor-screen__glow" aria-hidden="true" />
+          <span className="anchor-screen__label">
+            {team === 'a' ? t('team_a') : t('team_b')}
+          </span>
+        </div>
 
-        <div className="poster-frame__inner">
-          <img
-            src={card.poster}
-            alt={card.title?.[language] || ''}
-            className="poster-frame__img"
-            onError={(e) => {
-              e.target.src = '/assets/placeholder-poster.png';
-            }}
-          />
-          <div className="poster-frame__caption">
-            <span className="poster-frame__title">
-              {card.title?.[language] || card.title?.en || ''}
-            </span>
+        <div className="poster-frame poster-frame--in">
+          <span className="poster-frame__bulbs poster-frame__bulbs--top" aria-hidden="true" />
+          <span className="poster-frame__bulbs poster-frame__bulbs--bottom" aria-hidden="true" />
+          <span className="poster-frame__bulbs poster-frame__bulbs--left" aria-hidden="true" />
+          <span className="poster-frame__bulbs poster-frame__bulbs--right" aria-hidden="true" />
+
+          <div className="poster-frame__inner">
+            {card?.poster ? (
+              <img
+                src={card.poster}
+                alt={titleLocal}
+                className="poster-frame__img"
+                loading="eager"
+                onError={(e) => {
+                  // The placeholder image doesn't ship with the build,
+                  // so don't swap it in — the dark themed background of
+                  // the inner div is already visible underneath, and
+                  // we don't want a broken-image icon to overlay it.
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            ) : null}
+            <div className="poster-frame__caption">
+              <span className="poster-frame__title">{titleLocal}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="anchor-reveal">

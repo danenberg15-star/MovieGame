@@ -205,29 +205,24 @@
 }
 
 /* ===== POSTER FRAME =====
-   Sizing is HEIGHT-DRIVEN so the 2:3 aspect ratio is always preserved
-   without being squished into a wider box. Crucial for landscape, where
-   vertical space is the limiting factor: the frame fills the section's
-   height, the width is then derived from the aspect ratio, and finally
-   the frame is capped by the grid cell width if there isn't enough
-   horizontal room. */
+   Sizing is rock-solid: BOTH width and height are clamped against
+   viewport units in a 2:3 proportion. No `aspect-ratio`, no percent
+   constraints, no `flex: 1` magic — those combinations have been
+   collapsing the image box to 0 on some Chromium/Samsung Internet
+   builds. This way the frame always has a definite, non-zero box. */
 .anchor-card-section .poster-frame {
+  --frame-pad: clamp(6px, 1vh, 12px);
   position: relative;
-  /* WIDTH-DRIVEN sizing.
-     Width is derived from viewport height (so the poster stays
-     in proportion to the available vertical space), capped by
-     the section width. The 2/3 aspect ratio then sets the height.
-     This avoids the brittle `flex-grow + aspect-ratio` combo,
-     which some engines render as a 0×0 box. */
   flex: 0 0 auto;
-  width: clamp(120px, 42vh, 320px);
-  max-width: 90%;
-  max-height: 92%;
-  height: auto;
-  aspect-ratio: 2 / 3;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(8px, 1.3vw, 14px);
+  /* width:height = 2:3 at every clamp() stop:
+       min:    140 × 210
+       fluid:  32vh × 48vh   (32:48 = 2:3)
+       max:    240 × 360
+     The min is high enough that the image will always be readable
+     even on tiny phones, and the max keeps things sane on desktop. */
+  width: clamp(140px, 32vh, 240px);
+  height: clamp(210px, 48vh, 360px);
+  padding: var(--frame-pad);
   border: 2px solid rgba(212, 160, 71, 0.7);
   border-radius: 12px;
   background:
@@ -237,21 +232,26 @@
     inset 0 0 16px rgba(0, 0, 0, 0.7),
     0 0 26px rgba(255, 216, 107, 0.22),
     0 12px 28px rgba(0, 0, 0, 0.65);
-  overflow: hidden;
-  /* Reveal animation: rises slightly into the spotlight */
+  /* Reveal animation runs purely via CSS so the cards always come in,
+     even if React hasn't re-rendered to add a JS class. */
   opacity: 0;
   transform: translateY(14px) scale(0.96);
-  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: anchorPosterIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.12s forwards;
 }
 
+.anchor-card-section--b .poster-frame {
+  animation-delay: 0.32s;
+}
+
+@keyframes anchorPosterIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Legacy class — kept so any code still toggling it doesn't fight the
+   CSS animation. The animation already drives the final state. */
 .poster-frame--in {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-/* Slight stagger for Team B so they reveal one after the other */
-.anchor-card-section--b .poster-frame {
-  transition-delay: 0.18s;
 }
 
 /* Marquee bulbs around the poster frame */
@@ -290,32 +290,36 @@
 .poster-frame__bulbs--right { right: -3px; }
 
 .anchor-card-section .poster-frame__inner {
-  position: relative;
-  /* Inner is a flex child of poster-frame; fill remaining height. */
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  display: grid;
-  grid-template-rows: 1fr auto;
+  /* Absolutely fill the frame minus its padding. Using `inset` driven
+     by the same variable as the frame's padding guarantees they always
+     stay in lock-step (no overlap, no gap) across media queries. */
+  position: absolute;
+  inset: var(--frame-pad);
+  display: flex;
+  flex-direction: column;
   border-radius: 6px;
   overflow: hidden;
-  background: #000;
+  /* A dark grey gradient so we still see SOMETHING if the TMDb poster
+     URL fails to load (instead of a totally invisible card). */
+  background: linear-gradient(135deg, #2a1a10 0%, #0c0704 100%);
   box-shadow:
     inset 0 0 0 1px rgba(255, 216, 107, 0.18),
     inset 0 0 18px rgba(0, 0, 0, 0.7);
 }
 
 .poster-frame__img {
-  width: 100%;
-  height: 100%;
+  /* Image fills the remaining space above the caption. flex: 1 with
+     basis 0 + min-height: 0 is the only flex combo that reliably gives
+     a non-zero height to an <img> inside a flex column. */
+  flex: 1 1 0;
   min-height: 0;
+  width: 100%;
   object-fit: cover;
   display: block;
-  grid-row: 1;
+  background: #1a1108;
 }
 
 .poster-frame__caption {
-  grid-row: 2;
   flex-shrink: 0;
   padding: clamp(6px, 1vw, 10px) clamp(8px, 1.5vw, 14px);
   background:
@@ -425,7 +429,7 @@
     width: min(100%, 220px);
   }
   .anchor-screen__label { font-size: clamp(11px, 1.8vw, 16px); letter-spacing: 0.14em; }
-  .anchor-card-section .poster-frame { padding: 6px; }
+  .anchor-card-section .poster-frame { --frame-pad: 6px; }
   .poster-frame__caption { padding: 4px 8px; }
   .poster-frame__title { font-size: clamp(0.7rem, 1.4vw, 0.95rem); }
   .anchor-vs__text { font-size: clamp(1.4rem, 3.5vw, 2.4rem); }
@@ -444,7 +448,14 @@
   .anchor-subtitle { font-size: 0.7rem; }
   .anchor-screen { height: 24px; }
   .anchor-screen__label { font-size: 11px; }
-  .anchor-card-section .poster-frame { padding: 5px; border-width: 1.5px; }
+  .anchor-card-section .poster-frame {
+    --frame-pad: 5px;
+    border-width: 1.5px;
+    /* On very short landscape phones, allow the cards to use a bit
+       more vertical space so they're never tiny. */
+    width: clamp(120px, 38vh, 200px);
+    height: clamp(180px, 57vh, 300px);
+  }
   .poster-frame__caption { padding: 3px 6px; }
   .poster-frame__title { font-size: 0.72rem; }
   .anchor-vs__text { font-size: 1.4rem; }
@@ -464,5 +475,8 @@
   }
   .anchor-card-section--a { order: 0; }
   .anchor-card-section--b { order: 2; }
-  .poster-frame { max-width: min(280px, 75vw); }
+  .anchor-card-section .poster-frame {
+    width: min(240px, 70vw);
+    height: min(360px, 105vw);
+  }
 }
