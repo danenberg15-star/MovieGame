@@ -220,7 +220,6 @@ function DecisionPhase({
           <>
             {/* Middle: vertical scroll of own cards */}
             <div className="dp-pane dp-pane--scroll">
-              <p className="dp-pane__label">{t('your_chain') || 'Your chain'}</p>
               <div className="dp-scroll" ref={scrollRef}>
                 {teamCards.map((card, idx) =>
                   renderPoster(card, 'small', {
@@ -277,10 +276,9 @@ function DecisionPhase({
           >
             <span className="dp-btn__icon">💰</span>
             <span className="dp-btn__text">
-              {t('buy_connection')}
-              <small className="dp-btn__hint">
-                {language === 'he' ? `${BUY_CONNECTION_COST} אסימונים` : `${BUY_CONNECTION_COST} tokens`}
-              </small>
+              {language === 'he'
+                ? `קנה קלף ב-${BUY_CONNECTION_COST} אסימונים`
+                : `Buy card for ${BUY_CONNECTION_COST} tokens`}
             </span>
           </button>
 
