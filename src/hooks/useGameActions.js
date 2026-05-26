@@ -268,10 +268,12 @@ export const useGameActions = (
       });
 
       if (!hasWon) {
+        // Wait an extra second after the Oscar popup so the feedback
+        // doesn't overlap with the next trailer firing up.
         setTimeout(() => {
           setConnectionResult(null);
           startNextRound(nextTurn);
-        }, 3000);
+        }, 4000);
       }
 
     } else {
@@ -311,7 +313,7 @@ export const useGameActions = (
       setTimeout(() => {
         setConnectionResult(null);
         startNextRound(nextTurn);
-      }, 3000);
+      }, 4000);
     }
   }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
 
@@ -393,7 +395,7 @@ export const useGameActions = (
       setTimeout(() => {
         setConnectionResult(null);
         startNextRound(nextTurn);
-      }, 2500);
+      }, 3500);
     }
   }, [roomCode, currentTeam, gameState, currentMovie, language, startNextRound]);
 

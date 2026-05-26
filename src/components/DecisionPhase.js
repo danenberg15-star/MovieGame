@@ -1,5 +1,20 @@
 // src/components/DecisionPhase.js
-import React, { useState } from 'react';
+//
+// Unified one-screen decision phase.
+//
+// Layout (always visible):
+//   [ Won card BIG ]   [ scroll | of own cards small ]   [ Selected card BIG ]
+//                              + bottom buttons row
+//
+// Flow:
+//   1. mode = 'choose-action' — bottom shows CONNECT / BUY / SAVE.
+//   2. Press CONNECT          → mode = 'armed'. Big right card glows;
+//                                bottom shows hint + Cancel.
+//   3. Click big right card   → mode = 'choose-type'. Bottom shows
+//                                Director / Year / Actor + Cancel.
+//   4. Pick a type            → submit. (Parent shows Oscar popup, then trailer.)
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import './DecisionPhase.css';
 
@@ -16,226 +31,232 @@ function DecisionPhase({
   disabled = false,
 }) {
   const { t } = useTranslation();
-  const [selectedCard, setSelectedCard] = useState(null);
-  const [selectedConnectionType, setSelectedConnectionType] = useState(null);
-  const [showCardSelection, setShowCardSelection] = useState(false);
 
-  const connectionTypes = [
-    { id: 'actor',    label: t('connection_types.actor'),    icon: '🎭' },
-    { id: 'director', label: t('connection_types.director'), icon: '🎬' },
-    { id: 'year',     label: t('connection_types.year'),     icon: '📅' },
-  ];
+  // 'choose-action' | 'armed' | 'choose-type'
+  const [mode, setMode] = useState('choose-action');
 
-  const handleConnectClick = () => {
-    if (disabled) return;
-    if (!teamCards || teamCards.length === 0) {
-      alert(t('no_cards_to_connect') || 'No cards available to connect');
-      return;
+  // Index in teamCards of the card the player is focusing on (in the scroll).
+  // The big right card mirrors this card.
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const scrollRef = useRef(null);
+
+  // Reset mode + selection whenever a new round of decision starts
+  useEffect(() => {
+    setMode('choose-action');
+    setSelectedIdx(0);
+  }, [wonCard?.id]);
+
+  // Keep selectedIdx in bounds
+  useEffect(() => {
+    if (selectedIdx >= teamCards.length) {
+      setSelectedIdx(Math.max(0, teamCards.length - 1));
     }
-    setShowCardSelection(true);
-  };
+  }, [teamCards.length, selectedIdx]);
 
-  const handleCardSelect = (card) => {
-    if (disabled) return;
-    setSelectedCard(card);
-  };
-
-  const handleConnectionTypeSelect = (type) => {
-    if (disabled) return;
-    setSelectedConnectionType(type);
-  };
-
-  const handleConfirmConnection = () => {
-    if (disabled) return;
-    if (!selectedCard || !selectedConnectionType) return;
-    if (onConnect) onConnect(selectedCard, selectedConnectionType);
-  };
-
-  const handleSaveToken = () => {
-    if (disabled) return;
-    if (onSaveToken) onSaveToken();
-  };
-
-  const handleBuyConnection = () => {
-    if (disabled) return;
-    if (teamTokens < BUY_CONNECTION_COST) return;
-    if (onBuyConnection) onBuyConnection();
-  };
+  const hasChain = teamCards.length > 0;
+  const selectedCard = hasChain
+    ? teamCards[Math.min(selectedIdx, teamCards.length - 1)]
+    : null;
 
   const canBuyConnection = teamTokens >= BUY_CONNECTION_COST;
-
-  const handleCancel = () => {
-    if (disabled) return;
-    setShowCardSelection(false);
-    setSelectedCard(null);
-    setSelectedConnectionType(null);
-  };
 
   const titleOf = (card) =>
     card?.title?.[language] || card?.title?.en || '';
 
-  const renderWonPoster = () => {
-    if (!wonCard) return null;
-    return (
-      <div className="poster-frame poster-frame--won">
-        <span className="poster-frame__bulbs poster-frame__bulbs--top" aria-hidden="true" />
-        <span className="poster-frame__bulbs poster-frame__bulbs--bottom" aria-hidden="true" />
-        <span className="poster-frame__bulbs poster-frame__bulbs--left" aria-hidden="true" />
-        <span className="poster-frame__bulbs poster-frame__bulbs--right" aria-hidden="true" />
-        <div className="poster-frame__inner">
-          <img
-            src={wonCard.poster}
-            alt={titleOf(wonCard)}
-            className="poster-frame__img"
-            onError={(e) => {
-              e.target.src = '/assets/placeholder-poster.png';
-            }}
-          />
-          <div className="poster-frame__caption">
-            <span className="poster-frame__title">{titleOf(wonCard)}</span>
-          </div>
-        </div>
-      </div>
-    );
+  const connectionTypes = [
+    { id: 'director', label: t('connection_types.director'), icon: '🎬' },
+    { id: 'year',     label: t('connection_types.year'),     icon: '📅' },
+    { id: 'actor',    label: t('connection_types.actor'),    icon: '🎭' },
+  ];
+
+  /* ---- handlers ---- */
+  const handleConnect = () => {
+    if (disabled || !hasChain) return;
+    setMode('armed');
   };
 
-  const renderChainCard = (card, { selectable = false, isSelected = false } = {}) => {
+  const handleBigCardClick = () => {
+    if (disabled) return;
+    if (mode !== 'armed' || !selectedCard) return;
+    setMode('choose-type');
+  };
+
+  const handleTypePick = (typeId) => {
+    if (disabled || !selectedCard) return;
+    onConnect && onConnect(selectedCard, typeId);
+  };
+
+  const handleCancel = () => setMode('choose-action');
+
+  const handleBuy = () => {
+    if (disabled || !canBuyConnection) return;
+    onBuyConnection && onBuyConnection();
+  };
+  const handleSave = () => {
+    if (disabled) return;
+    onSaveToken && onSaveToken();
+  };
+
+  const handleScrollCardClick = (idx) => {
+    if (disabled) return;
+    setSelectedIdx(idx);
+    // Bring the chosen mini-card into view smoothly
+    if (scrollRef.current) {
+      const el = scrollRef.current.querySelector(
+        `[data-scroll-idx="${idx}"]`
+      );
+      if (el && el.scrollIntoView) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  /* ---- sub-renders ---- */
+  const renderPoster = (card, size /* 'big' | 'small' */, opts = {}) => {
+    if (!card) return null;
+    const cls = [
+      'poster-frame',
+      size === 'big' ? 'poster-frame--big' : 'poster-frame--small',
+      opts.armed && 'poster-frame--armed',
+      opts.selected && 'poster-frame--selected',
+      opts.clickable && 'poster-frame--clickable',
+    ].filter(Boolean).join(' ');
+
     const body = (
       <>
+        {size === 'big' && (
+          <>
+            <span className="poster-frame__bulbs poster-frame__bulbs--top" aria-hidden="true" />
+            <span className="poster-frame__bulbs poster-frame__bulbs--bottom" aria-hidden="true" />
+            <span className="poster-frame__bulbs poster-frame__bulbs--left" aria-hidden="true" />
+            <span className="poster-frame__bulbs poster-frame__bulbs--right" aria-hidden="true" />
+          </>
+        )}
         <div className="poster-frame__inner">
           <img
             src={card.poster}
             alt={titleOf(card)}
             className="poster-frame__img"
-            onError={(e) => {
-              e.target.src = '/assets/placeholder-poster.png';
-            }}
+            onError={(e) => { e.target.src = '/assets/placeholder-poster.png'; }}
           />
           <div className="poster-frame__caption">
             <span className="poster-frame__title">{titleOf(card)}</span>
           </div>
         </div>
-        {isSelected && <span className="poster-frame__check">✓</span>}
+        {opts.selected && size === 'small' && (
+          <span className="poster-frame__check">✓</span>
+        )}
       </>
     );
 
-    const className = `poster-frame poster-frame--small${
-      isSelected ? ' poster-frame--selected' : ''
-    }`;
-
-    if (selectable) {
+    if (opts.onClick) {
       return (
         <button
-          key={card.id}
           type="button"
-          className={className}
-          onClick={() => handleCardSelect(card)}
+          className={cls}
+          onClick={opts.onClick}
           disabled={disabled}
+          data-scroll-idx={opts.idx}
         >
           {body}
         </button>
       );
     }
 
-    return (
-      <div key={card.id} className={className}>
-        {body}
-      </div>
-    );
+    return <div className={cls} data-scroll-idx={opts.idx}>{body}</div>;
   };
 
+  /* ---- empty / loading state ---- */
   if (!wonCard) {
     return (
       <div className="decision-phase">
-        <p className="decision-subtitle" style={{ textAlign: 'center', padding: '2rem' }}>
+        <p className="decision-subtitle">
           {language === 'he' ? 'טוען קלף…' : 'Loading card…'}
         </p>
       </div>
     );
   }
 
-  const hasChain = teamCards.length > 0;
-  const contentClasses = [
-    'dp-content',
-    !hasChain && 'dp-content--solo',
-    showCardSelection && hasChain && 'dp-content--selection',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  /* ---- header text per mode ---- */
+  let headerNode;
+  if (mode === 'choose-type') {
+    headerNode = (
+      <h3 className="decision-step">
+        {language === 'he' ? '🎯 בחרו את סוג החיבור' : '🎯 Pick the connection type'}
+      </h3>
+    );
+  } else if (mode === 'armed') {
+    headerNode = (
+      <h3 className="decision-step">
+        {language === 'he'
+          ? '👉 גללו, ולחצו על הקלף הגדול לחיבור'
+          : '👉 Scroll, then tap the big card to connect'}
+      </h3>
+    );
+  } else {
+    headerNode = (
+      <>
+        <h2 className="decision-title">🎯 {t('decision_time')}</h2>
+        <p className="decision-subtitle">{t('connect_or_save')}</p>
+      </>
+    );
+  }
 
-  const chainLabel = showCardSelection
-    ? (language === 'he' ? '👆 בחרו קלף לחיבור' : '👆 Pick a card to link')
-    : (language === 'he' ? 'השרשרת שלך' : 'Your chain');
+  const showChain = hasChain;
 
   return (
-    <div className="decision-phase">
-      {/* === Header === */}
-      <div className="decision-header">
-        {showCardSelection ? (
-          <h3 className="decision-step">1 — {t('step_1_select_card')}</h3>
-        ) : (
+    <div className={`decision-phase decision-phase--${mode}`}>
+      <div className="decision-header">{headerNode}</div>
+
+      {/* === Three-column content === */}
+      <div className={`dp-content${showChain ? '' : ' dp-content--solo'}`}>
+        {/* Left: the won (new) card */}
+        <div className="dp-pane dp-pane--won">
+          <div className="dp-card-badge">🏆 {t('new_card')}</div>
+          {renderPoster(wonCard, 'big')}
+        </div>
+
+        {showChain && (
           <>
-            <h2 className="decision-title">🎯 {t('decision_time')}</h2>
-            <p className="decision-subtitle">{t('connect_or_save')}</p>
+            {/* Middle: vertical scroll of own cards */}
+            <div className="dp-pane dp-pane--scroll">
+              <p className="dp-pane__label">{t('your_chain') || 'Your chain'}</p>
+              <div className="dp-scroll" ref={scrollRef}>
+                {teamCards.map((card, idx) =>
+                  renderPoster(card, 'small', {
+                    idx,
+                    selected: idx === selectedIdx,
+                    onClick: () => handleScrollCardClick(idx),
+                  })
+                )}
+              </div>
+            </div>
+
+            {/* Right: selected card BIG (same size as won) */}
+            <div className="dp-pane dp-pane--selected">
+              <div className="dp-card-badge dp-card-badge--neutral">
+                {mode === 'armed'
+                  ? (language === 'he' ? '👉 לחצו לחיבור' : '👉 Tap to connect')
+                  : (language === 'he' ? 'מהשרשרת שלך' : 'From your chain')}
+              </div>
+              {renderPoster(selectedCard, 'big', {
+                armed: mode === 'armed',
+                clickable: mode === 'armed',
+                onClick: mode === 'armed' ? handleBigCardClick : undefined,
+              })}
+            </div>
           </>
         )}
       </div>
 
-      {/* === Side-by-side content: won card | chain === */}
-      <div className={contentClasses}>
-        <div className="dp-won-pane">
-          <div className="dp-card-badge">🏆 {t('new_card')}</div>
-          {renderWonPoster()}
-        </div>
-
-        {hasChain && (
-          <div className="dp-chain-pane">
-            <p className="dp-chain-label">{chainLabel}</p>
-            <div className="dp-chain-row">
-              {teamCards.map((card) =>
-                showCardSelection
-                  ? renderChainCard(card, {
-                      selectable: true,
-                      isSelected: selectedCard?.id === card.id,
-                    })
-                  : renderChainCard(card)
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* === Connection-type picker (only in selection mode after a card is picked) === */}
-      {showCardSelection && selectedCard && (
-        <div className="dp-types-row">
-          <span className="dp-types-row__label">2 — {t('step_2_select_type')}:</span>
-          <div className="dp-types-row__btns">
-            {connectionTypes.map((type) => (
-              <button
-                key={type.id}
-                type="button"
-                className={`dp-type-btn ${
-                  selectedConnectionType === type.id ? 'dp-type-btn--selected' : ''
-                }`}
-                onClick={() => handleConnectionTypeSelect(type.id)}
-                disabled={disabled}
-              >
-                <span className="dp-type-btn__icon">{type.icon}</span>
-                <span className="dp-type-btn__label">{type.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* === Bottom action buttons === */}
-      {!showCardSelection ? (
+      {/* === Bottom buttons row, swaps by mode === */}
+      {mode === 'choose-action' && (
         <div className="dp-actions-row">
           <button
             type="button"
             className="dp-btn dp-btn--connect"
-            onClick={handleConnectClick}
-            disabled={disabled || teamCards.length === 0}
+            onClick={handleConnect}
+            disabled={disabled || !hasChain}
           >
             <span className="dp-btn__icon">🔗</span>
             <span className="dp-btn__text">{t('connect')}</span>
@@ -244,7 +265,7 @@ function DecisionPhase({
           <button
             type="button"
             className="dp-btn dp-btn--buy"
-            onClick={handleBuyConnection}
+            onClick={handleBuy}
             disabled={disabled || !canBuyConnection}
             title={
               canBuyConnection
@@ -266,7 +287,7 @@ function DecisionPhase({
           <button
             type="button"
             className="dp-btn dp-btn--save"
-            onClick={handleSaveToken}
+            onClick={handleSave}
             disabled={disabled}
           >
             <span className="dp-btn__icon">🎫</span>
@@ -276,23 +297,47 @@ function DecisionPhase({
             </span>
           </button>
         </div>
-      ) : (
-        <div className="dp-confirm-row">
+      )}
+
+      {mode === 'armed' && (
+        <div className="dp-actions-row dp-actions-row--armed">
+          <span className="dp-armed-hint">
+            {language === 'he'
+              ? '👉 בחרו קלף מהגלילה ואז לחצו על הקלף הגדול מימין'
+              : '👉 Pick a card from the scroll, then tap the big card on the right'}
+          </span>
           <button
             type="button"
-            className="dp-btn dp-btn--cancel"
+            className="dp-btn dp-btn--cancel dp-btn--compact"
             onClick={handleCancel}
             disabled={disabled}
           >
             ← {t('cancel')}
           </button>
+        </div>
+      )}
+
+      {mode === 'choose-type' && (
+        <div className="dp-actions-row dp-actions-row--types">
+          {connectionTypes.map((type) => (
+            <button
+              key={type.id}
+              type="button"
+              className="dp-btn dp-btn--type"
+              onClick={() => handleTypePick(type.id)}
+              disabled={disabled}
+            >
+              <span className="dp-btn__icon">{type.icon}</span>
+              <span className="dp-btn__text">{type.label}</span>
+            </button>
+          ))}
           <button
             type="button"
-            className="dp-btn dp-btn--confirm"
-            onClick={handleConfirmConnection}
-            disabled={disabled || !selectedCard || !selectedConnectionType}
+            className="dp-btn dp-btn--cancel dp-btn--compact"
+            onClick={handleCancel}
+            disabled={disabled}
           >
-            ✓ {t('confirm_connection')}
+            ← {t('cancel')}
           </button>
         </div>
       )}

@@ -1,10 +1,10 @@
 /* src/components/DecisionPhase.css
-   Side-by-side decision panel: won card on the left, "your chain" grid
-   on the right. Both poster groups are height-driven so they stay 2:3
-   without cropping, and nothing scrolls — everything fits the available
-   space at any landscape size. */
+   Unified one-screen decision phase.
+   3 columns:
+     [ Won card (big) ]  [ vertical scroll of own cards (small) ]  [ Selected card (big) ]
+   Bottom row swaps between:
+     CONNECT / BUY / SAVE  →  armed hint + Cancel  →  Director / Year / Actor + Cancel  */
 
-/* ===== ROOT ===== */
 .decision-phase {
   width: 100%;
   height: 100%;
@@ -60,40 +60,35 @@
 .decision-step {
   margin: 0;
   font-family: var(--font-deco);
-  font-size: clamp(0.7rem, 1.5vw, 0.95rem);
+  font-size: clamp(0.72rem, 1.5vw, 0.98rem);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #ffe8a3;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7), 0 0 10px rgba(255, 216, 107, 0.3);
   line-height: 1.1;
 }
 
-/* ===== CONTENT (side-by-side) =====
-   Won card pane on the left (~38%), chain pane on the right (~62%).
-   In selection mode we shift weight to the chain (cards are interactive). */
+/* ===== CONTENT GRID ===== */
 .dp-content {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.5fr);
-  gap: clamp(10px, 2vw, 22px);
+  /* Won (big) : scroll (narrow) : selected (big) */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: clamp(8px, 1.6vw, 18px);
   align-items: stretch;
   justify-items: stretch;
 }
 
-.dp-content--selection {
-  grid-template-columns: minmax(0, 0.65fr) minmax(0, 2.2fr);
-}
-
-/* When the chain is empty (very first decision), center the won card. */
+/* First decision (no own cards yet) — center the won card alone. */
 .dp-content--solo {
   grid-template-columns: 1fr;
   justify-items: center;
 }
 
-/* ===== WON PANE ===== */
-.dp-won-pane {
+.dp-pane {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -101,14 +96,24 @@
   gap: clamp(3px, 0.7vh, 8px);
   min-width: 0;
   min-height: 0;
-  max-width: 100%;
+}
+
+.dp-pane__label {
+  flex-shrink: 0;
+  margin: 0;
+  font-family: var(--font-deco);
+  font-size: clamp(0.6rem, 1.1vw, 0.76rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(243, 234, 220, 0.7);
+  line-height: 1.1;
 }
 
 .dp-card-badge {
   flex-shrink: 0;
   padding: 3px 12px;
   font-family: var(--font-deco);
-  font-size: clamp(0.58rem, 1.1vw, 0.78rem);
+  font-size: clamp(0.56rem, 1.05vw, 0.74rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #2a1c08;
@@ -116,52 +121,47 @@
   border: 1px solid #8c6320;
   border-radius: 20px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55);
+  white-space: nowrap;
+}
+.dp-card-badge--neutral {
+  background: linear-gradient(135deg, rgba(28, 18, 12, 0.92) 0%, rgba(15, 9, 6, 0.92) 100%);
+  color: #ffe8a3;
+  border-color: rgba(212, 160, 71, 0.45);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-/* ===== CHAIN PANE ===== */
-.dp-chain-pane {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: clamp(3px, 0.6vh, 6px);
-  min-width: 0;
-  min-height: 0;
-}
-
-.dp-chain-label {
-  flex-shrink: 0;
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-deco);
-  font-size: clamp(0.62rem, 1.2vw, 0.82rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(243, 234, 220, 0.78);
-  line-height: 1.1;
-}
-
-.dp-chain-row {
+/* ===== VERTICAL SCROLL OF OWN CARDS ===== */
+.dp-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  min-width: 0;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  gap: clamp(4px, 0.9vw, 9px);
-  align-content: center;
-  justify-content: center;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.2vh, 12px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 160, 71, 0.55) rgba(0, 0, 0, 0.4);
+}
+.dp-scroll::-webkit-scrollbar { width: 6px; }
+.dp-scroll::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+}
+.dp-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b8862d 0%, #d4a047 50%, #b8862d 100%);
+  border-radius: 4px;
 }
 
-/* ===== POSTER FRAMES =====
-   Height-driven sizing keeps the 2:3 aspect intact in every container.
-   `height: 100%` (or a clamp), `width: auto`, capped by `max-width: 100%`
-   and `max-height: 100%`. */
+/* ===== POSTER FRAMES ===== */
 .poster-frame {
   position: relative;
   display: flex;
   flex-direction: column;
   aspect-ratio: 2 / 3;
-  padding: clamp(5px, 1vw, 10px);
+  padding: clamp(4px, 0.9vw, 9px);
   border: 2px solid rgba(212, 160, 71, 0.7);
   border-radius: 10px;
   background: linear-gradient(180deg, #1a1108 0%, #0c0704 100%);
@@ -171,10 +171,15 @@
     0 0 18px rgba(255, 216, 107, 0.18),
     0 8px 18px rgba(0, 0, 0, 0.55);
   overflow: hidden;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  margin: 0;
+  appearance: none;
 }
 
-/* Won card: fill the won pane vertically, derive width */
-.poster-frame--won {
+/* Big card: fills column vertically, derives width from height. */
+.poster-frame--big {
   flex: 0 1 auto;
   height: 100%;
   width: auto;
@@ -183,36 +188,53 @@
   min-height: 0;
 }
 
-/* Chain card: height clamp so multiple cards don't blow up the layout */
+/* Small (scroll) card: ~25% of big card height — driven by clamp() */
 .poster-frame--small {
   flex: 0 0 auto;
-  height: clamp(95px, 26vh, 230px);
+  /* ~25% of the typical big card height (which sits ~58vh)
+     so roughly 14-15vh, with sensible min/max */
+  height: clamp(72px, 16vh, 130px);
   width: auto;
   max-width: 100%;
-  max-height: 100%;
-  cursor: default;
-  font: inherit;
-  color: inherit;
-  text-align: inherit;
-  appearance: none;
-  margin: 0;
-}
-
-button.poster-frame--small {
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
-button.poster-frame--small:hover { transform: translateY(-2px); }
-button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
+.poster-frame--small:hover:not(:disabled) { transform: translateY(-2px); }
+.poster-frame--small:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .poster-frame--selected {
   border-color: #ffd87a;
   box-shadow:
     inset 0 1px 0 rgba(255, 216, 107, 0.35),
     inset 0 0 14px rgba(0, 0, 0, 0.7),
-    0 0 24px rgba(255, 216, 107, 0.65),
+    0 0 22px rgba(255, 216, 107, 0.65),
     0 10px 22px rgba(0, 0, 0, 0.65);
   transform: translateY(-2px);
+}
+
+/* Armed big card — pulses gold to invite the click */
+.poster-frame--armed {
+  cursor: pointer;
+  border-color: #ffd87a;
+  animation: dpArmedPulse 1.6s ease-in-out infinite;
+}
+.poster-frame--clickable { cursor: pointer; }
+
+@keyframes dpArmedPulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 216, 107, 0.3),
+      inset 0 0 14px rgba(0, 0, 0, 0.7),
+      0 0 22px rgba(255, 216, 107, 0.55),
+      0 8px 18px rgba(0, 0, 0, 0.55);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 216, 107, 0.45),
+      inset 0 0 14px rgba(0, 0, 0, 0.7),
+      0 0 36px rgba(255, 216, 107, 0.9),
+      0 8px 22px rgba(0, 0, 0, 0.65);
+  }
 }
 
 /* ===== POSTER INTERNALS ===== */
@@ -284,7 +306,7 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .poster-frame__title {
   font-family: var(--font-deco);
-  font-size: clamp(0.62rem, 1.1vw, 0.85rem);
+  font-size: clamp(0.58rem, 1vw, 0.78rem);
   font-weight: 700;
   letter-spacing: 0.03em;
   color: #ffe8a3;
@@ -298,7 +320,7 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
   overflow: hidden;
 }
 
-.poster-frame--won .poster-frame__title {
+.poster-frame--big .poster-frame__title {
   -webkit-line-clamp: 2;
   line-clamp: 2;
   font-size: clamp(0.72rem, 1.3vw, 1rem);
@@ -306,10 +328,10 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .poster-frame__check {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 24px;
-  height: 24px;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: linear-gradient(135deg, #ffd766 0%, #b8862d 100%);
   color: #2a1c08;
@@ -318,68 +340,13 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
   justify-content: center;
   font-family: var(--font-deco);
   font-weight: 800;
-  font-size: 14px;
+  font-size: 12px;
   border: 2px solid #fff5d8;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
   z-index: 2;
 }
 
-/* ===== TYPES ROW ===== */
-.dp-types-row {
-  flex-shrink: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.dp-types-row__label {
-  font-family: var(--font-deco);
-  font-size: clamp(0.62rem, 1.2vw, 0.82rem);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(243, 234, 220, 0.7);
-  text-align: center;
-}
-
-.dp-types-row__btns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-
-.dp-type-btn {
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid rgba(212, 160, 71, 0.4);
-  border-radius: 6px;
-  background: linear-gradient(135deg, rgba(15, 9, 6, 0.88) 0%, rgba(28, 18, 12, 0.88) 100%);
-  color: #ffe8a3;
-  cursor: pointer;
-  font-family: var(--font-deco);
-  font-size: clamp(0.7rem, 1.3vw, 0.9rem);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  transition: transform 0.15s ease, filter 0.15s ease, border-color 0.15s ease;
-}
-.dp-type-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: brightness(1.12);
-}
-.dp-type-btn--selected {
-  background: linear-gradient(135deg, #6b1422 0%, #3a0a13 100%);
-  border-color: rgba(255, 216, 107, 0.7);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 216, 107, 0.25),
-    0 0 14px rgba(255, 216, 107, 0.35);
-  color: #ffe066;
-}
-.dp-type-btn__icon { font-size: 1.15em; }
-
-/* ===== ACTION / CONFIRM BUTTONS ===== */
+/* ===== ACTION BUTTONS ROW ===== */
 .dp-actions-row {
   flex-shrink: 0;
   width: 100%;
@@ -387,11 +354,30 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
   gap: clamp(6px, 1vw, 10px);
 }
 
-.dp-confirm-row {
-  flex-shrink: 0;
-  width: 100%;
-  display: flex;
-  gap: 8px;
+.dp-actions-row--armed {
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dp-actions-row--types {
+  align-items: stretch;
+}
+
+.dp-armed-hint {
+  flex: 1 1 auto;
+  font-family: var(--font-deco);
+  font-size: clamp(0.68rem, 1.3vw, 0.9rem);
+  letter-spacing: 0.04em;
+  color: #ffe8a3;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  animation: dpHintPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes dpHintPulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
 }
 
 .dp-btn {
@@ -417,7 +403,6 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
     0 3px 8px rgba(0, 0, 0, 0.55);
   transition: transform 0.15s ease, filter 0.15s ease;
 }
-
 .dp-btn:hover:not(:disabled) {
   transform: translateY(-1px);
   filter: brightness(1.12);
@@ -459,42 +444,42 @@ button.poster-frame--small:disabled { opacity: 0.5; cursor: not-allowed; }
   border-color: rgba(180, 230, 130, 0.45);
   color: #d6f0bc;
 }
-.dp-btn--confirm {
-  background: linear-gradient(135deg, #1f3a0e 0%, #2d5a16 100%);
-  border-color: rgba(180, 230, 130, 0.55);
-  color: #d6f0bc;
-  flex: 2 1 0;
+.dp-btn--type {
+  background: linear-gradient(135deg, #4a0e18 0%, #2a070d 100%);
+  border-color: rgba(255, 216, 107, 0.6);
 }
 .dp-btn--cancel {
   background: linear-gradient(135deg, rgba(36, 22, 18, 0.9) 0%, rgba(18, 10, 8, 0.9) 100%);
   color: rgba(243, 234, 220, 0.75);
-  flex: 1 1 0;
+}
+.dp-btn--compact {
+  flex: 0 0 auto;
+  padding: clamp(5px, 0.9vh, 9px) clamp(12px, 2vw, 18px);
 }
 
-/* ===== LANDSCAPE LAPTOPS (≤700px tall) — tighten chrome ===== */
+/* ===== LANDSCAPE LAPTOPS (≤700px tall) ===== */
 @media (max-height: 700px) and (orientation: landscape) {
   .decision-phase { gap: 4px; padding: 5px 8px; }
   .decision-title { font-size: clamp(0.82rem, 1.8vw, 1.15rem); }
   .decision-subtitle { font-size: 0.65rem; }
   .decision-step { font-size: clamp(0.72rem, 1.4vw, 0.92rem); }
-  .dp-card-badge { font-size: 0.6rem; padding: 2px 10px; }
-  .dp-chain-label { font-size: 0.62rem; }
-  .poster-frame--small { height: clamp(80px, 22vh, 180px); }
+  .dp-card-badge { font-size: 0.58rem; padding: 2px 10px; }
+  .dp-pane__label { font-size: 0.58rem; }
+  .poster-frame--small { height: clamp(64px, 14vh, 110px); }
   .dp-btn { min-height: 30px; padding: 4px 8px; font-size: 0.72rem; }
   .dp-btn__hint { font-size: 0.6em; margin-top: 2px; }
-  .dp-type-btn { padding: 4px; font-size: 0.7rem; }
 }
 
-/* ===== VERY SHORT LANDSCAPE (≤500px tall) ===== */
+/* ===== VERY SHORT LANDSCAPE (≤500px tall) — phones in landscape ===== */
 @media (max-height: 500px) and (orientation: landscape) {
   .decision-phase { gap: 3px; padding: 4px 6px; }
   .decision-title { font-size: 0.82rem; }
   .decision-subtitle { font-size: 0.6rem; }
-  .dp-card-badge { font-size: 0.56rem; padding: 2px 8px; }
-  .poster-frame { padding: 4px; border-width: 1.5px; border-radius: 8px; }
-  .poster-frame--small { height: clamp(70px, 20vh, 140px); }
+  .dp-card-badge { font-size: 0.54rem; padding: 2px 8px; }
+  .poster-frame { padding: 3px; border-width: 1.5px; border-radius: 8px; }
+  .poster-frame--small { height: clamp(58px, 12.5vh, 90px); }
   .poster-frame__caption { padding: 2px 5px; }
-  .poster-frame__title { font-size: 0.62rem; }
-  .poster-frame--won .poster-frame__title { font-size: 0.7rem; }
+  .poster-frame__title { font-size: 0.58rem; }
+  .poster-frame--big .poster-frame__title { font-size: 0.66rem; }
   .dp-btn { min-height: 26px; padding: 3px 6px; font-size: 0.66rem; }
 }
