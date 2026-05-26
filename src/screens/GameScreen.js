@@ -471,11 +471,14 @@ function GameScreen() {
     );
   }
 
-  // Game over screen — cinematic victory celebration
+  // Game over screen — cinematic victory celebration for winners,
+  // cinematic defeat screen for losers (variant picked inside the
+  // component based on `myTeam` vs `winner`).
   if (phase === 'finished') {
     return (
       <VictoryScreen
         winner={gameState.winner}
+        myTeam={currentTeam}
         teamACards={gameState.teamA?.cards?.length || 0}
         teamBCards={gameState.teamB?.cards?.length || 0}
         language={language}

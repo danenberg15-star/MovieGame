@@ -1,15 +1,13 @@
 // src/components/VictoryScreen.js
 //
-// Cinematic end-of-game victory screen.
+// Cinematic end-of-game result screen. Used for BOTH:
+//   • WIN  — gold/red palette, paparazzi flashes, "WINNER" ribbon,
+//            random `won{1..5}.webp` image.
+//   • LOSE — muted silver/gunmetal palette, dim flicker, "FLOP"
+//            ribbon, random `lose{1..5}.webp` image.
 //
-// - Randomly picks one of 5 winner images from /public (won1..won5.webp)
-//   and displays it as large as the viewport allows.
-// - Wraps the image in a silver/black cinema frame with a soft "ambilight"
-//   glow that bleeds onto the dark background.
-// - Floats a golden WINNER ribbon (matching OscarPopup) over the top of
-//   the frame with the winning team name.
-// - Below the frame: compact team-vs-team score row + a "back home" CTA.
-// - Subtle paparazzi camera flashes flicker over the whole screen.
+// Pass the current player's team via `myTeam`; the component decides
+// which variant to render by comparing it to `winner`.
 
 import React, { useMemo } from 'react';
 import './VictoryScreen.css';
@@ -17,19 +15,25 @@ import './VictoryScreen.css';
 const TRANSLATIONS = {
   en: {
     winner: 'WINNER',
+    flop: 'FLOP',
     team_a: 'Team A',
     team_b: 'Team B',
     cards: 'cards',
     back_home: 'Back to Home',
     vs: 'VS',
+    you_lost_to: 'Beaten by',
+    draw: 'DRAW',
   },
   he: {
     winner: 'הזוכים',
-    team_a: "קבוצה A",
-    team_b: "קבוצה B",
+    flop: 'פלופ',
+    team_a: 'קבוצה A',
+    team_b: 'קבוצה B',
     cards: 'קלפים',
     back_home: 'חזרה לדף הבית',
     vs: 'מול',
+    you_lost_to: 'הפסדתם ל',
+    draw: 'תיקו',
   },
 };
 
@@ -37,6 +41,7 @@ const TOTAL_IMAGES = 5;
 
 export default function VictoryScreen({
   winner,
+  myTeam = null,
   teamACards = 0,
   teamBCards = 0,
   onBackHome,
@@ -45,33 +50,55 @@ export default function VictoryScreen({
   const dict = TRANSLATIONS[language] || TRANSLATIONS.en;
   const t = (key) => dict[key] ?? key;
 
-  // Pick a random victory image once per mount so it stays stable across
+  const isDraw = winner === 'draw' || winner == null;
+  const isLoser = !isDraw && myTeam && myTeam !== winner;
+  const variant = isLoser ? 'lose' : 'win';
+
+  // Pick a random end-game image once per mount so it stays stable across
   // re-renders triggered by Firebase updates while the screen is open.
+  // Folder layout in /public:
+  //   won1.webp ... won5.webp     (celebratory images)
+  //   lose1.webp ... lose5.webp   (defeat images)
   const imgSrc = useMemo(() => {
     const n = Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+    const prefix = isLoser ? 'lose' : 'won';
     const base = process.env.PUBLIC_URL || '';
-    return `${base}/won${n}.webp`;
-  }, []);
+    return `${base}/${prefix}${n}.webp`;
+  }, [isLoser]);
 
-  const winnerKey = winner === 'B' ? 'team_b' : 'team_a';
-  const winnerLabel = winner === 'draw' ? t('winner') : t(winnerKey);
+  // Ribbon copy
+  const ribbonLabel = isDraw
+    ? t('draw')
+    : isLoser
+    ? t('flop')
+    : t('winner');
+
+  const winningTeamLabel = winner === 'B' ? t('team_b') : t('team_a');
+
+  const ribbonSub = isDraw
+    ? null
+    : isLoser
+    ? `${t('you_lost_to')} ${winningTeamLabel}`
+    : winningTeamLabel;
 
   return (
-    <div className="victory-screen" role="dialog" aria-live="polite">
-      {/* Paparazzi camera flashes */}
+    <div
+      className={`victory-screen victory-screen--${variant}`}
+      role="dialog"
+      aria-live="polite"
+    >
+      {/* Paparazzi flashes (win) / projector flicker (lose) */}
       <span className="vs-flash vs-flash--a" aria-hidden="true" />
       <span className="vs-flash vs-flash--b" aria-hidden="true" />
       <span className="vs-flash vs-flash--c" aria-hidden="true" />
       <span className="vs-flash vs-flash--d" aria-hidden="true" />
 
-      {/* Gold WINNER ribbon above the frame */}
+      {/* Ribbon above the frame */}
       <div className="vs-ribbon" aria-hidden="true">
         <span className="vs-ribbon__tail vs-ribbon__tail--left" />
         <span className="vs-ribbon__core">
-          <span className="vs-ribbon__label">{t('winner')}</span>
-          {winner !== 'draw' && (
-            <span className="vs-ribbon__team">{winnerLabel}</span>
-          )}
+          <span className="vs-ribbon__label">{ribbonLabel}</span>
+          {ribbonSub && <span className="vs-ribbon__team">{ribbonSub}</span>}
         </span>
         <span className="vs-ribbon__tail vs-ribbon__tail--right" />
       </div>
@@ -83,7 +110,7 @@ export default function VictoryScreen({
             <img
               className="vs-image"
               src={imgSrc}
-              alt="Victory celebration"
+              alt={isLoser ? 'Defeat' : 'Victory celebration'}
               draggable="false"
             />
           </div>

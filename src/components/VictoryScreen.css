@@ -346,3 +346,117 @@
   .vs-score__value { font-size: 28px; }
   .vs-btn { font-size: 13px; padding: 10px 22px; }
 }
+
+/* =====================================================================
+   LOSE VARIANT — same layout, "opposite" cinematic palette.
+   Stripped-down red/gold warmth → cold gunmetal silver, hushed flicker
+   instead of paparazzi pop, and a more somber back-home button.
+   ===================================================================== */
+
+.victory-screen--lose {
+  background:
+    radial-gradient(ellipse at top,    rgba(80, 90, 110, 0.18), transparent 55%),
+    radial-gradient(ellipse at bottom, rgba(40, 40, 55, 0.28), transparent 55%),
+    linear-gradient(160deg, #0a0b10 0%, #14151c 50%, #07070a 100%);
+}
+
+/* Replace celebratory white paparazzi pops with a slow, dim
+   "projector dying" flicker in cool grey. */
+.victory-screen--lose .vs-flash {
+  background: radial-gradient(circle,
+    rgba(170, 180, 200, 0.4) 0%,
+    rgba(170, 180, 200, 0) 60%);
+  opacity: 0;
+  filter: blur(4px);
+}
+.victory-screen--lose .vs-flash--a { animation: vsLoseFlicker 6.5s ease-in-out infinite 0.8s; }
+.victory-screen--lose .vs-flash--b { animation: vsLoseFlicker 7.5s ease-in-out infinite 2.4s; }
+.victory-screen--lose .vs-flash--c { animation: vsLoseFlicker 8.5s ease-in-out infinite 4.0s; }
+.victory-screen--lose .vs-flash--d { animation: vsLoseFlicker 9.5s ease-in-out infinite 5.6s; }
+
+@keyframes vsLoseFlicker {
+  0%   { opacity: 0; }
+  4%   { opacity: 0.45; }
+  6%   { opacity: 0.15; }
+  9%   { opacity: 0.35; }
+  12%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Gunmetal silver ribbon instead of red velvet */
+.victory-screen--lose .vs-ribbon__core {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10), transparent 35%),
+    linear-gradient(180deg, #3b4452 0%, #1f242d 100%);
+  color: #d6d9df;
+  border-top: 1px solid rgba(200, 210, 225, 0.35);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(230, 235, 245, 0.18),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.45),
+    0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.victory-screen--lose .vs-ribbon__label {
+  color: #c4cad4;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.55),
+    0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.victory-screen--lose .vs-ribbon__team {
+  color: #aeb3bd;
+  opacity: 0.85;
+}
+
+.victory-screen--lose .vs-ribbon__tail {
+  background: linear-gradient(180deg, #1f242d 0%, #0e1117 100%);
+}
+
+/* Cooler ambilight — like a dying projector lamp instead of warm spotlights */
+.victory-screen--lose .vs-ambilight {
+  background:
+    radial-gradient(60% 50% at 30% 30%, rgba(120, 130, 160, 0.16) 0%, transparent 70%),
+    radial-gradient(50% 50% at 70% 70%, rgba(70,  80, 110, 0.18) 0%, transparent 70%),
+    radial-gradient(60% 60% at 50% 50%, rgba(150, 160, 180, 0.08) 0%, transparent 80%);
+}
+
+/* Frame: slightly bluer/colder, still cinematic — no gold rim */
+.victory-screen--lose .vs-frame {
+  background: linear-gradient(160deg, #2a2c33 0%, #14161b 45%, #2a2c33 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 4px rgba(0, 0, 0, 0.85),
+    0 28px 60px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(180, 195, 220, 0.14);
+}
+.victory-screen--lose .vs-frame__inner {
+  box-shadow: inset 0 0 0 1px rgba(180, 195, 220, 0.18);
+}
+
+/* Score: highlight the winning team in cold silver instead of warm gold */
+.victory-screen--lose .vs-score {
+  border: 1px solid rgba(180, 195, 220, 0.18);
+}
+.victory-screen--lose .vs-score__col--win {
+  color: #d6d9df;
+  text-shadow: 0 0 12px rgba(170, 185, 210, 0.4);
+}
+.victory-screen--lose .vs-score__sep {
+  color: rgba(180, 195, 220, 0.6);
+}
+
+/* Back-home button: muted slate instead of bordeaux */
+.victory-screen--lose .vs-btn {
+  border: 1px solid rgba(180, 195, 220, 0.4);
+  background: linear-gradient(135deg, #2c3340 0%, #181c24 100%);
+  color: #d6d9df;
+  box-shadow:
+    inset 0 1px 0 rgba(220, 230, 245, 0.18),
+    0 4px 14px rgba(0, 0, 0, 0.5);
+}
+.victory-screen--lose .vs-btn:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(220, 230, 245, 0.28),
+    0 6px 22px rgba(120, 140, 180, 0.22);
+}
