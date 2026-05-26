@@ -221,7 +221,9 @@
 .film-countdown {
   position: absolute;
   top: clamp(10px, 2vw, 18px);
-  right: clamp(10px, 2vw, 18px);
+  /* Pulled ~3cm further left so the right velvet curtain doesn't
+     clip the timer on landscape laptops/phones. */
+  right: clamp(90px, 11vw, 140px);
   width: clamp(54px, 9vw, 84px);
   height: clamp(54px, 9vw, 84px);
   z-index: 5;
@@ -397,14 +399,18 @@
   .velvet-curtain { width: clamp(28px, 4.4vw, 64px); }
   .cinema-frame   { padding: clamp(5px, 1vw, 10px); }
   .audience-floor { height: clamp(20px, 5vh, 36px); }
-  .film-countdown { width: clamp(46px, 7.5vw, 64px); height: clamp(46px, 7.5vw, 64px); }
+  .film-countdown {
+    width: clamp(46px, 7.5vw, 64px);
+    height: clamp(46px, 7.5vw, 64px);
+    right: clamp(70px, 9vw, 110px);
+  }
   .steel-btn { width: clamp(40px, 7vw, 56px); height: clamp(40px, 7vw, 56px); bottom: 8px; }
 }
 @media (max-height: 500px) and (orientation: landscape) {
   .trailer-player { padding: 4px 18px; }
   .velvet-curtain { width: 28px; }
   .audience-floor { height: 18px; }
-  .film-countdown { width: 42px; height: 42px; top: 6px; right: 6px; }
+  .film-countdown { width: 42px; height: 42px; top: 6px; right: 60px; }
   .film-countdown__text { font-size: 12px; }
   .steel-btn { width: 36px; height: 36px; bottom: 6px; }
   .trailer-info { padding: 2px 8px; font-size: 9px; }
