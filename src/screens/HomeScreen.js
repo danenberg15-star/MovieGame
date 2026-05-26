@@ -9,6 +9,7 @@ import {
   clearActiveSession,
   buildResumeUrl,
 } from '../utils/activeSession';
+import { buildBotRoster } from '../utils/botRoom';
 import './HomeScreen.css';
 
 function HomeScreen() {
@@ -175,11 +176,44 @@ function HomeScreen() {
     }
   };
 
-  const handleBotMode = () => {
+  const handleBotMode = async () => {
     if (!validatePlayerName()) return;
+
+    setIsLoading(true);
+    const newRoomCode = generateRoomCode();
     localStorage.setItem('playerName', playerName.trim());
-    const playerId = 'player_' + Date.now();
-    navigate(`/lobby/99999?playerId=${playerId}`);
+
+    try {
+      const playerId = 'player_' + Date.now();
+      const lang = localStorage.getItem('preferredLanguage') || 'en';
+
+      await set(ref(database, `rooms/${newRoomCode}`), {
+        code: newRoomCode,
+        host: playerId,
+        created: Date.now(),
+        status: 'waiting',
+        isBotMode: true,
+        teams: { teamA: [], teamB: [] },
+        players: {
+          [playerId]: {
+            id: playerId,
+            name: playerName.trim(),
+            team: null,
+            seat: null,
+            ready: false,
+            isHost: true,
+          },
+          ...buildBotRoster(lang),
+        },
+      });
+
+      navigate(`/lobby/${newRoomCode}?playerId=${playerId}`);
+    } catch (error) {
+      console.error('Error creating bot room:', error);
+      alert('Failed to start bot game. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const nameValid = playerName.trim().length >= 2;

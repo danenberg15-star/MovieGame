@@ -2,43 +2,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ref, onValue, update, set, remove } from 'firebase/database';
+import { ref, onValue, update } from 'firebase/database';
 import { database } from '../firebase';
 import { setActiveSession, clearActiveSession } from '../utils/activeSession';
+import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom } from '../utils/botRoom';
 import './LobbyScreen.css';
 
 const ROWS = 3;
-const COLS = 4;
-const SEATS_PER_TEAM = ROWS * COLS;
-
-// Distinct "robot" avatars for decorative bots in vs-Bot / QA mode
-const BOT_EMOJIS = [
-  '🤖', '👾', '🛸', '🦾', '🦿', '⚙️',
-  '🪐', '🛰️', '🎬', '🎯', '🎮', '🕹️',
-];
-
-const buildBotRoster = (lang) => {
-  const roster = {};
-  for (let i = 0; i < SEATS_PER_TEAM; i++) {
-    // First bot keeps the legacy id `bot_player` — that's the one the
-    // game logic actually plays against (see useGameState / botPlayer.isBot).
-    const id = i === 0 ? 'bot_player' : `bot_${i + 1}`;
-    const emoji = BOT_EMOJIS[i % BOT_EMOJIS.length];
-    const label = `BOT${i + 1}`;
-    roster[id] = {
-      id,
-      name: lang === 'he' ? `${emoji} ${label}` : `${emoji} ${label}`,
-      team: 'B',
-      seat: i,
-      ready: true,
-      isHost: false,
-      isBot: true,
-      botEmoji: emoji,
-      botLabel: label,
-    };
-  }
-  return roster;
-};
+const COLS = BOT_SEATS_COLS;
 
 function LobbyScreen() {
   const { t } = useTranslation();
@@ -51,58 +22,7 @@ function LobbyScreen() {
   const [players, setPlayers] = useState([]);
   const [isHost, setIsHost] = useState(false);
   const [allReady, setAllReady] = useState(false);
-  const [isQAMode, setIsQAMode] = useState(false);
-
-  // Initialize QA Mode (Room 99999)
-  useEffect(() => {
-    const initQAMode = async () => {
-      if (roomCode !== '99999') return;
-
-      setIsQAMode(true);
-
-      try {
-        const roomRef = ref(database, `rooms/99999`);
-        const gameRef = ref(database, `games/99999`);
-
-        await remove(roomRef);
-        await remove(gameRef);
-        console.log('🗑️ QA Room and Game 99999 deleted (reset)');
-
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        const playerName = localStorage.getItem('playerName') || 'Player 1';
-        const lang = t('team_b') === 'Team B' ? 'en' : 'he';
-
-        await set(roomRef, {
-          code: '99999',
-          host: playerId,
-          created: Date.now(),
-          status: 'waiting',
-          isQAMode: true,
-          teams: { teamA: [], teamB: [] },
-          players: {
-            [playerId]: {
-              id: playerId,
-              name: playerName,
-              team: null,
-              seat: null,
-              ready: false,
-              isHost: true,
-            },
-            // Fill the whole Team B auditorium with decorative bots
-            ...buildBotRoster(lang),
-          },
-        });
-
-        console.log('✅ Fresh QA Room 99999 created successfully');
-      } catch (error) {
-        console.error('Error initializing QA mode:', error);
-        alert('Failed to initialize QA mode: ' + error.message);
-      }
-    };
-
-    if (roomCode && playerId) initQAMode();
-  }, [roomCode, playerId, t]);
+  const [isBotMode, setIsBotMode] = useState(false);
 
   // Listen to room changes
   useEffect(() => {
@@ -115,14 +35,13 @@ function LobbyScreen() {
     const unsubscribe = onValue(roomRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
-        if (roomCode !== '99999') {
-          alert('Room not found');
-          navigate('/');
-        }
+        alert('Room not found');
+        navigate('/');
         return;
       }
 
       setRoom(data);
+      setIsBotMode(isBotModeRoom(data));
       setIsHost(data.host === playerId);
 
       const playersList = data.players ? Object.values(data.players) : [];
@@ -154,7 +73,7 @@ function LobbyScreen() {
 
   // Pick a seat (team + seat index) — replaces join-team + ready toggle
   const handlePickSeat = async (team, seatIdx) => {
-    if (isQAMode && team === 'B') return; // bot owns Team B in QA
+    if (isBotMode && team === 'B') return; // bot owns Team B in vs-computer mode
     // Is this seat already taken by someone else?
     const taken = players.find(
       (p) => p.team === team && (p.seat ?? -1) === seatIdx && p.id !== playerId,
@@ -218,7 +137,7 @@ function LobbyScreen() {
 
   const renderTheater = (team) => {
     const seatMap = teamSeatMap[team];
-    const isTeamLocked = isQAMode && team === 'B';
+    const isTeamLocked = isBotMode && team === 'B';
 
     return (
       <div className={`theater theater--${team.toLowerCase()}`}>

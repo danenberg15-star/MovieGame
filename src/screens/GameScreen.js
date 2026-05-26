@@ -164,7 +164,6 @@ function GameScreen() {
   }, [roomCode, playerId]);
 
   const language = 'en';
-  const isQAMode = roomCode === '99999';
   const [botIsThinking, setBotIsThinking] = useState(false);
 
   // Oscar-style feedback popup. We funnel both "you guessed the movie" and
@@ -194,6 +193,8 @@ function GameScreen() {
     setRemovedAnswers
   } = useGameState(roomCode, playerId, language);
 
+  const isBotMode = Boolean(gameState?.isBotMode || gameState?.isQAMode);
+
   const currentTeam = gameState?.playerTeams?.[playerId] ?? null;
   const teamKnown = currentTeam === 'A' || currentTeam === 'B';
   
@@ -206,7 +207,7 @@ function GameScreen() {
 
   // QA steal: after bot fails, player may guess without re-watching the trailer
   const canStealAfterBotTrailer =
-    isQAMode && currentTeam === 'A' && botAlreadyTried;
+    isBotMode && currentTeam === 'A' && botAlreadyTried;
 
   const trailerReadyForAnswers =
     trailerPlayedThisRound || localTrailerWatched || canStealAfterBotTrailer;
@@ -271,7 +272,7 @@ function GameScreen() {
   );
 
   // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess
-  const isMyTurn = teamKnown && (isQAMode
+  const isMyTurn = teamKnown && (isBotMode
     ? (currentTeam === 'A' && !attempts.includes('A')) ||
       (currentTeam === 'B' && !botAlreadyTried)
     : !myTeamAlreadyTried && gameState?.currentTurn === currentTeam);
@@ -346,7 +347,7 @@ function GameScreen() {
     }
 
     const canWriteToFirebase =
-      currentTeam === activeTurn || (isQAMode && activeTurn === 'B');
+      currentTeam === activeTurn || (isBotMode && activeTurn === 'B');
 
     if (canWriteToFirebase) {
       try {
@@ -361,7 +362,7 @@ function GameScreen() {
     gameState?.currentTurn,
     currentTeam,
     teamKnown,
-    isQAMode,
+    isBotMode,
     markTrailerWatched,
     setSelectedAnswer,
     setShowResult,
@@ -373,7 +374,7 @@ function GameScreen() {
   useBotPlayer(
     gameState,
     currentMovie,
-    isQAMode,
+    isBotMode,
     phase,
     botIsThinking,
     setBotIsThinking,

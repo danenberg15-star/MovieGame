@@ -7,10 +7,11 @@ import {
   selectAnchorCards,
   initializeGameState
 } from '../utils/gameLogic';
+import { isBotModeRoom } from '../utils/botRoom';
 
 // Read team chosen in lobby (rooms/{code}/players/{id}.team)
 const getLobbyTeam = async (roomCode, playerId) => {
-  if (!roomCode || roomCode === '99999' || !playerId) return null;
+  if (!roomCode || !playerId) return null;
   try {
     const snap = await get(ref(database, `rooms/${roomCode}/players/${playerId}/team`));
     const team = snap.val();
@@ -45,8 +46,6 @@ export const useGameState = (roomCode, playerId, language) => {
   const [answerOptions, setAnswerOptions] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const currentMovieIdRef = useRef(null);
-
-  const isQAMode = roomCode === '99999';
 
   // Build movies index for faster lookups
   const buildMoviesIndex = useCallback((movies) => {
@@ -100,7 +99,11 @@ export const useGameState = (roomCode, playerId, language) => {
 
     const initGame = async () => {
       try {
-        console.log('🎮 Initializing game...', { roomCode, playerId, isQAMode });
+        const roomSnap = await get(ref(database, `rooms/${roomCode}`));
+        const roomData = roomSnap.val();
+        const isBotMode = isBotModeRoom(roomData);
+
+        console.log('🎮 Initializing game...', { roomCode, playerId, isBotMode });
 
         // Load movies data
         const movies = await loadMoviesData();
@@ -130,6 +133,10 @@ export const useGameState = (roomCode, playerId, language) => {
           const lobbyTeam = await getLobbyTeam(roomCode, playerId);
           const creatorTeam = assignTeam(lobbyTeam, {});
 
+          const humanName =
+            roomData?.players?.[playerId]?.name ||
+            `Player ${playerId.slice(-4)}`;
+
           // Initialize game state
           const initialState = {
             ...initializeGameState(anchors, movies),
@@ -138,19 +145,20 @@ export const useGameState = (roomCode, playerId, language) => {
             players: {
               [playerId]: {
                 id: playerId,
-                name: isQAMode ? 'You' : `Player ${playerId.slice(-4)}`,
+                name: humanName,
                 joinedAt: Date.now()
               }
             },
             playerTeams: {
               [playerId]: creatorTeam
             },
-            isQAMode,
+            isBotMode,
+            isQAMode: isBotMode, // legacy field for older clients
             moviesIndex
           };
 
-          // Add bot player if QA mode
-          if (isQAMode) {
+          // Add playable bot opponent for vs-computer rooms
+          if (isBotMode) {
             initialState.players['bot_player'] = {
               id: 'bot_player',
               name: language === 'he' ? '🤖 בוט AI' : '🤖 AI Bot',
@@ -256,7 +264,7 @@ export const useGameState = (roomCode, playerId, language) => {
         unsubscribe();
       }
     };
-  }, [roomCode, playerId, isQAMode, language, buildMoviesIndex]);
+  }, [roomCode, playerId, language, buildMoviesIndex]);
 
   return {
     gameState,

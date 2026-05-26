@@ -448,7 +448,8 @@ export const useGameActions = (
 
   // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
   const handleAnswerSelect = useCallback(async (answer, isMyTurn, botIsThinking, answeringTeamOverride) => {
-    const isQAMode = roomCode === '99999';
+    const gs = gameStateRef.current;
+    const isBotMode = Boolean(gs?.isBotMode || gs?.isQAMode);
     const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
     const answeringTeam =
       answeringTeamOverride ?? getStealingTeam(attempts) ?? gameState.currentTurn;
@@ -456,7 +457,7 @@ export const useGameActions = (
     const trailerReady = isTrailerReadyForAnswer(
       gameState,
       answeringTeam,
-      isQAMode,
+      isBotMode,
       localTrailerWatched
     );
 
@@ -545,7 +546,7 @@ export const useGameActions = (
           currentMovieAttempts: newAttempts
         };
         // Multiplayer: sync turn in Firebase so both clients enable the right team
-        if (!isQAMode) {
+        if (!isBotMode) {
           stealUpdates.currentTurn = stealTurn;
         }
 
