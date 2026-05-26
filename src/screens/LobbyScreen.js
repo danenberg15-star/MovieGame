@@ -8,7 +8,6 @@ import { setActiveSession, clearActiveSession } from '../utils/activeSession';
 import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom } from '../utils/botRoom';
 import './LobbyScreen.css';
 
-const ROWS = 3;
 const COLS = BOT_SEATS_COLS;
 
 function LobbyScreen() {
