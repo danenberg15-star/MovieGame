@@ -284,6 +284,15 @@
   .team-sidebar__icon   { width: 28px; height: 28px; }
   .team-gauge__value    { font-size: 14px; }
   .team-gauge__label    { font-size: 8px; }
+
+  /* Samsung S24 Ultra & similar landscape phones — the game content
+     ends up ~5% taller than the visible viewport, forcing a tiny scroll.
+     Scale the whole game screen down by 5% so it fits without scrolling.
+     transform: scale is purely visual; touch coordinates still work. */
+  .game-screen {
+    transform: scale(0.95);
+    transform-origin: center top;
+  }
 }
 
 /* Center Content - NO SCROLL */
