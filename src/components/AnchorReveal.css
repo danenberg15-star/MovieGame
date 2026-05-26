@@ -150,7 +150,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: clamp(6px, 1.2vh, 12px);
   width: 100%;
   height: 100%;
@@ -213,14 +213,17 @@
    horizontal room. */
 .anchor-card-section .poster-frame {
   position: relative;
-  /* Take remaining vertical room in the section; width is derived
-     from the 2/3 aspect ratio (height-driven sizing). */
-  flex: 1 1 0;
-  min-height: 0;
-  min-width: 0;
-  width: auto;
-  max-height: 100%;
-  max-width: 100%;
+  /* WIDTH-DRIVEN sizing.
+     Width is derived from viewport height (so the poster stays
+     in proportion to the available vertical space), capped by
+     the section width. The 2/3 aspect ratio then sets the height.
+     This avoids the brittle `flex-grow + aspect-ratio` combo,
+     which some engines render as a 0×0 box. */
+  flex: 0 0 auto;
+  width: clamp(120px, 42vh, 320px);
+  max-width: 90%;
+  max-height: 92%;
+  height: auto;
   aspect-ratio: 2 / 3;
   display: flex;
   flex-direction: column;
