@@ -3,6 +3,39 @@
 import { useEffect, useMemo, useRef } from 'react';
 
 import { getStealingTeam, isBotTurnForQA, normalizeAttempts } from './useGameActions';
+import { findConnection } from '../utils/gameLogic';
+
+/* ----- bot connection helpers ----- */
+
+// Try to find a *real* connection between the won movie and any card
+// already in the bot's chain. Returns { targetCard, type } or null.
+const findRealConnection = (wonMovie, teamCards) => {
+  if (!wonMovie || !Array.isArray(teamCards)) return null;
+  const order = ['actor', 'director', 'year'];
+  for (const card of teamCards) {
+    if (!card || !card.id) continue;
+    const conns = findConnection(wonMovie, card);
+    if (!conns || conns.length === 0) continue;
+    for (const t of order) {
+      const hit = conns.find((c) => c.type === t);
+      if (hit) return { targetCard: card, type: hit.type };
+    }
+    return { targetCard: card, type: conns[0].type };
+  }
+  return null;
+};
+
+// Pick a connection type that we know does NOT actually link the two cards.
+// Falls back to a random type if every type happens to match (very rare).
+const pickWrongConnectionType = (wonMovie, targetCard) => {
+  const all = ['actor', 'director', 'year'];
+  const realConns = findConnection(wonMovie, targetCard) || [];
+  const realTypes = new Set(realConns.map((c) => c.type));
+  const wrong = all.filter((t) => !realTypes.has(t));
+  return wrong.length > 0
+    ? wrong[Math.floor(Math.random() * wrong.length)]
+    : all[Math.floor(Math.random() * all.length)];
+};
 
 
 
@@ -319,7 +352,7 @@ export const useBotPlayer = (
 
 
 
-      const shouldAnswerCorrectly = Math.random() < 0.85;
+      const shouldAnswerCorrectly = Math.random() < 0.8;
 
       let pick;
 
@@ -468,64 +501,58 @@ export const useBotPlayer = (
 
 
       const latestCards = gameStateRef.current?.teamB?.cards || [];
-
-      setBotIsThinking(true);
-
-
-
-      const shouldSucceed = Math.random() < 0.8;
-
-
-
-      const finish = () => setBotIsThinking(false);
-
-
-
       const botTokens = gameStateRef.current?.teamB?.tokens || 0;
 
-      if (shouldSucceed && latestCards.length >= 2) {
+      setBotIsThinking(true);
+      const finish = () => setBotIsThinking(false);
 
-        const targetCard = latestCards[Math.floor(Math.random() * latestCards.length)];
-
-        const connectionTypes = ['actor', 'director', 'year'];
-
-        const randomConnectionType =
-
-          connectionTypes[Math.floor(Math.random() * connectionTypes.length)];
-
-
-
-        console.log('🤖 Bot attempting connection (80% success)');
-
-        console.log('🤖 Target card:', targetCard.title?.en);
-
-        console.log('🤖 Connection type:', randomConnectionType);
-
-
-
-        Promise.resolve(handleConnectionAttempt(targetCard, randomConnectionType)).finally(finish);
-
-      } else if (botTokens >= 3 && latestCards.length >= 3 && handleBuyConnection) {
-
-        // Bot already has tokens — spend them to lock in a card
-
-        console.log('🤖 Bot buying connection (3 tokens)');
-
+      // === 1. ALWAYS buy connection when we can afford it ===
+      // The user explicitly wants the bot to spend tokens on cards
+      // whenever it has enough; otherwise the bot just hoards tokens.
+      if (botTokens >= 3 && handleBuyConnection) {
+        console.log(`🤖 Bot has ${botTokens} tokens → BUYING connection (auto)`);
         Promise.resolve(handleBuyConnection()).finally(finish);
-
-      } else if (latestCards.length < 2) {
-
-        console.log('🤖 Bot has only 1 card - saving token and starting new sequence');
-
-        Promise.resolve(handleSaveToken()).finally(finish);
-
-      } else {
-
-        console.log('🤖 Bot failed to find connection (20%) - starting new sequence');
-
-        Promise.resolve(handleSaveToken()).finally(finish);
-
+        return;
       }
+
+      // === 2. Nothing to connect to → save token ===
+      if (latestCards.length === 0) {
+        console.log('🤖 Bot has no chain cards yet → saving token');
+        Promise.resolve(handleSaveToken()).finally(finish);
+        return;
+      }
+
+      // === 3. Otherwise try to connect with 80% success rate ===
+      const shouldSucceed = Math.random() < 0.8;
+
+      if (shouldSucceed) {
+        const real = findRealConnection(wonMovie, latestCards);
+        if (real) {
+          console.log(
+            `🤖 Bot connecting (80% success): ${wonMovie.title?.en} ↔ ${real.targetCard.title?.en} via ${real.type}`
+          );
+          Promise.resolve(
+            handleConnectionAttempt(real.targetCard, real.type)
+          ).finally(finish);
+          return;
+        }
+        // No real connection exists with any chain card → save the token
+        // (random guessing here would just fail and lose the card).
+        console.log('🤖 No real connection found in chain → saving token');
+        Promise.resolve(handleSaveToken()).finally(finish);
+        return;
+      }
+
+      // === 4. 20% deliberate miss — pick a target and a wrong type ===
+      const targetCard =
+        latestCards[Math.floor(Math.random() * latestCards.length)];
+      const wrongType = pickWrongConnectionType(wonMovie, targetCard);
+      console.log(
+        `🤖 Bot deliberately failing (20%): ${targetCard.title?.en} via ${wrongType}`
+      );
+      Promise.resolve(
+        handleConnectionAttempt(targetCard, wrongType)
+      ).finally(finish);
 
     }, 1500);
 
