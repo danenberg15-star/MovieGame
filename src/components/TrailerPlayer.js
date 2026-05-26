@@ -224,14 +224,16 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       {/* Audience silhouettes — front row */}
       <AudienceFloor />
 
-      <div className="trailer-info">
-        <span className="trailer-info__icon">🎞️</span>
-        <span className="trailer-info__text">
-          {isLoading
-            ? t('loading_trailer') || 'Loading trailer…'
-            : t('watch_trailer') || 'Watch the trailer'}
-        </span>
-      </div>
+      {/* Only show the info strip while the trailer is loading;
+          once it's ready we don't need a "Watch the trailer" label. */}
+      {isLoading && (
+        <div className="trailer-info">
+          <span className="trailer-info__icon">🎞️</span>
+          <span className="trailer-info__text">
+            {t('loading_trailer') || 'Loading trailer…'}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
