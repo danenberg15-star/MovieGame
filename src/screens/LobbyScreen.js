@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { ref, onValue, update } from 'firebase/database';
 import { database } from '../firebase';
 import { setActiveSession, clearActiveSession } from '../utils/activeSession';
-import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom } from '../utils/botRoom';
+import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom, botLabelFor } from '../utils/botRoom';
 import './LobbyScreen.css';
 
 const COLS = BOT_SEATS_COLS;
 
 function LobbyScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { roomCode } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -129,7 +129,7 @@ function LobbyScreen() {
   if (!room) {
     return (
       <div className="lobby-screen">
-        <div className="loading">Loading...</div>
+        <div className="loading">{t('loading')}</div>
       </div>
     );
   }
@@ -190,7 +190,7 @@ function LobbyScreen() {
                     {occupant.isBot ? (
                       <>
                         <span className="seat__emoji">{occupant.botEmoji || '🤖'}</span>
-                        <span className="seat__name">{occupant.botLabel || occupant.name}</span>
+                        <span className="seat__name">{botLabelFor(occupant, i18n.language) || occupant.name}</span>
                       </>
                     ) : (
                       <span className="seat__name seat__name--player">{occupant.name}</span>

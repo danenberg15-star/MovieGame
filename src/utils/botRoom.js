@@ -16,20 +16,35 @@ export const buildBotRoster = (lang = 'en') => {
   for (let i = 0; i < SEATS_PER_TEAM; i++) {
     const id = i === 0 ? 'bot_player' : `bot_${i + 1}`;
     const emoji = BOT_EMOJIS[i % BOT_EMOJIS.length];
-    const label = `BOT${i + 1}`;
+    // Persist both an English and a Hebrew label so the lobby/game can
+    // render the right one regardless of which language the player is
+    // currently using.
+    const labelEn = `BOT${i + 1}`;
+    const labelHe = `בוט ${i + 1}`;
+    const activeLabel = lang === 'he' ? labelHe : labelEn;
     roster[id] = {
       id,
-      name: `${emoji} ${label}`,
+      name: `${emoji} ${activeLabel}`,
       team: 'B',
       seat: i,
       ready: true,
       isHost: false,
       isBot: true,
       botEmoji: emoji,
-      botLabel: label,
+      botLabel: activeLabel,
+      botLabels: { en: labelEn, he: labelHe },
     };
   }
   return roster;
+};
+
+/** Pick the right localized bot label for an occupant record. */
+export const botLabelFor = (occupant, lang = 'en') => {
+  if (!occupant) return '';
+  if (occupant.botLabels && occupant.botLabels[lang]) {
+    return occupant.botLabels[lang];
+  }
+  return occupant.botLabel || '';
 };
 
 export const isBotModeRoom = (roomOrGame) =>

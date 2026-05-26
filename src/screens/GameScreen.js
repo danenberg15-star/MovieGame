@@ -1,6 +1,7 @@
 // src/screens/GameScreen.js
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
 import TrailerPlayer from '../components/TrailerPlayer';
@@ -15,6 +16,7 @@ import OscarPopup from '../components/OscarPopup';
 
 /* ----- Projection-room sidebar panel ----- */
 function TeamSidebar({ side, label, mine, cards, tokens }) {
+  const { t } = useTranslation();
   return (
     <aside
       className={`team-sidebar team-sidebar--${side}${mine ? ' team-sidebar--mine' : ''}`}
@@ -22,19 +24,19 @@ function TeamSidebar({ side, label, mine, cards, tokens }) {
     >
       <div className="team-sidebar__header">
         <span className="team-sidebar__label">{label}</span>
-        {mine && <span className="team-sidebar__you">YOU</span>}
+        {mine && <span className="team-sidebar__you">{t('you_label')}</span>}
       </div>
 
       <div className="team-sidebar__gauges">
         <div className="team-gauge">
           <FilmReelIcon />
           <span className="team-gauge__value">{cards}<span className="team-gauge__total">/10</span></span>
-          <span className="team-gauge__label">CARDS</span>
+          <span className="team-gauge__label">{t('cards_label')}</span>
         </div>
         <div className="team-gauge">
           <CinemaTokenIcon />
           <span className="team-gauge__value">{tokens}</span>
-          <span className="team-gauge__label">TOKENS</span>
+          <span className="team-gauge__label">{t('tokens_label')}</span>
         </div>
       </div>
     </aside>
@@ -163,7 +165,8 @@ function GameScreen() {
     setActiveSession({ roomCode, playerId, screen: 'game' });
   }, [roomCode, playerId]);
 
-  const language = 'en';
+  const { t, i18n } = useTranslation();
+  const language = i18n.language === 'he' ? 'he' : 'en';
   const [botIsThinking, setBotIsThinking] = useState(false);
 
   // Oscar-style feedback popup. We funnel both "you guessed the movie" and
@@ -317,15 +320,15 @@ function GameScreen() {
       value: connectionResult.value,
     });
     const subText = connectionResult.success
-      ? (language === 'he' ? 'הקלף שלך' : 'Card won')
-      : (language === 'he' ? 'הקלף חוזר' : 'Card returns');
+      ? t('card_won')
+      : t('card_returns');
     setOscarPopup({
       variant: connectionResult.success ? 'success' : 'failure',
       quip,
       subText,
       duration: 2500,
     });
-  }, [connectionResult, language]);
+  }, [connectionResult, language, t]);
 
   // When trailer ends: always transition locally; active team writes to Firebase
   const handleTrailerEnd = useCallback(async () => {
@@ -395,46 +398,6 @@ function GameScreen() {
     localTrailerWatched
   );
 
-  // Translation helper
-  const translations = {
-    en: {
-      loading: 'Loading...',
-      error: 'Error',
-      game_over: 'Game Over',
-      winner: 'Winner',
-      team_a: 'Team A',
-      team_b: 'Team B',
-      cards: 'cards',
-      tokens: 'tokens',
-      back_home: 'Back to Home',
-      choose_answer: 'Choose the correct movie:',
-      your_turn_to_guess: 'Your turn to guess!',
-      waiting_for_guess: 'turn to guess',
-      watching_trailer: 'Watching trailer...',
-      waiting_for_decision: 'WAITING...',
-      connect_or_save: 'Connect or Save Token'
-    },
-    he: {
-      loading: 'טוען...',
-      error: 'שגיאה',
-      game_over: 'המשחק הסתיים',
-      winner: 'המנצח',
-      team_a: 'קבוצה A',
-      team_b: 'קבוצה B',
-      cards: 'קלפים',
-      tokens: 'אסימונים',
-      back_home: 'חזרה לדף הבית',
-      choose_answer: 'בחר את הסרט הנכון:',
-      your_turn_to_guess: 'תורך לנחש!',
-      waiting_for_guess: 'תור לנחש',
-      watching_trailer: 'צופה בטריילר...',
-      waiting_for_decision: 'ממתין...',
-      connect_or_save: 'חבר או שמור אסימון'
-    }
-  };
-
-  const t = (key) => translations[language][key] || key;
-
   // Loading state
   if (loading || isInitializing) {
     return (
@@ -467,7 +430,6 @@ function GameScreen() {
         teamACard={gameState.teamA.cards[0]}
         teamBCard={gameState.teamB.cards[0]}
         onContinue={handleAnchorContinue}
-        language={language}
       />
     );
   }
@@ -482,7 +444,6 @@ function GameScreen() {
         myTeam={currentTeam}
         teamACards={gameState.teamA?.cards?.length || 0}
         teamBCards={gameState.teamB?.cards?.length || 0}
-        language={language}
         onBackHome={() => { clearActiveSession(); navigate('/'); }}
       />
     );
@@ -497,7 +458,7 @@ function GameScreen() {
       <div className="game-main-layout">
         <TeamSidebar
           side="left"
-          label="TEAM A"
+          label={t('team_label_a')}
           mine={currentTeam === 'A'}
           cards={teamAData.cards?.length || 0}
           tokens={teamAData.tokens || 0}
@@ -515,7 +476,6 @@ function GameScreen() {
               onConnect={handleConnectionAttempt}
               onSaveToken={handleSaveToken}
               onBuyConnection={handleBuyConnection}
-              language={language}
               disabled={gameState.wonCard?.team !== currentTeam}
             />
           ) : (
@@ -544,7 +504,7 @@ function GameScreen() {
                     <FilmReelIcon />
                   </div>
                   <p className="reel-changeover__text">
-                    {language === 'he' ? 'מחליפים סליל…' : 'Changing reels…'}
+                    {t('reel_changeover')}
                   </p>
                 </div>
               ) : (
@@ -552,9 +512,7 @@ function GameScreen() {
                   <h2>{t('choose_answer')}</h2>
                   {!teamKnown && (
                     <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '12px', color: '#ff9800' }}>
-                      {language === 'he'
-                        ? 'מזהה שחקן לא נמצא — רענן מהלובי עם אותו קישור'
-                        : 'Player identity missing — rejoin from lobby with the same link'}
+                      {t('player_id_missing')}
                     </p>
                   )}
                   {gameState?.currentTurn && teamKnown && (
@@ -592,7 +550,7 @@ function GameScreen() {
 
         <TeamSidebar
           side="right"
-          label="TEAM B"
+          label={t('team_label_b')}
           mine={currentTeam === 'B'}
           cards={teamBData.cards?.length || 0}
           tokens={teamBData.tokens || 0}

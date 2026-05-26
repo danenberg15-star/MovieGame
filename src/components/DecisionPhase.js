@@ -27,10 +27,10 @@ function DecisionPhase({
   onConnect,
   onSaveToken,
   onBuyConnection,
-  language = 'en',
   disabled = false,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language === 'he' ? 'he' : 'en';
 
   // 'choose-action' | 'armed' | 'choose-type'
   const [mode, setMode] = useState('choose-action');
@@ -170,9 +170,7 @@ function DecisionPhase({
   if (!wonCard) {
     return (
       <div className="decision-phase">
-        <p className="decision-subtitle">
-          {language === 'he' ? 'טוען קלף…' : 'Loading card…'}
-        </p>
+        <p className="decision-subtitle">{t('loading_card')}</p>
       </div>
     );
   }
@@ -181,17 +179,11 @@ function DecisionPhase({
   let headerNode;
   if (mode === 'choose-type') {
     headerNode = (
-      <h3 className="decision-step">
-        {language === 'he' ? '🎯 בחרו את סוג החיבור' : '🎯 Pick the connection type'}
-      </h3>
+      <h3 className="decision-step">{t('pick_type')}</h3>
     );
   } else if (mode === 'armed') {
     headerNode = (
-      <h3 className="decision-step">
-        {language === 'he'
-          ? '👉 גללו, ולחצו על הקלף הגדול לחיבור'
-          : '👉 Scroll, then tap the big card to connect'}
-      </h3>
+      <h3 className="decision-step">{t('scroll_then_tap')}</h3>
     );
   } else {
     headerNode = (
@@ -234,9 +226,7 @@ function DecisionPhase({
             {/* Right: selected card BIG (same size as won) */}
             <div className="dp-pane dp-pane--selected">
               <div className="dp-card-badge dp-card-badge--neutral">
-                {mode === 'armed'
-                  ? (language === 'he' ? '👉 לחצו לחיבור' : '👉 Tap to connect')
-                  : (language === 'he' ? 'מהשרשרת שלך' : 'From your chain')}
+                {mode === 'armed' ? t('tap_to_connect') : t('from_your_chain')}
               </div>
               {renderPoster(selectedCard, 'big', {
                 armed: mode === 'armed',
@@ -269,16 +259,12 @@ function DecisionPhase({
             title={
               canBuyConnection
                 ? ''
-                : language === 'he'
-                  ? `דרושים ${BUY_CONNECTION_COST} אסימונים (יש לך ${teamTokens})`
-                  : `Requires ${BUY_CONNECTION_COST} tokens (you have ${teamTokens})`
+                : t('buy_requires', { cost: BUY_CONNECTION_COST, tokens: teamTokens })
             }
           >
             <span className="dp-btn__icon">💰</span>
             <span className="dp-btn__text">
-              {language === 'he'
-                ? `קנה קלף ב-${BUY_CONNECTION_COST} אסימונים`
-                : `Buy card for ${BUY_CONNECTION_COST} tokens`}
+              {t('buy_card_for', { cost: BUY_CONNECTION_COST })}
             </span>
           </button>
 
@@ -299,11 +285,7 @@ function DecisionPhase({
 
       {mode === 'armed' && (
         <div className="dp-actions-row dp-actions-row--armed">
-          <span className="dp-armed-hint">
-            {language === 'he'
-              ? '👉 בחרו קלף מהגלילה ואז לחצו על הקלף הגדול מימין'
-              : '👉 Pick a card from the scroll, then tap the big card on the right'}
-          </span>
+          <span className="dp-armed-hint">{t('armed_hint')}</span>
           <button
             type="button"
             className="dp-btn dp-btn--cancel dp-btn--compact"

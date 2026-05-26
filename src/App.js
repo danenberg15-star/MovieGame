@@ -88,11 +88,23 @@ function App() {
       {/* Landscape Lock Message */}
       <div className="landscape-lock">
         <div className="rotate-icon">📱</div>
-        <h2>Please rotate your device</h2>
-        <p>This game is designed for landscape mode only</p>
-        <p style={{ marginTop: '10px', fontSize: '16px' }}>
-          {currentLang === 'he' ? 'אנא סובב את המכשיר למצב אופקי' : 'Please rotate to landscape mode'}
-        </p>
+        {currentLang === 'he' ? (
+          <>
+            <h2>אנא סובבו את המכשיר</h2>
+            <p>המשחק מתוכנן למצב לרוחב בלבד</p>
+            <p style={{ marginTop: '10px', fontSize: '16px' }}>
+              אנא סובבו את המכשיר למצב אופקי
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>Please rotate your device</h2>
+            <p>This game is designed for landscape mode only</p>
+            <p style={{ marginTop: '10px', fontSize: '16px' }}>
+              Please rotate to landscape mode
+            </p>
+          </>
+        )}
       </div>
 
       {/* Main Content */}

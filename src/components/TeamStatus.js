@@ -37,7 +37,7 @@ function TeamStatus({ teamA, teamB, currentTurn }) {
       </div>
 
       {/* VS Divider */}
-      <div className="vs-divider">VS</div>
+      <div className="vs-divider">{t('victory_vs')}</div>
 
       {/* Team B Status */}
       <div className={`team-status team-b ${currentTurn === 'B' ? 'active-turn' : ''}`}>

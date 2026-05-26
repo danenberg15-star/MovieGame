@@ -3,8 +3,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './AnchorReveal.css';
 
-function AnchorReveal({ teamACard, teamBCard, onContinue, language = 'en' }) {
-  const { t } = useTranslation();
+function AnchorReveal({ teamACard, teamBCard, onContinue }) {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language === 'he' ? 'he' : 'en';
 
   // The reveal animation is now driven entirely by CSS (see
   // anchorPosterIn in AnchorReveal.css), so we don't need a JS state
@@ -75,7 +76,7 @@ function AnchorReveal({ teamACard, teamBCard, onContinue, language = 'en' }) {
           {renderCard(teamACard, 'a')}
 
           <div className="anchor-vs">
-            <span className="anchor-vs__text">VS</span>
+            <span className="anchor-vs__text">{t('victory_vs')}</span>
           </div>
 
           {renderCard(teamBCard, 'b')}

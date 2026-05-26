@@ -10,32 +10,8 @@
 // which variant to render by comparing it to `winner`.
 
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import './VictoryScreen.css';
-
-const TRANSLATIONS = {
-  en: {
-    winner: 'WINNER',
-    flop: 'FLOP',
-    team_a: 'Team A',
-    team_b: 'Team B',
-    cards: 'cards',
-    back_home: 'Back to Home',
-    vs: 'VS',
-    you_lost_to: 'Beaten by',
-    draw: 'DRAW',
-  },
-  he: {
-    winner: 'הזוכים',
-    flop: 'פלופ',
-    team_a: 'קבוצה A',
-    team_b: 'קבוצה B',
-    cards: 'קלפים',
-    back_home: 'חזרה לדף הבית',
-    vs: 'מול',
-    you_lost_to: 'הפסדתם ל',
-    draw: 'תיקו',
-  },
-};
 
 const TOTAL_IMAGES = 5;
 
@@ -45,10 +21,8 @@ export default function VictoryScreen({
   teamACards = 0,
   teamBCards = 0,
   onBackHome,
-  language = 'en',
 }) {
-  const dict = TRANSLATIONS[language] || TRANSLATIONS.en;
-  const t = (key) => dict[key] ?? key;
+  const { t } = useTranslation();
 
   const isDraw = winner === 'draw' || winner == null;
   const isLoser = !isDraw && myTeam && myTeam !== winner;
@@ -66,19 +40,19 @@ export default function VictoryScreen({
     return `${base}/${prefix}${n}.webp`;
   }, [isLoser]);
 
-  // Ribbon copy
+  // Ribbon copy (driven by i18n keys defined in src/i18n.js)
   const ribbonLabel = isDraw
-    ? t('draw')
+    ? t('oscar_draw')
     : isLoser
-    ? t('flop')
-    : t('winner');
+    ? t('oscar_flop')
+    : t('oscar_winner');
 
   const winningTeamLabel = winner === 'B' ? t('team_b') : t('team_a');
 
   const ribbonSub = isDraw
     ? null
     : isLoser
-    ? `${t('you_lost_to')} ${winningTeamLabel}`
+    ? `${t('victory_beaten_by')} ${winningTeamLabel}`
     : winningTeamLabel;
 
   return (
@@ -126,7 +100,7 @@ export default function VictoryScreen({
             <span className="vs-score__value">{teamACards}</span>
             <span className="vs-score__cards">{t('cards')}</span>
           </div>
-          <div className="vs-score__sep" aria-hidden="true">{t('vs')}</div>
+          <div className="vs-score__sep" aria-hidden="true">{t('victory_vs')}</div>
           <div className={`vs-score__col${winner === 'B' ? ' vs-score__col--win' : ''}`}>
             <span className="vs-score__label">{t('team_b')}</span>
             <span className="vs-score__value">{teamBCards}</span>
@@ -135,7 +109,7 @@ export default function VictoryScreen({
         </div>
 
         <button type="button" className="vs-btn" onClick={onBackHome}>
-          {t('back_home')}
+          {t('victory_back_home')}
         </button>
       </div>
     </div>

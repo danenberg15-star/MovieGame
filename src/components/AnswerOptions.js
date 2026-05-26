@@ -67,9 +67,9 @@ function AnswerOptions({
       <div className="answer-header">
         <h3 className="answer-title">{t('choose_answer')}</h3>
         <p className="answer-subtitle">
-          {eliminatedAnswers.length > 0 
-            ? `${10 - eliminatedAnswers.length} ${t('options_left') || 'options left'}`
-            : '10 options'
+          {eliminatedAnswers.length > 0
+            ? t('options_left_count', { count: 10 - eliminatedAnswers.length })
+            : t('options_total_count', { count: 10 })
           }
         </p>
       </div>
