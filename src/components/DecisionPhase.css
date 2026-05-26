@@ -438,9 +438,30 @@
   border-color: rgba(255, 216, 107, 0.6);
 }
 .dp-btn--buy {
-  background: linear-gradient(135deg, #d4a047 0%, #8c6320 100%);
-  color: #1a0e04;
-  text-shadow: 0 1px 0 rgba(255, 248, 214, 0.55);
+  background: linear-gradient(135deg, #e8b84a 0%, #c4922e 45%, #8c6320 100%);
+  border-color: rgba(60, 40, 8, 0.55);
+  color: #0a0604;
+  font-weight: 800;
+  /* Glossy black lettering — strong contrast on gold */
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22),
+    0 2px 4px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 248, 214, 0.55),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.18),
+    0 3px 8px rgba(0, 0, 0, 0.5);
+}
+.dp-btn--buy .dp-btn__hint {
+  color: #1a1008;
+  opacity: 1;
+  font-weight: 700;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18),
+    0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.dp-btn--buy:hover:not(:disabled) {
+  filter: brightness(1.06);
+  color: #000000;
 }
 .dp-btn--save {
   background: linear-gradient(135deg, #2d5a16 0%, #173309 100%);
