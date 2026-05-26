@@ -84,7 +84,18 @@ const resources = {
         actor: "Correct! {{name}} played in both movies",
         director: "Correct! Both directed by {{name}}",
         year: "Correct! Both released in {{year}}"
-      }
+      },
+      rules_title: "How to Play",
+      rules_intro: "A cinematic battle of movie knowledge — link films, collect cards, win the night.",
+      rules: [
+        "Goal: be the first team to collect 10 connected movie cards.",
+        "Watch the trailer and pick the correct movie from 10 options.",
+        "Every correct guess earns your team one token.",
+        "To 'collect' the movie you must connect it to a movie you already own.",
+        "Possible connections: same actor, same director, or same release year.",
+        "If you can't find a link, buy a connection for 3 tokens — or just take the token and skip the card."
+      ],
+      rules_close: "Got it"
     }
   },
   he: {
@@ -168,7 +179,18 @@ const resources = {
         actor: "צדקתם! {{name}} שיחק/ה בשני הסרטים",
         director: "צדקתם! שניהם בוימו על ידי {{name}}",
         year: "צדקתם! שניהם יצאו ב-{{year}}"
-      }
+      },
+      rules_title: "איך משחקים",
+      rules_intro: "קרב קולנועי של ידע בסרטים — חברו, אספו קלפים וכבשו את הערב.",
+      rules: [
+        "מטרת המשחק: להיות הקבוצה הראשונה שאוספת 10 כרטיסי סרטים מקושרים.",
+        "צפו בטריילר וזהו נכונה את הסרט מתוך 10 אפשרויות.",
+        "כל זיהוי נכון מעניק לקבוצה שלכם אסימון.",
+        "על מנת ל\"אסוף\" סרט צריך לשייך אותו לסרט אחר שכבר אספתם.",
+        "הקשרים האפשריים: שחקן, במאי או שנת יציאה.",
+        "אם אתם לא יודעים לשייך את הסרט שזיהיתם – אפשר לקנות שיוך תמורת 3 אסימונים, או לבחור באופציה \"קבלו אסימון\"."
+      ],
+      rules_close: "הבנתי"
     }
   }
 };

@@ -356,8 +356,26 @@ function HomeScreen() {
             >
               ✕
             </button>
-            <h2>❓ {t('how_to_play')}</h2>
-            <p>{t('welcome')}</p>
+
+            <h2>🎬 {t('rules_title')}</h2>
+            <p className="help-modal__intro">{t('rules_intro')}</p>
+
+            <ol className="help-rules">
+              {(t('rules', { returnObjects: true }) || []).map((rule, idx) => (
+                <li key={idx} className="help-rules__item">
+                  <span className="help-rules__num">{idx + 1}</span>
+                  <span className="help-rules__text">{rule}</span>
+                </li>
+              ))}
+            </ol>
+
+            <button
+              type="button"
+              className="help-modal__cta"
+              onClick={() => setShowHelp(false)}
+            >
+              {t('rules_close')}
+            </button>
           </div>
         </div>
       )}
