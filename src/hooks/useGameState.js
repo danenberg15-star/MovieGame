@@ -205,7 +205,9 @@ export const useGameState = (roomCode, playerId, language) => {
 
             // Update current movie ONLY if it's a NEW movie (prevents double trailer)
             if (data.currentMovie && data.currentMovie.id) {
-              const movie = movies.find(m => m.id === data.currentMovie.id);
+              const movie = movies.find(
+                (m) => String(m.id) === String(data.currentMovie.id)
+              );
               if (movie) {
                 if (currentMovieIdRef.current !== movie.id) {
                   console.log('🎬 New movie detected, updating currentMovie');

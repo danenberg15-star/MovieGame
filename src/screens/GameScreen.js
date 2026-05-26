@@ -174,6 +174,7 @@ function GameScreen() {
   // Local state to track if trailer was watched for current movie
   const [localTrailerWatched, setLocalTrailerWatched] = useState(false);
   const trailerEndedForMovieRef = useRef(null);
+  const lastRoundNumberRef = useRef(null);
 
   // Custom hook for game state management
   const {
@@ -212,14 +213,22 @@ function GameScreen() {
   const shouldShowTrailer =
     phase === 'playing' && currentMovie && !trailerReadyForAnswers;
 
-  // Reset trailer flags when a new movie round starts
+  // Reset trailer flags when Firebase advances roundNumber (new trailer round).
+  // Also reset when movie id changes — covers re-picks of the same movie id.
   useEffect(() => {
+    const rn = gameState?.roundNumber;
+    if (rn != null && lastRoundNumberRef.current !== rn) {
+      lastRoundNumberRef.current = rn;
+      trailerEndedForMovieRef.current = null;
+      setLocalTrailerWatched(false);
+      return;
+    }
     if (!currentMovie?.id) return;
     if (trailerEndedForMovieRef.current !== currentMovie.id) {
       trailerEndedForMovieRef.current = null;
       setLocalTrailerWatched(false);
     }
-  }, [currentMovie?.id]);
+  }, [gameState?.roundNumber, currentMovie?.id]);
 
   // Sync from Firebase — when any client marks trailer watched, all clients show answers
   useEffect(() => {

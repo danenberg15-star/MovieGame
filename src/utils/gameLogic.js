@@ -103,13 +103,28 @@ export function buildMoviesIndex(allMovies) {
   };
 }
 
+/** Normalize movie IDs for set lookups (Firebase may store numbers as strings). */
+export function normalizeMovieId(id) {
+  return id == null ? '' : String(id);
+}
+
+export function buildUsedMovieIdSet(usedMovieIds) {
+  const list = Array.isArray(usedMovieIds)
+    ? usedMovieIds
+    : usedMovieIds
+      ? Object.values(usedMovieIds)
+      : [];
+  return new Set(list.map(normalizeMovieId).filter(Boolean));
+}
+
 // Select next movie with NEW LOGIC: Random connection type selection (33% each)
 export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn) {
   console.log('🎬 ========== SELECT NEXT MOVIE - NEW LOGIC ==========');
   
-  // 1. Filter available movies
+  // 1. Filter available movies (string-normalized IDs — avoids "42" vs 42 mismatches)
+  const usedSet = buildUsedMovieIdSet(usedMovieIds);
   const availableMovies = allMovies.filter(
-    movie => !usedMovieIds.includes(movie.id)
+    (movie) => !usedSet.has(normalizeMovieId(movie.id))
   );
   
   if (availableMovies.length === 0) {

@@ -82,6 +82,11 @@ export const useGameActions = (
   const [isCorrect, setIsCorrect] = useState(false);
   const [connectionResult, setConnectionResult] = useState(null);
   const lastAnswerSessionRef = useRef(null);
+  const gameStateRef = useRef(gameState);
+  const startingNextRoundRef = useRef(false);
+  const nextRoundTimerRef = useRef(null);
+
+  gameStateRef.current = gameState;
 
   // Fresh answer UI per (movie + turn + round) — avoids needing hard refresh when state sticks
   useEffect(() => {
@@ -139,64 +144,91 @@ export const useGameActions = (
     setIsCorrect(false);
   }, [gameState?.currentTurn, currentMovie?.id, gameState?.currentMovieAttempts]);
 
-  // Start next round (turnOverride avoids stale currentTurn after Firebase updates)
-  const startNextRound = useCallback(async (turnOverride) => {
-    if (!gameState || !allMovies.length) return;
+  // Start next round. Pass usedMovieIdsOverride after connect/save/buy so we
+  // never pick from a stale usedMovieIds snapshot (same trailer twice).
+  const startNextRound = useCallback(
+    async (turnOverride, { usedMovieIdsOverride } = {}) => {
+      const gs = gameStateRef.current;
+      if (!gs || !allMovies.length) return;
 
-    const activeTurn = turnOverride ?? gameState.currentTurn;
-    console.log('🎬 Starting next round...', { activeTurn });
-
-    try {
-      const teamACards = gameState.teamA?.cards || [];
-      const teamBCards = gameState.teamB?.cards || [];
-      const usedIds = gameState.usedMovieIds || [];
-
-      // Select next movie
-      const nextMovie = selectNextMovie(
-        allMovies,
-        usedIds,
-        teamACards,
-        teamBCards,
-        activeTurn
-      );
-
-      if (!nextMovie) {
-        console.log('❌ No more movies available - game over');
-        await update(ref(database, `games/${roomCode}`), {
-          phase: 'finished',
-          winner: 'draw'
-        });
+      if (startingNextRoundRef.current) {
+        console.warn('🎬 startNextRound already running — skipping duplicate');
         return;
       }
+      startingNextRoundRef.current = true;
 
-      console.log('✅ Selected movie:', nextMovie.title.en);
+      const activeTurn = turnOverride ?? gs.currentTurn;
+      const usedIds = usedMovieIdsOverride ?? gs.usedMovieIds ?? [];
+      const nextRoundNumber = (gs.roundNumber || 0) + 1;
 
-      // Generate answer options
-      const options = generateAnswerOptions(nextMovie, allMovies, language);
-
-      // Update Firebase ONLY - let useGameState handle local state
-      await update(ref(database, `games/${roomCode}`), {
-        currentMovie: {
-          id: nextMovie.id,
-          options,
-          removedAnswers: [],
-          trailerWatchedForTurn: null
-        },
-        currentMovieAttempts: [],
-        roundNumber: (gameState.roundNumber || 0) + 1,
-        currentTurn: activeTurn,
-        phase: 'playing'
+      console.log('🎬 Starting next round...', {
+        activeTurn,
+        roundNumber: nextRoundNumber,
       });
 
-      // Reset local state
-      setSelectedAnswer(null);
-      setShowResult(false);
-      setRemovedAnswers([]);
+      try {
+        const teamACards = gs.teamA?.cards || [];
+        const teamBCards = gs.teamB?.cards || [];
 
-    } catch (err) {
-      console.error('❌ Error starting next round:', err);
-    }
-  }, [gameState, allMovies, roomCode, language, setRemovedAnswers]);
+        const nextMovie = selectNextMovie(
+          allMovies,
+          usedIds,
+          teamACards,
+          teamBCards,
+          activeTurn
+        );
+
+        if (!nextMovie) {
+          console.log('❌ No more movies available - game over');
+          await update(ref(database, `games/${roomCode}`), {
+            phase: 'finished',
+            winner: 'draw',
+          });
+          return;
+        }
+
+        console.log('✅ Selected movie:', nextMovie.title.en, `(id: ${nextMovie.id})`);
+
+        const options = generateAnswerOptions(nextMovie, allMovies, language);
+
+        await update(ref(database, `games/${roomCode}`), {
+          currentMovie: {
+            id: nextMovie.id,
+            options,
+            removedAnswers: [],
+            trailerWatchedForTurn: null,
+          },
+          currentMovieAttempts: [],
+          roundNumber: nextRoundNumber,
+          currentTurn: activeTurn,
+          phase: 'playing',
+        });
+
+        setSelectedAnswer(null);
+        setShowResult(false);
+        setRemovedAnswers([]);
+      } catch (err) {
+        console.error('❌ Error starting next round:', err);
+      } finally {
+        startingNextRoundRef.current = false;
+      }
+    },
+    [allMovies, roomCode, language, setRemovedAnswers]
+  );
+
+  const scheduleNextRound = useCallback(
+    (turnOverride, usedMovieIdsOverride) => {
+      if (nextRoundTimerRef.current) {
+        clearTimeout(nextRoundTimerRef.current);
+      }
+      nextRoundTimerRef.current = setTimeout(() => {
+        nextRoundTimerRef.current = null;
+        setConnectionResult(null);
+        startNextRound(turnOverride, { usedMovieIdsOverride });
+      }, 2200);
+    },
+    [startNextRound]
+  );
 
   // Handle connection attempt
   const handleConnectionAttempt = useCallback(async (targetCard, connectionType) => {
@@ -217,6 +249,7 @@ export const useGameActions = (
     const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
     const originalTurnHolder = priorAttempts[0] ?? winningTeam;
     const nextTurn = otherTeam(originalTurnHolder);
+    const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
 
     if (validation.valid) {
       // Successful connection — add movie to the chain. NO token change.
@@ -229,7 +262,7 @@ export const useGameActions = (
       const updates = {
         [`${teamKey}/cards`]: newCards,
         [`${teamKey}/score`]: newScore,
-        usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
+        usedMovieIds: newUsedIds,
         currentMovie: null,
         currentMovieAttempts: [],
         wonCard: null,
@@ -268,14 +301,7 @@ export const useGameActions = (
       });
 
       if (!hasWon) {
-        // Pre-load the next round slightly BEFORE the Oscar popup closes
-        // so the new trailer is ready the moment the popup vanishes.
-        // (GameScreen renders a "next reel" placeholder for any brief
-        // sync gap so the previous answer grid never flashes back.)
-        setTimeout(() => {
-          setConnectionResult(null);
-          startNextRound(nextTurn);
-        }, 2200);
+        scheduleNextRound(nextTurn, newUsedIds);
       }
 
     } else {
@@ -312,12 +338,10 @@ export const useGameActions = (
         value: suggestedValueText,
       });
 
-      setTimeout(() => {
-        setConnectionResult(null);
-        startNextRound(nextTurn);
-      }, 2200);
+      // Failed connection — movie returns to the pool; don't mark it used.
+      scheduleNextRound(nextTurn);
     }
-  }, [currentMovie, currentTeam, gameState, roomCode, language, startNextRound]);
+  }, [currentMovie, currentTeam, gameState, roomCode, language, scheduleNextRound]);
 
   // Save Token — gain +1 extra token, DROP the won card (returns to pool).
   const handleSaveToken = useCallback(async () => {
@@ -334,10 +358,11 @@ export const useGameActions = (
     const nextTurn = otherTeam(originalTurnHolder);
 
     const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
+    const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
 
     await update(ref(database, `games/${roomCode}`), {
       [`${teamKey}/tokens`]: newTokens,
-      usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
+      usedMovieIds: newUsedIds,
       phase: 'playing',
       wonCard: null,
       currentMovie: null,
@@ -345,8 +370,8 @@ export const useGameActions = (
       currentTurn: nextTurn
     });
 
-    startNextRound(nextTurn);
-  }, [roomCode, currentTeam, gameState, currentMovie, startNextRound]);
+    scheduleNextRound(nextTurn, newUsedIds);
+  }, [roomCode, currentTeam, gameState, currentMovie, scheduleNextRound]);
 
   // Buy Connection — spend 3 tokens to add the won card directly to the chain.
   const handleBuyConnection = useCallback(async () => {
@@ -369,12 +394,13 @@ export const useGameActions = (
     const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
     const originalTurnHolder = priorAttempts[0] ?? winningTeam;
     const nextTurn = otherTeam(originalTurnHolder);
+    const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
 
     const updates = {
       [`${teamKey}/cards`]: newCards,
       [`${teamKey}/score`]: newScore,
       [`${teamKey}/tokens`]: currentTokens - 3,
-      usedMovieIds: [...(gameState.usedMovieIds || []), currentMovie.id],
+      usedMovieIds: newUsedIds,
       phase: hasWon ? 'finished' : 'playing',
       wonCard: null,
       currentMovie: null,
@@ -394,9 +420,11 @@ export const useGameActions = (
     });
 
     if (!hasWon) {
-      setTimeout(() => {
+      if (nextRoundTimerRef.current) clearTimeout(nextRoundTimerRef.current);
+      nextRoundTimerRef.current = setTimeout(() => {
+        nextRoundTimerRef.current = null;
         setConnectionResult(null);
-        startNextRound(nextTurn);
+        startNextRound(nextTurn, { usedMovieIdsOverride: newUsedIds });
       }, 2000);
     }
   }, [roomCode, currentTeam, gameState, currentMovie, language, startNextRound]);
