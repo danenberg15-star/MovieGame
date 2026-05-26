@@ -1,5 +1,5 @@
 // Service Worker for CINEMASTER PWA
-const CACHE_NAME = 'cinemaster-v1.14.5';
+const CACHE_NAME = 'cinemaster-v1.14.6';
 
 // Only cache essential files that we know exist
 const ESSENTIAL_CACHE = [

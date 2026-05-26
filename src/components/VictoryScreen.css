@@ -133,25 +133,32 @@
   margin-left: -2px;
 }
 
-/* ---------------- Image stage ---------------- */
+/* ---------------- Image stage ----------------
+   The frame is now SHRINK-TO-FIT around the image instead of stretching
+   to fill the stage. This eliminates the wide black "dead" bars on
+   either side of landscape-ratio winner photos on wide screens. */
 .vs-stage {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   min-height: 0;
+  padding: 0 clamp(4px, 1vw, 14px);
 }
 
 .vs-frame {
   position: relative;
-  max-width: min(92vw, 1400px);
-  max-height: 100%;
-  width: 100%;
-  height: 100%;
-  display: flex;
+  /* No fixed width/height — the inline-flex box wraps the image. */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  max-width: min(96vw, 1400px);
+  max-height: 100%;
+  /* Tiny floor so the frame doesn't visually collapse if an image is
+     still loading from the network. */
+  min-width: 200px;
+  min-height: 200px;
   padding: clamp(4px, 0.7vh, 10px);
   border-radius: clamp(10px, 1.8vh, 22px);
   background:
@@ -165,22 +172,28 @@
 
 .vs-frame__inner {
   position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: clamp(6px, 1.2vh, 14px);
-  overflow: hidden;
-  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* No fixed width/height — sized by the <img> inside. The inner box's
+     job is just to give us the inner gold rim + rounded corners. */
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: clamp(6px, 1.2vh, 14px);
+  overflow: hidden;
+  background: #000;
   box-shadow: inset 0 0 0 1px rgba(255, 217, 130, 0.25);
 }
 
 .vs-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
   display: block;
+  /* Image drives its own size, constrained by the stage. Combined with
+     the inline-flex frame above, the frame wraps tightly around the
+     image's intrinsic aspect ratio. No more letterboxing. */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   user-select: none;
   -webkit-user-drag: none;
   animation: vsImageIn 0.9s ease-out both;
