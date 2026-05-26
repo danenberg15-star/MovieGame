@@ -1,0 +1,348 @@
+/* src/components/VictoryScreen.css
+   ------------------------------------------------------------------
+   Cinematic end-of-game victory screen.
+
+   Layout:
+     viewport
+       ├── paparazzi flashes (absolute, full-screen)
+       ├── gold WINNER ribbon          (top, ~10vh)
+       ├── stage    (flex:1 — image sized as big as it can fit)
+       └── footer   (bottom, team score + back-home CTA)
+------------------------------------------------------------------- */
+
+.victory-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(12px, 2.2vh, 28px) clamp(14px, 3vw, 36px);
+  gap: clamp(8px, 1.8vh, 22px);
+  background:
+    radial-gradient(ellipse at top, rgba(160, 70, 70, 0.18), transparent 55%),
+    radial-gradient(ellipse at bottom, rgba(80, 60, 30, 0.22), transparent 55%),
+    linear-gradient(160deg, #100a18 0%, #1a0e1e 50%, #0c0814 100%);
+  color: #fff;
+  overflow: hidden;
+  z-index: 5;
+  animation: vsFadeIn 0.55s ease-out both;
+}
+
+@keyframes vsFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---------------- Paparazzi flashes ---------------- */
+.vs-flash {
+  position: absolute;
+  width: 30vmax;
+  height: 30vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 60%);
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(2px);
+}
+.vs-flash--a { top: -10vmax; left: -10vmax; animation: vsFlash 7s ease-out infinite 0.4s; }
+.vs-flash--b { top: -10vmax; right: -8vmax; animation: vsFlash 8s ease-out infinite 1.6s; }
+.vs-flash--c { bottom: -12vmax; left: 25vw;  animation: vsFlash 9s ease-out infinite 3.1s; }
+.vs-flash--d { bottom: -10vmax; right: -10vmax; animation: vsFlash 6.5s ease-out infinite 4.7s; }
+
+@keyframes vsFlash {
+  0%   { opacity: 0; }
+  3%   { opacity: 0.95; }
+  8%   { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* ---------------- Gold WINNER ribbon ---------------- */
+.vs-ribbon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(90vw, 720px);
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.55));
+  animation: vsRibbonIn 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+  flex-shrink: 0;
+}
+
+@keyframes vsRibbonIn {
+  0%   { transform: translateY(-30px) scale(0.7); opacity: 0; }
+  100% { transform: translateY(0)    scale(1);   opacity: 1; }
+}
+
+.vs-ribbon__core {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: clamp(10px, 1.6vh, 18px) clamp(28px, 5vw, 60px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), transparent 35%),
+    linear-gradient(180deg, #b51c2c 0%, #7a0b18 100%);
+  color: #fff8d4;
+  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.18em;
+  border-top: 1px solid rgba(255, 217, 130, 0.55);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 180, 0.35),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.35),
+    0 6px 18px rgba(0, 0, 0, 0.45);
+  z-index: 1;
+}
+
+.vs-ribbon__label {
+  font-size: clamp(20px, 3.6vw, 38px);
+  font-weight: 800;
+  color: #ffe187;
+  text-shadow:
+    0 1px 0 #5a2200,
+    0 2px 4px rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.22em;
+}
+
+.vs-ribbon__team {
+  font-size: clamp(13px, 1.8vw, 18px);
+  font-weight: 700;
+  color: #fff5dc;
+  letter-spacing: 0.32em;
+  opacity: 0.92;
+}
+
+.vs-ribbon__tail {
+  width: clamp(28px, 5vw, 52px);
+  height: clamp(38px, 6vh, 56px);
+  background: linear-gradient(180deg, #7a0b18 0%, #4a050d 100%);
+  position: relative;
+}
+.vs-ribbon__tail--left {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 55% 50%);
+  margin-right: -2px;
+}
+.vs-ribbon__tail--right {
+  clip-path: polygon(0% 0%, 100% 0%, 45% 50%, 100% 100%, 0% 100%);
+  margin-left: -2px;
+}
+
+/* ---------------- Image stage ---------------- */
+.vs-stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.vs-frame {
+  position: relative;
+  max-width: min(92vw, 1400px);
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(4px, 0.7vh, 10px);
+  border-radius: clamp(10px, 1.8vh, 22px);
+  background:
+    linear-gradient(160deg, #2d2d33 0%, #16161a 45%, #2d2d33 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+    inset 0 0 0 4px rgba(0, 0, 0, 0.85),
+    0 28px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 217, 130, 0.18);
+}
+
+.vs-frame__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(6px, 1.2vh, 14px);
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 217, 130, 0.25);
+}
+
+.vs-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  animation: vsImageIn 0.9s ease-out both;
+}
+
+@keyframes vsImageIn {
+  0%   { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* Soft "ambilight" glow bleeding from the frame onto the background. */
+.vs-ambilight {
+  position: absolute;
+  inset: -18%;
+  border-radius: inherit;
+  background:
+    radial-gradient(60% 50% at 30% 30%, rgba(255, 175, 90, 0.18) 0%, transparent 70%),
+    radial-gradient(50% 50% at 70% 70%, rgba(160, 60, 120, 0.18) 0%, transparent 70%),
+    radial-gradient(60% 60% at 50% 50%, rgba(255, 215, 130, 0.10) 0%, transparent 80%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: -1;
+  animation: vsAmbiPulse 5.5s ease-in-out infinite;
+}
+
+@keyframes vsAmbiPulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.04); }
+}
+
+/* ---------------- Footer (score + CTA) ---------------- */
+.vs-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.2vh, 14px);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.vs-score {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(14px, 3vw, 32px);
+  padding: clamp(6px, 1vh, 12px) clamp(14px, 3vw, 28px);
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 217, 130, 0.22);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.vs-score__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: clamp(60px, 10vw, 90px);
+  color: #d8c9b3;
+  opacity: 0.78;
+  transition: opacity 0.3s ease;
+}
+.vs-score__col--win {
+  opacity: 1;
+  color: #ffe187;
+  text-shadow: 0 0 12px rgba(255, 196, 80, 0.45);
+}
+
+.vs-score__label {
+  font-size: clamp(10px, 1.2vw, 13px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.vs-score__value {
+  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+  font-size: clamp(26px, 4.5vw, 42px);
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.vs-score__cards {
+  font-size: clamp(9px, 1.1vw, 11px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.vs-score__sep {
+  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 700;
+  color: rgba(255, 217, 130, 0.7);
+  letter-spacing: 0.18em;
+}
+
+.vs-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 217, 130, 0.45);
+  background: linear-gradient(135deg, #6b1a2a 0%, #3a0c14 100%);
+  color: #ffe9b3;
+  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(13px, 1.6vw, 16px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: clamp(8px, 1.3vh, 14px) clamp(22px, 4vw, 36px);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 180, 0.3),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.vs-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 180, 0.45),
+    0 6px 22px rgba(255, 196, 80, 0.25);
+}
+.vs-btn:active {
+  transform: translateY(0);
+}
+
+/* ---------------- Responsive tweaks ---------------- */
+
+/* Landscape phones (Samsung S24 Ultra etc.) — keep image huge by
+   trimming ribbon + footer height. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .victory-screen {
+    padding: 6px 14px;
+    gap: 6px;
+  }
+  .vs-ribbon__core {
+    padding: 4px 22px;
+    gap: 0;
+  }
+  .vs-ribbon__label  { font-size: 18px; letter-spacing: 0.18em; }
+  .vs-ribbon__team   { font-size: 11px; letter-spacing: 0.24em; }
+  .vs-ribbon__tail   { width: 22px; height: 30px; }
+
+  .vs-frame          { padding: 3px; border-radius: 10px; }
+  .vs-frame__inner   { border-radius: 7px; }
+
+  .vs-score          { padding: 4px 14px; gap: 14px; }
+  .vs-score__col     { min-width: 56px; }
+  .vs-score__value   { font-size: 22px; }
+  .vs-score__label   { font-size: 9px; }
+  .vs-score__cards   { display: none; }
+  .vs-score__sep     { font-size: 12px; }
+  .vs-btn            { font-size: 11px; padding: 6px 20px; }
+}
+
+/* Narrow portrait phones */
+@media (max-width: 480px) and (orientation: portrait) {
+  .vs-ribbon__core { padding: 8px 22px; }
+  .vs-ribbon__label { font-size: 22px; }
+  .vs-ribbon__team  { font-size: 12px; }
+  .vs-score { gap: 16px; padding: 6px 16px; }
+  .vs-score__col { min-width: 64px; }
+  .vs-score__value { font-size: 28px; }
+  .vs-btn { font-size: 13px; padding: 10px 22px; }
+}

@@ -5,6 +5,7 @@ import './GameScreen.css';
 import AnchorReveal from '../components/AnchorReveal';
 import TrailerPlayer from '../components/TrailerPlayer';
 import DecisionPhase from '../components/DecisionPhase';
+import VictoryScreen from '../components/VictoryScreen';
 import { useGameState } from '../hooks/useGameState';
 import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
@@ -470,38 +471,16 @@ function GameScreen() {
     );
   }
 
-  // Game over screen
+  // Game over screen — cinematic victory celebration
   if (phase === 'finished') {
     return (
-      <div className="game-screen">
-        <div className="game-main-layout">
-          <div className="game-content">
-            <div className="game-finished">
-              <h1>🏆 {t('game_over')}</h1>
-              <h2>{t('winner')}: {t(`team_${gameState.winner.toLowerCase()}`)}</h2>
-              
-              <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '30px' }}>
-                <div>
-                  <h3>{t('team_a')}</h3>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold' }}>
-                    {gameState.teamA?.cards?.length || 0} {t('cards')}
-                  </p>
-                </div>
-                <div>
-                  <h3>{t('team_b')}</h3>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold' }}>
-                    {gameState.teamB?.cards?.length || 0} {t('cards')}
-                  </p>
-                </div>
-              </div>
-
-              <button onClick={() => { clearActiveSession(); navigate('/'); }}>
-                {t('back_home')}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <VictoryScreen
+        winner={gameState.winner}
+        teamACards={gameState.teamA?.cards?.length || 0}
+        teamBCards={gameState.teamB?.cards?.length || 0}
+        language={language}
+        onBackHome={() => { clearActiveSession(); navigate('/'); }}
+      />
     );
   }
 
