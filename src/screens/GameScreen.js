@@ -12,6 +12,111 @@ import { setActiveSession, clearActiveSession } from '../utils/activeSession';
 import { pickOscarQuip } from '../utils/oscarQuips';
 import OscarPopup from '../components/OscarPopup';
 
+/* ----- Projection-room sidebar panel ----- */
+function TeamSidebar({ side, label, mine, cards, tokens }) {
+  return (
+    <aside
+      className={`team-sidebar team-sidebar--${side}${mine ? ' team-sidebar--mine' : ''}`}
+      aria-label={label}
+    >
+      <div className="team-sidebar__header">
+        <span className="team-sidebar__label">{label}</span>
+        {mine && <span className="team-sidebar__you">YOU</span>}
+      </div>
+
+      <div className="team-sidebar__gauges">
+        <div className="team-gauge">
+          <FilmReelIcon />
+          <span className="team-gauge__value">{cards}<span className="team-gauge__total">/10</span></span>
+          <span className="team-gauge__label">CARDS</span>
+        </div>
+        <div className="team-gauge">
+          <CinemaTokenIcon />
+          <span className="team-gauge__value">{tokens}</span>
+          <span className="team-gauge__label">TOKENS</span>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+/* Golden physical film reel — SVG */
+function FilmReelIcon() {
+  return (
+    <svg className="team-sidebar__icon team-sidebar__icon--reel" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <radialGradient id="reelGold" cx="35%" cy="30%" r="75%">
+          <stop offset="0%"  stopColor="#fff5c2" />
+          <stop offset="35%" stopColor="#ffd766" />
+          <stop offset="75%" stopColor="#b8862d" />
+          <stop offset="100%" stopColor="#6b4d12" />
+        </radialGradient>
+        <radialGradient id="reelInner" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stopColor="#3a2a0a" />
+          <stop offset="100%" stopColor="#1a1004" />
+        </radialGradient>
+      </defs>
+      {/* Outer disc */}
+      <circle cx="24" cy="24" r="22" fill="url(#reelGold)" stroke="#5a3f10" strokeWidth="0.8" />
+      <circle cx="24" cy="24" r="18" fill="none" stroke="rgba(255,248,214,0.45)" strokeWidth="0.6" />
+      {/* Holes around the rim */}
+      <g fill="url(#reelInner)" stroke="#3a2a0a" strokeWidth="0.4">
+        <circle cx="24" cy="10" r="3" />
+        <circle cx="36" cy="17" r="3" />
+        <circle cx="36" cy="31" r="3" />
+        <circle cx="24" cy="38" r="3" />
+        <circle cx="12" cy="31" r="3" />
+        <circle cx="12" cy="17" r="3" />
+      </g>
+      {/* Central hub */}
+      <circle cx="24" cy="24" r="5" fill="url(#reelInner)" stroke="#8c6320" strokeWidth="0.8" />
+      <circle cx="24" cy="24" r="2" fill="#fff5c2" />
+      {/* Sheen */}
+      <ellipse cx="17" cy="14" rx="6" ry="3" fill="rgba(255,255,255,0.45)" />
+    </svg>
+  );
+}
+
+/* Casino-style cinema token — SVG */
+function CinemaTokenIcon() {
+  return (
+    <svg className="team-sidebar__icon team-sidebar__icon--token" viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <radialGradient id="tokenGold" cx="35%" cy="30%" r="80%">
+          <stop offset="0%"  stopColor="#fff5c2" />
+          <stop offset="35%" stopColor="#ffd766" />
+          <stop offset="80%" stopColor="#b8862d" />
+          <stop offset="100%" stopColor="#6b4d12" />
+        </radialGradient>
+      </defs>
+      <circle cx="24" cy="24" r="22" fill="url(#tokenGold)" stroke="#5a3f10" strokeWidth="0.8" />
+      {/* Notched outer rim */}
+      <g fill="#3a2a0a">
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
+          <rect
+            key={deg}
+            x="23"
+            y="2"
+            width="2"
+            height="4"
+            transform={`rotate(${deg} 24 24)`}
+          />
+        ))}
+      </g>
+      {/* Inner ring */}
+      <circle cx="24" cy="24" r="15" fill="none" stroke="#5a3f10" strokeWidth="1" />
+      <circle cx="24" cy="24" r="13" fill="none" stroke="rgba(255,248,214,0.45)" strokeWidth="0.5" />
+      {/* Center star */}
+      <path
+        d="M24 12 L26.4 19.6 L34 19.6 L27.8 24 L30.2 31.4 L24 27 L17.8 31.4 L20.2 24 L14 19.6 L21.6 19.6 Z"
+        fill="#3a2a0a"
+      />
+      {/* Sheen */}
+      <ellipse cx="17" cy="14" rx="6" ry="3" fill="rgba(255,255,255,0.45)" />
+    </svg>
+  );
+}
+
 function GameScreen() {
   const navigate = useNavigate();
   const { roomCode } = useParams();
@@ -398,40 +503,13 @@ function GameScreen() {
   return (
     <div className="game-screen">
       <div className="game-main-layout">
-        {/* Left Sidebar - Team A */}
-        <div className={`team-sidebar team-a ${currentTeam === 'A' ? 'active' : ''}`}>
-          <div className="team-header">
-            <h2>TEAM A</h2>
-            {currentTeam === 'A' && <span className="you-badge">YOU</span>}
-          </div>
-          
-          <div className="team-stats">
-            <div className="stat">
-              <span className="stat-icon">🎬</span>
-              <div className="stat-info">
-                <span className="stat-value">{teamAData.cards?.length || 0}/10</span>
-                <span className="stat-label">CARDS</span>
-              </div>
-            </div>
-            
-            <div className="stat">
-              <span className="stat-icon">🎫</span>
-              <div className="stat-info">
-                <span className="stat-value">{teamAData.tokens || 0}</span>
-                <span className="stat-label">TOKENS</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="team-cards">
-            {teamAData.cards?.map((card, index) => (
-              <div key={index} className="card-item">
-                <span className="card-number">{index + 1}</span>
-                <span className="card-title">{card.title?.en || 'Unknown'}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <TeamSidebar
+          side="left"
+          label="TEAM A"
+          mine={currentTeam === 'A'}
+          cards={teamAData.cards?.length || 0}
+          tokens={teamAData.tokens || 0}
+        />
 
         {/* Main Game Content */}
         <div className="game-content">
@@ -508,40 +586,13 @@ function GameScreen() {
           )}
         </div>
 
-        {/* Right Sidebar - Team B */}
-        <div className={`team-sidebar team-b ${currentTeam === 'B' ? 'active' : ''}`}>
-          <div className="team-header">
-            <h2>TEAM B</h2>
-            {currentTeam === 'B' && <span className="you-badge">YOU</span>}
-          </div>
-          
-          <div className="team-stats">
-            <div className="stat">
-              <span className="stat-icon">🎬</span>
-              <div className="stat-info">
-                <span className="stat-value">{teamBData.cards?.length || 0}/10</span>
-                <span className="stat-label">CARDS</span>
-              </div>
-            </div>
-            
-            <div className="stat">
-              <span className="stat-icon">🎫</span>
-              <div className="stat-info">
-                <span className="stat-value">{teamBData.tokens || 0}</span>
-                <span className="stat-label">TOKENS</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="team-cards">
-            {teamBData.cards?.map((card, index) => (
-              <div key={index} className="card-item">
-                <span className="card-number">{index + 1}</span>
-                <span className="card-title">{card.title?.en || 'Unknown'}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <TeamSidebar
+          side="right"
+          label="TEAM B"
+          mine={currentTeam === 'B'}
+          cards={teamBData.cards?.length || 0}
+          tokens={teamBData.tokens || 0}
+        />
       </div>
 
       <OscarPopup
