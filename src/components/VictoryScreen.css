@@ -68,6 +68,9 @@
   filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.55));
   animation: vsRibbonIn 0.7s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
   flex-shrink: 0;
+  /* Keep the forked "left"/"right" tails pinned to their geometric side
+     even when the surrounding page is RTL (Hebrew). */
+  direction: ltr;
 }
 
 @keyframes vsRibbonIn {

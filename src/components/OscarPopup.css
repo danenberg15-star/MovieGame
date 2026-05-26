@@ -12,8 +12,9 @@
     radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.92) 100%);
   animation: oscarFadeIn 0.25s ease-out;
   overflow: hidden;
-  /* Keep ribbon/text LTR even on Hebrew pages so layout stays consistent */
-  direction: ltr;
+  /* The popup itself inherits the page direction so Hebrew quips render
+     correctly (punctuation, embedded Latin names, etc.). The ribbon tails
+     pin themselves below so their flex order stays consistent. */
 }
 
 @keyframes oscarFadeIn {
@@ -142,6 +143,10 @@
   width: min(440px, 80vw);
   min-height: 46px;
   filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.7));
+  /* Ribbon decoration must keep a fixed LTR flex order so the forked
+     "left"/"right" tails always sit on the correct side, regardless of
+     the surrounding page direction. */
+  direction: ltr;
 }
 
 .oscar-ribbon__core {

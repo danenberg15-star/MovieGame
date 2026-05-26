@@ -1,0 +1,14 @@
+i18n: fix garbled Hebrew text in Oscar / Victory ribbon overlays
+
+The OscarPopup forced `direction: ltr` on the whole overlay so the
+ribbon tails kept the right flex order, but that also flipped the
+bidi rendering of the Hebrew quip text: punctuation jumped to the
+wrong side and embedded Latin names (actor/director) appeared
+reversed.
+
+Scope the LTR override to the ribbon decoration itself (where the
+forked left/right tails actually need a fixed order) and let the
+quip / sub paragraphs inherit the page direction. Apply the same
+fix to the Victory ribbon.
+
+Bumps PWA cache to v1.16.1.
