@@ -1,11 +1,17 @@
 // src/screens/LobbyScreen.js
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ref, onValue, update } from 'firebase/database';
 import { database } from '../firebase';
 import { setActiveSession, clearActiveSession } from '../utils/activeSession';
 import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom, botLabelFor } from '../utils/botRoom';
+import {
+  loadMoviesData,
+  buildLobbyWarmupPayload,
+  preloadTrailer,
+  preloadPoster,
+} from '../utils/gameLogic';
 import './LobbyScreen.css';
 
 const COLS = BOT_SEATS_COLS;
@@ -22,6 +28,14 @@ function LobbyScreen() {
   const [isHost, setIsHost] = useState(false);
   const [allReady, setAllReady] = useState(false);
   const [isBotMode, setIsBotMode] = useState(false);
+  const [warmupState, setWarmupState] = useState({
+    preparing: false,
+    anchorsReady: false,
+    firstTrailerReady: false,
+    error: '',
+  });
+  const preparingWarmupRef = useRef(false);
+  const prefetchKeyRef = useRef(null);
 
   // Listen to room changes
   useEffect(() => {
@@ -62,6 +76,112 @@ function LobbyScreen() {
       navigate(`/game/${roomCode}?playerId=${playerId}`);
     }
   }, [room?.status, roomCode, playerId, navigate]);
+
+  useEffect(() => {
+    if (!roomCode || !room || room.status !== 'waiting' || !isHost) return;
+    if (room.warmup?.anchorCards?.teamA && room.warmup?.pendingFirstRound?.movieId) return;
+    if (preparingWarmupRef.current) return;
+
+    let cancelled = false;
+    preparingWarmupRef.current = true;
+    setWarmupState((prev) => ({
+      ...prev,
+      preparing: true,
+      error: '',
+      anchorsReady: false,
+      firstTrailerReady: false,
+    }));
+
+    const prepareWarmup = async () => {
+      try {
+        const movies = await loadMoviesData();
+        const language = i18n.language === 'he' ? 'he' : 'en';
+        const warmup = buildLobbyWarmupPayload(movies, language);
+
+        if (cancelled) return;
+        await update(ref(database, `rooms/${roomCode}`), { warmup });
+      } catch (error) {
+        console.error('Error preparing room warmup:', error);
+        if (!cancelled) {
+          setWarmupState((prev) => ({
+            ...prev,
+            preparing: false,
+            error: 'warmup_failed',
+          }));
+        }
+      } finally {
+        preparingWarmupRef.current = false;
+      }
+    };
+
+    prepareWarmup();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [roomCode, room, isHost, i18n.language]);
+
+  const warmupPreparedAt = room?.warmup?.preparedAt;
+  const warmupMovieId = room?.warmup?.pendingFirstRound?.movieId;
+  const warmupTeamAPoster = room?.warmup?.anchorCards?.teamA?.poster;
+  const warmupTeamBPoster = room?.warmup?.anchorCards?.teamB?.poster;
+
+  useEffect(() => {
+    const movieId = warmupMovieId;
+    const preparedAt = warmupPreparedAt;
+    const teamAPoster = warmupTeamAPoster;
+    const teamBPoster = warmupTeamBPoster;
+
+    if (!movieId || !preparedAt) return;
+
+    const prefetchKey = `${preparedAt}:${movieId}`;
+    if (prefetchKeyRef.current === prefetchKey) return;
+    prefetchKeyRef.current = prefetchKey;
+
+    let cancelled = false;
+    setWarmupState({
+      preparing: true,
+      anchorsReady: false,
+      firstTrailerReady: false,
+      error: '',
+    });
+
+    const postersPromise = Promise.allSettled(
+      [teamAPoster, teamBPoster].filter(Boolean).map((posterUrl) => preloadPoster(posterUrl))
+    ).then(() => {
+      if (!cancelled) {
+        setWarmupState((prev) => ({ ...prev, anchorsReady: true }));
+      }
+    });
+
+    const trailerPromise = preloadTrailer(movieId)
+      .then(() => {
+        if (!cancelled) {
+          setWarmupState((prev) => ({ ...prev, firstTrailerReady: true }));
+        }
+      })
+      .catch((error) => {
+        console.error('Error preloading first trailer:', error);
+        if (!cancelled) {
+          setWarmupState((prev) => ({ ...prev, error: 'warmup_failed' }));
+        }
+      });
+
+    Promise.allSettled([postersPromise, trailerPromise]).then(() => {
+      if (!cancelled) {
+        setWarmupState((prev) => ({ ...prev, preparing: false }));
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    warmupPreparedAt,
+    warmupMovieId,
+    warmupTeamAPoster,
+    warmupTeamBPoster,
+  ]);
 
   // Remember this lobby as the active session so the player can resume
   // it after a crash, incoming call, or accidental tab/app close.
@@ -211,6 +331,23 @@ function LobbyScreen() {
   // Human players list status (for hint)
   const humans = players.filter((p) => !p.isBot);
   const seated = humans.filter((p) => p.team && p.seat !== null && p.seat !== undefined).length;
+  const firstTrailerReady = warmupState.firstTrailerReady;
+  const startDisabled = !allReady || (!firstTrailerReady && !warmupState.error);
+  const showWarmupHint =
+    !!room?.warmup?.pendingFirstRound?.movieId && (!firstTrailerReady || warmupState.preparing || warmupState.error);
+
+  let warmupHintText = '';
+  if (warmupState.error) {
+    warmupHintText = t('warmup_retrying');
+  } else if (firstTrailerReady) {
+    warmupHintText = t('warmup_ready');
+  } else if (warmupState.anchorsReady) {
+    warmupHintText = t('warmup_trailer');
+  } else if (room?.warmup?.pendingFirstRound?.movieId) {
+    warmupHintText = t('warmup_posters');
+  } else {
+    warmupHintText = t('warmup_preparing');
+  }
 
   return (
     <div className="lobby-screen">
@@ -261,20 +398,32 @@ function LobbyScreen() {
             </div>
           )}
 
+          {showWarmupHint && (
+            <div className="warmup-hint">
+              {warmupHintText}
+            </div>
+          )}
+
           {/* Actions */}
           <div className="lobby-actions">
             {isHost && (
               <button
                 className="btn btn-start"
                 onClick={handleStartGame}
-                disabled={!allReady}
+                disabled={startDisabled}
               >
-                {allReady ? '🎮 ' + t('start_game') : t('waiting_for_all')}
+                {!allReady
+                  ? t('waiting_for_all')
+                  : !firstTrailerReady && !warmupState.error
+                    ? t('warmup_preparing')
+                    : '🎮 ' + t('start_game')}
               </button>
             )}
 
             {!isHost && allReady && (
-              <div className="waiting-host">{t('waiting_for_host')}</div>
+              <div className="waiting-host">
+                {firstTrailerReady || warmupState.error ? t('waiting_for_host') : t('warmup_preparing')}
+              </div>
             )}
           </div>
         </div>

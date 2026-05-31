@@ -10,10 +10,13 @@ import {
   getConnectionHint,
   checkWinCondition,
   getSuccessMessage,
-  findConnection
+  findConnection,
+  preloadTrailer
 } from '../utils/gameLogic';
 
 const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
+const NEXT_ROUND_COMMIT_DELAY_MS = 350;
+const FAILED_ROUND_DELAY_MS = 1000;
 
 /** Firebase may return arrays as objects — normalize for .includes() */
 export const normalizeAttempts = (attempts) => {
@@ -144,10 +147,70 @@ export const useGameActions = (
     setIsCorrect(false);
   }, [gameState?.currentTurn, currentMovie?.id, gameState?.currentMovieAttempts]);
 
+  const warmTrailer = useCallback((movieId) => {
+    if (!movieId) return;
+
+    preloadTrailer(movieId).catch((error) => {
+      console.warn('⚠️ Trailer warmup failed:', movieId, error);
+    });
+  }, []);
+
+  const buildNextRoundPayload = useCallback(
+    (turnOverride, usedMovieIdsOverride) => {
+      const gs = gameStateRef.current;
+      if (!gs || !allMovies.length) return null;
+
+      const activeTurn = turnOverride ?? gs.currentTurn;
+      const usedIds = usedMovieIdsOverride ?? gs.usedMovieIds ?? [];
+      const nextRoundNumber = (gs.roundNumber || 0) + 1;
+      const teamACards = gs.teamA?.cards || [];
+      const teamBCards = gs.teamB?.cards || [];
+
+      const nextMovie = selectNextMovie(
+        allMovies,
+        usedIds,
+        teamACards,
+        teamBCards,
+        activeTurn
+      );
+
+      if (!nextMovie) {
+        return {
+          activeTurn,
+          nextRoundNumber,
+          nextMovie: null,
+          updates: {
+            phase: 'finished',
+            winner: 'draw',
+          },
+        };
+      }
+
+      return {
+        activeTurn,
+        nextRoundNumber,
+        nextMovie,
+        updates: {
+          currentMovie: {
+            id: nextMovie.id,
+            options: generateAnswerOptions(nextMovie, allMovies, language),
+            removedAnswers: [],
+            trailerWatchedForTurn: null,
+          },
+          currentMovieAttempts: [],
+          roundNumber: nextRoundNumber,
+          currentTurn: activeTurn,
+          phase: 'playing',
+        },
+      };
+    },
+    [allMovies, language]
+  );
+
   // Start next round. Pass usedMovieIdsOverride after connect/save/buy so we
   // never pick from a stale usedMovieIds snapshot (same trailer twice).
   const startNextRound = useCallback(
-    async (turnOverride, { usedMovieIdsOverride } = {}) => {
+    async (turnOverride, { usedMovieIdsOverride, preparedRound } = {}) => {
       const gs = gameStateRef.current;
       if (!gs || !allMovies.length) return;
 
@@ -158,7 +221,6 @@ export const useGameActions = (
       startingNextRoundRef.current = true;
 
       const activeTurn = turnOverride ?? gs.currentTurn;
-      const usedIds = usedMovieIdsOverride ?? gs.usedMovieIds ?? [];
       const nextRoundNumber = (gs.roundNumber || 0) + 1;
 
       console.log('🎬 Starting next round...', {
@@ -167,42 +229,22 @@ export const useGameActions = (
       });
 
       try {
-        const teamACards = gs.teamA?.cards || [];
-        const teamBCards = gs.teamB?.cards || [];
+        const nextRoundPayload =
+          preparedRound || buildNextRoundPayload(turnOverride, usedMovieIdsOverride);
 
-        const nextMovie = selectNextMovie(
-          allMovies,
-          usedIds,
-          teamACards,
-          teamBCards,
-          activeTurn
-        );
-
-        if (!nextMovie) {
+        if (!nextRoundPayload?.nextMovie) {
           console.log('❌ No more movies available - game over');
-          await update(ref(database, `games/${roomCode}`), {
+          await update(ref(database, `games/${roomCode}`), nextRoundPayload?.updates || {
             phase: 'finished',
             winner: 'draw',
           });
           return;
         }
 
-        console.log('✅ Selected movie:', nextMovie.title.en, `(id: ${nextMovie.id})`);
+        console.log('✅ Selected movie:', nextRoundPayload.nextMovie.title.en, `(id: ${nextRoundPayload.nextMovie.id})`);
+        warmTrailer(nextRoundPayload.nextMovie.id);
 
-        const options = generateAnswerOptions(nextMovie, allMovies, language);
-
-        await update(ref(database, `games/${roomCode}`), {
-          currentMovie: {
-            id: nextMovie.id,
-            options,
-            removedAnswers: [],
-            trailerWatchedForTurn: null,
-          },
-          currentMovieAttempts: [],
-          roundNumber: nextRoundNumber,
-          currentTurn: activeTurn,
-          phase: 'playing',
-        });
+        await update(ref(database, `games/${roomCode}`), nextRoundPayload.updates);
 
         setSelectedAnswer(null);
         setShowResult(false);
@@ -213,21 +255,26 @@ export const useGameActions = (
         startingNextRoundRef.current = false;
       }
     },
-    [allMovies, roomCode, language, setRemovedAnswers]
+    [allMovies, roomCode, buildNextRoundPayload, warmTrailer, setRemovedAnswers]
   );
 
   const scheduleNextRound = useCallback(
     (turnOverride, usedMovieIdsOverride) => {
+      const preparedRound = buildNextRoundPayload(turnOverride, usedMovieIdsOverride);
+      if (preparedRound?.nextMovie?.id) {
+        warmTrailer(preparedRound.nextMovie.id);
+      }
+
       if (nextRoundTimerRef.current) {
         clearTimeout(nextRoundTimerRef.current);
       }
       nextRoundTimerRef.current = setTimeout(() => {
         nextRoundTimerRef.current = null;
         setConnectionResult(null);
-        startNextRound(turnOverride, { usedMovieIdsOverride });
-      }, 2200);
+        startNextRound(turnOverride, { usedMovieIdsOverride, preparedRound });
+      }, NEXT_ROUND_COMMIT_DELAY_MS);
     },
-    [startNextRound]
+    [buildNextRoundPayload, startNextRound, warmTrailer]
   );
 
   // Handle connection attempt
@@ -421,13 +468,20 @@ export const useGameActions = (
 
     if (!hasWon) {
       if (nextRoundTimerRef.current) clearTimeout(nextRoundTimerRef.current);
+        const preparedRound = buildNextRoundPayload(nextTurn, newUsedIds);
+        if (preparedRound?.nextMovie?.id) {
+          warmTrailer(preparedRound.nextMovie.id);
+        }
       nextRoundTimerRef.current = setTimeout(() => {
         nextRoundTimerRef.current = null;
         setConnectionResult(null);
-        startNextRound(nextTurn, { usedMovieIdsOverride: newUsedIds });
-      }, 2000);
+          startNextRound(nextTurn, {
+            usedMovieIdsOverride: newUsedIds,
+            preparedRound,
+          });
+        }, NEXT_ROUND_COMMIT_DELAY_MS);
     }
-  }, [roomCode, currentTeam, gameState, currentMovie, language, startNextRound]);
+  }, [roomCode, currentTeam, gameState, currentMovie, language, startNextRound, buildNextRoundPayload, warmTrailer]);
 
   // Mark trailer watched for the active guessing team (syncs all clients)
   const markTrailerWatched = useCallback(async () => {
@@ -443,8 +497,25 @@ export const useGameActions = (
   const handleAnchorContinue = useCallback(async () => {
     console.log('▶️ Continuing from anchor reveal...');
     setPhase('playing');
+    if (gameState?.pendingFirstRound?.movieId) {
+      await update(ref(database, `games/${roomCode}`), {
+        currentMovie: {
+          id: gameState.pendingFirstRound.movieId,
+          options: gameState.pendingFirstRound.options || [],
+          removedAnswers: [],
+          trailerWatchedForTurn: null,
+        },
+        currentMovieAttempts: [],
+        currentTurn: gameState.pendingFirstRound.currentTurn || 'A',
+        roundNumber: 1,
+        phase: 'playing',
+        pendingFirstRound: null,
+      });
+      return;
+    }
+
     startNextRound();
-  }, [startNextRound, setPhase]);
+  }, [gameState?.pendingFirstRound, roomCode, startNextRound, setPhase]);
 
   // Handle answer selection (answeringTeamOverride: bot/QA uses 'B' when Firebase turn lags)
   const handleAnswerSelect = useCallback(async (answer, isMyTurn, botIsThinking, answeringTeamOverride) => {
@@ -531,8 +602,12 @@ export const useGameActions = (
             currentMovieAttempts: [],
             currentTurn: nextTurn
           });
-          startNextRound(nextTurn);
-        }, 2000);
+          const preparedRound = buildNextRoundPayload(nextTurn);
+          if (preparedRound?.nextMovie?.id) {
+            warmTrailer(preparedRound.nextMovie.id);
+          }
+          startNextRound(nextTurn, { preparedRound });
+        }, FAILED_ROUND_DELAY_MS);
 
       } else {
         // First team failed - give other team a chance to steal
@@ -568,7 +643,9 @@ export const useGameActions = (
     localTrailerWatched,
     setPhase,
     setRemovedAnswers,
-    startNextRound
+    startNextRound,
+    buildNextRoundPayload,
+    warmTrailer
   ]);
 
   return {

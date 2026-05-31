@@ -1,10 +1,10 @@
 // src/hooks/useGameState.js
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ref, set, onValue, get, update } from 'firebase/database';
 import { database } from '../firebase';
 import {
   loadMoviesData,
-  selectAnchorCards,
+  buildLobbyWarmupPayload,
   initializeGameState
 } from '../utils/gameLogic';
 import { isBotModeRoom } from '../utils/botRoom';
@@ -28,13 +28,6 @@ const assignTeam = (lobbyTeam, playerTeams) => {
   return teamACount <= teamBCount ? 'A' : 'B';
 };
 
-// Helper function to sanitize Firebase keys
-const sanitizeFirebaseKey = (key) => {
-  if (!key) return '';
-  // eslint-disable-next-line no-useless-escape
-  return key.replace(/[.#$\/\[\]]/g, '_');
-};
-
 export const useGameState = (roomCode, playerId, language) => {
   const [gameState, setGameState] = useState(null);
   const [allMovies, setAllMovies] = useState([]);
@@ -47,52 +40,6 @@ export const useGameState = (roomCode, playerId, language) => {
   const [removedAnswers, setRemovedAnswers] = useState([]);
   const currentMovieIdRef = useRef(null);
 
-  // Build movies index for faster lookups
-  const buildMoviesIndex = useCallback((movies) => {
-    console.log('🔨 Building movies index...');
-    const index = {
-      actors: {},
-      directors: {},
-      years: {}
-    };
-
-    movies.forEach(movie => {
-      // Index actors (sanitize names for Firebase keys)
-      if (movie.cast && Array.isArray(movie.cast)) {
-        movie.cast.forEach(actor => {
-          if (actor?.name?.en) {
-            const sanitizedName = sanitizeFirebaseKey(actor.name.en);
-            if (!index.actors[sanitizedName]) {
-              index.actors[sanitizedName] = [];
-            }
-            index.actors[sanitizedName].push(movie.id);
-          }
-        });
-      }
-
-      // Index directors (sanitize names for Firebase keys)
-      if (movie.director?.name?.en) {
-        const sanitizedName = sanitizeFirebaseKey(movie.director.name.en);
-        if (!index.directors[sanitizedName]) {
-          index.directors[sanitizedName] = [];
-        }
-        index.directors[sanitizedName].push(movie.id);
-      }
-
-      // Index years
-      if (movie.year) {
-        const yearKey = `year_${movie.year}`;
-        if (!index.years[yearKey]) {
-          index.years[yearKey] = [];
-        }
-        index.years[yearKey].push(movie.id);
-      }
-    });
-
-    console.log(`✅ Index built: ${Object.keys(index.actors).length} actors, ${Object.keys(index.directors).length} directors, ${Object.keys(index.years).length} years`);
-    return index;
-  }, []);
-
   // Initialize game
   useEffect(() => {
     let unsubscribe = null;
@@ -100,7 +47,7 @@ export const useGameState = (roomCode, playerId, language) => {
     const initGame = async () => {
       try {
         const roomSnap = await get(ref(database, `rooms/${roomCode}`));
-        const roomData = roomSnap.val();
+        const roomData = roomSnap.val() || {};
         const isBotMode = isBotModeRoom(roomData);
 
         console.log('🎮 Initializing game...', { roomCode, playerId, isBotMode });
@@ -113,6 +60,13 @@ export const useGameState = (roomCode, playerId, language) => {
         console.log(`✅ Loaded ${movies.length} movies`);
         setAllMovies(movies);
 
+        let roomWarmup = roomData?.warmup || null;
+        if (!roomWarmup?.anchorCards?.teamA || !roomWarmup?.pendingFirstRound?.movieId) {
+          roomWarmup = buildLobbyWarmupPayload(movies, language);
+          await update(ref(database, `rooms/${roomCode}`), { warmup: roomWarmup });
+          console.log('🔥 Backfilled missing room warmup payload');
+        }
+
         // Reference to game in Firebase
         const gameRef = ref(database, `games/${roomCode}`);
 
@@ -121,15 +75,6 @@ export const useGameState = (roomCode, playerId, language) => {
 
         if (!snapshot.exists()) {
           console.log('🆕 Creating new game...');
-
-          // Select anchor cards
-          const anchors = selectAnchorCards(movies);
-          if (!anchors) {
-            throw new Error('Failed to select anchor cards');
-          }
-
-          // Build movies index
-          const moviesIndex = buildMoviesIndex(movies);
           const lobbyTeam = await getLobbyTeam(roomCode, playerId);
           const creatorTeam = assignTeam(lobbyTeam, {});
 
@@ -139,7 +84,9 @@ export const useGameState = (roomCode, playerId, language) => {
 
           // Initialize game state
           const initialState = {
-            ...initializeGameState(anchors, movies),
+            ...initializeGameState(roomWarmup.anchorCards, {
+              pendingFirstRound: roomWarmup.pendingFirstRound,
+            }),
             roomCode,
             createdAt: Date.now(),
             players: {
@@ -154,7 +101,6 @@ export const useGameState = (roomCode, playerId, language) => {
             },
             isBotMode,
             isQAMode: isBotMode, // legacy field for older clients
-            moviesIndex
           };
 
           // Add playable bot opponent for vs-computer rooms
@@ -264,7 +210,7 @@ export const useGameState = (roomCode, playerId, language) => {
         unsubscribe();
       }
     };
-  }, [roomCode, playerId, language, buildMoviesIndex]);
+  }, [roomCode, playerId, language]);
 
   return {
     gameState,

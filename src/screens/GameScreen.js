@@ -10,6 +10,7 @@ import VictoryScreen from '../components/VictoryScreen';
 import { useGameState } from '../hooks/useGameState';
 import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
+import { preloadTrailer } from '../utils/gameLogic';
 import { setActiveSession, clearActiveSession } from '../utils/activeSession';
 import { pickOscarQuip } from '../utils/oscarQuips';
 import OscarPopup from '../components/OscarPopup';
@@ -241,6 +242,16 @@ function GameScreen() {
       setLocalTrailerWatched(true);
     }
   }, [gameState?.currentMovie?.trailerWatchedForTurn]);
+
+  useEffect(() => {
+    if (phase !== 'anchorReveal') return;
+    const firstMovieId = gameState?.pendingFirstRound?.movieId;
+    if (!firstMovieId) return;
+
+    preloadTrailer(firstMovieId).catch((error) => {
+      console.warn('⚠️ Failed to warm first trailer on anchor screen:', error);
+    });
+  }, [phase, gameState?.pendingFirstRound?.movieId]);
 
   // Custom hook for game actions
   const {

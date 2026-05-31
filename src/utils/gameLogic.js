@@ -2,31 +2,142 @@
 import { ref, get } from 'firebase/database';
 import { database } from '../firebase';
 
+const MOVIES_CACHE_KEY = 'cinemaster_movies_cache_v1';
+const MOVIES_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+
+let moviesMemoryCache = null;
+let moviesLoadPromise = null;
+const trailerPreloadCache = new Map();
+
+function readMoviesFromStorage() {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const raw = window.localStorage.getItem(MOVIES_CACHE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed?.movies) || !parsed.movies.length) {
+      return null;
+    }
+
+    if (Date.now() - (parsed.savedAt || 0) > MOVIES_CACHE_TTL_MS) {
+      window.localStorage.removeItem(MOVIES_CACHE_KEY);
+      return null;
+    }
+
+    return parsed.movies;
+  } catch (error) {
+    console.warn('⚠️ Failed to read movies cache:', error);
+    return null;
+  }
+}
+
+function writeMoviesToStorage(movies) {
+  if (typeof window === 'undefined' || !Array.isArray(movies) || !movies.length) return;
+
+  try {
+    window.localStorage.setItem(
+      MOVIES_CACHE_KEY,
+      JSON.stringify({
+        savedAt: Date.now(),
+        movies,
+      })
+    );
+  } catch (error) {
+    console.warn('⚠️ Failed to persist movies cache:', error);
+  }
+}
+
+async function fetchMoviesFromStaticJson() {
+  if (typeof fetch !== 'function') return [];
+
+  const response = await fetch('/movies-clean.json', { cache: 'force-cache' });
+  if (!response.ok) {
+    throw new Error(`Static movies fallback failed (${response.status})`);
+  }
+
+  const payload = await response.json();
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  return Array.isArray(payload?.movies) ? payload.movies : [];
+}
+
+export function primeMoviesCache(movies) {
+  if (!Array.isArray(movies) || !movies.length) return [];
+
+  moviesMemoryCache = movies;
+  writeMoviesToStorage(movies);
+  return movies;
+}
+
 /**
  * Game Logic Utilities
  * All helper functions for game mechanics
  */
 
 // Load movies from Firebase Realtime Database
-export async function loadMoviesData() {
-  try {
-    console.log('📥 Loading movies from Firebase Database...');
-    
-    const moviesRef = ref(database, 'movies/movies');
-    const snapshot = await get(moviesRef);
-    
-    if (!snapshot.exists()) {
-      throw new Error('Movies data not found in database');
-    }
-    
-    const movies = snapshot.val();
-    console.log(`✅ Loaded ${movies.length} movies from Firebase Database`);
-    return movies;
-    
-  } catch (error) {
-    console.error('❌ Error loading movies from Firebase:', error);
-    return [];
+export async function loadMoviesData({ forceRefresh = false } = {}) {
+  if (!forceRefresh && Array.isArray(moviesMemoryCache) && moviesMemoryCache.length) {
+    return moviesMemoryCache;
   }
+
+  if (!forceRefresh) {
+    const storedMovies = readMoviesFromStorage();
+    if (storedMovies?.length) {
+      console.log(`⚡ Using cached movies data (${storedMovies.length} movies)`);
+      moviesMemoryCache = storedMovies;
+      return storedMovies;
+    }
+  }
+
+  if (!forceRefresh && moviesLoadPromise) {
+    return moviesLoadPromise;
+  }
+
+  moviesLoadPromise = (async () => {
+    try {
+      console.log('📥 Loading movies from Firebase Database...');
+
+      const moviesRef = ref(database, 'movies/movies');
+      const snapshot = await get(moviesRef);
+
+      if (!snapshot.exists()) {
+        throw new Error('Movies data not found in database');
+      }
+
+      const movies = snapshot.val();
+      console.log(`✅ Loaded ${movies.length} movies from Firebase Database`);
+      return primeMoviesCache(movies);
+    } catch (error) {
+      console.error('❌ Error loading movies from Firebase:', error);
+
+      try {
+        const fallbackMovies = await fetchMoviesFromStaticJson();
+        if (fallbackMovies.length) {
+          console.log(`🛟 Loaded ${fallbackMovies.length} movies from static fallback`);
+          return primeMoviesCache(fallbackMovies);
+        }
+      } catch (fallbackError) {
+        console.error('❌ Static movies fallback failed:', fallbackError);
+      }
+
+      const storedMovies = readMoviesFromStorage();
+      if (storedMovies?.length) {
+        console.log(`🛟 Falling back to persisted movies cache (${storedMovies.length} movies)`);
+        moviesMemoryCache = storedMovies;
+        return storedMovies;
+      }
+
+      return [];
+    } finally {
+      moviesLoadPromise = null;
+    }
+  })();
+
+  return moviesLoadPromise;
 }
 
 // Select random anchor cards for both teams
@@ -37,6 +148,38 @@ export function selectAnchorCards(allMovies) {
   return {
     teamA: shuffled[0],
     teamB: shuffled[1]
+  };
+}
+
+export function buildLobbyWarmupPayload(allMovies, language = 'en') {
+  const anchors = selectAnchorCards(allMovies);
+  if (!anchors) {
+    throw new Error('Failed to prepare anchor cards');
+  }
+
+  const usedMovieIds = [anchors.teamA.id, anchors.teamB.id];
+  const firstRoundMovie = selectNextMovie(
+    allMovies,
+    usedMovieIds,
+    [anchors.teamA],
+    [anchors.teamB],
+    'A'
+  );
+
+  if (!firstRoundMovie) {
+    throw new Error('Failed to prepare the first round movie');
+  }
+
+  return {
+    version: 1,
+    preparedAt: Date.now(),
+    anchorCards: anchors,
+    pendingFirstRound: {
+      movieId: firstRoundMovie.id,
+      currentTurn: 'A',
+      options: generateAnswerOptions(firstRoundMovie, allMovies, language),
+    },
+    usedMovieIds,
   };
 }
 
@@ -398,9 +541,9 @@ export function checkWinCondition(teamCards) {
 }
 
 // Initialize game state
-export function initializeGameState(anchorCards, allMovies, moviesIndex) {
+export function initializeGameState(anchorCards, { pendingFirstRound = null } = {}) {
   return {
-    phase: 'playing', // 'playing', 'decision', 'finished'
+    phase: 'anchorReveal', // 'anchorReveal', 'playing', 'decision', 'finished'
     currentTurn: 'A', // 'A' or 'B'
     currentMovie: null,
     currentMovieAttempts: [], // Track which teams already attempted
@@ -418,8 +561,7 @@ export function initializeGameState(anchorCards, allMovies, moviesIndex) {
     },
     
     usedMovieIds: [anchorCards.teamA.id, anchorCards.teamB.id],
-    allMovies: allMovies,
-    moviesIndex: moviesIndex, // Add index to state
+    pendingFirstRound,
     
     roundNumber: 0,
     winner: null,
@@ -452,15 +594,69 @@ export function getSuccessMessage(connectionType, connectionData, language = 'en
 
 // Preload trailer videos
 export function preloadTrailer(movieId) {
-  return new Promise((resolve, reject) => {
+  if (!movieId || typeof document === 'undefined') {
+    return Promise.resolve(null);
+  }
+
+  const cachedPromise = trailerPreloadCache.get(movieId);
+  if (cachedPromise) {
+    return cachedPromise;
+  }
+
+  const preloadPromise = new Promise((resolve, reject) => {
     const video = document.createElement('video');
+    let timeoutId = null;
+
+    const cleanup = () => {
+      video.removeEventListener('canplaythrough', handleReady);
+      video.removeEventListener('loadeddata', handleReady);
+      video.removeEventListener('error', handleError);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+
+    const handleReady = () => {
+      cleanup();
+      resolve(video);
+    };
+
+    const handleError = () => {
+      cleanup();
+      trailerPreloadCache.delete(movieId);
+      reject(new Error('Failed to load trailer'));
+    };
+
     video.src = `/assets/movies/${movieId}/trailer.mp4`;
     video.preload = 'auto';
-    
-    video.addEventListener('canplaythrough', () => resolve(video));
-    video.addEventListener('error', () => reject(new Error('Failed to load trailer')));
-    
-    // Timeout after 30 seconds
-    setTimeout(() => reject(new Error('Trailer loading timeout')), 30000);
+
+    video.addEventListener('canplaythrough', handleReady, { once: true });
+    video.addEventListener('loadeddata', handleReady, { once: true });
+    video.addEventListener('error', handleError, { once: true });
+
+    timeoutId = setTimeout(() => {
+      cleanup();
+      trailerPreloadCache.delete(movieId);
+      reject(new Error('Trailer loading timeout'));
+    }, 30000);
+
+    video.load();
+  });
+
+  trailerPreloadCache.set(movieId, preloadPromise);
+  return preloadPromise;
+}
+
+export function preloadPoster(url) {
+  if (!url || typeof Image === 'undefined') {
+    return Promise.resolve(null);
+  }
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => resolve(url);
+    img.onerror = () => reject(new Error('Failed to load poster'));
+    img.src = url;
   });
 }

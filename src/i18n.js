@@ -131,7 +131,12 @@ const resources = {
         "Possible connections: same actor, same director, or same release year.",
         "If you can't find a link, buy a connection for 3 tokens — or just take the token and skip the card."
       ],
-      rules_close: "Got it"
+      rules_close: "Got it",
+      warmup_preparing: "Preparing the opening scene…",
+      warmup_posters: "Warming the anchor cards…",
+      warmup_trailer: "Warming the first trailer…",
+      warmup_ready: "Opening trailer ready",
+      warmup_retrying: "Retrying media warmup…"
     }
   },
   he: {
@@ -262,7 +267,12 @@ const resources = {
         "הקשרים האפשריים: שחקן, במאי או שנת יציאה.",
         "אם אתם לא יודעים לשייך את הסרט שזיהיתם – אפשר לקנות שיוך תמורת 3 אסימונים, או לבחור באופציה \"קבלו אסימון\"."
       ],
-      rules_close: "הבנתי"
+      rules_close: "הבנתי",
+      warmup_preparing: "מכינים את סצנת הפתיחה…",
+      warmup_posters: "טוענים את קלפי העוגן…",
+      warmup_trailer: "טוענים את הטריילר הראשון…",
+      warmup_ready: "טריילר הפתיחה מוכן",
+      warmup_retrying: "מנסים שוב להכין את המדיה…"
     }
   }
 };
