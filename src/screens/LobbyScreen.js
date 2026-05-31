@@ -61,10 +61,17 @@ function LobbyScreen() {
       setPlayers(playersList);
 
       const humanPlayers = playersList.filter((p) => !p.isBot);
-      const ready =
+      const everyoneSeated =
         humanPlayers.length >= 1 &&
         humanPlayers.every((p) => p.ready && p.team && p.seat !== null && p.seat !== undefined);
-      setAllReady(ready);
+
+      // In team-vs-team mode we also need at least one human per team.
+      // In bot mode the bot owns Team B, so this check doesn't apply.
+      const botMode = isBotModeRoom(data);
+      const hasA = humanPlayers.some((p) => p.team === 'A');
+      const hasB = botMode || humanPlayers.some((p) => p.team === 'B');
+
+      setAllReady(everyoneSeated && hasA && hasB);
     });
 
     return () => unsubscribe();
@@ -331,6 +338,13 @@ function LobbyScreen() {
   // Human players list status (for hint)
   const humans = players.filter((p) => !p.isBot);
   const seated = humans.filter((p) => p.team && p.seat !== null && p.seat !== undefined).length;
+  const everyoneSeatedAndReady =
+    humans.length >= 1 &&
+    humans.every((p) => p.ready && p.team && p.seat !== null && p.seat !== undefined);
+  const teamsBalanced =
+    isBotMode ||
+    (humans.some((p) => p.team === 'A') && humans.some((p) => p.team === 'B'));
+  const needBothTeamsHint = everyoneSeatedAndReady && !teamsBalanced;
   const firstTrailerReady = warmupState.firstTrailerReady;
   const startDisabled = !allReady || (!firstTrailerReady && !warmupState.error);
   const showWarmupHint =
@@ -391,10 +405,16 @@ function LobbyScreen() {
           {/* Pick-seat hint */}
           {!allReady && (
             <div className="seat-hint">
-              {t('pick_seat_hint')}{' '}
-              <span className="seat-hint__count">
-                ({seated}/{humans.length})
-              </span>
+              {needBothTeamsHint ? (
+                t('need_both_teams')
+              ) : (
+                <>
+                  {t('pick_seat_hint')}{' '}
+                  <span className="seat-hint__count">
+                    ({seated}/{humans.length})
+                  </span>
+                </>
+              )}
             </div>
           )}
 
@@ -413,7 +433,9 @@ function LobbyScreen() {
                 disabled={startDisabled}
               >
                 {!allReady
-                  ? t('waiting_for_all')
+                  ? needBothTeamsHint
+                    ? t('need_both_teams')
+                    : t('waiting_for_all')
                   : !firstTrailerReady && !warmupState.error
                     ? t('warmup_preparing')
                     : '🎮 ' + t('start_game')}
