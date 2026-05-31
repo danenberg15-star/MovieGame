@@ -1,6 +1,6 @@
 // src/hooks/useGameState.js
 import { useState, useEffect, useRef } from 'react';
-import { ref, set, onValue, get, update } from 'firebase/database';
+import { ref, onValue, get, update, runTransaction } from 'firebase/database';
 import { database } from '../firebase';
 import {
   loadMoviesData,
@@ -28,6 +28,61 @@ const assignTeam = (lobbyTeam, playerTeams) => {
   return teamACount <= teamBCount ? 'A' : 'B';
 };
 
+/** Seed players + teams from everyone already seated in the lobby. */
+const seedFromRoom = (roomData) => {
+  const players = {};
+  const playerTeams = {};
+  const roomPlayers = roomData?.players || {};
+  for (const [id, p] of Object.entries(roomPlayers)) {
+    if (p?.isBot) continue;
+    players[id] = {
+      id,
+      name: p.name || `Player ${id.slice(-4)}`,
+      joinedAt: p.joinedAt || Date.now()
+    };
+    if (p.team === 'A' || p.team === 'B') {
+      playerTeams[id] = p.team;
+    }
+  }
+  return { players, playerTeams };
+};
+
+/** Ensure this client is registered in the game document (never wipe existing game). */
+const ensurePlayerInGame = async (gameRef, roomCode, playerId, roomData) => {
+  if (!playerId) return;
+  const snap = await get(gameRef);
+  if (!snap.exists()) return;
+
+  const game = snap.val();
+  const lobbyTeam = await getLobbyTeam(roomCode, playerId);
+  const resolvedTeam = assignTeam(lobbyTeam, game.playerTeams);
+  const lobbyPlayer = roomData?.players?.[playerId];
+  const displayName =
+    lobbyPlayer?.name ||
+    game.players?.[playerId]?.name ||
+    `Player ${playerId.slice(-4)}`;
+
+  const updates = {};
+  if (!game.players?.[playerId]) {
+    updates[`players/${playerId}`] = {
+      id: playerId,
+      name: displayName,
+      joinedAt: Date.now()
+    };
+  }
+  const teamInGame = game.playerTeams?.[playerId];
+  if (!teamInGame || teamInGame !== 'A' && teamInGame !== 'B') {
+    updates[`playerTeams/${playerId}`] = lobbyTeam || resolvedTeam;
+  } else if (lobbyTeam && teamInGame !== lobbyTeam) {
+    updates[`playerTeams/${playerId}`] = lobbyTeam;
+  }
+
+  if (Object.keys(updates).length > 0) {
+    await update(gameRef, updates);
+    console.log('✅ Ensured player in game', { playerId, team: updates[`playerTeams/${playerId}`] });
+  }
+};
+
 export const useGameState = (roomCode, playerId, language) => {
   const [gameState, setGameState] = useState(null);
   const [allMovies, setAllMovies] = useState([]);
@@ -38,17 +93,30 @@ export const useGameState = (roomCode, playerId, language) => {
   const [currentMovie, setCurrentMovie] = useState(null);
   const [answerOptions, setAnswerOptions] = useState([]);
   const [removedAnswers, setRemovedAnswers] = useState([]);
+  const [lobbyTeam, setLobbyTeam] = useState(null);
   const currentMovieIdRef = useRef(null);
+  const languageRef = useRef(language);
+  languageRef.current = language;
 
   // Initialize game
   useEffect(() => {
+    if (!roomCode || !playerId) {
+      setLoading(false);
+      setIsInitializing(false);
+      return undefined;
+    }
+
     let unsubscribe = null;
+    let cancelled = false;
 
     const initGame = async () => {
       try {
         const roomSnap = await get(ref(database, `rooms/${roomCode}`));
         const roomData = roomSnap.val() || {};
         const isBotMode = isBotModeRoom(roomData);
+
+        const resolvedLobbyTeam = await getLobbyTeam(roomCode, playerId);
+        if (!cancelled) setLobbyTeam(resolvedLobbyTeam);
 
         console.log('🎮 Initializing game...', { roomCode, playerId, isBotMode });
 
@@ -70,84 +138,75 @@ export const useGameState = (roomCode, playerId, language) => {
         // Reference to game in Firebase
         const gameRef = ref(database, `games/${roomCode}`);
 
-        // Check if game exists
         const snapshot = await get(gameRef);
 
         if (!snapshot.exists()) {
-          console.log('🆕 Creating new game...');
-          const lobbyTeam = await getLobbyTeam(roomCode, playerId);
-          const creatorTeam = assignTeam(lobbyTeam, {});
+          console.log('🆕 Creating new game (transaction)...');
+          const { players: roomPlayers, playerTeams: roomTeams } = seedFromRoom(roomData);
+          const creatorTeam = assignTeam(resolvedLobbyTeam, roomTeams);
 
-          const humanName =
-            roomData?.players?.[playerId]?.name ||
-            `Player ${playerId.slice(-4)}`;
-
-          // Initialize game state
           const initialState = {
             ...initializeGameState(roomWarmup.anchorCards, {
               pendingFirstRound: roomWarmup.pendingFirstRound,
             }),
             roomCode,
             createdAt: Date.now(),
-            players: {
-              [playerId]: {
-                id: playerId,
-                name: humanName,
-                joinedAt: Date.now()
-              }
-            },
-            playerTeams: {
-              [playerId]: creatorTeam
-            },
+            players: { ...roomPlayers },
+            playerTeams: { ...roomTeams },
             isBotMode,
-            isQAMode: isBotMode, // legacy field for older clients
+            isQAMode: isBotMode,
           };
 
-          // Add playable bot opponent for vs-computer rooms
+          if (!initialState.players[playerId]) {
+            initialState.players[playerId] = {
+              id: playerId,
+              name:
+                roomData?.players?.[playerId]?.name ||
+                `Player ${playerId.slice(-4)}`,
+              joinedAt: Date.now()
+            };
+          }
+          if (!initialState.playerTeams[playerId]) {
+            initialState.playerTeams[playerId] = creatorTeam;
+          }
+
+          const lang = languageRef.current;
           if (isBotMode) {
-            initialState.players['bot_player'] = {
+            initialState.players.bot_player = {
               id: 'bot_player',
-              name: language === 'he' ? '🤖 בוט AI' : '🤖 AI Bot',
+              name: lang === 'he' ? '🤖 בוט AI' : '🤖 AI Bot',
               isBot: true,
               joinedAt: Date.now()
             };
-            initialState.playerTeams['bot_player'] = 'B';
+            initialState.playerTeams.bot_player = 'B';
           }
 
-          // Save to Firebase
-          await set(gameRef, initialState);
-          console.log('✅ Game created successfully');
+          const tx = await runTransaction(gameRef, (current) => {
+            if (current) return current;
+            return initialState;
+          });
+          if (tx.committed && tx.snapshot.val()?.createdAt === initialState.createdAt) {
+            console.log('✅ Game created successfully');
+          } else {
+            console.log('✅ Game already existed (joined via transaction)');
+          }
         } else {
           console.log('✅ Game exists, joining...');
-
-          const existingGame = snapshot.val();
-          const lobbyTeam = await getLobbyTeam(roomCode, playerId);
-          const resolvedTeam = assignTeam(lobbyTeam, existingGame.playerTeams);
-
-          if (!existingGame.players?.[playerId]) {
-            const playerUpdate = {
-              [`players/${playerId}`]: {
-                id: playerId,
-                name: `Player ${playerId.slice(-4)}`,
-                joinedAt: Date.now()
-              },
-              [`playerTeams/${playerId}`]: resolvedTeam
-            };
-            await update(gameRef, playerUpdate);
-            console.log('✅ Player added to game', { team: resolvedTeam, lobbyTeam });
-          } else if (!existingGame.playerTeams?.[playerId]) {
-            await update(gameRef, { [`playerTeams/${playerId}`]: resolvedTeam });
-            console.log('✅ Backfilled missing player team:', resolvedTeam);
-          } else if (lobbyTeam && existingGame.playerTeams?.[playerId] !== lobbyTeam) {
-            await update(gameRef, { [`playerTeams/${playerId}`]: lobbyTeam });
-            console.log('✅ Synced player team from lobby:', lobbyTeam);
-          }
         }
+
+        await ensurePlayerInGame(gameRef, roomCode, playerId, roomData);
 
         // Listen to game state changes
         unsubscribe = onValue(gameRef, (snapshot) => {
           const data = snapshot.val();
           if (data) {
+            const teamInGame = data.playerTeams?.[playerId];
+            if (teamInGame !== 'A' && teamInGame !== 'B') {
+              ensurePlayerInGame(gameRef, roomCode, playerId, roomData).catch((err) => {
+                console.warn('⚠️ Could not backfill player team:', err);
+              });
+            }
+
             console.log('📊 Game state updated:', {
               phase: data.phase,
               turn: data.currentTurn,
@@ -204,13 +263,17 @@ export const useGameState = (roomCode, playerId, language) => {
 
     initGame();
 
-    // Cleanup
     return () => {
+      cancelled = true;
       if (unsubscribe) {
         unsubscribe();
       }
     };
   }, [roomCode, playerId, language]);
+
+  const teamFromGame = gameState?.playerTeams?.[playerId];
+  const currentPlayerTeam =
+    teamFromGame === 'A' || teamFromGame === 'B' ? teamFromGame : lobbyTeam;
 
   return {
     gameState,
@@ -225,6 +288,7 @@ export const useGameState = (roomCode, playerId, language) => {
     answerOptions,
     setAnswerOptions,
     removedAnswers,
-    setRemovedAnswers
+    setRemovedAnswers,
+    currentPlayerTeam
   };
 };

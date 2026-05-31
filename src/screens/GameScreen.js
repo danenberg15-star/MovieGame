@@ -11,7 +11,7 @@ import { useGameState } from '../hooks/useGameState';
 import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
 import { preloadTrailer } from '../utils/gameLogic';
-import { setActiveSession, clearActiveSession } from '../utils/activeSession';
+import { setActiveSession, clearActiveSession, getActiveSession } from '../utils/activeSession';
 import { pickOscarQuip } from '../utils/oscarQuips';
 import OscarPopup from '../components/OscarPopup';
 
@@ -125,33 +125,41 @@ function GameScreen() {
   const navigate = useNavigate();
   const { roomCode } = useParams();
   const [playerId] = useState(() => {
-    const fromUrl = new URLSearchParams(window.location.search).get('playerId');
-    if (fromUrl) {
+    const persist = (id) => {
       try {
-        localStorage.setItem(`cinemaster_player_${roomCode}`, fromUrl);
+        localStorage.setItem(`cinemaster_player_${roomCode}`, id);
       } catch {
         /* ignore */
       }
-      return fromUrl;
-    }
+      return id;
+    };
+
+    const fromUrl = new URLSearchParams(window.location.search).get('playerId');
+    if (fromUrl) return persist(fromUrl);
+
     try {
       const stored = localStorage.getItem(`cinemaster_player_${roomCode}`);
       if (stored) return stored;
     } catch {
       /* ignore */
     }
-    const id = `player_${Date.now()}`;
-    try {
-      localStorage.setItem(`cinemaster_player_${roomCode}`, id);
-    } catch {
-      /* ignore */
+
+    const session = getActiveSession();
+    if (session?.roomCode === roomCode && session.playerId) {
+      return persist(session.playerId);
     }
-    return id;
+
+    return null;
   });
+
+  useEffect(() => {
+    if (playerId || !roomCode) return;
+    navigate(`/lobby/${roomCode}`, { replace: true });
+  }, [playerId, roomCode, navigate]);
 
   // Restore playerId in URL after refresh / service-worker navigation (keeps team assignment)
   useEffect(() => {
-    if (!roomCode) return;
+    if (!roomCode || !playerId) return;
     const params = new URLSearchParams(window.location.search);
     if (params.get('playerId') === playerId) return;
     const url = new URL(window.location.href);
@@ -194,12 +202,13 @@ function GameScreen() {
     answerOptions,
     setAnswerOptions,
     removedAnswers,
-    setRemovedAnswers
+    setRemovedAnswers,
+    currentPlayerTeam
   } = useGameState(roomCode, playerId, language);
 
   const isBotMode = Boolean(gameState?.isBotMode || gameState?.isQAMode);
 
-  const currentTeam = gameState?.playerTeams?.[playerId] ?? null;
+  const currentTeam = currentPlayerTeam;
   const teamKnown = currentTeam === 'A' || currentTeam === 'B';
   
   const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
