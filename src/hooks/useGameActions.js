@@ -11,7 +11,9 @@ import {
   checkWinCondition,
   getSuccessMessage,
   findConnection,
-  preloadTrailer
+  preloadTrailer,
+  RACE_OPTIONS_COUNT,
+  DEFAULT_OPTIONS_COUNT
 } from '../utils/gameLogic';
 
 const otherTeam = (team) => (team === 'A' ? 'B' : 'A');
@@ -193,6 +195,9 @@ export const useGameActions = (
         };
       }
 
+      const isRaceMode = Boolean(gs?.isRaceMode);
+      const optionsCount = isRaceMode ? RACE_OPTIONS_COUNT : DEFAULT_OPTIONS_COUNT;
+
       return {
         activeTurn,
         nextRoundNumber,
@@ -200,7 +205,7 @@ export const useGameActions = (
         updates: {
           currentMovie: {
             id: nextMovie.id,
-            options: generateAnswerOptions(nextMovie, allMovies, language),
+            options: generateAnswerOptions(nextMovie, allMovies, language, optionsCount),
             removedAnswers: [],
             trailerWatchedForTurn: null,
           },

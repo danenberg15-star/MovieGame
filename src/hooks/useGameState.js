@@ -132,7 +132,7 @@ export const useGameState = (roomCode, playerId, language) => {
 
         let roomWarmup = roomData?.warmup || null;
         if (!roomWarmup?.anchorCards?.teamA || !roomWarmup?.pendingFirstRound?.movieId) {
-          roomWarmup = buildLobbyWarmupPayload(movies, language);
+          roomWarmup = buildLobbyWarmupPayload(movies, language, { isRaceMode });
           await update(ref(database, `rooms/${roomCode}`), { warmup: roomWarmup });
           console.log('🔥 Backfilled missing room warmup payload');
         }

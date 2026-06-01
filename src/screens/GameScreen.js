@@ -360,6 +360,15 @@ function GameScreen() {
     });
   }, [connectionResult, language, t]);
 
+  // Pick a deterministic "primary" client so trailer-expired round advances happen exactly once.
+  const primaryPlayerId = useMemo(() => {
+    const ids = Object.keys(gameState?.players || {})
+      .filter((id) => id !== 'bot_player')
+      .sort();
+    return ids[0] || null;
+  }, [gameState?.players]);
+  const isPrimaryClient = !!playerId && primaryPlayerId === playerId;
+
   // When trailer ends: always transition locally; active team writes to Firebase
   const handleTrailerEnd = useCallback(async () => {
     const movieId = gameState?.currentMovie?.id;
@@ -379,6 +388,23 @@ function GameScreen() {
       setIsCorrect(false);
     }
 
+    // Race-the-Clock: nobody guessed before the trailer finished → roast and advance.
+    if (isRaceMode && !gameState?.wonCard) {
+      const quip = pickOscarQuip({ success: false, language });
+      setOscarPopup({
+        variant: 'failure',
+        quip,
+        subText: t('card_returns'),
+        duration: 2200,
+      });
+      if (isPrimaryClient) {
+        setTimeout(() => {
+          startNextRound();
+        }, 1500);
+      }
+      return;
+    }
+
     // Race mode: any client may finalise the "trailer watched" signal.
     const canWriteToFirebase =
       isRaceMode ||
@@ -396,10 +422,15 @@ function GameScreen() {
     phase,
     gameState?.currentMovie?.id,
     gameState?.currentTurn,
+    gameState?.wonCard,
     currentTeam,
     teamKnown,
     isBotMode,
     isRaceMode,
+    isPrimaryClient,
+    language,
+    t,
+    startNextRound,
     markTrailerWatched,
     setSelectedAnswer,
     setShowResult,

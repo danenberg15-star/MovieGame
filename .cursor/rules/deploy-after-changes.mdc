@@ -1,0 +1,19 @@
+---
+description: After code changes are accepted (Keep All), deploy via deploy.ps1
+alwaysApply: true
+---
+
+# Deploy after accepted changes
+
+When you finish implementing or fixing code in this repo and the user has accepted the file changes (e.g. **Keep All**):
+
+1. Do **not** stop at `npm run build` alone.
+2. Run the project deploy script from the repo root:
+
+```powershell
+.\deploy.ps1 "Short commit message describing the change"
+```
+
+`deploy.ps1` builds, commits all staged/unstaged changes, bumps the git patch tag, and pushes `main` plus the new tag (triggers production deploy).
+
+Only skip deploy if the user explicitly says not to deploy, or there are no file changes to ship.

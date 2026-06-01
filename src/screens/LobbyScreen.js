@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ref, onValue, update } from 'firebase/database';
 import { database } from '../firebase';
 import { setActiveSession, clearActiveSession } from '../utils/activeSession';
-import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom, botLabelFor } from '../utils/botRoom';
+import { BOT_SEATS_COLS, SEATS_PER_TEAM, isBotModeRoom, isRaceModeRoom, botLabelFor } from '../utils/botRoom';
 import {
   loadMoviesData,
   buildLobbyWarmupPayload,
@@ -103,7 +103,9 @@ function LobbyScreen() {
       try {
         const movies = await loadMoviesData();
         const language = i18n.language === 'he' ? 'he' : 'en';
-        const warmup = buildLobbyWarmupPayload(movies, language);
+        const warmup = buildLobbyWarmupPayload(movies, language, {
+          isRaceMode: isRaceModeRoom(room),
+        });
 
         if (cancelled) return;
         await update(ref(database, `rooms/${roomCode}`), { warmup });

@@ -151,7 +151,10 @@ export function selectAnchorCards(allMovies) {
   };
 }
 
-export function buildLobbyWarmupPayload(allMovies, language = 'en') {
+export const RACE_OPTIONS_COUNT = 4;
+export const DEFAULT_OPTIONS_COUNT = 10;
+
+export function buildLobbyWarmupPayload(allMovies, language = 'en', { isRaceMode = false } = {}) {
   const anchors = selectAnchorCards(allMovies);
   if (!anchors) {
     throw new Error('Failed to prepare anchor cards');
@@ -170,6 +173,8 @@ export function buildLobbyWarmupPayload(allMovies, language = 'en') {
     throw new Error('Failed to prepare the first round movie');
   }
 
+  const optionsCount = isRaceMode ? RACE_OPTIONS_COUNT : DEFAULT_OPTIONS_COUNT;
+
   return {
     version: 1,
     preparedAt: Date.now(),
@@ -177,7 +182,7 @@ export function buildLobbyWarmupPayload(allMovies, language = 'en') {
     pendingFirstRound: {
       movieId: firstRoundMovie.id,
       currentTurn: 'A',
-      options: generateAnswerOptions(firstRoundMovie, allMovies, language),
+      options: generateAnswerOptions(firstRoundMovie, allMovies, language, optionsCount),
     },
     usedMovieIds,
   };
@@ -358,31 +363,31 @@ export function getNextRequiredConnectionType(lastConnectionType) {
 }
 
 // Generate 10 answer options (1 correct + 9 decoys)
-export function generateAnswerOptions(correctMovie, allMovies, language = 'en') {
+export function generateAnswerOptions(correctMovie, allMovies, language = 'en', count = 10) {
+  const total = Math.max(2, count);
   const options = [correctMovie.title[language]];
-  
-  // Use decoy answers from the movie data
   const decoys = correctMovie.decoy_answers[language] || [];
-  
-  // Add decoys (up to 9)
-  for (let i = 0; i < Math.min(9, decoys.length); i++) {
-    options.push(decoys[i]);
+
+  // Pull decoys first (shuffled so race mode doesn't always take the same 3).
+  const shuffledDecoys = [...decoys].sort(() => Math.random() - 0.5);
+  for (let i = 0; options.length < total && i < shuffledDecoys.length; i++) {
+    if (!options.includes(shuffledDecoys[i])) {
+      options.push(shuffledDecoys[i]);
+    }
   }
-  
-  // If not enough decoys, add random movies
-  if (options.length < 10) {
-    const otherMovies = allMovies.filter(m => m.id !== correctMovie.id);
+
+  // Fall back to random movie titles if we still need more.
+  if (options.length < total) {
+    const otherMovies = allMovies.filter((m) => m.id !== correctMovie.id);
     const shuffled = otherMovies.sort(() => Math.random() - 0.5);
-    
-    for (let i = 0; options.length < 10 && i < shuffled.length; i++) {
+    for (let i = 0; options.length < total && i < shuffled.length; i++) {
       const title = shuffled[i].title[language];
       if (!options.includes(title)) {
         options.push(title);
       }
     }
   }
-  
-  // Shuffle options
+
   return options.sort(() => Math.random() - 0.5);
 }
 
