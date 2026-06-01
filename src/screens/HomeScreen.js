@@ -297,134 +297,137 @@ function HomeScreen() {
       <div className="container">
         <div className="home-content">
           <div className="home-controls">
-          <div className="name-section">
-            <input
-              type="text"
-              className="input name-input"
-              placeholder={t('enter_your_name') || 'Enter your name'}
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              maxLength="20"
-            />
-          </div>
-
-          <div className="mode-section">
-            <p className="mode-label">{t('choose_mode')}</p>
-            <div className="mode-toggle" role="tablist">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={gameMode === 'bot'}
-                className={`mode-tab ${gameMode === 'bot' ? 'active' : ''}`}
-                onClick={() => setGameMode('bot')}
-              >
-                🤖 {t('play_vs_bot')}
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={gameMode === 'teams'}
-                className={`mode-tab ${gameMode === 'teams' ? 'active' : ''}`}
-                onClick={() => setGameMode('teams')}
-              >
-                👥 {t('play_vs_teams')}
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={gameMode === 'race'}
-                className={`mode-tab ${gameMode === 'race' ? 'active' : ''}`}
-                onClick={() => setGameMode('race')}
-              >
-                ⏱️ {t('play_vs_clock')}
-              </button>
-            </div>
-          </div>
-
-          {gameMode === 'bot' && (
-            <div className="menu-buttons mode-options">
-              <p className="mode-hint">{t('vs_bot_hint')}</p>
-              <button
-                className="btn btn-primary"
-                onClick={handleBotMode}
-                disabled={!nameValid}
-              >
-                ▶️ {t('start_game')}
-              </button>
-            </div>
-          )}
-
-          {gameMode === 'teams' && (
-            <div className="menu-buttons mode-options">
-              <p className="mode-hint">{t('vs_teams_hint')}</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleCreateGame()}
-                disabled={isLoading || !nameValid}
-              >
-                {isLoading ? <span className="loading"></span> : '🎮 ' + t('create_game')}
-              </button>
-
-              <div className="join-section">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="input join-input"
-                  placeholder={t('enter_room_code') || 'Enter Room Code'}
-                  value={roomCode}
-                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && roomCode.length === 4 && nameValid && !isLoading) {
-                      e.preventDefault();
-                      handleJoinGame();
-                    }
-                  }}
-                  maxLength="4"
-                  aria-label={t('enter_room_code')}
-                />
-                <span className="join-hint" aria-live="polite">
-                  {roomCode.length === 4 ? '↵ ' + t('join_game') : ''}
-                </span>
+            {/* Step 1 — pick the kind of game */}
+            {!gameMode && (
+              <div className="mode-section mode-section--step1">
+                <p className="mode-label">{t('choose_mode')}</p>
+                <div className="mode-toggle" role="tablist">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={false}
+                    className="mode-tab"
+                    onClick={() => setGameMode('bot')}
+                  >
+                    🤖 {t('play_vs_bot')}
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={false}
+                    className="mode-tab"
+                    onClick={() => setGameMode('teams')}
+                  >
+                    👥 {t('play_vs_teams')}
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={false}
+                    className="mode-tab"
+                    onClick={() => setGameMode('race')}
+                  >
+                    ⏱️ {t('play_vs_clock')}
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {gameMode === 'race' && (
-            <div className="menu-buttons mode-options">
-              <p className="mode-hint">{t('vs_clock_hint')}</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleCreateGame({ isRaceMode: true })}
-                disabled={isLoading || !nameValid}
-              >
-                {isLoading ? <span className="loading"></span> : '⏱️ ' + t('create_game')}
-              </button>
+            {/* Step 2 — once a mode is chosen, show only the relevant inputs */}
+            {gameMode && (
+              <div className="mode-step2">
+                <button
+                  type="button"
+                  className="mode-back"
+                  onClick={() => setGameMode(null)}
+                  aria-label={t('change_mode')}
+                  title={t('change_mode')}
+                >
+                  ← {t('change_mode')}
+                </button>
 
-              <div className="join-section">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="input join-input"
-                  placeholder={t('enter_room_code') || 'Enter Room Code'}
-                  value={roomCode}
-                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && roomCode.length === 4 && nameValid && !isLoading) {
-                      e.preventDefault();
-                      handleJoinGame();
-                    }
-                  }}
-                  maxLength="4"
-                  aria-label={t('enter_room_code')}
-                />
-                <span className="join-hint" aria-live="polite">
-                  {roomCode.length === 4 ? '↵ ' + t('join_game') : ''}
-                </span>
+                <div className="mode-current-label">
+                  {gameMode === 'bot' && <>🤖 {t('play_vs_bot')}</>}
+                  {gameMode === 'teams' && <>👥 {t('play_vs_teams')}</>}
+                  {gameMode === 'race' && <>⏱️ {t('play_vs_clock')}</>}
+                </div>
+
+                <div className="name-section">
+                  <input
+                    type="text"
+                    className="input name-input"
+                    placeholder={t('enter_your_name') || 'Enter your name'}
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value)}
+                    maxLength="20"
+                  />
+                </div>
+
+                {gameMode === 'bot' && (
+                  <div className="menu-buttons mode-options">
+                    <p className="mode-hint">{t('vs_bot_hint')}</p>
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleBotMode}
+                      disabled={!nameValid}
+                    >
+                      ▶️ {t('start_game')}
+                    </button>
+                  </div>
+                )}
+
+                {(gameMode === 'teams' || gameMode === 'race') && (
+                  <div className="menu-buttons mode-options">
+                    <p className="mode-hint">
+                      {gameMode === 'teams' ? t('vs_teams_hint') : t('vs_clock_hint')}
+                    </p>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() =>
+                        handleCreateGame({ isRaceMode: gameMode === 'race' })
+                      }
+                      disabled={isLoading || !nameValid}
+                    >
+                      {isLoading ? (
+                        <span className="loading"></span>
+                      ) : (
+                        (gameMode === 'race' ? '⏱️ ' : '🎮 ') + t('create_game')
+                      )}
+                    </button>
+
+                    <div className="join-section">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        className="input join-input"
+                        placeholder={t('enter_room_code') || 'Enter Room Code'}
+                        value={roomCode}
+                        onChange={(e) =>
+                          setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))
+                        }
+                        onKeyDown={(e) => {
+                          if (
+                            e.key === 'Enter' &&
+                            roomCode.length === 4 &&
+                            nameValid &&
+                            !isLoading
+                          ) {
+                            e.preventDefault();
+                            handleJoinGame();
+                          }
+                        }}
+                        maxLength="4"
+                        aria-label={t('enter_room_code')}
+                      />
+                      <span className="join-hint" aria-live="polite">
+                        {roomCode.length === 4 ? '↵ ' + t('join_game') : ''}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+            )}
           </div>
         </div>
       </div>
