@@ -12,7 +12,7 @@ const resources = {
       how_to_play: "How to Play",
       help: "Help",
       choose_mode: "Choose game mode",
-      change_mode: "Change mode",
+      change_mode: "Change game mode",
       play_vs_bot: "Play vs Computer",
       play_vs_teams: "Play vs Teams",
       play_vs_clock: "Race the Clock",

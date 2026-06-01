@@ -343,25 +343,27 @@ function HomeScreen() {
                   aria-label={t('change_mode')}
                   title={t('change_mode')}
                 >
-                  ← {t('change_mode')}
+                  <span className="mode-back__arrow" aria-hidden="true">←</span>
+                  <span className="mode-back__text">{t('change_mode')}</span>
                 </button>
 
-                <div className="mode-current-label">
-                  {gameMode === 'bot' && <>🤖 {t('play_vs_bot')}</>}
-                  {gameMode === 'teams' && <>👥 {t('play_vs_teams')}</>}
-                  {gameMode === 'race' && <>⏱️ {t('play_vs_clock')}</>}
-                </div>
+                <div className="mode-step2__body">
+                  <div className="mode-current-label">
+                    {gameMode === 'bot' && <>🤖 {t('play_vs_bot')}</>}
+                    {gameMode === 'teams' && <>👥 {t('play_vs_teams')}</>}
+                    {gameMode === 'race' && <>⏱️ {t('play_vs_clock')}</>}
+                  </div>
 
-                <div className="name-section">
-                  <input
-                    type="text"
-                    className="input name-input"
-                    placeholder={t('enter_your_name') || 'Enter your name'}
-                    value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value)}
-                    maxLength="20"
-                  />
-                </div>
+                  <div className="name-section">
+                    <input
+                      type="text"
+                      className="input name-input"
+                      placeholder={t('enter_your_name') || 'Enter your name'}
+                      value={playerName}
+                      onChange={(e) => setPlayerName(e.target.value)}
+                      maxLength="20"
+                    />
+                  </div>
 
                 {gameMode === 'bot' && (
                   <div className="menu-buttons mode-options">
@@ -426,6 +428,7 @@ function HomeScreen() {
                     </div>
                   </div>
                 )}
+                </div>
               </div>
             )}
           </div>
