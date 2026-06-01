@@ -207,6 +207,7 @@ function GameScreen() {
   } = useGameState(roomCode, playerId, language);
 
   const isBotMode = Boolean(gameState?.isBotMode || gameState?.isQAMode);
+  const isRaceMode = Boolean(gameState?.isRaceMode);
 
   const currentTeam = currentPlayerTeam;
   const teamKnown = currentTeam === 'A' || currentTeam === 'B';
@@ -294,11 +295,20 @@ function GameScreen() {
     localTrailerWatched
   );
 
-  // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess
-  const isMyTurn = teamKnown && (isBotMode
-    ? (currentTeam === 'A' && !attempts.includes('A')) ||
-      (currentTeam === 'B' && !botAlreadyTried)
-    : !myTeamAlreadyTried && gameState?.currentTurn === currentTeam);
+  // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess.
+  // Race-the-Clock: every human team can answer every round (no turn rotation).
+  let isMyTurn = false;
+  if (teamKnown) {
+    if (isRaceMode) {
+      isMyTurn = true;
+    } else if (isBotMode) {
+      isMyTurn =
+        (currentTeam === 'A' && !attempts.includes('A')) ||
+        (currentTeam === 'B' && !botAlreadyTried);
+    } else {
+      isMyTurn = !myTeamAlreadyTried && gameState?.currentTurn === currentTeam;
+    }
+  }
 
   const canAnswer =
     isMyTurn && trailerReadyForAnswers && !selectedAnswer && !botIsThinking;
@@ -362,15 +372,18 @@ function GameScreen() {
     setLocalTrailerWatched(true);
 
     const activeTurn = gameState.currentTurn;
-    if (teamKnown && currentTeam === activeTurn) {
+    if (teamKnown && (isRaceMode || currentTeam === activeTurn)) {
       setSelectedAnswer(null);
       setShowResult(false);
       setResultMessage('');
       setIsCorrect(false);
     }
 
+    // Race mode: any client may finalise the "trailer watched" signal.
     const canWriteToFirebase =
-      currentTeam === activeTurn || (isBotMode && activeTurn === 'B');
+      isRaceMode ||
+      currentTeam === activeTurn ||
+      (isBotMode && activeTurn === 'B');
 
     if (canWriteToFirebase) {
       try {
@@ -386,6 +399,7 @@ function GameScreen() {
     currentTeam,
     teamKnown,
     isBotMode,
+    isRaceMode,
     markTrailerWatched,
     setSelectedAnswer,
     setShowResult,
@@ -535,11 +549,13 @@ function GameScreen() {
                       {t('player_id_missing')}
                     </p>
                   )}
-                  {gameState?.currentTurn && teamKnown && (
+                  {teamKnown && (
                     <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '12px', opacity: 0.9 }}>
-                      {isMyTurn
-                        ? `▶ ${t('your_turn_to_guess')}`
-                        : `${t(`team_${gameState.currentTurn.toLowerCase()}`)} — ${t('waiting_for_guess')}`}
+                      {isRaceMode
+                        ? `⏱️ ${t('race_round_open')}`
+                        : isMyTurn
+                          ? `▶ ${t('your_turn_to_guess')}`
+                          : `${t(`team_${(gameState?.currentTurn || 'A').toLowerCase()}`)} — ${t('waiting_for_guess')}`}
                     </p>
                   )}
                   <div className="answer-grid">

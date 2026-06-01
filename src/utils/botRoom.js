@@ -49,3 +49,7 @@ export const botLabelFor = (occupant, lang = 'en') => {
 
 export const isBotModeRoom = (roomOrGame) =>
   Boolean(roomOrGame?.isBotMode || roomOrGame?.isQAMode);
+
+/** Race-the-Clock mode: two human teams, no turn rotation — first correct wins each round. */
+export const isRaceModeRoom = (roomOrGame) =>
+  Boolean(roomOrGame?.isRaceMode);

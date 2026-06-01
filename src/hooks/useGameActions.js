@@ -42,6 +42,12 @@ export const isTrailerReadyForAnswer = (
   const trailerFor = gameState?.currentMovie?.trailerWatchedForTurn;
   const attempts = gameState?.currentMovieAttempts || [];
   const currentTurn = gameState?.currentTurn;
+  const isRaceMode = Boolean(gameState?.isRaceMode);
+
+  // Race-the-Clock: the trailer is shared by both teams every round.
+  // Any "watched" signal (Firebase or local) opens the grid for everyone.
+  if (isRaceMode) return Boolean(trailerFor) || localTrailerWatched;
+
   if (trailerFor === answeringTeam) return true;
   if (isQAMode && localTrailerWatched && currentTurn === answeringTeam) return true;
   // QA steal: same trailer already played (often cleared to null after bot's attempt)
@@ -283,6 +289,8 @@ export const useGameActions = (
 
     console.log('🔗 Attempting connection:', { targetCard: targetCard.title.en, connectionType });
 
+    const isRaceMode = Boolean(gameState?.isRaceMode);
+
     // 🔥 FIX: Use wonCard.team instead of currentTeam
     const winningTeam = gameState.wonCard?.team || currentTeam;
     const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
@@ -291,11 +299,13 @@ export const useGameActions = (
 
     const validation = validateConnection(currentMovie, targetCard, connectionType);
 
-    // Next regular turn always belongs to the team OPPOSITE the original turn holder.
-    // (Original holder used their chance — either won outright or failed and let the other team steal.)
+    // Race mode: no turn rotation — alternate movie-selection bias based on winner.
+    // Regular mode: next turn always belongs to the team OPPOSITE the original turn holder.
     const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
     const originalTurnHolder = priorAttempts[0] ?? winningTeam;
-    const nextTurn = otherTeam(originalTurnHolder);
+    const nextTurn = isRaceMode
+      ? otherTeam(winningTeam)
+      : otherTeam(originalTurnHolder);
     const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
 
     if (validation.valid) {
@@ -394,15 +404,20 @@ export const useGameActions = (
   const handleSaveToken = useCallback(async () => {
     console.log('💾 Saving token...');
 
+    const isRaceMode = Boolean(gameState?.isRaceMode);
+
     const winningTeam = gameState.wonCard?.team || currentTeam;
     const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
 
     console.log('🔥 Saving token for team:', winningTeam, 'teamKey:', teamKey);
 
-    // Next regular turn = opposite of the team that originally had the turn this round.
+    // Race mode: alternate movie-selection bias by winner.
+    // Regular mode: next turn = opposite of the team that originally had the turn.
     const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
     const originalTurnHolder = priorAttempts[0] ?? winningTeam;
-    const nextTurn = otherTeam(originalTurnHolder);
+    const nextTurn = isRaceMode
+      ? otherTeam(winningTeam)
+      : otherTeam(originalTurnHolder);
 
     const newTokens = (gameState[teamKey]?.tokens || 0) + 1;
     const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
@@ -424,6 +439,8 @@ export const useGameActions = (
   const handleBuyConnection = useCallback(async () => {
     console.log('💰 Buying connection (3 tokens)...');
 
+    const isRaceMode = Boolean(gameState?.isRaceMode);
+
     const winningTeam = gameState.wonCard?.team || currentTeam;
     const teamKey = winningTeam === 'A' ? 'teamA' : 'teamB';
 
@@ -440,7 +457,9 @@ export const useGameActions = (
 
     const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
     const originalTurnHolder = priorAttempts[0] ?? winningTeam;
-    const nextTurn = otherTeam(originalTurnHolder);
+    const nextTurn = isRaceMode
+      ? otherTeam(winningTeam)
+      : otherTeam(originalTurnHolder);
     const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
 
     const updates = {
@@ -521,9 +540,12 @@ export const useGameActions = (
   const handleAnswerSelect = useCallback(async (answer, isMyTurn, botIsThinking, answeringTeamOverride) => {
     const gs = gameStateRef.current;
     const isBotMode = Boolean(gs?.isBotMode || gs?.isQAMode);
+    const isRaceMode = Boolean(gs?.isRaceMode);
     const attempts = normalizeAttempts(gameState?.currentMovieAttempts);
-    const answeringTeam =
-      answeringTeamOverride ?? getStealingTeam(attempts) ?? gameState.currentTurn;
+    // Race mode: the answering team is the player's own team (no turn rotation).
+    const answeringTeam = isRaceMode
+      ? (answeringTeamOverride ?? currentTeam)
+      : (answeringTeamOverride ?? getStealingTeam(attempts) ?? gameState.currentTurn);
 
     const trailerReady = isTrailerReadyForAnswer(
       gameState,
@@ -578,6 +600,54 @@ export const useGameActions = (
       setShowResult(true);
       setPhase('decision');
 
+    } else if (isRaceMode) {
+      // Race-the-Clock: a wrong guess by either team just eliminates that option
+      // for both teams. No turn rotation — the round stays open until someone
+      // gets it right, or the grid is exhausted (both teams failed).
+      const newRemovedAnswers = [
+        ...(gameState.currentMovie?.removedAnswers || []),
+        answer,
+      ];
+      const optionsLeft = (gameState.currentMovie?.options || []).filter(
+        (opt) => !newRemovedAnswers.includes(opt),
+      ).length;
+
+      await update(ref(database, `games/${roomCode}`), {
+        [`currentMovie/removedAnswers`]: newRemovedAnswers,
+      });
+
+      setRemovedAnswers(newRemovedAnswers);
+
+      if (optionsLeft <= 0) {
+        // Every option exhausted → card returns to the pool.
+        setResultMessage(
+          language === 'he'
+            ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!'
+            : 'Both teams failed - card will return!',
+        );
+        setShowResult(true);
+
+        setTimeout(async () => {
+          await update(ref(database, `games/${roomCode}`), {
+            currentMovie: null,
+            currentMovieAttempts: [],
+          });
+          const preparedRound = buildNextRoundPayload();
+          if (preparedRound?.nextMovie?.id) {
+            warmTrailer(preparedRound.nextMovie.id);
+          }
+          startNextRound(undefined, { preparedRound });
+        }, FAILED_ROUND_DELAY_MS);
+      } else {
+        // Same player can immediately try again; option is gone for both teams.
+        setResultMessage(language === 'he' ? 'לא נכון' : 'Incorrect');
+        setShowResult(true);
+        setSelectedAnswer(null);
+        setTimeout(() => {
+          setShowResult(false);
+          setResultMessage('');
+        }, 800);
+      }
     } else {
       // Wrong answer - remove it and give other team a chance
       const newRemovedAnswers = [...(gameState.currentMovie?.removedAnswers || []), answer];
@@ -637,6 +707,7 @@ export const useGameActions = (
   }, [
     selectedAnswer,
     currentMovie,
+    currentTeam,
     gameState,
     roomCode,
     language,

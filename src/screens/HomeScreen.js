@@ -19,7 +19,7 @@ function HomeScreen() {
   const [playerName, setPlayerName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [gameMode, setGameMode] = useState(null); // 'bot' | 'teams'
+  const [gameMode, setGameMode] = useState(null); // 'bot' | 'teams' | 'race'
   const [showHelp, setShowHelp] = useState(false);
   const [resumeSession, setResumeSession] = useState(null);
 
@@ -96,7 +96,7 @@ function HomeScreen() {
     return true;
   };
 
-  const handleCreateGame = async () => {
+  const handleCreateGame = async ({ isRaceMode = false } = {}) => {
     if (!validatePlayerName()) return;
 
     setIsLoading(true);
@@ -107,7 +107,7 @@ function HomeScreen() {
       const roomRef = ref(database, `rooms/${newRoomCode}`);
       const playerId = 'player_' + Date.now();
 
-      await set(roomRef, {
+      const baseRoom = {
         code: newRoomCode,
         host: playerId,
         created: Date.now(),
@@ -126,7 +126,11 @@ function HomeScreen() {
             isHost: true
           }
         }
-      });
+      };
+
+      if (isRaceMode) baseRoom.isRaceMode = true;
+
+      await set(roomRef, baseRoom);
 
       navigate(`/lobby/${newRoomCode}?playerId=${playerId}`);
     } catch (error) {
@@ -325,6 +329,15 @@ function HomeScreen() {
               >
                 👥 {t('play_vs_teams')}
               </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={gameMode === 'race'}
+                className={`mode-tab ${gameMode === 'race' ? 'active' : ''}`}
+                onClick={() => setGameMode('race')}
+              >
+                ⏱️ {t('play_vs_clock')}
+              </button>
             </div>
           </div>
 
@@ -346,10 +359,46 @@ function HomeScreen() {
               <p className="mode-hint">{t('vs_teams_hint')}</p>
               <button
                 className="btn btn-primary"
-                onClick={handleCreateGame}
+                onClick={() => handleCreateGame()}
                 disabled={isLoading || !nameValid}
               >
                 {isLoading ? <span className="loading"></span> : '🎮 ' + t('create_game')}
+              </button>
+
+              <div className="join-section">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className="input join-input"
+                  placeholder={t('enter_room_code') || 'Enter Room Code'}
+                  value={roomCode}
+                  onChange={(e) => setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && roomCode.length === 4 && nameValid && !isLoading) {
+                      e.preventDefault();
+                      handleJoinGame();
+                    }
+                  }}
+                  maxLength="4"
+                  aria-label={t('enter_room_code')}
+                />
+                <span className="join-hint" aria-live="polite">
+                  {roomCode.length === 4 ? '↵ ' + t('join_game') : ''}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {gameMode === 'race' && (
+            <div className="menu-buttons mode-options">
+              <p className="mode-hint">{t('vs_clock_hint')}</p>
+              <button
+                className="btn btn-primary"
+                onClick={() => handleCreateGame({ isRaceMode: true })}
+                disabled={isLoading || !nameValid}
+              >
+                {isLoading ? <span className="loading"></span> : '⏱️ ' + t('create_game')}
               </button>
 
               <div className="join-section">

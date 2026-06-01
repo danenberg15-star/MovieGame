@@ -7,7 +7,7 @@ import {
   buildLobbyWarmupPayload,
   initializeGameState
 } from '../utils/gameLogic';
-import { isBotModeRoom } from '../utils/botRoom';
+import { isBotModeRoom, isRaceModeRoom } from '../utils/botRoom';
 
 // Read team chosen in lobby (rooms/{code}/players/{id}.team)
 const getLobbyTeam = async (roomCode, playerId) => {
@@ -115,11 +115,12 @@ export const useGameState = (roomCode, playerId, language) => {
         const roomSnap = await get(ref(database, `rooms/${roomCode}`));
         const roomData = roomSnap.val() || {};
         const isBotMode = isBotModeRoom(roomData);
+        const isRaceMode = isRaceModeRoom(roomData);
 
         const resolvedLobbyTeam = await getLobbyTeam(roomCode, playerId);
         if (!cancelled) setLobbyTeam(resolvedLobbyTeam);
 
-        console.log('🎮 Initializing game...', { roomCode, playerId, isBotMode });
+        console.log('🎮 Initializing game...', { roomCode, playerId, isBotMode, isRaceMode });
 
         // Load movies data
         const movies = await loadMoviesData();
@@ -156,6 +157,7 @@ export const useGameState = (roomCode, playerId, language) => {
             playerTeams: { ...roomTeams },
             isBotMode,
             isQAMode: isBotMode,
+            isRaceMode,
           };
 
           if (!initialState.players[playerId]) {
