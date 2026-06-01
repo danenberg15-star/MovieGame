@@ -224,7 +224,10 @@ function GameScreen() {
     isBotMode && currentTeam === 'A' && botAlreadyTried;
 
   const trailerReadyForAnswers =
-    trailerPlayedThisRound || localTrailerWatched || canStealAfterBotTrailer;
+    isRaceMode ||
+    trailerPlayedThisRound ||
+    localTrailerWatched ||
+    canStealAfterBotTrailer;
 
   const shouldShowTrailer =
     phase === 'playing' && currentMovie && !trailerReadyForAnswers;

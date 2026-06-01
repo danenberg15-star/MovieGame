@@ -431,32 +431,47 @@
   overflow: hidden;
 }
 
-/* Race-the-Clock: trailer + answers visible together */
+/* Race-the-Clock: trailer + answers visible together.
+   Layout goal: trailer fills all remaining vertical space, the 2x2 answer
+   grid only takes what it needs — no scrolling on phones (iPhone 12+). */
 .playing-phase--race {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   height: 100%;
   overflow: hidden;
 }
 
 .race-trailer {
-  flex: 0 0 auto;
-  height: clamp(180px, 42vh, 360px);
+  flex: 1 1 auto;
+  min-height: 200px;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .race-answers {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
-@media (max-width: 760px) {
-  .race-trailer {
-    height: clamp(160px, 36vh, 280px);
-  }
+/* In race mode, the 2x2 grid sizes to its rows — don't let it expand. */
+.race-answers .answer-grid {
+  flex: 0 0 auto;
+  overflow: visible;
+  padding-right: 0;
+  gap: 6px;
+}
+
+.race-answers .turn-hint {
+  margin: 0 0 2px 0 !important;
+  font-size: 12px;
+}
+
+.race-answers .answer-option {
+  min-height: 44px;
+  padding: 6px 8px;
 }
 
 /* Answer section takes full space when showing */
