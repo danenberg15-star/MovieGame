@@ -431,6 +431,34 @@
   overflow: hidden;
 }
 
+/* Race-the-Clock: trailer + answers visible together */
+.playing-phase--race {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.race-trailer {
+  flex: 0 0 auto;
+  height: clamp(180px, 42vh, 360px);
+  border-radius: 8px;
+}
+
+.race-answers {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 760px) {
+  .race-trailer {
+    height: clamp(160px, 36vh, 280px);
+  }
+}
+
 /* Answer section takes full space when showing */
 .answer-section {
   width: 100%;

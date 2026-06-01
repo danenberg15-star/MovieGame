@@ -44,9 +44,10 @@ export const isTrailerReadyForAnswer = (
   const currentTurn = gameState?.currentTurn;
   const isRaceMode = Boolean(gameState?.isRaceMode);
 
-  // Race-the-Clock: the trailer is shared by both teams every round.
-  // Any "watched" signal (Firebase or local) opens the grid for everyone.
-  if (isRaceMode) return Boolean(trailerFor) || localTrailerWatched;
+  // Race-the-Clock: answers are open the entire round, side-by-side with the
+  // trailer. There's no "watch first, then answer" gate — the whole point is
+  // to identify the movie as fast as possible while the trailer is playing.
+  if (isRaceMode) return true;
 
   if (trailerFor === answeringTeam) return true;
   if (isQAMode && localTrailerWatched && currentTurn === answeringTeam) return true;

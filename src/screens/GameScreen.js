@@ -513,9 +513,49 @@ function GameScreen() {
               disabled={gameState.wonCard?.team !== currentTeam}
             />
           ) : (
-            <div className="playing-phase">
-              {/* 🔥 FIXED: Show trailer only if not watched (local OR Firebase) */}
-              {shouldShowTrailer ? (
+            <div className={`playing-phase${isRaceMode && currentMovie ? ' playing-phase--race' : ''}`}>
+              {/* Race-the-Clock: trailer + answers visible together */}
+              {isRaceMode && currentMovie ? (
+                <>
+                  <div className="trailer-container race-trailer">
+                    <TrailerPlayer
+                      movieId={currentMovie?.id}
+                      onTrailerEnd={handleTrailerEnd}
+                      language={language}
+                      autoPlay={true}
+                    />
+                  </div>
+                  <div className="answer-section race-answers">
+                    {!teamKnown && (
+                      <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '8px', color: '#ff9800' }}>
+                        {t('player_id_missing')}
+                      </p>
+                    )}
+                    {teamKnown && (
+                      <p className="turn-hint" style={{ textAlign: 'center', marginBottom: '8px', opacity: 0.9 }}>
+                        {`⏱️ ${t('race_round_open')}`}
+                      </p>
+                    )}
+                    <div className="answer-grid">
+                      {answerOptions.filter((opt) => !removedAnswers.includes(opt)).map((option, index) => (
+                        <button
+                          key={index}
+                          className={`answer-option ${selectedAnswer === option ? (isCorrect ? 'correct' : 'incorrect') : ''}`}
+                          onClick={() => handleAnswerSelect(option, isMyTurn, botIsThinking)}
+                          disabled={!canAnswer}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                    {showResult && !isCorrect && (
+                      <div className="result-message result-message--wrong">
+                        {resultMessage}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : shouldShowTrailer ? (
                 <div className="trailer-container">
                   <TrailerPlayer
                     movieId={currentMovie?.id}
