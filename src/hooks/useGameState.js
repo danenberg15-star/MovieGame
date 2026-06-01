@@ -71,7 +71,8 @@ const ensurePlayerInGame = async (gameRef, roomCode, playerId, roomData) => {
     };
   }
   const teamInGame = game.playerTeams?.[playerId];
-  if (!teamInGame || teamInGame !== 'A' && teamInGame !== 'B') {
+  const teamValid = teamInGame === 'A' || teamInGame === 'B';
+  if (!teamValid) {
     updates[`playerTeams/${playerId}`] = lobbyTeam || resolvedTeam;
   } else if (lobbyTeam && teamInGame !== lobbyTeam) {
     updates[`playerTeams/${playerId}`] = lobbyTeam;
