@@ -141,10 +141,12 @@ function HomeScreen() {
     }
   };
 
-  const handleJoinGame = async () => {
+  const handleJoinGame = async (overrideCode) => {
     if (!validatePlayerName()) return;
 
-    if (!roomCode || roomCode.length !== 4) {
+    const codeToJoin = typeof overrideCode === 'string' ? overrideCode : roomCode;
+
+    if (!codeToJoin || codeToJoin.length !== 4) {
       alert(t('enter_room_code') || 'Please enter a valid 4-digit room code');
       return;
     }
@@ -153,12 +155,12 @@ function HomeScreen() {
     localStorage.setItem('playerName', playerName.trim());
 
     try {
-      const roomRef = ref(database, `rooms/${roomCode}`);
+      const roomRef = ref(database, `rooms/${codeToJoin}`);
       const snapshot = await get(roomRef);
 
       if (snapshot.exists()) {
         const playerId = 'player_' + Date.now();
-        const playerRef = ref(database, `rooms/${roomCode}/players/${playerId}`);
+        const playerRef = ref(database, `rooms/${codeToJoin}/players/${playerId}`);
         await set(playerRef, {
           id: playerId,
           name: playerName.trim(),
@@ -168,7 +170,7 @@ function HomeScreen() {
           isHost: false
         });
 
-        navigate(`/lobby/${roomCode}?playerId=${playerId}`);
+        navigate(`/lobby/${codeToJoin}?playerId=${playerId}`);
       } else {
         alert('Room not found. Please check the code.');
       }
@@ -221,6 +223,16 @@ function HomeScreen() {
   };
 
   const nameValid = playerName.trim().length >= 2;
+
+  // Auto-submit the join form when 4 digits are entered (no Enter needed).
+  // We guard with isLoading so quick paste / extra change events don't double-fire.
+  const handleRoomCodeChange = (nextValue) => {
+    const cleaned = nextValue.replace(/\D/g, '').slice(0, 4);
+    setRoomCode(cleaned);
+    if (cleaned.length === 4 && nameValid && !isLoading) {
+      handleJoinGame(cleaned);
+    }
+  };
 
   return (
     <div className="home-screen">
@@ -405,9 +417,7 @@ function HomeScreen() {
                         className="input join-input"
                         placeholder={t('enter_room_code') || 'Enter Room Code'}
                         value={roomCode}
-                        onChange={(e) =>
-                          setRoomCode(e.target.value.replace(/\D/g, '').slice(0, 4))
-                        }
+                        onChange={(e) => handleRoomCodeChange(e.target.value)}
                         onKeyDown={(e) => {
                           if (
                             e.key === 'Enter' &&
@@ -423,7 +433,9 @@ function HomeScreen() {
                         aria-label={t('enter_room_code')}
                       />
                       <span className="join-hint" aria-live="polite">
-                        {roomCode.length === 4 ? '↵ ' + t('join_game') : ''}
+                        {roomCode.length === 4
+                          ? (isLoading ? t('loading') : t('joining'))
+                          : ''}
                       </span>
                     </div>
                   </div>
