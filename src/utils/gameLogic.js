@@ -362,33 +362,130 @@ export function getNextRequiredConnectionType(lastConnectionType) {
   return cycleOrder[nextIndex];
 }
 
-// Generate 10 answer options (1 correct + 9 decoys)
-export function generateAnswerOptions(correctMovie, allMovies, language = 'en', count = 10) {
-  const total = Math.max(2, count);
-  const options = [correctMovie.title[language]];
-  const decoys = correctMovie.decoy_answers[language] || [];
+export const MAX_ANSWER_YEAR_GAP = 3;
+export const TOP_CAST_FOR_DECOYS = 10;
 
-  // Pull decoys first (shuffled so race mode doesn't always take the same 3).
-  const shuffledDecoys = [...decoys].sort(() => Math.random() - 0.5);
-  for (let i = 0; options.length < total && i < shuffledDecoys.length; i++) {
-    if (!options.includes(shuffledDecoys[i])) {
-      options.push(shuffledDecoys[i]);
+const shuffleArray = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+export function getDirectorKey(movie) {
+  return movie?.director?.name?.en?.trim() || '';
+}
+
+/** Top N cast keys (English name) used to match decoy movies. */
+export function getTopCastKeys(movie, limit = TOP_CAST_FOR_DECOYS) {
+  if (!movie?.cast || !Array.isArray(movie.cast)) return [];
+  return movie.cast
+    .slice(0, limit)
+    .map((actor) => actor?.name?.en?.trim())
+    .filter(Boolean);
+}
+
+export function isWithinYearGap(movie, centerYear, gap = MAX_ANSWER_YEAR_GAP) {
+  if (!movie?.year || centerYear == null) return false;
+  return Math.abs(movie.year - centerYear) <= gap;
+}
+
+/** Same director, or any cast member overlaps with source movie's top cast. */
+export function sharesDirectorOrTopCast(sourceMovie, candidateMovie) {
+  const directorKey = getDirectorKey(sourceMovie);
+  if (directorKey && directorKey === getDirectorKey(candidateMovie)) {
+    return true;
+  }
+  const sourceCast = new Set(getTopCastKeys(sourceMovie));
+  if (!sourceCast.size || !candidateMovie?.cast?.length) return false;
+  return candidateMovie.cast.some((actor) =>
+    sourceCast.has(actor?.name?.en?.trim())
+  );
+}
+
+/**
+ * Pick decoy movies for the answer grid (hardest first):
+ * 1) year ±3 AND (director OR top-10 cast overlap)
+ * 2) year ±3 only
+ * 3) director OR cast overlap (any year)
+ * 4) any other movie (rare — keeps the game playable)
+ */
+export function pickDecoyMovies(correctMovie, allMovies, decoyCount) {
+  const centerYear = correctMovie?.year;
+  const others = allMovies.filter(
+    (m) => normalizeMovieId(m.id) !== normalizeMovieId(correctMovie.id)
+  );
+
+  const strictPool = others.filter(
+    (m) =>
+      isWithinYearGap(m, centerYear) && sharesDirectorOrTopCast(correctMovie, m)
+  );
+  const yearPool = others.filter(
+    (m) =>
+      isWithinYearGap(m, centerYear) && !strictPool.includes(m)
+  );
+  const peoplePool = others.filter(
+    (m) =>
+      !strictPool.includes(m) &&
+      !yearPool.includes(m) &&
+      sharesDirectorOrTopCast(correctMovie, m)
+  );
+  const anyPool = others.filter(
+    (m) =>
+      !strictPool.includes(m) && !yearPool.includes(m) && !peoplePool.includes(m)
+  );
+
+  const tiers = [strictPool, yearPool, peoplePool, anyPool];
+  const chosen = [];
+  const chosenIds = new Set();
+
+  for (const pool of tiers) {
+    if (chosen.length >= decoyCount) break;
+    for (const movie of shuffleArray(pool)) {
+      if (chosen.length >= decoyCount) break;
+      const id = normalizeMovieId(movie.id);
+      if (chosenIds.has(id)) continue;
+      chosen.push(movie);
+      chosenIds.add(id);
     }
   }
 
-  // Fall back to random movie titles if we still need more.
+  return chosen;
+}
+
+// Generate answer options (1 correct + decoys) from related movies in the DB.
+export function generateAnswerOptions(correctMovie, allMovies, language = 'en', count = 10) {
+  const total = Math.max(2, count);
+  const decoyCount = total - 1;
+  const decoys = pickDecoyMovies(correctMovie, allMovies, decoyCount);
+
+  const titleFor = (movie) => movie?.title?.[language] || movie?.title?.en || '';
+  const options = [titleFor(correctMovie)];
+  const seen = new Set(options);
+
+  for (const movie of decoys) {
+    const title = titleFor(movie);
+    if (title && !seen.has(title)) {
+      options.push(title);
+      seen.add(title);
+    }
+  }
+
+  // Duplicate titles in DB — fill remaining slots from any unused movie.
   if (options.length < total) {
-    const otherMovies = allMovies.filter((m) => m.id !== correctMovie.id);
-    const shuffled = otherMovies.sort(() => Math.random() - 0.5);
-    for (let i = 0; options.length < total && i < shuffled.length; i++) {
-      const title = shuffled[i].title[language];
-      if (!options.includes(title)) {
+    const extras = shuffleArray(
+      allMovies.filter(
+        (m) =>
+          normalizeMovieId(m.id) !== normalizeMovieId(correctMovie.id) &&
+          !decoys.includes(m)
+      )
+    );
+    for (const movie of extras) {
+      if (options.length >= total) break;
+      const title = titleFor(movie);
+      if (title && !seen.has(title)) {
         options.push(title);
+        seen.add(title);
       }
     }
   }
 
-  return options.sort(() => Math.random() - 0.5);
+  return shuffleArray(options);
 }
 
 // Check if answer is correct
