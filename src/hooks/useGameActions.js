@@ -156,11 +156,12 @@ export const useGameActions = (
     setIsCorrect(false);
   }, [gameState?.currentTurn, currentMovie?.id, gameState?.currentMovieAttempts]);
 
-  const warmTrailer = useCallback((movieId) => {
-    if (!movieId) return;
+  const warmTrailer = useCallback((movie) => {
+    const target = typeof movie === 'string' ? { id: movie } : movie;
+    if (!target?.id) return;
 
-    preloadTrailer(movieId).catch((error) => {
-      console.warn('⚠️ Trailer warmup failed:', movieId, error);
+    preloadTrailer(target).catch((error) => {
+      console.warn('⚠️ Trailer warmup failed:', target.id, error);
     });
   }, []);
 
@@ -254,7 +255,7 @@ export const useGameActions = (
         }
 
         console.log('✅ Selected movie:', nextRoundPayload.nextMovie.title.en, `(id: ${nextRoundPayload.nextMovie.id})`);
-        warmTrailer(nextRoundPayload.nextMovie.id);
+        warmTrailer(nextRoundPayload.nextMovie);
 
         await update(ref(database, `games/${roomCode}`), nextRoundPayload.updates);
 
@@ -274,7 +275,7 @@ export const useGameActions = (
     (turnOverride, usedMovieIdsOverride) => {
       const preparedRound = buildNextRoundPayload(turnOverride, usedMovieIdsOverride);
       if (preparedRound?.nextMovie?.id) {
-        warmTrailer(preparedRound.nextMovie.id);
+        warmTrailer(preparedRound.nextMovie);
       }
 
       if (nextRoundTimerRef.current) {
@@ -495,7 +496,7 @@ export const useGameActions = (
       if (nextRoundTimerRef.current) clearTimeout(nextRoundTimerRef.current);
         const preparedRound = buildNextRoundPayload(nextTurn, newUsedIds);
         if (preparedRound?.nextMovie?.id) {
-          warmTrailer(preparedRound.nextMovie.id);
+          warmTrailer(preparedRound.nextMovie);
         }
       nextRoundTimerRef.current = setTimeout(() => {
         nextRoundTimerRef.current = null;
@@ -640,7 +641,7 @@ export const useGameActions = (
           });
           const preparedRound = buildNextRoundPayload();
           if (preparedRound?.nextMovie?.id) {
-            warmTrailer(preparedRound.nextMovie.id);
+            warmTrailer(preparedRound.nextMovie);
           }
           startNextRound(undefined, { preparedRound });
         }, FAILED_ROUND_DELAY_MS);
@@ -680,7 +681,7 @@ export const useGameActions = (
           });
           const preparedRound = buildNextRoundPayload(nextTurn);
           if (preparedRound?.nextMovie?.id) {
-            warmTrailer(preparedRound.nextMovie.id);
+            warmTrailer(preparedRound.nextMovie);
           }
           startNextRound(nextTurn, { preparedRound });
         }, FAILED_ROUND_DELAY_MS);

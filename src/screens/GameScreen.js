@@ -11,6 +11,7 @@ import { useGameState } from '../hooks/useGameState';
 import { useGameActions, normalizeAttempts } from '../hooks/useGameActions';
 import { useBotPlayer } from '../hooks/useBotPlayer';
 import { preloadTrailer } from '../utils/gameLogic';
+import { getTrailerUrl } from '../utils/trailerUrl';
 import { setActiveSession, clearActiveSession, getActiveSession } from '../utils/activeSession';
 import { pickOscarQuip } from '../utils/oscarQuips';
 import OscarPopup from '../components/OscarPopup';
@@ -554,6 +555,7 @@ function GameScreen() {
                   <div className="trailer-container race-trailer">
                     <TrailerPlayer
                       movieId={currentMovie?.id}
+                      trailerSrc={getTrailerUrl(currentMovie)}
                       onTrailerEnd={handleTrailerEnd}
                       language={language}
                       autoPlay={true}
@@ -593,6 +595,7 @@ function GameScreen() {
                 <div className="trailer-container">
                   <TrailerPlayer
                     movieId={currentMovie?.id}
+                    trailerSrc={getTrailerUrl(currentMovie)}
                     onTrailerEnd={handleTrailerEnd}
                     language={language}
                     autoPlay={true}

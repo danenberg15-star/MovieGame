@@ -14,7 +14,7 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import './TrailerPlayer.css';
 
-function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
+function TrailerPlayer({ movieId, trailerSrc, onTrailerEnd, autoPlay = true }) {
   const { t } = useTranslation();
   const videoRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState(15);
@@ -24,8 +24,13 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const hasCalledOnTrailerEnd = useRef(false);
-  const hasInitialized = useRef(false);
   const safetyTimeoutRef = useRef(null);
+  const retryCountRef = useRef(0);
+  const onTrailerEndRef = useRef(onTrailerEnd);
+
+  useEffect(() => {
+    onTrailerEndRef.current = onTrailerEnd;
+  }, [onTrailerEnd]);
 
   const handleTrailerEndCallback = useCallback(() => {
     if (hasCalledOnTrailerEnd.current) return;
@@ -34,14 +39,39 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       clearTimeout(safetyTimeoutRef.current);
       safetyTimeoutRef.current = null;
     }
-    if (onTrailerEnd) onTrailerEnd();
-  }, [onTrailerEnd]);
+    if (onTrailerEndRef.current) onTrailerEndRef.current();
+  }, []);
 
+  // Reset transient state whenever the trailer source changes.
+  useEffect(() => {
+    hasCalledOnTrailerEnd.current = false;
+    retryCountRef.current = 0;
+    setTimeLeft(15);
+    setIsPlaying(false);
+    setError(false);
+    setErrorDetails('');
+    setIsLoading(true);
+
+    if (safetyTimeoutRef.current) clearTimeout(safetyTimeoutRef.current);
+    if (trailerSrc) {
+      safetyTimeoutRef.current = setTimeout(() => {
+        if (!hasCalledOnTrailerEnd.current) handleTrailerEndCallback();
+      }, 17000);
+    }
+
+    return () => {
+      if (safetyTimeoutRef.current) {
+        clearTimeout(safetyTimeoutRef.current);
+        safetyTimeoutRef.current = null;
+      }
+    };
+  }, [movieId, trailerSrc, handleTrailerEndCallback]);
+
+  // Attach listeners every time the underlying <video> element changes
+  // (the element is keyed on movieId+trailerSrc, so it remounts per trailer).
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
-    if (hasInitialized.current) return;
-    hasInitialized.current = true;
+    if (!video || !trailerSrc) return undefined;
 
     const handlePlay = () => {
       setIsPlaying(true);
@@ -53,6 +83,25 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       handleTrailerEndCallback();
     };
     const handleError = () => {
+      // Empty / missing src spurious errors — ignore (video starts with no src briefly).
+      if (!video.currentSrc || !video.src || video.src === window.location.href) {
+        return;
+      }
+
+      // One automatic retry — handles transient network/CORS hiccups.
+      if (retryCountRef.current < 1) {
+        retryCountRef.current += 1;
+        console.warn('⚠️ Trailer load failed, retrying once:', movieId);
+        setTimeout(() => {
+          try {
+            video.load();
+          } catch {
+            /* noop */
+          }
+        }, 400);
+        return;
+      }
+
       let msg = 'Failed to load trailer';
       if (video.error) {
         switch (video.error.code) {
@@ -63,6 +112,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
           default: msg = 'Unknown error';
         }
       }
+      console.warn('⚠️ Trailer giving up after retry:', movieId, msg);
       setErrorDetails(msg);
       setError(true);
       setIsLoading(false);
@@ -106,32 +156,7 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('loadstart', handleLoadStart);
     };
-  }, [autoPlay, handleTrailerEndCallback]);
-
-  useEffect(() => {
-    hasCalledOnTrailerEnd.current = false;
-    hasInitialized.current = false;
-    setTimeLeft(15);
-    setIsPlaying(false);
-    setError(false);
-    setIsLoading(true);
-
-    if (safetyTimeoutRef.current) clearTimeout(safetyTimeoutRef.current);
-    safetyTimeoutRef.current = setTimeout(() => {
-      if (!hasCalledOnTrailerEnd.current) handleTrailerEndCallback();
-    }, 17000);
-
-    return () => {
-      if (safetyTimeoutRef.current) clearTimeout(safetyTimeoutRef.current);
-    };
-  }, [movieId, handleTrailerEndCallback]);
-
-  useEffect(() => {
-    if (hasCalledOnTrailerEnd.current && safetyTimeoutRef.current) {
-      clearTimeout(safetyTimeoutRef.current);
-      safetyTimeoutRef.current = null;
-    }
-  });
+  }, [movieId, trailerSrc, autoPlay, handleTrailerEndCallback]);
 
   const handlePlayPause = () => {
     const video = videoRef.current;
@@ -147,20 +172,34 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
   };
 
   if (error) {
+    const handleSkip = () => {
+      setError(false);
+      setErrorDetails('');
+      handleTrailerEndCallback();
+    };
     return (
       <div className="trailer-player trailer-player--error">
         <div className="trailer-error">
           <span className="trailer-error__icon">⚠️</span>
-          <p>{t('trailer_error') || 'Failed to load trailer'}</p>
+          <p>{t('trailer_error')}</p>
           <p className="trailer-error__detail">{errorDetails}</p>
           <p className="trailer-error__detail">Movie ID: {movieId}</p>
-          <button
-            type="button"
-            className="trailer-error__btn"
-            onClick={() => window.location.reload()}
-          >
-            Reload Page
-          </button>
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginTop: '8px' }}>
+            <button
+              type="button"
+              className="trailer-error__btn"
+              onClick={handleSkip}
+            >
+              {t('skip_trailer') || 'Skip'}
+            </button>
+            <button
+              type="button"
+              className="trailer-error__btn"
+              onClick={() => window.location.reload()}
+            >
+              {t('reload_page') || 'Reload Page'}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -188,17 +227,19 @@ function TrailerPlayer({ movieId, onTrailerEnd, autoPlay = true }) {
         <span className="cinema-frame__bolt cinema-frame__bolt--br" aria-hidden="true" />
 
         <div className="cinema-frame__inner">
-          <video
-            key={movieId}
-            ref={videoRef}
-            className="trailer-video"
-            src={`/assets/movies/${movieId}/trailer.mp4`}
-            preload="auto"
-            playsInline
-            muted={isMuted}
-            controls={false}
-            webkit-playsinline="true"
-          />
+          {trailerSrc ? (
+            <video
+              key={`${movieId}:${trailerSrc}`}
+              ref={videoRef}
+              className="trailer-video"
+              src={trailerSrc}
+              preload="auto"
+              playsInline
+              muted={isMuted}
+              controls={false}
+              webkit-playsinline="true"
+            />
+          ) : null}
 
           {isLoading && (
             <div className="trailer-loading">

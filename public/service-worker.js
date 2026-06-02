@@ -1,5 +1,5 @@
 // Service Worker for CINEMASTER PWA
-const CACHE_NAME = 'cinemaster-v1.18.0';
+const CACHE_NAME = 'cinemaster-v1.19.0';
 
 // Only cache essential files that we know exist
 const ESSENTIAL_CACHE = [
@@ -51,8 +51,13 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (request.method !== 'GET') return;
 
-  // Skip cross-origin requests (Firebase, APIs, etc.)
+  // Skip cross-origin requests (Firebase Storage, TMDB images, etc.)
   if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // Never intercept video — let the browser stream directly (avoids failed fetch + HTML cache)
+  if (url.pathname.endsWith('.mp4') || url.pathname.endsWith('.webm')) {
     return;
   }
 
@@ -88,12 +93,7 @@ self.addEventListener('fetch', (event) => {
           return response;
         }
 
-        // Don't cache video files (too large)
-        if (url.pathname.includes('.mp4') || url.pathname.includes('.webm')) {
-          return response;
-        }
-
-        // Cache static assets (JS, CSS, images, fonts)
+        // Cache static assets (JS, CSS, images, fonts) — not videos
         if (
           url.pathname.startsWith('/static/') ||
           url.pathname.startsWith('/assets/') ||
@@ -108,13 +108,14 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch((error) => {
-        console.error('❌ [Service Worker] Fetch failed, trying cache:', url.pathname, error);
+        console.warn('⚠️ [Service Worker] Fetch failed, trying cache:', url.pathname, error);
         return caches.match(request).then((cachedResponse) => {
           if (cachedResponse) return cachedResponse;
           if (request.destination === 'document') {
             return caches.match('/index.html');
           }
-          throw error;
+          // Return network error response instead of rejecting (prevents uncaught promise errors)
+          return Response.error();
         });
       })
   );

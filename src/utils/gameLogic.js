@@ -1,8 +1,9 @@
 // src/utils/gameLogic.js
 import { ref, get } from 'firebase/database';
 import { database } from '../firebase';
+import { getTrailerUrl } from './trailerUrl';
 
-const MOVIES_CACHE_KEY = 'cinemaster_movies_cache_v1';
+const MOVIES_CACHE_KEY = 'cinemaster_movies_cache_v2';
 const MOVIES_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7;
 
 let moviesMemoryCache = null;
@@ -695,12 +696,17 @@ export function getSuccessMessage(connectionType, connectionData, language = 'en
 }
 
 // Preload trailer videos
-export function preloadTrailer(movieId) {
-  if (!movieId || typeof document === 'undefined') {
+export function preloadTrailer(movieOrId) {
+  const movie = typeof movieOrId === 'string' ? { id: movieOrId } : movieOrId;
+  const movieId = movie?.id;
+  const src = getTrailerUrl(movie);
+
+  if (!movieId || !src || typeof document === 'undefined') {
     return Promise.resolve(null);
   }
 
-  const cachedPromise = trailerPreloadCache.get(movieId);
+  const cacheKey = `${movieId}:${src}`;
+  const cachedPromise = trailerPreloadCache.get(cacheKey);
   if (cachedPromise) {
     return cachedPromise;
   }
@@ -725,27 +731,26 @@ export function preloadTrailer(movieId) {
 
     const handleError = () => {
       cleanup();
-      trailerPreloadCache.delete(movieId);
+      trailerPreloadCache.delete(cacheKey);
       reject(new Error('Failed to load trailer'));
     };
 
-    video.src = `/assets/movies/${movieId}/trailer.mp4`;
+    video.src = src;
     video.preload = 'auto';
-
     video.addEventListener('canplaythrough', handleReady, { once: true });
     video.addEventListener('loadeddata', handleReady, { once: true });
     video.addEventListener('error', handleError, { once: true });
 
     timeoutId = setTimeout(() => {
       cleanup();
-      trailerPreloadCache.delete(movieId);
+      trailerPreloadCache.delete(cacheKey);
       reject(new Error('Trailer loading timeout'));
-    }, 30000);
+    }, 45000);
 
     video.load();
   });
 
-  trailerPreloadCache.set(movieId, preloadPromise);
+  trailerPreloadCache.set(cacheKey, preloadPromise);
   return preloadPromise;
 }
 

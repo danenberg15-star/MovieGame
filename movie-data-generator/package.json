@@ -10,6 +10,7 @@
         "axios": "^1.6.0",
         "dotenv": "^16.3.1",
         "firebase": "^12.14.0",
+        "firebase-admin": "^13.10.0",
         "fs-extra": "^11.2.0",
         "yt-search": "^2.13.1"
     }
