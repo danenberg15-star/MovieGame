@@ -1,0 +1,27 @@
+# .vercelignore — controls what gets uploaded when deploying via Vercel CLI.
+# IMPORTANT: when this file exists, Vercel STOPS reading .gitignore for uploads.
+# We intentionally allow public/assets/movies/**/trailer.mp4 (gitignored, ~360MB)
+# so production has trailers without bloating the git repo.
+
+node_modules
+.git
+
+# Build artifacts (we let Vercel rebuild fresh in the cloud)
+build
+.vercel/output
+
+# Local-only helper folders
+movie-data-generator/node_modules
+movie-data-generator/expand-database/staging
+*_BACKUP/
+*_OLD*/
+movies_OLD_109_BACKUP/
+
+# Misc local files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
