@@ -390,6 +390,7 @@ export const useGameActions = (
         wonCard: null,
         currentMovie: null,
         currentMovieAttempts: [],
+        usedMovieIds: newUsedIds,
         currentTurn: nextTurn
       });
 
@@ -402,8 +403,10 @@ export const useGameActions = (
         value: suggestedValueText,
       });
 
-      // Failed connection — movie returns to the pool; don't mark it used.
-      scheduleNextRound(nextTurn);
+      // Failed connection — the trailer was already shown, so mark it used and
+      // never serve it again this game (pass the override so the prepared next
+      // round excludes it immediately, before the Firebase write propagates).
+      scheduleNextRound(nextTurn, newUsedIds);
     }
   }, [currentMovie, currentTeam, gameState, roomCode, language, scheduleNextRound]);
 
@@ -626,7 +629,10 @@ export const useGameActions = (
       setRemovedAnswers(newRemovedAnswers);
 
       if (optionsLeft <= 0) {
-        // Every option exhausted → card returns to the pool.
+        // Every option exhausted → card leaves play. The trailer was already
+        // shown, so mark it used so it never appears again this game.
+        const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
+
         setResultMessage(
           language === 'he'
             ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!'
@@ -638,12 +644,13 @@ export const useGameActions = (
           await update(ref(database, `games/${roomCode}`), {
             currentMovie: null,
             currentMovieAttempts: [],
+            usedMovieIds: newUsedIds,
           });
-          const preparedRound = buildNextRoundPayload();
+          const preparedRound = buildNextRoundPayload(undefined, newUsedIds);
           if (preparedRound?.nextMovie?.id) {
             warmTrailer(preparedRound.nextMovie);
           }
-          startNextRound(undefined, { preparedRound });
+          startNextRound(undefined, { usedMovieIdsOverride: newUsedIds, preparedRound });
         }, FAILED_ROUND_DELAY_MS);
       } else {
         // Same player can immediately try again; option is gone for both teams.
@@ -666,10 +673,12 @@ export const useGameActions = (
       const originalTurnHolder = priorAttempts.length > 0 ? priorAttempts[0] : answeringTeam;
 
       if (newAttempts.length >= 2) {
-        // Both teams failed - card returns to pool
+        // Both teams failed - card leaves play. The trailer was already shown,
+        // so mark it used so it never appears again this game.
         // 🔥 FIXED: Switch turn to the OTHER team (not the one who had the original turn)
         const nextTurn = otherTeam(originalTurnHolder);
-        
+        const newUsedIds = [...(gameState.usedMovieIds || []), currentMovie.id];
+
         setResultMessage(language === 'he' ? 'שתי הקבוצות לא זיהו - הכרטיס יחזור!' : 'Both teams failed - card will return!');
         setShowResult(true);
 
@@ -677,13 +686,14 @@ export const useGameActions = (
           await update(ref(database, `games/${roomCode}`), {
             currentMovie: null,
             currentMovieAttempts: [],
+            usedMovieIds: newUsedIds,
             currentTurn: nextTurn
           });
-          const preparedRound = buildNextRoundPayload(nextTurn);
+          const preparedRound = buildNextRoundPayload(nextTurn, newUsedIds);
           if (preparedRound?.nextMovie?.id) {
             warmTrailer(preparedRound.nextMovie);
           }
-          startNextRound(nextTurn, { preparedRound });
+          startNextRound(nextTurn, { usedMovieIdsOverride: newUsedIds, preparedRound });
         }, FAILED_ROUND_DELAY_MS);
 
       } else {
