@@ -3,13 +3,16 @@
 // Unlike the bulk pipeline (2-fetch-and-cut.js), this operates directly on
 // public/assets/movies/<id>/trailer.mp4 for a hand-picked list of movies.
 //
-// Run:  node recut-trailers.js
+// Run:  node recut-trailers.js                 (reuses cached raw downloads → instant)
+//       node recut-trailers.js --force-download (always re-download from YouTube)
 //
 // For each job you can specify:
 //   - youtubeKey : force a specific YouTube video (otherwise smart pick by TMDB).
 //   - startOffset: seconds to ADD to the smart-cut start (e.g. skip a title card).
 //   - duration   : clip length in seconds (default 15).
 //
+// Raw downloads are cached under staging/raw_youtube/<tmdbId>/, so re-cutting an
+// already-downloaded trailer skips YouTube entirely and is essentially instant.
 // The original trailer.mp4 is backed up to trailer.bak-<timestamp>.mp4 first.
 
 import fs from 'fs';
@@ -25,20 +28,21 @@ import {
 // ---- Jobs to run --------------------------------------------------------
 const JOBS = [
   {
-    movieId: 'movie_599', // The Pelican Brief — re-cut official trailer 5s later
+    movieId: 'movie_599', // The Pelican Brief — cut 15s starting at 0:50
     tmdbId: 9944,
-    youtubeKey: 'MgmItLPfdO4', // official theatrical trailer (same as before)
-    startOffset: 5,
+    youtubeKey: 'MgmItLPfdO4', // official theatrical trailer
+    startAt: 50,
   },
   {
-    movieId: 'movie_112', // Eyes Wide Shut — original cut was bad, use alt source
+    movieId: 'movie_112', // Eyes Wide Shut — cut 15s starting at 0:22
     tmdbId: 345,
-    youtubeKey: 'VSS47StLOhk', // 20th Anniversary Official Trailer (different upload)
-    startOffset: 0,
+    youtubeKey: 'VSS47StLOhk', // 20th Anniversary Official Trailer
+    startAt: 22,
   },
 ];
 
 const CLIP_SECONDS = 15;
+const FORCE_DOWNLOAD = process.argv.includes('--force-download');
 
 // ---- Helpers (mirrors 2-fetch-and-cut.js) -------------------------------
 function ytDlpDownload(url, outDir, outBase) {
@@ -141,21 +145,35 @@ async function runJob(job) {
   console.log(`\n=== ${job.movieId} (tmdb ${job.tmdbId}) ===`);
   console.log(`  source: ${url}`);
 
-  // Always re-download fresh for these targeted fixes.
-  ytDlpDownload(url, rawDir, outBase);
-  const { videoPath, infoPath } = findExistingDownload(rawDir, outBase);
+  // Reuse the cached raw download when available → instant re-cut.
+  let { videoPath, infoPath } = findExistingDownload(rawDir, outBase);
+  if (FORCE_DOWNLOAD || !videoPath || !infoPath) {
+    console.log(`  downloading from YouTube...`);
+    ytDlpDownload(url, rawDir, outBase);
+    ({ videoPath, infoPath } = findExistingDownload(rawDir, outBase));
+  } else {
+    console.log(`  using cached download (${path.basename(videoPath)})`);
+  }
   if (!videoPath || !infoPath) {
     throw new Error(`download files missing for ${job.movieId}`);
   }
 
   const dur = videoDuration(infoPath);
-  const smartStart = calcSmartStart(infoPath);
-  let start = smartStart + (job.startOffset || 0);
-  if (dur && start + CLIP_SECONDS > dur) start = Math.max(0, dur - CLIP_SECONDS);
-
-  console.log(
-    `  duration=${dur ?? '?'}s  smartStart=${smartStart.toFixed(2)}s  offset=${job.startOffset || 0}s  finalStart=${start.toFixed(2)}s`
-  );
+  let start;
+  if (typeof job.startAt === 'number') {
+    // Absolute start time (seconds) into the source video.
+    start = job.startAt;
+    if (dur && start + CLIP_SECONDS > dur) start = Math.max(0, dur - CLIP_SECONDS);
+    console.log(`  duration=${dur ?? '?'}s  startAt=${job.startAt}s  finalStart=${start.toFixed(2)}s`);
+  } else {
+    // Smart-cut start + optional offset.
+    const smartStart = calcSmartStart(infoPath);
+    start = smartStart + (job.startOffset || 0);
+    if (dur && start + CLIP_SECONDS > dur) start = Math.max(0, dur - CLIP_SECONDS);
+    console.log(
+      `  duration=${dur ?? '?'}s  smartStart=${smartStart.toFixed(2)}s  offset=${job.startOffset || 0}s  finalStart=${start.toFixed(2)}s`
+    );
+  }
 
   const finalPath = path.join(PUBLIC_ASSETS_MOVIES, job.movieId, 'trailer.mp4');
   const bak = backupExisting(finalPath);
