@@ -77,12 +77,12 @@ async function main() {
     if (!movie) {
       movie = { id: row.movieId, title: row.title || { en: row.movieId }, tmdb_id: row.tmdb_id };
     }
-    if (!movie.tmdb_id) {
-      console.log(`[${i + 1}/${flagged.length}] ${row.movieId} — no tmdb_id, cannot recut`);
+    if (!movie.tmdb_id && !movie.title?.en) {
+      console.log(`[${i + 1}/${flagged.length}] ${row.movieId} — no metadata, skip`);
       const entry = {
         movieId: row.movieId,
         status: 'failed',
-        reason: 'no_tmdb_id',
+        reason: 'no_metadata',
         at: new Date().toISOString(),
       };
       results.push(entry);

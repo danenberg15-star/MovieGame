@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
-import { FFMPEG_PATH } from '../common.js';
+import { FFMPEG_PATH, ensureDir } from '../common.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -238,6 +238,7 @@ export function extractFrame(videoPath, outPng, timeSec) {
  * @returns {{ frames: Array<{ time: number, text: string, detection: object }>, flagged: boolean, bestMatch?: object }}
  */
 export function auditTrailerVideo(videoPath, movie, frameTimes = AUDIT_FRAME_TIMES, workDir) {
+  ensureDir(workDir);
   const frames = [];
   let flagged = false;
   let bestMatch = null;

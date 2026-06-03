@@ -148,19 +148,23 @@ export function pickTrailerVideos(videos, limit = 5) {
 
 export async function listYoutubeKeysForMovie(movie) {
   const keys = [];
-  try {
-    const videos = await tmdb(`/movie/${movie.tmdb_id}/videos`);
-    await sleep(250);
-    for (const v of pickTrailerVideos(videos, 5)) {
-      if (v.key && !keys.includes(v.key)) keys.push(v.key);
+  if (movie.tmdb_id) {
+    try {
+      const videos = await tmdb(`/movie/${movie.tmdb_id}/videos`);
+      await sleep(250);
+      for (const v of pickTrailerVideos(videos, 5)) {
+        if (v.key && !keys.includes(v.key)) keys.push(v.key);
+      }
+    } catch {
+      // ignore
     }
-  } catch {
-    // ignore
   }
   if (!keys.length) {
     const term = `${movie.title?.en || movie.title} ${movie.year || ''} official trailer`;
     const search = await ytSearch(term);
-    if (search?.videos?.[0]?.videoId) keys.push(search.videos[0].videoId);
+    for (const v of (search?.videos || []).slice(0, 3)) {
+      if (v.videoId && !keys.includes(v.videoId)) keys.push(v.videoId);
+    }
   }
   return keys;
 }
@@ -251,12 +255,22 @@ export async function recutMovieTrailer(movie, opts = {}) {
         ffmpegCut(videoPath, clean.start, finalPath, CLIP_SECONDS);
       }
 
-      const verify = auditTrailerVideo(
-        finalPath,
-        movie,
-        RECUT_VERIFY_TIMES,
-        path.join(workDir, 'verify')
-      );
+      let verify;
+      try {
+        verify = auditTrailerVideo(
+          finalPath,
+          movie,
+          RECUT_VERIFY_TIMES,
+          path.join(workDir, 'verify')
+        );
+      } catch (verifyErr) {
+        return {
+          status: 'failed',
+          reason: `verify_error: ${verifyErr.message?.split('\n')[0] || verifyErr}`,
+          youtubeKey: key,
+          start: clean.start,
+        };
+      }
       if (verify.flagged) {
         return {
           status: 'failed',
