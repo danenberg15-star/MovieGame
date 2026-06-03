@@ -266,6 +266,108 @@ export function buildUsedMovieIdSet(usedMovieIds) {
   return new Set(list.map(normalizeMovieId).filter(Boolean));
 }
 
+// Cache the (expensive, O(n^2)-ish) degree computation per allMovies reference.
+const _connectionDegreeCache = new WeakMap();
+
+/**
+ * For each movie, count how many DISTINCT other movies connect to it via the
+ * three game connection types: shared top-billed actor, shared director, OR
+ * same release year. Movies that connect to many others (star-studded casts
+ * AND/OR crowded release years) would otherwise be over-shown by the
+ * connection-based selection, so we use this degree to down-weight them.
+ *
+ * Note: including YEAR is essential. Year is the dominant pool-former, so a
+ * degree that ignored it would over-boost obscure movies that happen to share
+ * a common year and actually make repetition WORSE (verified by simulation).
+ *
+ * Returns Map<normalizedId, degree>.
+ */
+export function getConnectionDegrees(allMovies) {
+  if (!Array.isArray(allMovies) || !allMovies.length) return new Map();
+
+  const cached = _connectionDegreeCache.get(allMovies);
+  if (cached) return cached;
+
+  const nameKey = (n) => (n?.en || '').trim();
+  const actorIdx = new Map();
+  const dirIdx = new Map();
+  const yearIdx = new Map();
+
+  for (const m of allMovies) {
+    const id = normalizeMovieId(m.id);
+    if (Array.isArray(m.cast)) {
+      for (const a of m.cast.slice(0, TOP_CAST_FOR_DECOYS)) {
+        const k = nameKey(a?.name);
+        if (!k) continue;
+        if (!actorIdx.has(k)) actorIdx.set(k, []);
+        actorIdx.get(k).push(id);
+      }
+    }
+    const dk = nameKey(m.director?.name);
+    if (dk) {
+      if (!dirIdx.has(dk)) dirIdx.set(dk, []);
+      dirIdx.get(dk).push(id);
+    }
+    if (m.year != null) {
+      if (!yearIdx.has(m.year)) yearIdx.set(m.year, []);
+      yearIdx.get(m.year).push(id);
+    }
+  }
+
+  const linkSets = new Map();
+  const addLinks = (idx) => {
+    for (const ids of idx.values()) {
+      if (ids.length < 2) continue;
+      for (const a of ids) {
+        if (!linkSets.has(a)) linkSets.set(a, new Set());
+        const set = linkSets.get(a);
+        for (const b of ids) if (a !== b) set.add(b);
+      }
+    }
+  };
+  addLinks(actorIdx);
+  addLinks(dirIdx);
+  addLinks(yearIdx);
+
+  const degrees = new Map();
+  for (const m of allMovies) {
+    const id = normalizeMovieId(m.id);
+    degrees.set(id, linkSets.get(id)?.size || 0);
+  }
+
+  _connectionDegreeCache.set(allMovies, degrees);
+  return degrees;
+}
+
+/**
+ * Pick a movie at random, weighting by 1/(1+degree) so heavily-connected hub
+ * movies are chosen less often. This roughly equalizes how frequently each
+ * movie is shown across games (a hub appears in ~degree-proportional candidate
+ * pools, so a 1/degree pick weight cancels that out). Falls back to uniform.
+ */
+export function weightedMoviePick(movies, degrees) {
+  if (!movies || movies.length === 0) return null;
+  if (movies.length === 1) return movies[0];
+  if (!degrees || degrees.size === 0) {
+    return movies[Math.floor(Math.random() * movies.length)];
+  }
+
+  let total = 0;
+  const weights = movies.map((m) => {
+    const d = degrees.get(normalizeMovieId(m.id)) || 0;
+    const w = 1 / (1 + d);
+    total += w;
+    return w;
+  });
+
+  let r = Math.random() * total;
+  for (let i = 0; i < movies.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return movies[i];
+  }
+  return movies[movies.length - 1];
+}
+
 // Select next movie with NEW LOGIC: Random connection type selection (33% each)
 export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards, currentTurn) {
   console.log('🎬 ========== SELECT NEXT MOVIE - NEW LOGIC ==========');
@@ -282,15 +384,17 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
   }
   
   console.log(`📊 Available movies: ${availableMovies.length}`);
-  
+
+  // Degrees let us down-weight star-studded "hub" movies so they don't dominate.
+  const degrees = getConnectionDegrees(allMovies);
+
   // 2. Get current team cards
   const currentTeamCards = currentTurn === 'A' ? teamACards : teamBCards;
   console.log(`🎯 Selecting for Team ${currentTurn} - they have ${currentTeamCards.length} cards`);
-  
+
   if (currentTeamCards.length === 0) {
-    console.log('⚠️ Team has no cards yet - returning random movie');
-    const randomIndex = Math.floor(Math.random() * availableMovies.length);
-    return availableMovies[randomIndex];
+    console.log('⚠️ Team has no cards yet - returning weighted-random movie');
+    return weightedMoviePick(availableMovies, degrees);
   }
   
   // 3. Randomize connection types priority (33% each)
@@ -329,14 +433,14 @@ export function selectNextMovie(allMovies, usedMovieIds, teamACards, teamBCards,
     
     console.log(`📊 Found ${moviesWithType.length} movies with '${requiredType}' connection`);
     
-    // If we found movies with this connection type - pick one randomly
+    // If we found movies with this connection type - pick one (weighted to
+    // favor less-connected movies so hubs don't repeat too often).
     if (moviesWithType.length > 0) {
-      const randomIndex = Math.floor(Math.random() * moviesWithType.length);
-      const selectedMovie = moviesWithType[randomIndex];
+      const selectedMovie = weightedMoviePick(moviesWithType, degrees);
       
       console.log(`✅ SELECTED: "${selectedMovie.title.en}" (${selectedMovie.year})`);
       console.log(`   Connection type: ${requiredType}`);
-      console.log(`   Chosen from ${moviesWithType.length} options`);
+      console.log(`   Chosen from ${moviesWithType.length} options (weighted by inverse degree)`);
       console.log('🎬 ================================================\n');
       
       return selectedMovie;
