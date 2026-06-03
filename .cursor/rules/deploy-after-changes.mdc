@@ -8,12 +8,14 @@ alwaysApply: true
 When you finish implementing or fixing code in this repo and the user has accepted the file changes (e.g. **Keep All**):
 
 1. Do **not** stop at `npm run build` alone.
-2. Run the project deploy script from the repo root:
+2. Run **both** deploy scripts from the repo root, in order:
 
 ```powershell
 .\deploy.ps1 "Short commit message describing the change"
+.\deploy-vercel.ps1
 ```
 
-`deploy.ps1` builds, commits all staged/unstaged changes, bumps the git patch tag, and pushes `main` plus the new tag (triggers production deploy).
+- `deploy.ps1` builds, commits, bumps the patch tag, and pushes to GitHub (history + source backup).
+- `deploy-vercel.ps1` uploads the production build to Vercel **including ~360MB of gitignored trailer MP4s** via `vercel deploy --archive=tgz --prod`. Without this step, the live site loses all trailers, because Git-based auto-deploy is disabled (see `vercel.json` → `git.deploymentEnabled.main = false`).
 
 Only skip deploy if the user explicitly says not to deploy, or there are no file changes to ship.
