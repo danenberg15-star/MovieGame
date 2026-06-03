@@ -736,6 +736,14 @@
   font-style: italic;
 }
 
+.help-modal__attribution {
+  margin: 0 0 18px;
+  text-align: center;
+  font-size: clamp(11px, 1.5vw, 12px);
+  line-height: 1.45;
+  color: rgba(243, 234, 220, 0.55);
+}
+
 .help-rules {
   list-style: none;
   margin: 0 0 22px;

@@ -1,0 +1,33 @@
+.sound-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10050;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 160, 71, 0.45);
+  background: rgba(12, 6, 6, 0.85);
+  color: #f3ead6;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.sound-toggle:hover {
+  transform: scale(1.06);
+  background: rgba(30, 14, 14, 0.95);
+}
+
+.sound-toggle--muted {
+  opacity: 0.75;
+}
+
+[dir='rtl'] .sound-toggle {
+  left: auto;
+  right: 10px;
+}

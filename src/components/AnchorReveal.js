@@ -1,11 +1,23 @@
 // src/components/AnchorReveal.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSound } from '../hooks/useSound';
 import './AnchorReveal.css';
 
 function AnchorReveal({ teamACard, teamBCard, onContinue }) {
   const { t, i18n } = useTranslation();
   const language = i18n.language === 'he' ? 'he' : 'en';
+  const { play, stopAll } = useSound();
+
+  useEffect(() => {
+    play('anchor.reveal');
+  }, [play]);
+
+  const handleContinue = () => {
+    play('ui.click');
+    stopAll();
+    onContinue && onContinue();
+  };
 
   // The reveal animation is now driven entirely by CSS (see
   // anchorPosterIn in AnchorReveal.css), so we don't need a JS state
@@ -82,7 +94,7 @@ function AnchorReveal({ teamACard, teamBCard, onContinue }) {
           {renderCard(teamBCard, 'b')}
         </div>
 
-        <button type="button" className="btn-continue" onClick={onContinue}>
+        <button type="button" className="btn-continue" onClick={handleContinue}>
           ▶ {t('continue')}
         </button>
       </div>

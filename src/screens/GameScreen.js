@@ -15,6 +15,7 @@ import { getTrailerUrl } from '../utils/trailerUrl';
 import { setActiveSession, clearActiveSession, getActiveSession } from '../utils/activeSession';
 import { pickOscarQuip } from '../utils/oscarQuips';
 import OscarPopup from '../components/OscarPopup';
+import { useSound } from '../hooks/useSound';
 
 /* ----- Projection-room sidebar panel ----- */
 function TeamSidebar({ side, label, mine, cards, tokens }) {
@@ -206,6 +207,15 @@ function GameScreen() {
     setRemovedAnswers,
     currentPlayerTeam
   } = useGameState(roomCode, playerId, language);
+
+  const { stopAll } = useSound();
+
+  // No background music during trailers or gameplay (trailer audio only).
+  useEffect(() => {
+    if (phase === 'playing' || phase === 'decision' || phase === 'finished') {
+      stopAll();
+    }
+  }, [phase, stopAll]);
 
   const isBotMode = Boolean(gameState?.isBotMode || gameState?.isQAMode);
   const isRaceMode = Boolean(gameState?.isRaceMode);

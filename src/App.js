@@ -12,6 +12,8 @@ import GameScreen from './screens/GameScreen';
 
 // Import PWA utilities
 import { installPWA, isPWAInstalled } from './utils/pwaInstall';
+import { SoundProvider } from './context/SoundContext';
+import SoundToggleButton from './components/SoundToggleButton';
 
 function App() {
   const { i18n } = useTranslation();
@@ -108,18 +110,21 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <Router>
-        <HomeOnlyLanguageSwitcher
-          currentLang={currentLang}
-          onChange={handleLanguageChange}
-        />
-        <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/lobby/:roomCode" element={<LobbyScreen />} />
-          <Route path="/game/:roomCode" element={<GameScreen />} />
-          <Route path="/room/:roomCode" element={<HomeScreen />} />
-        </Routes>
-      </Router>
+      <SoundProvider>
+        <Router>
+          <HomeOnlyLanguageSwitcher
+            currentLang={currentLang}
+            onChange={handleLanguageChange}
+          />
+          <SoundToggleButton />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/lobby/:roomCode" element={<LobbyScreen />} />
+            <Route path="/game/:roomCode" element={<GameScreen />} />
+            <Route path="/room/:roomCode" element={<HomeScreen />} />
+          </Routes>
+        </Router>
+      </SoundProvider>
     </div>
   );
 }

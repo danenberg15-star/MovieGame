@@ -1,5 +1,5 @@
 // src/screens/HomeScreen.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ref, set, get } from 'firebase/database';
@@ -10,6 +10,7 @@ import {
   buildResumeUrl,
 } from '../utils/activeSession';
 import { buildBotRoster } from '../utils/botRoom';
+import { useSound } from '../hooks/useSound';
 import './HomeScreen.css';
 
 function HomeScreen() {
@@ -22,6 +23,8 @@ function HomeScreen() {
   const [gameMode, setGameMode] = useState(null); // 'bot' | 'teams' | 'race'
   const [showHelp, setShowHelp] = useState(false);
   const [resumeSession, setResumeSession] = useState(null);
+  const { play, playMusic, fadeOutMusic, unlocked } = useSound();
+  const curtainSoundPlayedRef = useRef(false);
 
   // Cinema curtain intro — show once per browser session
   const [curtainState, setCurtainState] = useState(() => {
@@ -46,6 +49,20 @@ function HomeScreen() {
       clearTimeout(doneTimer);
     };
   }, []);
+
+  // Curtain open SFX once when intro starts opening.
+  useEffect(() => {
+    if (curtainState !== 'opening' || curtainSoundPlayedRef.current) return;
+    curtainSoundPlayedRef.current = true;
+    play('curtain.open');
+  }, [curtainState, play]);
+
+  // Home ambient music after curtain / when returning user lands on home.
+  useEffect(() => {
+    if (!unlocked || curtainState !== 'done') return;
+    playMusic('music.home');
+    return () => fadeOutMusic(400);
+  }, [unlocked, curtainState, playMusic, fadeOutMusic]);
 
   useEffect(() => {
     const savedName = localStorage.getItem('playerName');
@@ -84,6 +101,10 @@ function HomeScreen() {
     setRoomCode(cleaned);
   }, [roomCodeFromUrl]);
 
+  useEffect(() => {
+    if (showHelp) play('modal.open');
+  }, [showHelp, play]);
+
   const generateRoomCode = () => {
     return Math.floor(1000 + Math.random() * 9000).toString();
   };
@@ -102,6 +123,8 @@ function HomeScreen() {
     setIsLoading(true);
     const newRoomCode = generateRoomCode();
     localStorage.setItem('playerName', playerName.trim());
+    play('ui.click');
+    fadeOutMusic(500);
 
     try {
       const roomRef = ref(database, `rooms/${newRoomCode}`);
@@ -153,6 +176,8 @@ function HomeScreen() {
 
     setIsLoading(true);
     localStorage.setItem('playerName', playerName.trim());
+    play('ui.click');
+    fadeOutMusic(500);
 
     try {
       const roomRef = ref(database, `rooms/${codeToJoin}`);
@@ -188,6 +213,8 @@ function HomeScreen() {
     setIsLoading(true);
     const newRoomCode = generateRoomCode();
     localStorage.setItem('playerName', playerName.trim());
+    play('ui.click');
+    fadeOutMusic(500);
 
     try {
       const playerId = 'player_' + Date.now();
@@ -255,7 +282,10 @@ function HomeScreen() {
       <button
         type="button"
         className="help-btn"
-        onClick={() => setShowHelp(true)}
+        onClick={() => {
+          play('ui.click');
+          setShowHelp(true);
+        }}
         aria-label={t('help')}
         title={t('how_to_play')}
       >
@@ -319,7 +349,10 @@ function HomeScreen() {
                     role="tab"
                     aria-selected={false}
                     className="mode-tab"
-                    onClick={() => setGameMode('bot')}
+                    onClick={() => {
+                      play('mode.select');
+                      setGameMode('bot');
+                    }}
                   >
                     🤖 {t('play_vs_bot')}
                   </button>
@@ -328,7 +361,10 @@ function HomeScreen() {
                     role="tab"
                     aria-selected={false}
                     className="mode-tab"
-                    onClick={() => setGameMode('teams')}
+                    onClick={() => {
+                      play('mode.select');
+                      setGameMode('teams');
+                    }}
                   >
                     👥 {t('play_vs_teams')}
                   </button>
@@ -337,7 +373,10 @@ function HomeScreen() {
                     role="tab"
                     aria-selected={false}
                     className="mode-tab"
-                    onClick={() => setGameMode('race')}
+                    onClick={() => {
+                      play('mode.select');
+                      setGameMode('race');
+                    }}
                   >
                     ⏱️ {t('play_vs_clock')}
                   </button>
@@ -351,7 +390,10 @@ function HomeScreen() {
                 <button
                   type="button"
                   className="mode-back"
-                  onClick={() => setGameMode(null)}
+                  onClick={() => {
+                    play('ui.back');
+                    setGameMode(null);
+                  }}
                   aria-label={t('change_mode')}
                   title={t('change_mode')}
                 >
@@ -382,7 +424,10 @@ function HomeScreen() {
                     <p className="mode-hint">{t('vs_bot_hint')}</p>
                     <button
                       className="btn btn-primary"
-                      onClick={handleBotMode}
+                      onClick={() => {
+                        play('ui.click');
+                        handleBotMode();
+                      }}
                       disabled={!nameValid}
                     >
                       ▶️ {t('start_game')}
@@ -397,9 +442,10 @@ function HomeScreen() {
                     </p>
                     <button
                       className="btn btn-primary"
-                      onClick={() =>
-                        handleCreateGame({ isRaceMode: gameMode === 'race' })
-                      }
+                      onClick={() => {
+                        play('ui.click');
+                        handleCreateGame({ isRaceMode: gameMode === 'race' });
+                      }}
                       disabled={isLoading || !nameValid}
                     >
                       {isLoading ? (
@@ -469,6 +515,8 @@ function HomeScreen() {
                 </li>
               ))}
             </ol>
+
+            <p className="help-modal__attribution">{t('music_attribution')}</p>
 
             <button
               type="button"

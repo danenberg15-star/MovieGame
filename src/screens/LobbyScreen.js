@@ -12,6 +12,7 @@ import {
   preloadTrailer,
   preloadPoster,
 } from '../utils/gameLogic';
+import { useSound } from '../hooks/useSound';
 import './LobbyScreen.css';
 
 const COLS = BOT_SEATS_COLS;
@@ -36,6 +37,13 @@ function LobbyScreen() {
   });
   const preparingWarmupRef = useRef(false);
   const prefetchKeyRef = useRef(null);
+  const { play, playMusic, fadeOutMusic, stopMusic, unlocked } = useSound();
+
+  useEffect(() => {
+    if (!unlocked) return undefined;
+    playMusic('music.lobby');
+    return () => stopMusic();
+  }, [unlocked, playMusic, stopMusic]);
 
   // Listen to room changes
   useEffect(() => {
@@ -208,6 +216,8 @@ function LobbyScreen() {
     );
     if (taken) return;
 
+    play('seat.pick');
+
     try {
       const playerRef = ref(database, `rooms/${roomCode}/players/${playerId}`);
       await update(playerRef, { team, seat: seatIdx, ready: true });
@@ -220,6 +230,8 @@ function LobbyScreen() {
   const handleStartGame = async () => {
     if (!isHost || !allReady) return;
     try {
+      play('game.start');
+      fadeOutMusic(800);
       const roomRef = ref(database, `rooms/${roomCode}`);
       await update(roomRef, { status: 'playing' });
     } catch (error) {
