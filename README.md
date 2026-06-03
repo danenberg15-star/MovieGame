@@ -1,3 +1,30 @@
+# CINEMASTER
+
+## Movie database — single source of truth
+
+The game uses **one** movie dataset. Do not reintroduce duplicate copies.
+
+| Purpose | File |
+|---------|------|
+| **Source of truth** (edit / pipeline output) | `src/data/movies-clean.json` |
+| **Runtime fallback** (fetched by the app) | `public/movies-clean.json` |
+| **Live data at runtime** | Firebase RTDB `movies/movies` (uploaded from the source of truth) |
+
+At runtime the app loads movies from Firebase and falls back to
+`/movies-clean.json` (i.e. `public/movies-clean.json`) — see
+[`src/utils/gameLogic.js`](src/utils/gameLogic.js). Trailers live separately at
+`public/assets/movies/movie_*/trailer.mp4` (gitignored, deployed to Vercel).
+
+**Workflow**
+
+1. Edit `src/data/movies-clean.json` (or run the `movie-data-generator/expand-database` pipeline, which writes it).
+2. Sync the public copy: `./scripts/sync-movies-json.ps1` (use `-Check` to verify only).
+3. Upload to Firebase: `node movie-data-generator/upload-movies-to-firebase.js`.
+
+Never hand-edit `public/movies-clean.json` — it is a generated copy.
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
