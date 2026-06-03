@@ -28,16 +28,10 @@ import {
 // ---- Jobs to run --------------------------------------------------------
 const JOBS = [
   {
-    movieId: 'movie_599', // The Pelican Brief — cut 15s starting at 0:50
-    tmdbId: 9944,
-    youtubeKey: 'MgmItLPfdO4', // official theatrical trailer
-    startAt: 50,
-  },
-  {
-    movieId: 'movie_112', // Eyes Wide Shut — cut 15s starting at 0:22
-    tmdbId: 345,
-    youtubeKey: 'VSS47StLOhk', // 20th Anniversary Official Trailer
-    startAt: 22,
+    movieId: 'movie_067', // The Equalizer (2014) — fresh source, avoid the
+    tmdbId: 156022,        // persistent on-screen title text of the old cut.
+    youtubeKey: 'VjctHUEmutw', // Sony Pictures official trailer (HD)
+    startAt: 90,           // mid-trailer action beat, away from title cards
   },
 ];
 
