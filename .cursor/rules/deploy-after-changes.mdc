@@ -18,4 +18,18 @@ When you finish implementing or fixing code in this repo and the user has accept
 - `deploy.ps1` builds, commits, bumps the patch tag, and pushes to GitHub (history + source backup).
 - `deploy-vercel.ps1` uploads the production build to Vercel **including ~360MB of gitignored trailer MP4s** via `vercel deploy --archive=tgz --prod`. Without this step, the live site loses all trailers, because Git-based auto-deploy is disabled (see `vercel.json` → `git.deploymentEnabled.main = false`).
 
+## Trailer uploads: incremental only (user preference)
+
+When the change involves **trailer MP4s** (e.g. a recut via `recut-trailers.js`), upload to Vercel using the **incremental** deploy so only changed files are sent — do **not** re-upload the full ~1GB archive:
+
+```powershell
+.\deploy-vercel-fast.ps1
+```
+
+`deploy-vercel-fast.ps1` uploads only changed files (the new/changed `trailer.mp4`), which is much faster. Use the full `deploy-vercel.ps1` only if trailers go missing on the live site.
+
+## Recut trailer review gate (user preference)
+
+When recutting trailers, **always send the user a preview** (extracted frames / clip details) of each new trailer first and **wait for explicit approval** before deploying to Vercel.
+
 Only skip deploy if the user explicitly says not to deploy, or there are no file changes to ship.

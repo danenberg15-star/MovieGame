@@ -28,10 +28,16 @@ import {
 // ---- Jobs to run --------------------------------------------------------
 const JOBS = [
   {
-    movieId: 'movie_067', // The Equalizer (2014) — fresh source, avoid the
-    tmdbId: 156022,        // persistent on-screen title text of the old cut.
-    youtubeKey: 'VjctHUEmutw', // Sony Pictures official trailer (HD)
-    startAt: 90,           // mid-trailer action beat, away from title cards
+    movieId: 'movie_821', // Kill Bill: Vol. 2 (2004) — avoid on-screen title text
+    tmdbId: 393,
+    youtubeKey: 'WTt8cCIvGYI', // official trailer (Classic Trailers)
+    startAt: 60,
+  },
+  {
+    movieId: 'movie_927', // Star Wars: Episode III - Revenge of the Sith (2005)
+    tmdbId: 1895,
+    youtubeKey: '5UnjrG_N8hU', // official Star Wars channel trailer
+    startAt: 75,
   },
 ];
 
