@@ -507,3 +507,123 @@
   .decision-phase .poster-frame--big .poster-frame__title { font-size: 0.66rem; }
   .dp-btn { min-height: 26px; padding: 3px 6px; font-size: 0.66rem; }
 }
+
+/* ===== MISSED-CONNECTION REVEAL (after Save Token) ===== */
+.dp-missed-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 4vw, 32px);
+  background: rgba(3, 2, 2, 0.78);
+  backdrop-filter: blur(4px);
+  animation: dp-missed-fade 0.18s ease-out;
+}
+
+@keyframes dp-missed-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dp-missed-modal {
+  width: min(440px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.6vh, 14px);
+  padding: clamp(16px, 3vh, 26px) clamp(16px, 4vw, 28px);
+  text-align: center;
+  border-radius: 16px;
+  border: 1px solid rgba(212, 160, 71, 0.5);
+  background:
+    radial-gradient(ellipse at center top, rgba(80, 14, 22, 0.45) 0%, transparent 70%),
+    linear-gradient(180deg, #140a0a 0%, #080404 100%);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 216, 107, 0.15);
+  animation: dp-missed-pop 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes dp-missed-pop {
+  from { transform: scale(0.88); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.dp-missed-icon {
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  line-height: 1;
+}
+
+.dp-missed-title {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.05rem, 3.4vw, 1.5rem);
+  color: var(--color-gold, #d4a047);
+}
+
+.dp-missed-intro {
+  margin: 0;
+  font-size: clamp(0.8rem, 2.4vw, 0.98rem);
+  color: var(--color-ivory, #f3ead6);
+  opacity: 0.9;
+}
+
+.dp-missed-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dp-missed-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 160, 71, 0.25);
+}
+
+.dp-missed-card {
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2.6vw, 1rem);
+  color: var(--color-ivory, #f3ead6);
+}
+
+.dp-missed-conns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.dp-missed-badge {
+  font-size: clamp(0.72rem, 2.1vw, 0.85rem);
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(212, 160, 71, 0.18);
+  border: 1px solid rgba(212, 160, 71, 0.4);
+  color: var(--color-gold, #e7c378);
+}
+
+.dp-missed-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.dp-missed-actions .dp-btn {
+  flex: 1 1 140px;
+}

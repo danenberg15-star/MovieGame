@@ -16,6 +16,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { findAllPossibleConnections } from '../utils/gameLogic';
 import './DecisionPhase.css';
 
 const BUY_CONNECTION_COST = 3;
@@ -40,10 +41,15 @@ function DecisionPhase({
   const [selectedIdx, setSelectedIdx] = useState(0);
   const scrollRef = useRef(null);
 
+  // When the player chooses "Save Token" but a connection was actually
+  // possible, we reveal what they missed before committing.
+  const [missedConnections, setMissedConnections] = useState(null);
+
   // Reset mode + selection whenever a new round of decision starts
   useEffect(() => {
     setMode('choose-action');
     setSelectedIdx(0);
+    setMissedConnections(null);
   }, [wonCard?.id]);
 
   // Keep selectedIdx in bounds
@@ -94,7 +100,48 @@ function DecisionPhase({
   };
   const handleSave = () => {
     if (disabled) return;
+
+    // Did the player miss a real connection? If so, reveal it first.
+    const missed = hasChain ? findAllPossibleConnections(wonCard, teamCards) : [];
+    if (missed.length > 0) {
+      setMissedConnections(missed);
+      return;
+    }
+
     onSaveToken && onSaveToken();
+  };
+
+  const confirmSaveAfterMissed = () => {
+    setMissedConnections(null);
+    onSaveToken && onSaveToken();
+  };
+
+  const connectInsteadAfterMissed = () => {
+    // Jump the player straight to connecting the first card they could have used.
+    const firstMissed = missedConnections?.[0];
+    if (firstMissed) {
+      const idx = teamCards.findIndex((c) => c?.id === firstMissed.targetCard?.id);
+      if (idx >= 0) setSelectedIdx(idx);
+    }
+    setMissedConnections(null);
+    setMode('armed');
+  };
+
+  const describeConnection = (conn) => {
+    switch (conn.type) {
+      case 'actor':
+        return t('missed_via_actor', {
+          name: conn.value?.[language] || conn.value?.en || conn.value,
+        });
+      case 'director':
+        return t('missed_via_director', {
+          name: conn.value?.[language] || conn.value?.en || conn.value,
+        });
+      case 'year':
+        return t('missed_via_year', { year: conn.value });
+      default:
+        return '';
+    }
   };
 
   const handleScrollCardClick = (idx) => {
@@ -319,6 +366,51 @@ function DecisionPhase({
           >
             ← {t('cancel')}
           </button>
+        </div>
+      )}
+
+      {/* === Missed-connection reveal (after choosing Save Token) === */}
+      {missedConnections && (
+        <div className="dp-missed-overlay" role="dialog" aria-modal="true">
+          <div className="dp-missed-modal">
+            <div className="dp-missed-icon">💡</div>
+            <h3 className="dp-missed-title">{t('missed_connection_title')}</h3>
+            <p className="dp-missed-intro">{t('missed_connection_intro')}</p>
+
+            <ul className="dp-missed-list">
+              {missedConnections.map((entry) => (
+                <li key={entry.targetCard?.id} className="dp-missed-item">
+                  <span className="dp-missed-card">🎬 {titleOf(entry.targetCard)}</span>
+                  <span className="dp-missed-conns">
+                    {entry.connections.map((conn, i) => (
+                      <span key={i} className="dp-missed-badge">
+                        {describeConnection(conn)}
+                      </span>
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="dp-missed-actions">
+              <button
+                type="button"
+                className="dp-btn dp-btn--connect dp-btn--compact"
+                onClick={connectInsteadAfterMissed}
+                disabled={disabled}
+              >
+                🔗 {t('connect_now')}
+              </button>
+              <button
+                type="button"
+                className="dp-btn dp-btn--save dp-btn--compact"
+                onClick={confirmSaveAfterMissed}
+                disabled={disabled}
+              >
+                🎫 {t('save_anyway')}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
