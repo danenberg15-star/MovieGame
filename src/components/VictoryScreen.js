@@ -24,16 +24,23 @@ export default function VictoryScreen({
   onBackHome,
 }) {
   const { t } = useTranslation();
-  const { play } = useSound();
+  const { playLoop, stopLoop } = useSound();
 
   const isDraw = winner === 'draw' || winner == null;
   const isLoser = !isDraw && myTeam && myTeam !== winner;
   const variant = isLoser ? 'lose' : 'win';
 
-  // Boo on defeat, cheer on victory — play once when the result lands.
+  // Boo on defeat, cheer on victory — loop until the player leaves the screen.
   useEffect(() => {
-    play(isLoser ? 'result.boo' : 'result.cheer');
-  }, [isLoser, play]);
+    playLoop(isLoser ? 'result.boo' : 'result.cheer');
+    return () => stopLoop();
+  }, [isLoser, playLoop, stopLoop]);
+
+  // Stop the looping audio before navigating back home.
+  const handleLeave = () => {
+    stopLoop();
+    onBackHome && onBackHome();
+  };
 
   // Pick a random end-game image once per mount so it stays stable across
   // re-renders triggered by Firebase updates while the screen is open.
@@ -68,6 +75,17 @@ export default function VictoryScreen({
       role="dialog"
       aria-live="polite"
     >
+      {/* Close (X) — stops the looping audio and returns home */}
+      <button
+        type="button"
+        className="vs-close"
+        onClick={handleLeave}
+        aria-label={t('victory_back_home')}
+        title={t('victory_back_home')}
+      >
+        ✕
+      </button>
+
       {/* Paparazzi flashes (win) / projector flicker (lose) */}
       <span className="vs-flash vs-flash--a" aria-hidden="true" />
       <span className="vs-flash vs-flash--b" aria-hidden="true" />
@@ -115,7 +133,7 @@ export default function VictoryScreen({
           </div>
         </div>
 
-        <button type="button" className="vs-btn" onClick={onBackHome}>
+        <button type="button" className="vs-btn" onClick={handleLeave}>
           {t('victory_back_home')}
         </button>
       </div>

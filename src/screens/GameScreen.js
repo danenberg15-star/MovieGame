@@ -211,8 +211,10 @@ function GameScreen() {
   const { stopAll } = useSound();
 
   // No background music during trailers or gameplay (trailer audio only).
+  // 'finished' is intentionally excluded — VictoryScreen owns its own
+  // looping cheer/boo audio and must not be stopped on mount.
   useEffect(() => {
-    if (phase === 'playing' || phase === 'decision' || phase === 'finished') {
+    if (phase === 'playing' || phase === 'decision') {
       stopAll();
     }
   }, [phase, stopAll]);

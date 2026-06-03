@@ -32,6 +32,8 @@ let muted = false;
 let musicAudio = null;
 let currentMusicId = null;
 let musicFadeTimer = null;
+let loopAudio = null;
+let currentLoopId = null;
 const sfxCache = new Map();
 
 function readMutedFromStorage() {
@@ -111,6 +113,7 @@ export function setSoundMuted(value) {
   writeMutedToStorage(muted);
   if (muted) {
     stopMusic();
+    stopLoopingSfx();
   }
 }
 
@@ -139,6 +142,40 @@ export function playSfx(id, opts = {}) {
   if (p && typeof p.catch === 'function') {
     p.catch(() => {});
   }
+}
+
+/**
+ * Loop a one-shot SFX continuously until stopLoopingSfx() is called.
+ * Used for the victory/defeat result screen ambience.
+ * @param {string} id — key from SOUND_CATALOG
+ */
+export function playLoopingSfx(id) {
+  if (muted || !unlocked) return;
+  const entry = SOUND_CATALOG[id];
+  if (!entry) return;
+  if (currentLoopId === id && loopAudio && !loopAudio.paused) return;
+
+  stopLoopingSfx();
+
+  loopAudio = new Audio(entry.path);
+  loopAudio.loop = true;
+  loopAudio.volume = effectiveVolume(entry);
+  currentLoopId = id;
+
+  const p = loopAudio.play();
+  if (p && typeof p.catch === 'function') {
+    p.catch(() => {});
+  }
+}
+
+/** Stop the looping result-screen SFX. */
+export function stopLoopingSfx() {
+  if (loopAudio) {
+    loopAudio.pause();
+    loopAudio.currentTime = 0;
+    loopAudio = null;
+  }
+  currentLoopId = null;
 }
 
 /**
@@ -206,6 +243,7 @@ export function stopMusic(resetId = true) {
 
 export function stopAllSounds() {
   stopMusic();
+  stopLoopingSfx();
   sfxCache.forEach((audio) => {
     audio.pause();
     audio.currentTime = 0;

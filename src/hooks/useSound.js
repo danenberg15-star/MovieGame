@@ -40,6 +40,14 @@ export function useSound() {
     [sound]
   );
 
+  const playLoop = useCallback(
+    (id) => {
+      if (!sound.unlocked) sound.unlock();
+      sound.playLoop(id);
+    },
+    [sound]
+  );
+
   return {
     muted: sound.muted,
     unlocked: sound.unlocked,
@@ -48,6 +56,8 @@ export function useSound() {
     toggleMuted: sound.toggleMuted,
     play,
     playMusic,
+    playLoop,
+    stopLoop: sound.stopLoop,
     fadeOutMusic: sound.fadeOutMusic,
     stopMusic: sound.stopMusic,
     stopAll: sound.stopAll,
