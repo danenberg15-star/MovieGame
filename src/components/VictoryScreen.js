@@ -9,8 +9,9 @@
 // Pass the current player's team via `myTeam`; the component decides
 // which variant to render by comparing it to `winner`.
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSound } from '../hooks/useSound';
 import './VictoryScreen.css';
 
 const TOTAL_IMAGES = 5;
@@ -23,10 +24,16 @@ export default function VictoryScreen({
   onBackHome,
 }) {
   const { t } = useTranslation();
+  const { play } = useSound();
 
   const isDraw = winner === 'draw' || winner == null;
   const isLoser = !isDraw && myTeam && myTeam !== winner;
   const variant = isLoser ? 'lose' : 'win';
+
+  // Boo on defeat, cheer on victory — play once when the result lands.
+  useEffect(() => {
+    play(isLoser ? 'result.boo' : 'result.cheer');
+  }, [isLoser, play]);
 
   // Pick a random end-game image once per mount so it stays stable across
   // re-renders triggered by Firebase updates while the screen is open.

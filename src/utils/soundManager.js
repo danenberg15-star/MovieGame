@@ -15,6 +15,8 @@ export const SOUND_CATALOG = {
   'game.start': { path: '/assets/audio/sfx/game-start.mp3', volume: 0.65, type: 'sfx' },
   'anchor.reveal': { path: '/assets/audio/sfx/anchor-reveal.mp3', volume: 0.6, type: 'sfx' },
   'modal.open': { path: '/assets/audio/sfx/modal-open.mp3', volume: 0.4, type: 'sfx' },
+  'result.cheer': { path: '/Cheer.m4a', volume: 0.8, type: 'sfx' },
+  'result.boo': { path: '/Boo.m4a', volume: 0.8, type: 'sfx' },
   'music.home': { path: '/assets/audio/music/home-ambient.mp3', volume: 0.22, type: 'music' },
   'music.lobby': { path: '/assets/audio/music/lobby-tension.mp3', volume: 0.28, type: 'music' },
 };
