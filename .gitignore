@@ -38,6 +38,11 @@ movies_OLD_109_BACKUP/
 
 # Large asset folders (if needed, host videos elsewhere)
 /public/assets/movies/*/trailer.mp4
+
+# Trailer title OCR pipeline (generated / large)
+/movie-data-generator/expand-database/tessdata/*.traineddata
+/movie-data-generator/expand-database/staging/trailer-title-audit/frames/
+/movie-data-generator/expand-database/staging/trailer-title-audit/recut-work/
 /public/assets/ready_trailers/
 /public/assets/final trailers/
 

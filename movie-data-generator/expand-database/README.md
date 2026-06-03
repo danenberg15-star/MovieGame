@@ -45,6 +45,28 @@ cd ..\..
 - `TMDB_API_KEY` in `movie-data-generator/.env`
 - `npm install` in `movie-data-generator/` (firebase, axios, yt-search, dotenv, fs-extra)
 
+## Trailer title OCR audit (on-screen movie name)
+
+Scans every `public/assets/movies/*/trailer.mp4` for visible **movie title** text
+(English + Hebrew OCR). Re-cuts flagged clips from a fresh YouTube source.
+
+```powershell
+cd movie-data-generator\expand-database
+# Or from repo root:
+.\scripts\run-trailer-title-audit.ps1        # audit + recut + deploy-vercel-fast
+.\scripts\run-trailer-title-audit.ps1 -Pilot  # 20-movie audit sample only
+```
+
+Manual steps:
+
+```powershell
+$env:TESSDATA_PREFIX = "$PWD\tessdata\"   # eng+heb (script downloads heb)
+node audit-trailer-titles.js --resume
+node recut-clean-trailers.js --resume
+```
+
+Reports: `staging/trailer-title-audit/report.json`, `recut-results.json`.
+
 ## Typical run
 
 ```powershell
