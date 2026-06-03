@@ -16,7 +16,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { findAllPossibleConnections } from '../utils/gameLogic';
+import { findAllPossibleConnections, findConnection } from '../utils/gameLogic';
 import './DecisionPhase.css';
 
 const BUY_CONNECTION_COST = 3;
@@ -41,16 +41,38 @@ function DecisionPhase({
   const [selectedIdx, setSelectedIdx] = useState(0);
   const scrollRef = useRef(null);
 
-  // When the player chooses "Save Token" but a connection was actually
-  // possible, we reveal what they missed before committing.
+  // When the player saves/buys/mis-connects but a connection was actually
+  // possible, we reveal what they missed for 2s, then auto-continue.
   const [missedConnections, setMissedConnections] = useState(null);
+  const missedTimerRef = useRef(null);
+
+  // Show the "missed connection" overlay for 2s, then run the follow-up action
+  // (save token / buy / submit failed attempt). No buttons — fully automatic.
+  const showMissedThen = (missed, action) => {
+    setMissedConnections(missed);
+    if (missedTimerRef.current) clearTimeout(missedTimerRef.current);
+    missedTimerRef.current = setTimeout(() => {
+      missedTimerRef.current = null;
+      setMissedConnections(null);
+      if (action) action();
+    }, 2000);
+  };
 
   // Reset mode + selection whenever a new round of decision starts
   useEffect(() => {
     setMode('choose-action');
     setSelectedIdx(0);
     setMissedConnections(null);
+    if (missedTimerRef.current) {
+      clearTimeout(missedTimerRef.current);
+      missedTimerRef.current = null;
+    }
   }, [wonCard?.id]);
+
+  // Clear any pending timer on unmount.
+  useEffect(() => () => {
+    if (missedTimerRef.current) clearTimeout(missedTimerRef.current);
+  }, []);
 
   // Keep selectedIdx in bounds
   useEffect(() => {
@@ -89,6 +111,19 @@ function DecisionPhase({
 
   const handleTypePick = (typeId) => {
     if (disabled || !selectedCard) return;
+
+    // Is this attempt actually correct? If not, reveal the connection(s) the
+    // player could have made before the (failing) attempt is submitted.
+    const validConns = findConnection(wonCard, selectedCard) || [];
+    const isValid = validConns.some((c) => c.type === typeId);
+    if (!isValid) {
+      const missed = findAllPossibleConnections(wonCard, teamCards);
+      if (missed.length > 0) {
+        showMissedThen(missed, () => onConnect && onConnect(selectedCard, typeId));
+        return;
+      }
+    }
+
     onConnect && onConnect(selectedCard, typeId);
   };
 
@@ -96,35 +131,28 @@ function DecisionPhase({
 
   const handleBuy = () => {
     if (disabled || !canBuyConnection) return;
+
+    // Buying spends 3 tokens — if a free connection was available, show what
+    // they missed first, then proceed with the purchase.
+    const missed = hasChain ? findAllPossibleConnections(wonCard, teamCards) : [];
+    if (missed.length > 0) {
+      showMissedThen(missed, () => onBuyConnection && onBuyConnection());
+      return;
+    }
+
     onBuyConnection && onBuyConnection();
   };
   const handleSave = () => {
     if (disabled) return;
 
-    // Did the player miss a real connection? If so, reveal it first.
+    // Did the player miss a real connection? If so, reveal it first, then save.
     const missed = hasChain ? findAllPossibleConnections(wonCard, teamCards) : [];
     if (missed.length > 0) {
-      setMissedConnections(missed);
+      showMissedThen(missed, () => onSaveToken && onSaveToken());
       return;
     }
 
     onSaveToken && onSaveToken();
-  };
-
-  const confirmSaveAfterMissed = () => {
-    setMissedConnections(null);
-    onSaveToken && onSaveToken();
-  };
-
-  const connectInsteadAfterMissed = () => {
-    // Jump the player straight to connecting the first card they could have used.
-    const firstMissed = missedConnections?.[0];
-    if (firstMissed) {
-      const idx = teamCards.findIndex((c) => c?.id === firstMissed.targetCard?.id);
-      if (idx >= 0) setSelectedIdx(idx);
-    }
-    setMissedConnections(null);
-    setMode('armed');
   };
 
   const describeConnection = (conn) => {
@@ -369,7 +397,7 @@ function DecisionPhase({
         </div>
       )}
 
-      {/* === Missed-connection reveal (after choosing Save Token) === */}
+      {/* === Missed-connection reveal — auto-dismisses after 2s === */}
       {missedConnections && (
         <div className="dp-missed-overlay" role="dialog" aria-modal="true">
           <div className="dp-missed-modal">
@@ -391,25 +419,6 @@ function DecisionPhase({
                 </li>
               ))}
             </ul>
-
-            <div className="dp-missed-actions">
-              <button
-                type="button"
-                className="dp-btn dp-btn--connect dp-btn--compact"
-                onClick={connectInsteadAfterMissed}
-                disabled={disabled}
-              >
-                🔗 {t('connect_now')}
-              </button>
-              <button
-                type="button"
-                className="dp-btn dp-btn--save dp-btn--compact"
-                onClick={confirmSaveAfterMissed}
-                disabled={disabled}
-              >
-                🎫 {t('save_anyway')}
-              </button>
-            </div>
           </div>
         </div>
       )}
