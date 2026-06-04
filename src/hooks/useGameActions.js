@@ -612,8 +612,7 @@ export const useGameActions = (
 
     } else if (isRaceMode) {
       // Race-the-Clock: a wrong guess by either team just eliminates that option
-      // for both teams. No turn rotation — the round stays open until someone
-      // gets it right, or the grid is exhausted (both teams failed).
+      // for both teams. The team that guessed wrong cannot guess again this round.
       const newRemovedAnswers = [
         ...(gameState.currentMovie?.removedAnswers || []),
         answer,
@@ -622,8 +621,12 @@ export const useGameActions = (
         (opt) => !newRemovedAnswers.includes(opt),
       ).length;
 
+      const priorAttempts = normalizeAttempts(gameState.currentMovieAttempts);
+      const newAttempts = [...priorAttempts, answeringTeam];
+
       await update(ref(database, `games/${roomCode}`), {
         [`currentMovie/removedAnswers`]: newRemovedAnswers,
+        currentMovieAttempts: newAttempts,
       });
 
       setRemovedAnswers(newRemovedAnswers);
@@ -653,14 +656,14 @@ export const useGameActions = (
           startNextRound(undefined, { usedMovieIdsOverride: newUsedIds, preparedRound });
         }, FAILED_ROUND_DELAY_MS);
       } else {
-        // Same player can immediately try again; option is gone for both teams.
-        setResultMessage(language === 'he' ? 'לא נכון' : 'Incorrect');
+        // Wrong answer. This player cannot guess again this round.
+        setResultMessage(language === 'he' ? 'לא נכון - אין לך ניסיון נוסף' : 'Incorrect - no more attempts');
         setShowResult(true);
-        setSelectedAnswer(null);
         setTimeout(() => {
           setShowResult(false);
           setResultMessage('');
-        }, 800);
+          setSelectedAnswer(null);
+        }, 1500);
       }
     } else {
       // Wrong answer - remove it and give other team a chance

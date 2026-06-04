@@ -312,11 +312,12 @@ function GameScreen() {
   );
 
   // Multiplayer: currentTurn in Firebase switches to steal team after a wrong guess.
-  // Race-the-Clock: every human team can answer every round (no turn rotation).
+  // Race-the-Clock: every human team can answer every round, but only once per round.
   let isMyTurn = false;
   if (teamKnown) {
     if (isRaceMode) {
-      isMyTurn = true;
+      // In Race mode, you can answer if you haven't tried yet this round
+      isMyTurn = !myTeamAlreadyTried;
     } else if (isBotMode) {
       isMyTurn =
         (currentTeam === 'A' && !attempts.includes('A')) ||
