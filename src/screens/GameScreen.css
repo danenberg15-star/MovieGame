@@ -474,14 +474,14 @@
 .playing-phase--race {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   height: 100%;
   overflow: hidden;
 }
 
 .race-trailer {
   flex: 1 1 auto;
-  min-height: 200px;
+  min-height: 250px;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -498,17 +498,21 @@
   flex: 0 0 auto;
   overflow: visible;
   padding-right: 0;
-  gap: 6px;
+  gap: 8px;
 }
 
 .race-answers .turn-hint {
-  margin: 0 0 2px 0 !important;
-  font-size: 12px;
+  margin: 0 0 4px 0 !important;
+  font-size: clamp(13px, 1.8vw, 14px);
+  font-weight: 600;
 }
 
 .race-answers .answer-option {
-  min-height: 44px;
-  padding: 6px 8px;
+  min-height: 52px;
+  padding: 8px 10px;
+  font-size: clamp(14px, 2.2vw, 16px);
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 /* Answer section takes full space when showing */
@@ -560,16 +564,16 @@
   color: #ffffff;
   padding: 8px;
   border-radius: 6px;
-  font-size: 11px;
-  font-weight: 500;
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  min-height: 42px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1.2;
+  line-height: 1.3;
   word-break: break-word;
 }
 
@@ -670,6 +674,20 @@
   .success-subtitle {
     font-size: 14px;
   }
+
+  /* Race mode optimizations for mobile */
+  .race-trailer {
+    min-height: 280px;
+  }
+
+  .race-answers .answer-option {
+    font-size: 15px;
+    min-height: 54px;
+  }
+
+  .game-content {
+    padding: 4px;
+  }
 }
 
 @media (max-height: 450px) {
@@ -689,6 +707,42 @@
   
   .success-subtitle {
     font-size: 12px;
+  }
+}
+
+/* Mobile portrait optimization (iPhone 12 and up) */
+@media (max-width: 430px) and (orientation: portrait) {
+  .race-trailer {
+    min-height: 320px;
+    flex: 1 1 55%;
+  }
+
+  .race-answers {
+    flex: 0 0 auto;
+  }
+
+  .race-answers .answer-grid {
+    gap: 10px;
+  }
+
+  .race-answers .answer-option {
+    font-size: 16px;
+    min-height: 56px;
+    padding: 10px 12px;
+    font-weight: 700;
+  }
+
+  .race-answers .turn-hint {
+    font-size: 14px;
+    margin-bottom: 6px !important;
+  }
+
+  .game-content {
+    padding: 6px 4px;
+  }
+
+  .playing-phase--race {
+    gap: 8px;
   }
 }
 
