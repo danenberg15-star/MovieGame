@@ -385,6 +385,12 @@ function GameScreen() {
   }, [gameState?.players]);
   const isPrimaryClient = !!playerId && primaryPlayerId === playerId;
 
+  // Exit to home — clears session and navigates back
+  const handleExitToHome = useCallback(() => {
+    clearActiveSession();
+    navigate('/');
+  }, [navigate]);
+
   // When trailer ends: always transition locally; active team writes to Firebase
   const handleTrailerEnd = useCallback(async () => {
     const movieId = gameState?.currentMovie?.id;
@@ -536,6 +542,17 @@ function GameScreen() {
 
   return (
     <div className="game-screen">
+      {/* Exit button — top-left corner, red */}
+      <button
+        type="button"
+        className="game-exit-btn"
+        onClick={handleExitToHome}
+        aria-label={t('exit_to_home') || 'Exit to home'}
+        title={t('exit_to_home') || 'Exit to home'}
+      >
+        ✕
+      </button>
+
       <div className="game-main-layout">
         <TeamSidebar
           side="left"

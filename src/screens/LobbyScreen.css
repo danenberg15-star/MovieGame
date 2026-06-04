@@ -68,9 +68,19 @@
   flex-shrink: 0;
 }
 
-/* Centre the room code regardless of which side actions are present */
-.lobby-header .room-code-display {
-  margin-inline: auto;
+/* Group room code with WhatsApp button */
+.room-code-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+/* Spacer to balance the layout (same width as exit button) */
+.lobby-header-spacer {
+  width: 36px;
+  flex-shrink: 0;
 }
 
 /* Room code as a small theatre marquee */
@@ -108,7 +118,7 @@
     0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* ===== EXIT (X) BUTTON — top-leading corner of the lobby ===== */
+/* ===== EXIT (X) BUTTON — top-left corner, red ===== */
 .exit-btn {
   width: 36px;
   height: 36px;
@@ -125,6 +135,7 @@
   line-height: 1;
   cursor: pointer;
   padding: 0;
+  flex-shrink: 0;
   box-shadow:
     inset 0 1px 0 rgba(255, 216, 107, 0.15),
     0 3px 8px rgba(0, 0, 0, 0.5);
@@ -599,10 +610,12 @@
   .lobby-screen { padding: 6px; }
   .lobby-content { gap: 6px; }
   .lobby-header { gap: 8px; }
+  .room-code-group { gap: 8px; }
   .room-code-display { padding: 4px 10px; }
   .room-code-display .label { font-size: 10px; }
   .room-code-display .code { font-size: 17px; letter-spacing: 2px; }
   .exit-btn { width: 30px; height: 30px; font-size: 15px; }
+  .lobby-header-spacer { width: 30px; }
   .btn-whatsapp { width: 34px; height: 34px; padding: 5px; }
   .btn-whatsapp svg { width: 22px; height: 22px; }
   .teams-container { gap: 8px; }

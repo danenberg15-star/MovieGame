@@ -381,7 +381,7 @@ function LobbyScreen() {
     <div className="lobby-screen">
       <div className="container">
         <div className="lobby-content">
-          {/* Header — exit (X), room code, and WhatsApp invite */}
+          {/* Header — exit (X), room code with WhatsApp */}
           <div className="lobby-header">
             <button
               type="button"
@@ -393,20 +393,24 @@ function LobbyScreen() {
               ✕
             </button>
 
-            <div className="room-code-display">
-              <span className="label">{t('room_code')}:</span>
-              <span className="code">{roomCode}</span>
+            <div className="room-code-group">
+              <div className="room-code-display">
+                <span className="label">{t('room_code')}:</span>
+                <span className="code">{roomCode}</span>
+              </div>
+
+              <button
+                type="button"
+                className="btn-whatsapp"
+                onClick={handleShareWhatsApp}
+                aria-label={t('share_whatsapp') || 'Share on WhatsApp'}
+                title={t('share_whatsapp') || 'Share on WhatsApp'}
+              >
+                <WhatsAppIcon />
+              </button>
             </div>
 
-            <button
-              type="button"
-              className="btn-whatsapp"
-              onClick={handleShareWhatsApp}
-              aria-label={t('share_whatsapp') || 'Share on WhatsApp'}
-              title={t('share_whatsapp') || 'Share on WhatsApp'}
-            >
-              <WhatsAppIcon />
-            </button>
+            <div className="lobby-header-spacer" aria-hidden="true"></div>
           </div>
 
           {/* Teams (cinema halls from above) */}
