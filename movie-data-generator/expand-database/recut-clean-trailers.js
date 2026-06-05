@@ -25,11 +25,16 @@ if (!TMDB_API_KEY) {
 }
 
 const AUDIT_DIR = path.join(STAGING_ROOT, 'trailer-title-audit');
-const REPORT_FILE = path.join(AUDIT_DIR, 'report.json');
+
+const argv = process.argv.slice(2);
+const reportIdx = argv.indexOf('--report');
+const customReport = reportIdx >= 0 ? argv[reportIdx + 1] : null;
+const REPORT_FILE = customReport 
+  ? (path.isAbsolute(customReport) ? customReport : path.join(AUDIT_DIR, customReport))
+  : path.join(AUDIT_DIR, 'report.json');
 const RECUT_REPORT = path.join(AUDIT_DIR, 'recut-results.json');
 const FAILURES_FILE = path.join(AUDIT_DIR, 'recut-failures.json');
 
-const argv = process.argv.slice(2);
 const limitIdx = argv.indexOf('--limit');
 const LIMIT = limitIdx >= 0 ? parseInt(argv[limitIdx + 1] || '0', 10) : 0;
 const RESUME = argv.includes('--resume');
@@ -46,12 +51,19 @@ function loadMoviesById() {
 
 async function main() {
   const audit = readJson(REPORT_FILE, null);
-  if (!audit?.results?.length) {
-    console.error(`No audit report at ${REPORT_FILE}. Run audit-trailer-titles.js first.`);
+  if (!audit) {
+    console.error(`No audit report at ${REPORT_FILE}`);
+    process.exit(1);
+  }
+  
+  // Support both audit report format (with results) and simple flagged array format
+  const auditResults = audit.results || audit.flagged || [];
+  if (!auditResults.length) {
+    console.error(`No trailers to recut in ${REPORT_FILE}`);
     process.exit(1);
   }
 
-  let flagged = audit.results.filter((r) => r.flagged && !r.skipped);
+  let flagged = auditResults.filter((r) => !r.skipped);
   const prevRecut = RESUME ? readJson(RECUT_REPORT, { results: [] }) : { results: [] };
   const doneOk = new Set(
     (prevRecut.results || []).filter((r) => r.status === 'ok').map((r) => r.movieId)
