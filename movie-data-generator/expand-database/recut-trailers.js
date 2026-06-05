@@ -28,16 +28,19 @@ import {
 // ---- Jobs to run --------------------------------------------------------
 const JOBS = [
   {
-    movieId: 'movie_821', // Kill Bill: Vol. 2 (2004) — avoid on-screen title text
-    tmdbId: 393,
-    youtubeKey: 'WTt8cCIvGYI', // official trailer (Classic Trailers)
-    startAt: 60,
+    movieId: 'movie_828', // The Theory of Everything (2014) — avoid on-screen title text
+    tmdbId: 266856,
+    startOffset: 5, // Skip title card at the beginning
   },
   {
-    movieId: 'movie_927', // Star Wars: Episode III - Revenge of the Sith (2005)
-    tmdbId: 1895,
-    youtubeKey: '5UnjrG_N8hU', // official Star Wars channel trailer
-    startAt: 75,
+    movieId: 'movie_911', // First Blood (1982) — avoid on-screen title text
+    tmdbId: 1368,
+    startOffset: 8, // Skip title card
+  },
+  {
+    movieId: 'movie_934', // Captain America: Civil War (2016) — avoid on-screen title text
+    tmdbId: 271110,
+    startOffset: 5, // Skip Marvel title card
   },
 ];
 
